@@ -28,6 +28,7 @@ jobs:
     name: Build and analyze
     needs: build
     runs-on: windows-latest
+    environment: actions
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
