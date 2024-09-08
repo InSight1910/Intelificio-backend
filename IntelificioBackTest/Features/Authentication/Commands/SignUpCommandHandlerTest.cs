@@ -1,0 +1,122 @@
+﻿using AutoMapper;
+using AZ_204.Common.Profilers;
+using Intelificio_Back.Common.Response;
+using Intelificio_Back.Features.Authentication.Commands.Signup;
+using Intelificio_Back.Models;
+using IntelificioBackTest.Fixtures;
+using IntelificioBackTest.Mocks;
+using Microsoft.AspNetCore.Identity;
+using Moq;
+
+namespace IntelificioBackTest.Features.Authentication.Commands
+{
+    public class SignUpCommandHandlerTest
+    {
+        private readonly IMapper _mapper;
+        private readonly Mock<UserManager<User>> _userManager;
+        private readonly SignUpCommandHandler _handler;
+        public SignUpCommandHandlerTest()
+        {
+            var mapperConfig = new MapperConfiguration(config =>
+            {
+                config.AddProfile<UserProfile>();
+            });
+            _mapper = new Mapper(mapperConfig);
+            _userManager = UserManagerMock.CreateUserManager();
+
+            _handler = new SignUpCommandHandler(_userManager.Object, _mapper);
+        }
+
+        [Fact]
+        public async Task Handle_FailedSignUp_UserAlreadyExist()
+        {
+            //Arrange
+            var command = new SignUpCommand
+            {
+                Email = "test@test.com",
+                FirstName = "Test",
+                LastName = "LastTest",
+                Password = "Test",
+                PhoneNumber = "123",
+                Rut = "123",
+                Role = new Role
+                {
+                    Name = "Role"
+                }
+            };
+            _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                        .ReturnsAsync(UserFixture.GetUserTest());
+
+            //Act
+            var result = await _handler.Handle(command, default);
+
+            //Assest
+            Assert.True(result.IsFailure);
+            _ = Assert.IsType<Error>(result.Error);
+            Assert.NotEmpty(result.Error.Errors);
+        }
+
+        [Fact]
+        public async Task Handle_FailedSigUp_CreateFailed()
+        {
+            //Arrange
+            var command = new SignUpCommand
+            {
+                Email = "test@test.com",
+                FirstName = "Test",
+                LastName = "LastTest",
+                Password = "Test",
+                PhoneNumber = "123",
+                Rut = "123",
+                Role = new Role
+                {
+                    Name = "Role"
+                }
+            };
+
+            _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                            .ReturnsAsync((User)null);
+            _ = _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                            .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Password too weak" }));
+
+            //Act
+            var result = await _handler.Handle(command, default);
+
+            //Assest
+            Assert.True(result.IsFailure);
+            _ = Assert.IsType<Error>(result.Error);
+            Assert.NotEmpty(result.Error.Errors);
+        }
+
+        [Fact]
+        public async Task Handle_Success()
+        {
+            //Arrange
+            var command = new SignUpCommand
+            {
+                Email = "test@test.com",
+                FirstName = "Test",
+                LastName = "LastTest",
+                Password = "Test",
+                PhoneNumber = "123",
+                Rut = "123",
+                Role = new Role
+                {
+                    Name = "Role"
+                }
+            };
+
+            _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                            .ReturnsAsync((User)null);
+            _ = _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                            .ReturnsAsync(IdentityResult.Success);
+
+            //Act
+            var result = await _handler.Handle(command, default);
+
+            //Assest
+            Assert.True(result.IsSuccess);
+            _ = Assert.IsType<Result>(result);
+        }
+    }
+}
