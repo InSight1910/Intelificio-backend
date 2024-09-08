@@ -81,7 +81,7 @@ jobs:
       - name: Build and Push image
         uses: docker/build-push-action@v6.7.0
         with:
-          context: .
+          context: ./Intelificio-Back
           file: ./Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/intelificio-back:latest
           push: true
