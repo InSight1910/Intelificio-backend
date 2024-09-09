@@ -89,7 +89,58 @@ namespace Intelificio_Back.Models
                       .WithOne(p => p.Community);
                 entity.HasMany(P => P.Maintenances)
                       .WithOne(p => p.Community);
-  
+                entity.HasMany(p => p.Users)
+                      .WithMany(p => p.Communities);
+                entity.HasMany(p => p.AssignedShifts)
+                      .WithMany(p => p.Communities);
+
+            });
+
+            builder.Entity<User>(entity =>
+            {
+
+                entity.HasMany(p => p.Attendances)
+                      .WithOne(p => p.User);
+                entity.HasOne(p => p.Role)
+                      .WithMany(p => p.Users);
+                entity.HasMany(p => p.Visits)
+                      .WithOne(p => p.User);
+                entity.HasMany(p => p.Reservations)
+                      .WithOne(p => p.User);
+
+            });
+
+            builder.Entity<AssignedShift>(entity =>
+            {
+                entity.HasKey(p => p.ID);
+                entity.HasOne(p => p.Shift)
+                    .WithMany(p => p.AssignedShifts);
+                entity.HasMany(p => p.Users)
+                    .WithMany(p => p.AssignedShifts);
+
+            });
+
+            builder.Entity<Shift>(entity =>
+            {
+                entity.HasKey(p => p.ID);
+                entity.HasMany(p => p.AssignedShifts)
+                    .WithOne(p => p.Shift);
+                entity.HasOne(p => p.Type)
+                    .WithMany(p => p.Shifts);
+
+            });
+
+            builder.Entity<Reservation>(entity =>
+            {
+
+                entity.HasKey(p => p.ID);
+                entity.HasOne(p => p.User)
+                        .WithMany(p => p.Reservations);
+                entity.HasOne(p => p.Spaces)
+                        .WithMany(p => p.Reservations);
+                entity.HasMany(p => p.Invitees)
+                         .WithMany(p => p.Reservations);
+
             });
 
         }

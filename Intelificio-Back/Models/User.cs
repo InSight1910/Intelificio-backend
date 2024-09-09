@@ -16,5 +16,15 @@ namespace Intelificio_Back.Models
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime? RefreshTokenExpiry { get; set; }
 
+        public required IEnumerable<Community> Communities { get; set; }
+
+        public IEnumerable<Attendance> Attendances { get; set; } = Enumerable.Empty<Attendance>();
+
+        public IEnumerable<AssignedShift> AssignedShifts { get; set; } = Enumerable.Empty<AssignedShift>();
+
+        public IEnumerable<Visit> Visits { get; set; } = Enumerable.Empty<Visit>();
+
+        public IEnumerable<Reservation> Reservations { get; set; } = Enumerable.Empty<Reservation>();
+
     }
 }

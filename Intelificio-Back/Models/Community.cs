@@ -15,5 +15,8 @@ namespace Intelificio_Back.Models
         public required IEnumerable<Charge> Charges { get; set; }
         public required IEnumerable<Building> Buildings { get; set; }
         public required IEnumerable<Maintenance> Maintenances { get; set; }
+        public required IEnumerable<User> Users { get; set; }
+        public IEnumerable<AssignedShift> AssignedShifts { get; set; } = Enumerable.Empty<AssignedShift>();
+
     }
 }
