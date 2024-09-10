@@ -8,7 +8,7 @@ namespace Backend.Models
         public bool IsFine { get; set; }
         public DateTime ChargeDate { get; set; }
         public bool IsActive { get; set; }
-
         public required ChargeType Type { get; set; }
+        public required Community Community { get; set; }
     }
 }

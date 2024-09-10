@@ -11,5 +11,7 @@ namespace Backend.Models
         public required string AvailableHours { get; set; }
 
         public required Community Community { get; set; }
+
+        public IEnumerable<Reservation> Reservations { get; set; } = Enumerable.Empty<Reservation>();
     }
 }

@@ -79,16 +79,103 @@ namespace Backend.Models
             builder.Entity<Community>(entity =>
             {
                 entity.HasKey(p => p.ID);
+
                 entity.HasMany(p => p.Spaces)
                       .WithOne(p => p.Community);
+
                 entity.HasMany(p => p.Contacts)
                       .WithOne(p => p.Community);
+
                 entity.HasMany(p => p.Expenses)
                       .WithOne(p => p.Community);
+
                 entity.HasMany(p => p.Buildings)
                       .WithOne(p => p.Community);
+
                 entity.HasMany(P => P.Maintenances)
                       .WithOne(p => p.Community);
+
+                entity.HasMany(p => p.Users)
+                      .WithMany(p => p.Communities);
+
+                entity.HasMany(p => p.AssignedShifts)
+                      .WithMany(p => p.Communities);
+
+                entity.HasMany(p => p.Pets)
+                      .WithOne(p => p.Community);
+
+                entity.HasMany(p => p.Packages)
+                      .WithOne(p => p.Community);
+
+                entity.HasMany(p => p.Charges)
+                      .WithOne(p => p.Community);
+
+            });
+
+            builder.Entity<Building>(entity =>
+            {
+                entity.HasKey(p => p.ID);
+                entity.HasMany(p => p.Units)
+                      .WithOne(p => p.Building);
+
+                entity.HasMany(p => p.Maintenances)
+                      .WithOne(p => p.Building);
+            });
+
+            builder.Entity<Unit>(entity =>
+            {
+                entity.HasKey(p => p.ID);
+                entity.HasOne(p => p.Type)
+                      .WithMany(p => p.Units);
+            });
+
+            builder.Entity<User>(entity =>
+            {
+
+                entity.HasMany(p => p.Attendances)
+                      .WithOne(p => p.User);
+
+                entity.HasOne(p => p.Role)
+                      .WithMany(p => p.Users);
+
+                entity.HasMany(p => p.Visits)
+                      .WithOne(p => p.User);
+
+                entity.HasMany(p => p.Reservations)
+                      .WithOne(p => p.User);
+
+            });
+
+            builder.Entity<AssignedShift>(entity =>
+            {
+                entity.HasKey(p => p.ID);
+                entity.HasOne(p => p.Shift)
+                    .WithMany(p => p.AssignedShifts);
+                entity.HasMany(p => p.Users)
+                    .WithMany(p => p.AssignedShifts);
+
+            });
+
+            builder.Entity<Shift>(entity =>
+            {
+                entity.HasKey(p => p.ID);
+                entity.HasMany(p => p.AssignedShifts)
+                    .WithOne(p => p.Shift);
+                entity.HasOne(p => p.Type)
+                    .WithMany(p => p.Shifts);
+
+            });
+
+            builder.Entity<Reservation>(entity =>
+            {
+
+                entity.HasKey(p => p.ID);
+                entity.HasOne(p => p.User)
+                        .WithMany(p => p.Reservations);
+                entity.HasOne(p => p.Spaces)
+                        .WithMany(p => p.Reservations);
+                entity.HasMany(p => p.Invitees)
+                         .WithMany(p => p.Reservations);
 
             });
 

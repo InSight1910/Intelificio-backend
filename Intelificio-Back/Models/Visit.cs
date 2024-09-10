@@ -8,5 +8,7 @@ namespace Backend.Models
         public required string Rut { get; set; }
         public required string Plate { get; set; }
 
+        public required User User { get; set; }
+
     }
 }

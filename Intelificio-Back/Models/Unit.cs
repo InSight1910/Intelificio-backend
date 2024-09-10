@@ -9,6 +9,7 @@ namespace Backend.Models
         //public int UserId { get; set; }
         //public UnitState State { get; set; }
         public bool IsActive { get; set; }
-
+        public required Building Building { get; set; }
+        public required UnitType Type { get; set; }
     }
 }

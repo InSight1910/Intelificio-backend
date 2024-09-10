@@ -10,5 +10,10 @@ namespace Backend.Models
         public required DateTime ReservationDate { get; set; }
         public required ReservationStatus Status { get; set; }
 
+        public required User User { get; set; }
+
+        public required CommonSpace Spaces { get; set; }
+
+        public IEnumerable<Invitee> Invitees { get; set; } = Enumerable.Empty<Invitee>();
     }
 }

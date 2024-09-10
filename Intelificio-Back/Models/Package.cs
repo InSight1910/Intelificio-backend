@@ -8,6 +8,7 @@ namespace Backend.Models
         public required string Notes { get; set; }
         public required DateTime ReceptionDate { get; set; }
         public required PackageStatus Status { get; set; }
+        public required Community Community { get; set; }
     }
 
 }
