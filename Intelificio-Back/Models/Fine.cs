@@ -1,6 +1,7 @@
-﻿using Intelificio_Back.Models.Base;
-using Intelificio_Back.Models.Enums;
-namespace Intelificio_Back.Models
+﻿using Backend.Models.Base;
+using Backend.Models.Enums;
+
+namespace Backend.Models
 
 {
     public class Fine : BaseEntity

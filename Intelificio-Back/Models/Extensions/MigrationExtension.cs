@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Models.Extensions
+﻿namespace Backend.Models.Extensions
 {
     public static class MigrationExtension
     {

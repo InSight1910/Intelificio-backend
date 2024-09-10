@@ -1,4 +1,4 @@
-﻿using Intelificio_Back.Models;
+﻿using Backend.Models;
 
 namespace IntelificioBackTest.Fixtures
 {

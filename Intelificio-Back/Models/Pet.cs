@@ -1,6 +1,6 @@
-﻿using Intelificio_Back.Models.Base;
+﻿using Backend.Models.Base;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class Pet : BaseEntity
     {
@@ -12,6 +12,8 @@ namespace Intelificio_Back.Models
         public required string PhotoUrl { get; set; }
         public bool IsActive { get; set; }
         public required Community Community { get; set; }
+
+        public required User User { get; set; }
 
     }
 }

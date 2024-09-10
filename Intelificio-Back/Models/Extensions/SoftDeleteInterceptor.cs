@@ -1,7 +1,7 @@
-﻿using Intelificio_Back.Models.Base;
+﻿using Backend.Models.Base;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Intelificio_Back.Models.Extensions
+namespace Backend.Models.Extensions
 {
     public class SoftDeleteInterceptor : SaveChangesInterceptor
     {

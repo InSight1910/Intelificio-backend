@@ -1,11 +1,11 @@
-﻿using Intelificio_Back.Common.Response;
-using Intelificio_Back.Common.Security;
-using Intelificio_Back.Features.Authentication.Common;
-using Intelificio_Back.Models;
+﻿using Backend.Common.Response;
+using Backend.Common.Security;
+using Backend.Features.Authentication.Common;
+using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Intelificio_Back.Features.Authentication.Commands.Login
+namespace Backend.Features.Authentication.Commands.Login
 {
     public class LoginCommandHandler(UserManager<User> userManager, TokenProvider tokenProvider, IConfiguration configuration) : IRequestHandler<LoginCommand, Result>
     {
@@ -39,7 +39,7 @@ namespace Intelificio_Back.Features.Authentication.Commands.Login
                     RefreshToken = refreshToken
                 }
             };
-            return Result.SuccessWithResponse(response);
+            return Result.WithResponse(response);
         }
         private static Result ValidateResponse(IdentityResult result)
         {

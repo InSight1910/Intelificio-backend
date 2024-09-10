@@ -1,5 +1,4 @@
-﻿using Intelificio_Back.Models;
-
+﻿using Backend.Models;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace Intelificio_Back.Common.Security
+namespace Backend.Common.Security
 {
     public class TokenProvider(IConfiguration _configuration)
     {
@@ -21,7 +20,7 @@ namespace Intelificio_Back.Common.Security
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity([
+                Subject = new ClaimsIdentity([
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 ]),

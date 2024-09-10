@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using AZ_204.Common.Profilers;
-using Intelificio_Back.Common.Security;
-using Intelificio_Back.Features.Authentication.Commands.Login;
-using Intelificio_Back.Features.Authentication.Common;
-using Intelificio_Back.Models;
+using Backend.Common.Profiles;
+using Backend.Common.Security;
+using Backend.Features.Authentication.Commands.Login;
+using Backend.Features.Authentication.Common;
+using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using IntelificioBackTest.Mocks;
 using Microsoft.AspNetCore.Identity;

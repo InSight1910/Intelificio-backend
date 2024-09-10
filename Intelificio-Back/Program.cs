@@ -1,8 +1,10 @@
-using AZ_204.Common.Profilers;
-using Intelificio_Back.Common.Profiles;
-using Intelificio_Back.Common.Security;
-using Intelificio_Back.Models;
-using Intelificio_Back.Models.Extensions;
+using Backend.Common.Behavior;
+using Backend.Common.Profiles;
+using Backend.Common.Security;
+using Backend.Models;
+using Backend.Models.Extensions;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TokenProvider>();
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
 
 builder.Services.AddDbContext<IntelificioDbContext>(
     options =>
@@ -49,7 +54,7 @@ builder.Services
     .AddJwtBearer(cfg =>
     {
         cfg.RequireHttpsMetadata = false;
-        cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        cfg.TokenValidationParameters = new TokenValidationParameters
         {
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Secret"))),
             ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer"),

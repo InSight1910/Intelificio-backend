@@ -1,6 +1,6 @@
-﻿using Intelificio_Back.Common.Security;
-using Intelificio_Back.Features.Authentication.Commands.Refresh;
-using Intelificio_Back.Models;
+﻿using Backend.Common.Security;
+using Backend.Features.Authentication.Commands.Refresh;
+using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using IntelificioBackTest.Mocks;
 using Microsoft.AspNetCore.Identity;

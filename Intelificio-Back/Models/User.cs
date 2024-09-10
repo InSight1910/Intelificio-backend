@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class User : IdentityUser<int>
     {
@@ -16,7 +16,7 @@ namespace Intelificio_Back.Models
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime? RefreshTokenExpiry { get; set; }
 
-        public required IEnumerable<Community> Communities { get; set; }
+        public IEnumerable<Community> Communities { get; set; } = Enumerable.Empty<Community>();
 
         public IEnumerable<Attendance> Attendances { get; set; } = Enumerable.Empty<Attendance>();
 
@@ -25,6 +25,14 @@ namespace Intelificio_Back.Models
         public IEnumerable<Visit> Visits { get; set; } = Enumerable.Empty<Visit>();
 
         public IEnumerable<Reservation> Reservations { get; set; } = Enumerable.Empty<Reservation>();
+
+        public IEnumerable<Unit> Units { get; set; } = Enumerable.Empty<Unit>();
+
+        public IEnumerable<Package> Packages { get; set; } = Enumerable.Empty<Package>();
+
+        public IEnumerable<Charge> Charges { get; set; } = Enumerable.Empty<Charge>();
+
+        public IEnumerable<Pet> Pets { get; set; } = Enumerable.Empty<Pet>();
 
     }
 }

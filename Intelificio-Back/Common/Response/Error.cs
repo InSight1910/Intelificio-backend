@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Common.Response
+﻿namespace Backend.Common.Response
 {
     public sealed class Error
     {
