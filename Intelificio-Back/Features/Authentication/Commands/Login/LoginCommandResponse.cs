@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Features.Authentication.Commands.Login
+﻿namespace Backend.Features.Authentication.Commands.Login
 {
     public class LoginCommandResponse
     {

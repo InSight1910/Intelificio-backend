@@ -1,11 +1,11 @@
-﻿using Intelificio_Back.Common.Response;
-using Intelificio_Back.Features.Authentication.Commands.Login;
-using Intelificio_Back.Features.Authentication.Commands.Refresh;
-using Intelificio_Back.Features.Authentication.Commands.Signup;
+﻿using Backend.Common.Response;
+using Backend.Features.Authentication.Commands.Login;
+using Backend.Features.Authentication.Commands.Refresh;
+using Backend.Features.Authentication.Commands.Signup;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Intelificio_Back.Features.Authentication.Common
+namespace Backend.Features.Authentication.Common
 {
     [Route("api/auth")]
     [ApiController]

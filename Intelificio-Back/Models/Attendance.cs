@@ -1,9 +1,9 @@
-﻿using Intelificio_Back.Models.Base;
+﻿using Backend.Models.Base;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
-    public class Attendance: BaseEntity
-    {   
+    public class Attendance : BaseEntity
+    {
         public DateTime ClockIn { get; set; }
         public DateTime ClockOut { get; set; }
         public DateTime Date { get; set; }

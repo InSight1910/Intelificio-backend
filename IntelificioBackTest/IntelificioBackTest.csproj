@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Intelificio-Back\Intelificio-Back.csproj" />
+    <ProjectReference Include="..\Intelificio-Back\Backend.csproj" />
   </ItemGroup>
 
 </Project>

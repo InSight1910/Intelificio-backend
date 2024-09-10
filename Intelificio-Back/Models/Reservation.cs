@@ -1,7 +1,8 @@
-﻿using Intelificio_Back.Models.Base;
-using Intelificio_Back.Models.Enums;
+﻿using Backend.Models.Base;
+using Backend.Models.Enums;
+using Intelificio_Back.Models;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class Reservation : BaseEntity
     {

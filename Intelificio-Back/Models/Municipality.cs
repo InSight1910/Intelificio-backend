@@ -1,10 +1,10 @@
-﻿using Intelificio_Back.Models.Base;
+﻿using Backend.Models.Base;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class Municipality : BaseEntity
     {
         public required string Name { get; set; }
         //public int ProvinceId { get; set; }
-    } 
+    }
 }
