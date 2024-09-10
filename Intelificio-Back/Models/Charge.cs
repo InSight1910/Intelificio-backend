@@ -10,5 +10,6 @@ namespace Backend.Models
         public bool IsActive { get; set; }
         public required ChargeType Type { get; set; }
         public required Community Community { get; set; }
+        public required User User { get; set; }
     }
 }

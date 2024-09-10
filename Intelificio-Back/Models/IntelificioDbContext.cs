@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Org.BouncyCastle.Crypto.Prng;
 
 namespace Backend.Models
 {
@@ -143,6 +144,22 @@ namespace Backend.Models
 
                 entity.HasMany(p => p.Reservations)
                       .WithOne(p => p.User);
+
+                entity.HasMany(p => p.Units)
+                       .WithMany(p => p.users);
+
+                entity.HasMany(p => p.Packages)
+                    .WithOne(p => p.Owner);
+
+                entity.HasMany(p => p.Packages)
+                    .WithOne(p => p.Staff);
+
+                entity.HasMany(p => p.Charges)
+                    .WithOne(p => p.User);
+
+                entity.HasMany(p => p.Pets)
+                    .WithOne(p => p.User);
+
 
             });
 

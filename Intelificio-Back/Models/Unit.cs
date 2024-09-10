@@ -11,5 +11,6 @@ namespace Backend.Models
         public bool IsActive { get; set; }
         public required Building Building { get; set; }
         public required UnitType Type { get; set; }
+        public IEnumerable<User> users { get; set; } = Enumerable.Empty<User>();
     }
 }
