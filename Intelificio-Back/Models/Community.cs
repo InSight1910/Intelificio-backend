@@ -9,6 +9,7 @@ namespace Backend.Models
         public int MunicipalityId { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsActive { get; set; }
+        public required Municipality Municipality { get; set; }
         public required IEnumerable<CommonSpace> Spaces { get; set; }
         public required IEnumerable<Contact> Contacts { get; set; }
         public required IEnumerable<Expense> Expenses { get; set; }

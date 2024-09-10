@@ -66,8 +66,16 @@ namespace Backend.Models
             builder.Entity<Charge>(entity =>
             {
                 entity.HasKey(p => p.ID);
+
                 entity.HasOne(p => p.Type)
                       .WithMany(p => p.Charges);
+
+                entity.HasMany(p => p.Payments)
+                      .WithOne(p => p.Charge);
+
+                entity.HasMany(p => p.Fines)
+                      .WithOne(p => p.Charge);
+
             });
 
             builder.Entity<Expense>(entity =>
@@ -111,6 +119,21 @@ namespace Backend.Models
                 entity.HasMany(p => p.Charges)
                       .WithOne(p => p.Community);
 
+                entity.HasOne(p => p.Municipality)
+                      .WithOne(p => p.Community);
+
+            });
+
+            builder.Entity<Municipality>(entity =>
+            {
+                entity.HasOne(p => p.Province)
+                      .WithOne(p => p.Municipality);
+            });
+
+            builder.Entity<Province>(entity =>
+            {
+                entity.HasOne(p => p.Region)
+                      .WithOne(p => p.Province);
             });
 
             builder.Entity<Building>(entity =>
