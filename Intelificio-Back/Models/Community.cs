@@ -20,5 +20,6 @@ namespace Backend.Models
         public required IEnumerable<Package> Packages { get; set; }
         public required IEnumerable<User> Users { get; set; }
         public IEnumerable<AssignedShift> AssignedShifts { get; set; } = Enumerable.Empty<AssignedShift>();
+        public IEnumerable<Fine> Fines { get; set; } = Enumerable.Empty<Fine>();
     }
 }

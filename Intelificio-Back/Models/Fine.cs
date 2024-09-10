@@ -9,7 +9,7 @@ namespace Backend.Models
         public required string Name { get; set; }
         public required decimal Amount { get; set; }
         public required FineDenomination Status { get; set; }
-        public required Charge Charge { get; set; }
+        public required Community Community { get; set; }
 
     }
 }
