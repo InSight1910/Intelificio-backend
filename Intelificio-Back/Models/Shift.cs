@@ -1,4 +1,5 @@
-﻿using Intelificio_Back.Models.Base;
+﻿
+using Backend.Models.Base;
 
 namespace Backend.Models
 {

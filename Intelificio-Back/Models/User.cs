@@ -16,7 +16,7 @@ namespace Backend.Models
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime? RefreshTokenExpiry { get; set; }
 
-        public required IEnumerable<Community> Communities { get; set; }
+        public IEnumerable<Community> Communities { get; set; } = Enumerable.Empty<Community>();
 
         public IEnumerable<Attendance> Attendances { get; set; } = Enumerable.Empty<Attendance>();
 

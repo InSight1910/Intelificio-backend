@@ -2,7 +2,6 @@
 using Backend.Common.Security;
 using Backend.Features.Authentication.Common;
 using Backend.Models;
-using Intelificio_Back.Common.Response;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -58,7 +57,7 @@ namespace Backend.Features.Authentication.Commands.Refresh
             var response = await userManager.UpdateAsync(user);
             if (response.Succeeded)
             {
-                return Result.SuccessWithResponse(new ResponseData
+                return Result.WithResponse(new ResponseData
                 {
                     Data = new RefreshCommandResponse
                     {

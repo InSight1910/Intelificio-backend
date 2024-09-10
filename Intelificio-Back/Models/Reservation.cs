@@ -1,5 +1,6 @@
 ﻿using Backend.Models.Base;
 using Backend.Models.Enums;
+using Intelificio_Back.Models;
 
 namespace Backend.Models
 {

@@ -3,7 +3,6 @@ using Backend.Common.Profiles;
 using Backend.Common.Response;
 using Backend.Features.Authentication.Commands.Signup;
 using Backend.Models;
-using Intelificio_Back.Features.Authentication.Commands.Signup;
 using IntelificioBackTest.Fixtures;
 using IntelificioBackTest.Mocks;
 using Microsoft.AspNetCore.Identity;

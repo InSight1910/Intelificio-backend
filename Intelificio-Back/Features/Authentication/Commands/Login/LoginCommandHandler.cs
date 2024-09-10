@@ -2,8 +2,6 @@
 using Backend.Common.Security;
 using Backend.Features.Authentication.Common;
 using Backend.Models;
-using Intelificio_Back.Common.Response;
-using Intelificio_Back.Features.Authentication.Commands.Login;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -41,7 +39,7 @@ namespace Backend.Features.Authentication.Commands.Login
                     RefreshToken = refreshToken
                 }
             };
-            return Result.SuccessWithResponse(response);
+            return Result.WithResponse(response);
         }
         private static Result ValidateResponse(IdentityResult result)
         {
