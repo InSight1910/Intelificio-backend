@@ -10,5 +10,8 @@ namespace Intelificio_Back.Models
         public bool IsActive { get; set; }
         public required ChargeType Type { get; set; }
         public required Community Community { get; set; }
+        public required IEnumerable<Payment> Payments { get; set; }
+        public required IEnumerable<Fine> Fines { get; set; }
+
     }
 }

@@ -9,5 +9,6 @@ namespace Intelificio_Back.Models
         public required DateTime PaymentDate { get; set; }
         public required PaymentType PaymentType { get; set; }
         public required string URL { get; set; }
+        public required Charge Charge { get; set; }
     }
 }
