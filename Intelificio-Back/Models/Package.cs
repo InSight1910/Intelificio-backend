@@ -1,7 +1,7 @@
-﻿using Intelificio_Back.Models.Base;
-using Intelificio_Back.Models.Enums;
+﻿using Backend.Models.Base;
+using Backend.Models.Enums;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class Package : BaseEntity
     {

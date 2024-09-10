@@ -1,5 +1,6 @@
-﻿using Intelificio_Back.Models.Base;
-namespace Intelificio_Back.Models
+﻿using Backend.Models.Base;
+
+namespace Backend.Models
 {
     public class Maintenance : BaseEntity
     {

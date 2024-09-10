@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <RootNamespace>Intelificio_Back</RootNamespace>
+    <RootNamespace>Backend</RootNamespace>
     <UserSecretsId>62a0f591-a8e6-4e53-8d76-3a872574e176</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>

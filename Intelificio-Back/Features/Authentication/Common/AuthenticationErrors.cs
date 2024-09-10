@@ -1,6 +1,6 @@
-﻿using Intelificio_Back.Common.Response;
+﻿using Backend.Common.Response;
 
-namespace Intelificio_Back.Features.Authentication.Common
+namespace Backend.Features.Authentication.Common
 {
     public class AuthenticationErrors
     {

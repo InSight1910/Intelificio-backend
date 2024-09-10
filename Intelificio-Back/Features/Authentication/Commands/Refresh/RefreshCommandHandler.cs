@@ -1,12 +1,13 @@
-﻿using Intelificio_Back.Common.Response;
-using Intelificio_Back.Common.Security;
-using Intelificio_Back.Features.Authentication.Common;
-using Intelificio_Back.Models;
+﻿using Backend.Common.Response;
+using Backend.Common.Security;
+using Backend.Features.Authentication.Common;
+using Backend.Models;
+using Intelificio_Back.Common.Response;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace Intelificio_Back.Features.Authentication.Commands.Refresh
+namespace Backend.Features.Authentication.Commands.Refresh
 {
     public class RefreshCommandHandler(UserManager<User> userManager, TokenProvider tokenProvider, IConfiguration configuration) : IRequestHandler<RefreshCommand, Result>
     {

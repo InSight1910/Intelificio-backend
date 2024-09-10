@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class IntelificioDbContext : IdentityDbContext<User, Role, int>
     {
@@ -29,7 +29,7 @@ namespace Intelificio_Back.Models
         public DbSet<Province> Provinces { get; set; }
 
         public DbSet<Pet> Pets { get; set; }
-        
+
         public DbSet<Building> Buildings { get; set; }
 
         public DbSet<Charge> Charges { get; set; }
@@ -69,11 +69,11 @@ namespace Intelificio_Back.Models
                       .WithMany(p => p.Charges);
             });
 
-            builder.Entity<Expense>(entity => 
-            {  
+            builder.Entity<Expense>(entity =>
+            {
                 entity.HasKey(p => p.ID);
                 entity.HasOne(p => p.Type)
-                      .WithMany(p => p.Expenses); 
+                      .WithMany(p => p.Expenses);
             });
 
             builder.Entity<Community>(entity =>
@@ -89,7 +89,7 @@ namespace Intelificio_Back.Models
                       .WithOne(p => p.Community);
                 entity.HasMany(P => P.Maintenances)
                       .WithOne(p => p.Community);
-  
+
             });
 
         }

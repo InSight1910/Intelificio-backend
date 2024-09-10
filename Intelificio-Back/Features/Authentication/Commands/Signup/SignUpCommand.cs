@@ -1,8 +1,8 @@
-﻿using Intelificio_Back.Common.Response;
-using Intelificio_Back.Models;
+﻿using Backend.Common.Response;
+using Backend.Models;
 using MediatR;
 
-namespace Intelificio_Back.Features.Authentication.Commands.Signup
+namespace Backend.Features.Authentication.Commands.Signup
 {
     public class SignUpCommand : IRequest<Result>
     {

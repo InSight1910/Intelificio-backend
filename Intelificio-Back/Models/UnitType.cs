@@ -1,9 +1,9 @@
-﻿using Intelificio_Back.Models.Base;
+﻿using Backend.Models.Base;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class UnitType : BaseEntity
     {
-        public required string Description {  get; set; }
+        public required string Description { get; set; }
     }
 }

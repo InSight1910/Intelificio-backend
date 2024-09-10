@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class Role : IdentityRole<int>
     {
