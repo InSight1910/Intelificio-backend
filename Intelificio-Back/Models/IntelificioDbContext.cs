@@ -73,8 +73,6 @@ namespace Backend.Models
                 entity.HasMany(p => p.Payments)
                       .WithOne(p => p.Charge);
 
-                entity.HasMany(p => p.Fines)
-                      .WithOne(p => p.Charge);
 
             });
 
@@ -120,6 +118,9 @@ namespace Backend.Models
                       .WithOne(p => p.Community);
 
                 entity.HasOne(p => p.Municipality)
+                      .WithOne(p => p.Community);
+
+                entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 
             });

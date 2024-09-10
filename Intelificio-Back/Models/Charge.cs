@@ -5,14 +5,12 @@ namespace Backend.Models
     public class Charge : BaseEntity
     {
         public int Amount { get; set; }
-        public bool IsFine { get; set; }
         public DateTime ChargeDate { get; set; }
         public bool IsActive { get; set; }
         public required ChargeType Type { get; set; }
         public required Community Community { get; set; }
         public required User User { get; set; }
         public required IEnumerable<Payment> Payments { get; set; }
-        public required IEnumerable<Fine> Fines { get; set; }
 
     }
 }
