@@ -9,5 +9,6 @@ namespace Intelificio_Back.Models
         public required string Description { get; set; }
         public bool IsActive { get; set; }
         public required Community Community { get; set; }
+        public required Building Building { get; set; }
     }
 }

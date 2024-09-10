@@ -8,5 +8,8 @@ namespace Intelificio_Back.Models
         //public int CommunityId { get; set; }
         public bool IsActive { get; set; }
         public required Community Community { get; set; }
+        public required IEnumerable<Unit> Units { get; set; }
+        public required IEnumerable<Maintenance> Maintenances { get; set; }
+
     }
 }
