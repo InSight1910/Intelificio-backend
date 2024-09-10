@@ -12,7 +12,7 @@ namespace Backend.Features.Authentication.Commands.Login
                 .Must(x =>
                 {
                     string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-                    return Regex.IsMatch(x, emailPattern);
+                    return Regex.IsMatch(x, emailPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
                 });
             _ = RuleFor(x => x.Password)
                 .NotEmpty();
