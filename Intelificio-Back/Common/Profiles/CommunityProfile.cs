@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Intelificio_Back.Common.Profiles
+namespace Backend.Common.Profiles
 {
     public class CommunityProfile : Profile
     {

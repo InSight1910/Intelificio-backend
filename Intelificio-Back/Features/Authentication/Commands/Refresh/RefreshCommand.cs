@@ -1,7 +1,7 @@
-﻿using Intelificio_Back.Common.Response;
+﻿using Backend.Common.Response;
 using MediatR;
 
-namespace Intelificio_Back.Features.Authentication.Commands.Refresh
+namespace Backend.Features.Authentication.Commands.Refresh
 {
     public class RefreshCommand : IRequest<Result>
     {

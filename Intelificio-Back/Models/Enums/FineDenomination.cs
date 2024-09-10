@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Models.Enums
+﻿namespace Backend.Models.Enums
 {
     public enum FineDenomination
     {

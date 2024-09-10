@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Models.Base
+﻿namespace Backend.Models.Base
 {
     public class BaseEntity
     {

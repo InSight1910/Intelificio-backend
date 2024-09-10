@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Features.Authentication.Commands.Refresh
+﻿namespace Backend.Features.Authentication.Commands.Refresh
 {
     public class RefreshCommandResponse
     {

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Intelificio_Back.Features.Authentication.Commands.Signup;
-using Intelificio_Back.Models;
+using Backend.Features.Authentication.Commands.Signup;
+using Backend.Models;
 
-
-namespace AZ_204.Common.Profilers
+namespace Backend.Common.Profiles
 {
     public class UserProfile : Profile
     {

@@ -1,4 +1,4 @@
-﻿namespace Intelificio_Back.Models
+﻿namespace Backend.Models
 {
     public class Guest
     {
