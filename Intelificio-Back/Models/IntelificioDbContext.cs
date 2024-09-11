@@ -135,6 +135,9 @@ namespace Backend.Models
                 entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 
+                entity.HasMany(p => p.Fines)
+                      .WithOne(p => p.Community);
+
             });
 
             _ = builder.Entity<Municipality>(entity =>
