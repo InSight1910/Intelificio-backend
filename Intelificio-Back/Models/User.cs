@@ -22,7 +22,7 @@ namespace Backend.Models
 
         public IEnumerable<AssignedShift> AssignedShifts { get; set; } = Enumerable.Empty<AssignedShift>();
 
-        public IEnumerable<Visit> Visits { get; set; } = Enumerable.Empty<Visit>();
+        public IEnumerable<Guest> Guests { get; set; } = Enumerable.Empty<Guest>();
 
         public IEnumerable<Reservation> Reservations { get; set; } = Enumerable.Empty<Reservation>();
 

@@ -15,7 +15,8 @@ namespace Backend.Features.Authentication.Commands.Login
                     return Regex.IsMatch(x, emailPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
                 });
             _ = RuleFor(x => x.Password)
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(8);
         }
     }
 }
