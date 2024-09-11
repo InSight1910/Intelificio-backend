@@ -45,6 +45,7 @@ builder.Services.AddIdentity<User, Role>(cfg =>
     cfg.User.RequireUniqueEmail = true;
     cfg.Password.RequiredLength = 8;
 })
+
     .AddEntityFrameworkStores<IntelificioDbContext>()
     .AddDefaultTokenProviders();
 

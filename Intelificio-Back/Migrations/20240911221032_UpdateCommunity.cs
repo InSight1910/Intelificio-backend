@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateCommunity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace Backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
                 },
@@ -163,7 +163,6 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext", nullable: false),
                     LastName = table.Column<string>(type: "longtext", nullable: false),
-                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     PhoneNumber = table.Column<string>(type: "longtext", nullable: false),
                     Password = table.Column<string>(type: "longtext", nullable: false),
                     Rut = table.Column<string>(type: "longtext", nullable: false),
@@ -174,6 +173,7 @@ namespace Backend.Migrations
                     RefreshTokenExpiry = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: true),
@@ -198,23 +198,23 @@ namespace Backend.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Provinces",
+                name: "City",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false),
-                    RegionId = table.Column<int>(type: "int", nullable: false),
+                    RegionID = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Provinces", x => x.ID);
+                    table.PrimaryKey("PK_City", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Provinces_Regions_RegionId",
-                        column: x => x.RegionId,
+                        name: "FK_City_Regions_RegionID",
+                        column: x => x.RegionID,
                         principalTable: "Regions",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -403,9 +403,9 @@ namespace Backend.Migrations
                 {
                     table.PrimaryKey("PK_Municipality", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Municipality_Provinces_CityID",
+                        name: "FK_Municipality_City_CityID",
                         column: x => x.CityID,
-                        principalTable: "Provinces",
+                        principalTable: "City",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -833,7 +833,7 @@ namespace Backend.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Number = table.Column<int>(type: "int", nullable: false),
+                    Number = table.Column<string>(type: "longtext", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     BuildingID = table.Column<int>(type: "int", nullable: false),
                     TypeID = table.Column<int>(type: "int", nullable: false),
@@ -948,15 +948,15 @@ namespace Backend.Migrations
                 name: "InviteeReservation",
                 columns: table => new
                 {
-                    InviteesID = table.Column<int>(type: "int", nullable: false),
+                    InvitesID = table.Column<int>(type: "int", nullable: false),
                     ReservationsID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InviteeReservation", x => new { x.InviteesID, x.ReservationsID });
+                    table.PrimaryKey("PK_InviteeReservation", x => new { x.InvitesID, x.ReservationsID });
                     table.ForeignKey(
-                        name: "FK_InviteeReservation_Invitee_InviteesID",
-                        column: x => x.InviteesID,
+                        name: "FK_InviteeReservation_Invitee_InvitesID",
+                        column: x => x.InvitesID,
                         principalTable: "Invitee",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -1052,6 +1052,11 @@ namespace Backend.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_City_RegionID",
+                table: "City",
+                column: "RegionID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CommonSpaces_CommunityID",
                 table: "CommonSpaces",
                 column: "CommunityID");
@@ -1059,8 +1064,7 @@ namespace Backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Community_MunicipalityId",
                 table: "Community",
-                column: "MunicipalityId",
-                unique: true);
+                column: "MunicipalityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommunityUser_UsersId",
@@ -1141,11 +1145,6 @@ namespace Backend.Migrations
                 name: "IX_Pets_UserId",
                 table: "Pets",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Provinces_RegionId",
-                table: "Provinces",
-                column: "RegionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_SpacesID",
@@ -1287,7 +1286,7 @@ namespace Backend.Migrations
                 name: "Municipality");
 
             migrationBuilder.DropTable(
-                name: "Provinces");
+                name: "City");
 
             migrationBuilder.DropTable(
                 name: "Regions");

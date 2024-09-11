@@ -6,7 +6,6 @@ namespace Backend.Models
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public required new string Email { get; set; }
         public required new string PhoneNumber { get; set; }
         public required string Password { get; set; }
         public required string Rut { get; set; }
@@ -16,23 +15,23 @@ namespace Backend.Models
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime? RefreshTokenExpiry { get; set; }
 
-        public IEnumerable<Community> Communities { get; set; } = Enumerable.Empty<Community>();
+        public ICollection<Community> Communities { get; set; } = new List<Community>();
 
-        public IEnumerable<Attendance> Attendances { get; set; } = Enumerable.Empty<Attendance>();
+        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
-        public IEnumerable<AssignedShift> AssignedShifts { get; set; } = Enumerable.Empty<AssignedShift>();
+        public ICollection<AssignedShift> AssignedShifts { get; set; } = new List<AssignedShift>();
 
-        public IEnumerable<Guest> Guests { get; set; } = Enumerable.Empty<Guest>();
+        public ICollection<Guest> Guests { get; set; } = new List<Guest>();
 
-        public IEnumerable<Reservation> Reservations { get; set; } = Enumerable.Empty<Reservation>();
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
-        public IEnumerable<Unit> Units { get; set; } = Enumerable.Empty<Unit>();
+        public ICollection<Unit> Units { get; set; } = new List<Unit>();
 
-        public IEnumerable<Package> Packages { get; set; } = Enumerable.Empty<Package>();
+        public ICollection<Package> Packages { get; set; } = new List<Package>();
 
-        public IEnumerable<Charge> Charges { get; set; } = Enumerable.Empty<Charge>();
+        public ICollection<Charge> Charges { get; set; } = new List<Charge>();
 
-        public IEnumerable<Pet> Pets { get; set; } = Enumerable.Empty<Pet>();
+        public ICollection<Pet> Pets { get; set; } = new List<Pet>();
 
     }
 }

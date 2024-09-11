@@ -6,6 +6,6 @@ namespace Backend.Models
     {
         public required string Description { get; set; }
 
-        public required IEnumerable<Expense> Expenses { get; set; }
+        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
     }
 }

@@ -236,7 +236,7 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("RegionId")
+                    b.Property<int>("RegionID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -244,9 +244,9 @@ namespace Backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RegionId");
+                    b.HasIndex("RegionID");
 
-                    b.ToTable("Provinces");
+                    b.ToTable("City");
                 });
 
             modelBuilder.Entity("Backend.Models.CommonSpace", b =>
@@ -319,8 +319,7 @@ namespace Backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("MunicipalityId")
-                        .IsUnique();
+                    b.HasIndex("MunicipalityId");
 
                     b.ToTable("Community");
                 });
@@ -782,7 +781,6 @@ namespace Backend.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
@@ -872,8 +870,9 @@ namespace Backend.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("TypeID")
                         .HasColumnType("int");
@@ -934,7 +933,6 @@ namespace Backend.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
@@ -1056,13 +1054,13 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("InviteeReservation", b =>
                 {
-                    b.Property<int>("InviteesID")
+                    b.Property<int>("InvitesID")
                         .HasColumnType("int");
 
                     b.Property<int>("ReservationsID")
                         .HasColumnType("int");
 
-                    b.HasKey("InviteesID", "ReservationsID");
+                    b.HasKey("InvitesID", "ReservationsID");
 
                     b.HasIndex("ReservationsID");
 
@@ -1277,7 +1275,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Region", "Region")
                         .WithMany("Cities")
-                        .HasForeignKey("RegionId")
+                        .HasForeignKey("RegionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1298,8 +1296,8 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.Community", b =>
                 {
                     b.HasOne("Backend.Models.Municipality", "Municipality")
-                        .WithOne("Community")
-                        .HasForeignKey("Backend.Models.Community", "MunicipalityId")
+                        .WithMany("Community")
+                        .HasForeignKey("MunicipalityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1497,7 +1495,7 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.User", b =>
                 {
                     b.HasOne("Backend.Models.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1524,7 +1522,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Intelificio_Back.Models.Invitee", null)
                         .WithMany()
-                        .HasForeignKey("InviteesID")
+                        .HasForeignKey("InvitesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1656,18 +1654,12 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Municipality", b =>
                 {
-                    b.Navigation("Community")
-                        .IsRequired();
+                    b.Navigation("Community");
                 });
 
             modelBuilder.Entity("Backend.Models.Region", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Backend.Models.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Backend.Models.Shift", b =>

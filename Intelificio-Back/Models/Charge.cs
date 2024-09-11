@@ -10,7 +10,7 @@ namespace Backend.Models
         public required ChargeType Type { get; set; }
         public required Community Community { get; set; }
         public required User User { get; set; }
-        public required IEnumerable<Payment> Payments { get; set; }
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 
     }
 }

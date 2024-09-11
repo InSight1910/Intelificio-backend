@@ -15,6 +15,6 @@ namespace Backend.Models
 
         public required CommonSpace Spaces { get; set; }
 
-        public IEnumerable<Invitee> Invitees { get; set; } = Enumerable.Empty<Invitee>();
+        public ICollection<Invitee> Invites { get; set; } = new List<Invitee>();
     }
 }

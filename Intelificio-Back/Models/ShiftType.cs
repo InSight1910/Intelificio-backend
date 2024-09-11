@@ -6,6 +6,6 @@ namespace Backend.Models
     {
         public required string Description { get; set; }
 
-        public IEnumerable<Shift> Shifts { get; set; }
+        public ICollection<Shift> Shifts { get; set; } = new List<Shift>();
     }
 }

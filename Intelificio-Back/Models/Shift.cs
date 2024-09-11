@@ -8,7 +8,7 @@ namespace Backend.Models
         public TimeOnly ClockIn { get; set; }
         public TimeOnly ClockOut { get; set; }
 
-        public required IEnumerable<AssignedShift> AssignedShifts { get; set; }
+        public ICollection<AssignedShift> AssignedShifts { get; set; } = new List<AssignedShift>();
 
         public required ShiftType Type { get; set; }
     }

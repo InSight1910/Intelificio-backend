@@ -23,7 +23,7 @@ namespace Backend.Models
 
         public DbSet<Region> Regions { get; set; }
 
-        public DbSet<City> Provinces { get; set; }
+        public DbSet<City> City { get; set; }
 
         public DbSet<Pet> Pets { get; set; }
 
@@ -127,15 +127,15 @@ namespace Backend.Models
                       .WithOne(p => p.Community);
 
                 _ = entity.HasOne(p => p.Municipality)
+                      .WithMany(p => p.Community);
+
+                _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 
                 _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 
-                entity.HasMany(p => p.Fines)
-                      .WithOne(p => p.Community);
-
-                entity.HasMany(p => p.Fines)
+                _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 
             });
@@ -179,9 +179,6 @@ namespace Backend.Models
 
                 _ = entity.HasMany(p => p.Attendances)
                       .WithOne(p => p.User);
-
-                _ = entity.HasOne(p => p.Role)
-                      .WithMany(p => p.Users);
 
                 _ = entity.HasMany(p => p.Guests)
                       .WithOne(p => p.User);
@@ -233,7 +230,7 @@ namespace Backend.Models
                         .WithMany(p => p.Reservations);
                 _ = entity.HasOne(p => p.Spaces)
                         .WithMany(p => p.Reservations);
-                _ = entity.HasMany(p => p.Invitees)
+                _ = entity.HasMany(p => p.Invites)
                          .WithMany(p => p.Reservations);
 
             });

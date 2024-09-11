@@ -7,7 +7,7 @@ namespace Intelificio_Back.Models
     {
         public required string Rut { get; set; }
 
-        public IEnumerable<Reservation> Reservations { get; set; } = Enumerable.Empty<Reservation>();
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
     }
 }
