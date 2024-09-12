@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Community\Commands\" />
+    <Folder Include="Features\Unit\Commands\" />
   </ItemGroup>
 
 </Project>
