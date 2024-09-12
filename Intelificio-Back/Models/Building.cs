@@ -7,8 +7,10 @@ namespace Backend.Models
         public required string Name { get; set; }
         public bool IsActive { get; set; } = true;
         public required Community Community { get; set; }
+        public required int Floors { get; set; }
         public ICollection<Unit> Units { get; set; } = new List<Unit>();
         public ICollection<Maintenance> Maintenances { get; set; } = new List<Maintenance>();
+
 
     }
 }
