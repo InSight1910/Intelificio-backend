@@ -9,7 +9,7 @@ namespace Backend.Features.Authentication.Common
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthenticationController(IMediator mediator) : ControllerBase
+    public class CommunityController(IMediator mediator) : ControllerBase
     {
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
