@@ -14,5 +14,16 @@ namespace Backend.Features.Community.Common
             Code = "Community.GetAllByUser.UserNotFound",
             Message = "User not found"
         };
+        public static Error CommunityAlreadyExist = new Error
+        {
+            Code = "Community.Create.CommunityAlreadyExist",
+            Message = "La comunidad ingresada ya se encuentra registrada"
+        };
+
+        public static Error MunicipalityNotFound = new Error
+        {
+            Code = "Community.Create.MunicipalityNotFound",
+            Message = "Comuna ingresa no es valida."
+        };
     }
 }

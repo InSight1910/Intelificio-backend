@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  backend:
+    image: ${DOCKER_REGISTRY-}backend
+    build:
+      context: .
+      dockerfile: Intelificio-Back/Dockerfile
+  seq:
+     image: datalust/seq:latest
+     environment:
+        - ACCEPT_EULA=Y
+        - SEQ_FIRSTRUN_ADMINPASSWORDHASH=QFWVoAMer1/HYZOlKjlhsBfKzVW3082ZmzQOB/Ibzarde6Drks3rAa3RCpkrMA5u1v0lUjfhUrDtdS9TqfMkLCj3YaWH2AGEG+/24bjAxs9c
+     volumes:
+        - ./seq:/data
+     ports:
+        - "5341:80" 

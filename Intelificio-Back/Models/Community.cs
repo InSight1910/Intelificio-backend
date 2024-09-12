@@ -8,7 +8,6 @@ namespace Backend.Models
         public required string Address { get; set; }
         public int MunicipalityId { get; set; }
         public DateTime CreationDate { get; set; }
-        public bool IsActive { get; set; }
         public required Municipality Municipality { get; set; }
         public ICollection<CommonSpace> Spaces { get; set; } = new List<CommonSpace>();
         public ICollection<Contact> Contacts { get; set; } = new List<Contact>();

@@ -17,7 +17,10 @@ namespace Backend.Features.Authentication.Common
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Created(),
-                onFailure: BadRequest);
+                onFailure: (errors) =>
+                {
+                    return BadRequest(errors);
+                });
         }
 
         [HttpPost("login")]
@@ -26,7 +29,11 @@ namespace Backend.Features.Authentication.Common
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
-                onFailure: BadRequest);
+                onFailure: (errors) =>
+                {
+                    return BadRequest(errors);
+                }
+                );
         }
 
         [HttpPost("refresh")]

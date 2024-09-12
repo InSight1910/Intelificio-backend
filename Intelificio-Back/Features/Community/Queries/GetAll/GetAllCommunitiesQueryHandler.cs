@@ -21,13 +21,22 @@ namespace Backend.Features.Community.Queries.GetAll
 
         public async Task<Result> Handle(GetAllCommunitiesQuery request, CancellationToken cancellationToken)
         {
-            var communities = await _context.Community.ToListAsync();
-            var response = _mapper.Map<List<GetAllCommunitiesResponse>>(communities);
+            var communities = await _context.Community
+                .Include(x => x.Municipality.City.Region)
+                .Select(x => new GetAllCommunitiesResponse
+                {
+                    Address = x.Address,
+                    CreationDate = x.CreationDate,
+                    Name = x.Name,
+                    Municipality = x.Municipality.Name,
+                    City = x.Municipality.City.Name,
+                    Region = x.Municipality.City.Region.Name
+                })
+                .ToListAsync();
             return Result.WithResponse(new ResponseData
             {
-                Data = response
+                Data = communities
             });
-
         }
     }
 }

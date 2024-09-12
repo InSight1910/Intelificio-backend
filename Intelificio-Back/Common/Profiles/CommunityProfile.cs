@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Backend.Features.Community.Commands.Create;
 using Backend.Features.Community.Queries.GetAllByUser;
 using Backend.Models;
 
@@ -12,6 +13,8 @@ namespace Backend.Common.Profiles
                 .ForMember(ent => ent.Name, res => res.MapFrom(p => p.Name))
                 .ForMember(ent => ent.BuildingCount, res => res.MapFrom(p => p.Buildings.Count()))
                 .ForMember(ent => ent.UnitCount, res => res.MapFrom(p => p.Buildings.Sum(item => item.Units.Count())));
+            _ = CreateMap<CreateCommunityCommand, Community>();
+
         }
     }
 }
