@@ -10,7 +10,7 @@ namespace Backend.Common.Profiles
         public BuildingProfile() {
 
             _ = CreateMap<Building, CreateBuildingCommand>();
-                CreateMap<UpdateBuildingCommand, Community>()
+                CreateMap<UpdateBuildingCommand, Building>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
