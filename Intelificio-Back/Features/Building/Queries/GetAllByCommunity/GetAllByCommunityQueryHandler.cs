@@ -31,7 +31,7 @@ namespace Backend.Features.Building.Queries.GetAllByCommunity
                                   {
                                       Floors = x.Buildings.Select(b => b.Floors).FirstOrDefault(),
                                       Name = x.Buildings.Select(b => b.Name).FirstOrDefault()
-                                  }).ToListAsync();
+                                  }).ToListAsync(cancellationToken: cancellationToken);
                                   
 
             return Result.WithResponse(new ResponseData()
