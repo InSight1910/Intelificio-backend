@@ -6,8 +6,7 @@ namespace Backend.Models
     {
         public required string Name { get; set; }
         public required string Address { get; set; }
-        public int MunicipalityId { get; set; }
-        public DateTime CreationDate { get; set; }
+        public DateTime FoundationDate { get; set; } = DateTime.UtcNow;
         public required Municipality Municipality { get; set; }
         public ICollection<CommonSpace> Spaces { get; set; } = new List<CommonSpace>();
         public ICollection<Contact> Contacts { get; set; } = new List<Contact>();

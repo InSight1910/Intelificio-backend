@@ -26,7 +26,7 @@ namespace Backend.Features.Community.Queries.GetAll
                 .Select(x => new GetAllCommunitiesResponse
                 {
                     Address = x.Address,
-                    CreationDate = x.CreationDate,
+                    CreationDate = x.FoundationDate,
                     Name = x.Name,
                     Municipality = x.Municipality.Name,
                     City = x.Municipality.City.Name,

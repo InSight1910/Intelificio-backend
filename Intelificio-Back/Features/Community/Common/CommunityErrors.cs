@@ -25,5 +25,10 @@ namespace Backend.Features.Community.Common
             Code = "Community.Create.MunicipalityNotFound",
             Message = "Comuna ingresa no es valida."
         };
+        public static Error CommunityNotFoundDelete = new Error
+        {
+            Code = "Community.Delete.CommunityNotFoundDelete",
+            Message = "La comunidad indicada no es valida"
+        };
     }
 }

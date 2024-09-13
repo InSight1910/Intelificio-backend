@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(IntelificioDbContext))]
-    [Migration("20240911221032_UpdateCommunity")]
-    partial class UpdateCommunity
+    [Migration("20240912235729_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,16 +301,13 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateTime>("FoundationDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("MunicipalityId")
+                    b.Property<int>("MunicipalityID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -322,7 +319,7 @@ namespace Backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("MunicipalityId");
+                    b.HasIndex("MunicipalityID");
 
                     b.ToTable("Community");
                 });
@@ -1300,7 +1297,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Municipality", "Municipality")
                         .WithMany("Community")
-                        .HasForeignKey("MunicipalityId")
+                        .HasForeignKey("MunicipalityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

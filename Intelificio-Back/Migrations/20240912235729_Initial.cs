@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateCommunity : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -446,9 +446,8 @@ namespace Backend.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Address = table.Column<string>(type: "longtext", nullable: false),
-                    MunicipalityId = table.Column<int>(type: "int", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    FoundationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    MunicipalityID = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -457,8 +456,8 @@ namespace Backend.Migrations
                 {
                     table.PrimaryKey("PK_Community", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Community_Municipality_MunicipalityId",
-                        column: x => x.MunicipalityId,
+                        name: "FK_Community_Municipality_MunicipalityID",
+                        column: x => x.MunicipalityID,
                         principalTable: "Municipality",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -1062,9 +1061,9 @@ namespace Backend.Migrations
                 column: "CommunityID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Community_MunicipalityId",
+                name: "IX_Community_MunicipalityID",
                 table: "Community",
-                column: "MunicipalityId");
+                column: "MunicipalityID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommunityUser_UsersId",

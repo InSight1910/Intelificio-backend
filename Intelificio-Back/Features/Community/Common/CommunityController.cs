@@ -1,8 +1,12 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Community.Commands.Assign;
 using Backend.Features.Community.Commands.Create;
+using Backend.Features.Community.Commands.DeAssign;
 using Backend.Features.Community.Commands.Delete;
+using Backend.Features.Community.Commands.Update;
 using Backend.Features.Community.Queries.GetAll;
 using Backend.Features.Community.Queries.GetAllByUser;
+using Backend.Features.Community.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +34,37 @@ namespace Backend.Features.Community.Common
             return Ok(result.Response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await mediator.Send(new GetByIdCommunityQuery { id = id });
+            return result.Match<IActionResult>(
+                onSuccess: response => Ok(response),
+                onFailure: NotFound
+                );
+        }
+
+        [HttpPut("{id}/{userId}/add")]
+        public async Task<IActionResult> AddUserToCommunity(int id, int userId)
+        {
+            var result = await mediator.Send(new AssignCommunityUserCommand { CommunityId = id, UserId = userId });
+            return result.Match<IActionResult>(
+                onSuccess: response => Ok(response),
+                onFailure: NotFound
+                );
+        }
+
+        [HttpPut("{id}/{userId}/remove")]
+        public async Task<IActionResult> RemoveUserToCommunity(int id, int userId)
+        {
+            var result = await mediator.Send(new DeAssignCommunityUserCommand { CommunityId = id, UserId = userId });
+            return result.Match<IActionResult>(
+                onSuccess: response => Ok(response),
+                onFailure: NotFound
+                );
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCommunityCommand command)
         {
@@ -48,5 +83,17 @@ namespace Backend.Features.Community.Common
                 onFailure: BadRequest
                 );
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateCommunityCommand command)
+        {
+            command.Id = id;
+            var result = await mediator.Send(command);
+            return result.Match<IActionResult>(
+                onSuccess: _ => Ok(),
+                onFailure: BadRequest
+                );
+        }
+
+
     }
 }
