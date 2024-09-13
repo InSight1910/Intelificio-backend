@@ -36,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Community\Commands\" />
-    <Folder Include="Features\Unit\Queries\GetByUser\" />
   </ItemGroup>
 
 </Project>

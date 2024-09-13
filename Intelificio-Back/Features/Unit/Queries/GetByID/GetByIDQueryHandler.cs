@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
-using Backend.Features.Community.Queries.GetAllByUser;
 using Backend.Features.Unit.Common;
 using Backend.Models;
 using MediatR;
@@ -25,11 +24,15 @@ namespace Backend.Features.Unit.Queries.GetByID
         public async Task<Result> Handle(GetByIDQuery request, CancellationToken cancellationToken)
         {
             var unit = _context.Units
-                              .Where(x => x.ID == request.UnitId) 
-                              .Include(x => x.Type)
-                              .Select(x => new GetByIDResponse { 
-                                    Number = x.Number,
-                                    UnitType = x.Type.Description
+                              .Where(x => x.ID == request.UnitId)
+                              .Include(x => x.UnitType)
+                              .Select(x => new GetByIDQueryResponse
+                              {
+                                  Number = x.Number,
+                                  UnitType = x.UnitType,
+                                  Surface = x.Surface,
+                                  Floor = x.Floor,
+                                  Building = x.Building
                               })
                               .FirstOrDefault();
 

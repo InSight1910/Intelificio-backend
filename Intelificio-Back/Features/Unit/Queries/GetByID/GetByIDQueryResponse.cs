@@ -1,14 +1,13 @@
-﻿using Backend.Models.Base;
+﻿using Backend.Models;
 
-namespace Backend.Models
+namespace Backend.Features.Unit.Queries.GetByID
 {
-    public class Unit : BaseEntity
+    public class GetByIDQueryResponse
     {
         public required string Number { get; set; }
         public required int Floor { get; set; }
         public required float Surface { get; set; }
-        public required Building Building { get; set; }
         public required UnitType UnitType { get; set; }
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public required Building Building { get; set; }
     }
 }
