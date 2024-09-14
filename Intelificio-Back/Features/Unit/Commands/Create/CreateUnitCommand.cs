@@ -1,16 +1,18 @@
 ﻿using Backend.Common.Response;
 using MediatR;
+using System.Text.Json.Serialization;
 
 namespace Backend.Features.Unit.Commands.Create
 {
     public class CreateUnitCommand : IRequest<Result>
     {
-        public required string Number { get; set; }
-        public required int Floor { get; set; }
-        public required float Surface { get; set; }
-        public required int UnitTypeId { get; set; }
-        public required int BuildingId { get; set; }
-        public required int UserId { get; set; }
+        [JsonIgnore]
+        public int? Id { get; set; }
+        public string? Number { get; set; }
+        public int? Floor { get; set; }
+        public float Surface { get; set; }
+        public int UnitTypeId { get; set; }
+        public int? BuildingId { get; set; }
 
     }
 }
