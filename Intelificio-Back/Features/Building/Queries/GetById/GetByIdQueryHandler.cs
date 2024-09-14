@@ -8,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Building.Queries.GetById
 {
-    public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, Result>
+    public class GetByIDQueryHandler : IRequestHandler<GetByIDQuery, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<GetByIdQueryHandler> _logger;
+        private readonly ILogger<GetByIDQueryHandler> _logger;
         private readonly IMapper _mapper;
 
-        public GetByIdQueryHandler(IntelificioDbContext context, ILogger<GetByIdQueryHandler> logger, IMapper mapper)
+        public GetByIDQueryHandler(IntelificioDbContext context, ILogger<GetByIDQueryHandler> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
         }
-        public async Task<Result> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(GetByIDQuery request, CancellationToken cancellationToken)
         {
             var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
 
             if (building == null) return Result.Failure(BuildingErrors.BuildingQueryNotFound);
 
-            var response = _mapper.Map<GetByIdQueryResponse>(building);
+            var response = _mapper.Map<GetByIDQueryResponse>(building);
 
             response.CommunityName = building.Community.Name;
 

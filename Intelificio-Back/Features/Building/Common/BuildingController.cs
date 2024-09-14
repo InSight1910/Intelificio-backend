@@ -4,6 +4,8 @@ using Backend.Features.Building.Commands.Create;
 using Backend.Features.Building.Commands.Delete;
 using Backend.Features.Building.Commands.RemoveUnit;
 using Backend.Features.Building.Commands.Update;
+using Backend.Features.Building.Queries.GetAllByCommunity;
+using Backend.Features.Building.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,6 +63,26 @@ namespace Backend.Features.Building.Common
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Ok(),
+                onFailure: BadRequest);
+        }
+
+        [HttpGet("GetByID/{ID}")]
+        public async Task<IActionResult> GetByID(int ID)
+        {
+            var query = new GetByIDQuery { BuildingId = ID };
+            var building = await mediator.Send(query);
+            return building.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
+        }
+
+        [HttpGet("GetAllByCommunity/{ID}")]
+        public async Task<IActionResult> GetAllByCommunity(int ID)
+        {
+            var query = new GetAllByCommunityQuery { CommunityId = ID };
+            var buildings = await mediator.Send(query);
+            return buildings.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
         }
 

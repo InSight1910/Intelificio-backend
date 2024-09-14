@@ -2,7 +2,7 @@
 
 namespace Backend.Features.Building.Queries.GetById
 {
-    public class GetByIdQueryResponse
+    public class GetByIDQueryResponse
     {
         public required string Name { get; set; } 
         public required string CommunityName { get; set; }
