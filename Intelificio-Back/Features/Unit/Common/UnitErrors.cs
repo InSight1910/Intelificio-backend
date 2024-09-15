@@ -10,5 +10,7 @@ namespace Backend.Features.Unit.Common
             "Building.CreateUnitCommandHandler.BuildingNotFound", "El edificio no fue encontrado");
         public static Error UnitTypeNotFound = new Error(
             "UnitType.CreateUnitCommandHandler.UnitTypeNotFound", "El tipo de unidad no fue encontrado");
+        public static Error UserNotFound = new Error(
+            "USer.AddUserCommandHandler.UserNotFound", "El usuario no fue encontrado");
     }
 }

@@ -23,18 +23,18 @@ namespace Backend.Features.Unit.Queries.GetByID
 
         public async Task<Result> Handle(GetByIDQuery request, CancellationToken cancellationToken)
         {
-            var unit = _context.Units
-                              .Where(x => x.ID == request.UnitId)
-                              .Include(x => x.UnitType)
-                              .Select(x => new GetByIDQueryResponse
-                              {
-                                  Number = x.Number,
-                                  UnitType = x.UnitType,
-                                  Surface = x.Surface,
-                                  Floor = x.Floor,
-                                  Building = x.Building
-                              })
-                              .FirstOrDefault();
+            var unit = await _context.Units
+                .Where(x => x.ID == request.UnitId)
+                .Include(x => x.UnitType)
+                .Select(x => new GetByIDQueryResponse
+                    {
+                        Number = x.Number,
+                        UnitType = x.UnitType,
+                        Surface = x.Surface,
+                        Floor = x.Floor,
+                        Building = x.Building
+                    })
+                    .ToListAsync();
 
             if (unit == null) return Result.Failure(UnitErrors.UnitNotFound);
 
