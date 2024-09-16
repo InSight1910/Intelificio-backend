@@ -27,7 +27,7 @@ namespace Backend.Features.Community.Commands.Create
 
             var municipality = await _context.Municipality.FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
 
-            if (municipality is null) return Result.Failure(CommunityErrors.MunicipalityNotFound);
+            if (municipality is null) return Result.Failure(CommunityErrors.MunicipalityNotFoundCreate);
 
             var community = _mapper.Map<Models.Community>(request);
             community.Municipality = municipality;

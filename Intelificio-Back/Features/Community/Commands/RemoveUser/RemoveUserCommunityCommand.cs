@@ -11,5 +11,10 @@ namespace Backend.Features.Community.Commands.RemoveUser
         public int UserId { get; set; }
         [JsonIgnore]
         public int CommunityId { get; set; }
+
+        public override string ToString()
+        {
+            return $"UserID: {UserId}, CommunityId: {CommunityId}";
+        }
     }
 }

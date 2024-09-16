@@ -26,17 +26,16 @@ namespace Backend.Features.Community.Queries.GetAllByUser
 
             if (!checkUser) return Result.Failure(CommunityErrors.UserNotFound);
 
-            var communities = await _context.Users
-                                      .Where(x => x.Id == request.UserId)
-                                      .Include(x => x.Communities)
-                                      .SelectMany(x => x.Communities)
+            var communities = await _context.Community
+                                      .Where(x => x.Users.Any(user => user.Id == request.UserId))
+                                      .Include(x => x.Users)
                                       .Select(x => new GetAllByUserResponse
                                       {
                                           Name = x.Name,
                                           Address = x.Address,
                                           BuildingCount = _context.Buildings.Count(b => b.Community.ID == x.ID),
                                           UnitCount = _context.Units.Count(u => u.Building.Community.ID == x.ID),
-                                          AdminName = _context.Users.Where(x => x.Role.Name == "Administrador" && x.Communities.Any(c => c.ID == x.Id)).Select(u => string.Format("{0} {1}", u.FirstName, u.LastName)).FirstOrDefault()
+                                          AdminName = x.Users.Where(user => user.Role.Name == "Administrador" && user.Communities.Any(c => c.ID == user.Id)).Select(u => string.Format("{0} {1}", u.FirstName, u.LastName)).FirstOrDefault()
                                       })
                                       .ToListAsync();
 

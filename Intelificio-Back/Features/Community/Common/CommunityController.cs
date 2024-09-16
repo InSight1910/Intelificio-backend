@@ -1,8 +1,8 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Community.Commands.Assign;
 using Backend.Features.Community.Commands.Create;
-using Backend.Features.Community.Commands.DeAssign;
 using Backend.Features.Community.Commands.Delete;
+using Backend.Features.Community.Commands.RemoveUser;
 using Backend.Features.Community.Commands.Update;
 using Backend.Features.Community.Queries.GetAll;
 using Backend.Features.Community.Queries.GetAllByUser;
@@ -44,20 +44,20 @@ namespace Backend.Features.Community.Common
                 );
         }
 
-        [HttpPut("{id}/{userId}/add")]
+        [HttpPut("add/{id}/{userId}")]
         public async Task<IActionResult> AddUserToCommunity(int id, int userId)
         {
-            var result = await mediator.Send(new AssignCommunityUserCommand { CommunityId = id, UserId = userId });
+            var result = await mediator.Send(new AddUserCommunityCommand { CommunityId = id, UserId = userId });
             return result.Match<IActionResult>(
                 onSuccess: response => Ok(response),
                 onFailure: NotFound
                 );
         }
 
-        [HttpPut("{id}/{userId}/remove")]
+        [HttpPut("remove/{id}/{userId}")]
         public async Task<IActionResult> RemoveUserToCommunity(int id, int userId)
         {
-            var result = await mediator.Send(new DeAssignCommunityUserCommand { CommunityId = id, UserId = userId });
+            var result = await mediator.Send(new RemoveUserCommunityCommand { CommunityId = id, UserId = userId });
             return result.Match<IActionResult>(
                 onSuccess: response => Ok(response),
                 onFailure: NotFound

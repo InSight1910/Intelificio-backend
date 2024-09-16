@@ -23,9 +23,16 @@ namespace Backend.Features.Community.Commands.Update
         public async Task<Result> Handle(UpdateCommunityCommand request, CancellationToken cancellationToken)
         {
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.Id);
-            if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundDelete);
+            if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundUpdate);
 
             community = _mapper.Map(request, community);
+
+            if (request.MunicipalityId != null)
+            {
+                var municipality = await _context.Municipality.FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
+                if (municipality is null) return Result.Failure(CommunityErrors.MunicipalityNotFoundUpdate);
+                community.Municipality = municipality;
+            }
 
             _ = _context.Community.Update(community);
             _ = await _context.SaveChangesAsync();

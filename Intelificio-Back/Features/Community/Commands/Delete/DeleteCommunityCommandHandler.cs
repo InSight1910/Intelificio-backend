@@ -1,5 +1,5 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Community.Commands.Create;
+using Backend.Features.Community.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +9,9 @@ namespace Backend.Features.Community.Commands.Delete
     public class DeleteCommunityCommandHandler : IRequestHandler<DeleteCommunityCommand, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<CreateCommunityCommandHandler> _logger;
+        private readonly ILogger<DeleteCommunityCommandHandler> _logger;
 
-        public DeleteCommunityCommandHandler(IntelificioDbContext context, ILogger<CreateCommunityCommandHandler> logger)
+        public DeleteCommunityCommandHandler(IntelificioDbContext context, ILogger<DeleteCommunityCommandHandler> logger)
         {
             _context = context;
             _logger = logger;
@@ -20,7 +20,7 @@ namespace Backend.Features.Community.Commands.Delete
         public async Task<Result> Handle(DeleteCommunityCommand request, CancellationToken cancellationToken)
         {
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.Id);
-            if (community == null) return Result.Failure(null);
+            if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundDelete);
             _ = _context.Community.Remove(community);
             _ = await _context.SaveChangesAsync();
             return Result.Success();
