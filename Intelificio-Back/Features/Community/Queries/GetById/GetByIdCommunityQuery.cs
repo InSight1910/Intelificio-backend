@@ -5,6 +5,6 @@ namespace Backend.Features.Community.Queries.GetById
 {
     public class GetByIdCommunityQuery : IRequest<Result>
     {
-        public int id { get; set; }
+        public int Id { get; set; }
     }
 }

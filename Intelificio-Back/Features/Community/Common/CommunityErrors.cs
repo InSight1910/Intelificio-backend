@@ -12,12 +12,18 @@ namespace Backend.Features.Community.Common
         public static Error UserNotFound = new Error
         {
             Code = "Community.GetAllByUser.UserNotFound",
-            Message = "User not found"
+            Message = "El usuario no se encuentra en nuestros registros."
         };
         public static Error CommunityAlreadyExist = new Error
         {
             Code = "Community.Create.CommunityAlreadyExist",
             Message = "La comunidad ingresada ya se encuentra registrada."
+        };
+
+        public static Error CommunityNotFoundGetByID = new Error
+        {
+            Code = "Community.GetByID.CommunityNotFoundGetByID",
+            Message = "La comunidad indicada no se encuentra dentro de nuestros registros."
         };
 
         public static Error MunicipalityNotFoundCreate = new Error

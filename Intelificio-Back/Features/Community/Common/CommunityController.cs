@@ -37,7 +37,7 @@ namespace Backend.Features.Community.Common
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await mediator.Send(new GetByIdCommunityQuery { id = id });
+            var result = await mediator.Send(new GetByIdCommunityQuery { Id = id });
             return result.Match<IActionResult>(
                 onSuccess: response => Ok(response),
                 onFailure: NotFound

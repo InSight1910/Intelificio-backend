@@ -1,4 +1,5 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Community.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace Backend.Features.Community.Queries.GetById
 
         public async Task<Result> Handle(GetByIdCommunityQuery request, CancellationToken cancellationToken)
         {
-            var community = await _context.Community.Where(x => x.ID == request.id).Select(x => new GetByIdCommunityResponse
+            var community = await _context.Community.Where(x => x.ID == request.Id).Select(x => new GetByIdCommunityResponse
             {
                 Address = x.Address,
                 MunicipalityId = x.Municipality.ID,
@@ -27,7 +28,7 @@ namespace Backend.Features.Community.Queries.GetById
                 Name = x.Name
             }).FirstOrDefaultAsync();
 
-            if (community is null) return Result.Failure(null);
+            if (community is null) return Result.Failure(CommunityErrors.CommunityNotFoundGetByID);
 
             return Result.WithResponse(new ResponseData
             {
