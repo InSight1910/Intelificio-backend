@@ -7,8 +7,9 @@ namespace Backend.Features.Community.Commands.Update
         public UpdateCommunityCommandValidator()
         {
             _ = RuleFor(x => x.Id).NotEmpty().NotNull().GreaterThanOrEqualTo(1);
+            _ = RuleFor(x => x.Name).NotEmpty();
             _ = RuleFor(x => x.Address).NotEmpty();
-            _ = RuleFor(x => x.MunicipalityId).NotEmpty();
+            _ = RuleFor(x => x.MunicipalityId).NotEmpty().GreaterThanOrEqualTo(1);
         }
     }
 }

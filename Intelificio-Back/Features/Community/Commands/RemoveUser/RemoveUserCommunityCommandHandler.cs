@@ -22,12 +22,27 @@ namespace Backend.Features.Community.Commands.RemoveUser
             _logger.LogInformation("Removing user from community start");
             _logger.LogDebug("RemoveUserCommunityCommand: Method: {Method} request: {Request}", "Community.Command.RemoveUserCommunity", request.ToString());
             var community = await _context.Community.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.CommunityId);
-            if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundRemoveUser);
+            if (community == null)
+            {
+                _logger.LogInformation("Removing user from community finish with error");
+                _logger.LogDebug("Code: {Code}; Error: {Error}.", CommunityErrors.CommunityNotFoundRemoveUser.Code, CommunityErrors.CommunityNotFoundRemoveUser.Message);
+                return Result.Failure(CommunityErrors.CommunityNotFoundRemoveUser);
+            }
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
-            if (user == null) return Result.Failure(CommunityErrors.UserNotFoundRemoveUser);
+            if (user == null)
+            {
+                _logger.LogInformation("Removing user from community finish with error");
+                _logger.LogDebug("Code: {Code}; Error: {Error}.", CommunityErrors.UserNotFoundRemoveUser.Code, CommunityErrors.UserNotFoundRemoveUser.Message);
+                return Result.Failure(CommunityErrors.UserNotFoundRemoveUser);
+            }
 
-            if (!community.Users.Contains(user)) return Result.Failure(CommunityErrors.UserIsNotAssigned);
+            if (!community.Users.Contains(user))
+            {
+                _logger.LogInformation("Removing user from community finish with error");
+                _logger.LogDebug("Code: {Code}; Error: {Error}.", CommunityErrors.UserIsNotAssigned.Code, CommunityErrors.UserIsNotAssigned.Message);
+                return Result.Failure(CommunityErrors.UserIsNotAssigned);
+            }
 
             _ = community.Users.Remove(user);
             _ = await _context.SaveChangesAsync();

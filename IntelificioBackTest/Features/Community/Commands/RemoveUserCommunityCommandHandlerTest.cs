@@ -56,5 +56,80 @@ namespace IntelificioBackTest.Features.Community.Commands
             LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community finish");
         }
 
+        [Fact]
+        public async void Handle_Failure_UserNotFound()
+        {
+            // Arrange
+            var command = new RemoveUserCommunityCommand
+            {
+                CommunityId = 1,
+                UserId = 0
+            };
+            await DbContextFixture.SeedData(_context);
+
+            // Act
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.True(result.IsFailure);
+            Assert.Null(result.Response);
+            Assert.Null(result.Errors);
+            Assert.Equal("El usuario no se encuentra registrado en nuestro sistema.", result.Error.Message);
+
+            LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community start");
+            LoggerHelper.AssertLog(_logger, LogLevel.Debug, "RemoveUserCommunityCommand: Method: Community.Command.RemoveUserCommunity request: UserID: 0, CommunityId: 1");
+            LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community finish with error");
+            LoggerHelper.AssertLog(_logger, LogLevel.Debug, "Code: Community.RemoveUser.UserNotFoundRemoveUser; Error: El usuario no se encuentra registrado en nuestro sistema.");
+        }
+
+        [Fact]
+        public async void Handle_Failure_CommunityNotFound()
+        {
+            var command = new RemoveUserCommunityCommand
+            {
+                CommunityId = 0,
+                UserId = 1
+            };
+            await DbContextFixture.SeedData(_context);
+
+            // Act
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.True(result.IsFailure);
+            Assert.Null(result.Response);
+            Assert.Null(result.Errors);
+            Assert.Equal("La comunidad no se encuentra registrada en el sistema.", result.Error.Message);
+
+            LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community start");
+            LoggerHelper.AssertLog(_logger, LogLevel.Debug, "RemoveUserCommunityCommand: Method: Community.Command.RemoveUserCommunity request: UserID: 1, CommunityId: 0");
+            LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community finish with error");
+            LoggerHelper.AssertLog(_logger, LogLevel.Debug, "Code: Community.RemoveUser.CommunityNotFoundRemoveUser; Error: La comunidad no se encuentra registrada en el sistema.");
+        }
+
+        [Fact]
+        public async void Handle_Failure_UserIsNotAssigned()
+        {
+            var command = new RemoveUserCommunityCommand
+            {
+                CommunityId = 1,
+                UserId = 1
+            };
+            await DbContextFixture.SeedData(_context);
+
+            // Act
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.True(result.IsFailure);
+            Assert.Null(result.Response);
+            Assert.Null(result.Errors);
+            Assert.Equal("El usuario no se encuentra asignado a la comunidad", result.Error.Message);
+
+            LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community start");
+            LoggerHelper.AssertLog(_logger, LogLevel.Debug, "RemoveUserCommunityCommand: Method: Community.Command.RemoveUserCommunity request: UserID: 1, CommunityId: 1");
+            LoggerHelper.AssertLog(_logger, LogLevel.Information, "Removing user from community finish with error");
+            LoggerHelper.AssertLog(_logger, LogLevel.Debug, "Code: Community.RemoveUser.UserIsNotAssigned; Error: El usuario no se encuentra asignado a la comunidad");
+        }
     }
 }

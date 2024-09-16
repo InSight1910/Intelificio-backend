@@ -50,12 +50,12 @@ namespace Backend.Features.Community.Common
         public static Error UserNotFoundRemoveUser = new Error
         {
             Code = "Community.RemoveUser.UserNotFoundRemoveUser",
-            Message = "El usuario no se encuentra registrado en el sistema"
+            Message = "El usuario no se encuentra registrado en nuestro sistema."
         };
         public static Error CommunityNotFoundRemoveUser = new Error
         {
             Code = "Community.RemoveUser.CommunityNotFoundRemoveUser",
-            Message = "La comunidad no se encuentra registrada en el sistema"
+            Message = "La comunidad no se encuentra registrada en el sistema."
         };
 
         public static Error UserNotFoundAddUser = new Error
