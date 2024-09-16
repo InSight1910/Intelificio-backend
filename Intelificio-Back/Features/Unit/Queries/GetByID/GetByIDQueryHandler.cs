@@ -28,11 +28,11 @@ namespace Backend.Features.Unit.Queries.GetByID
                 .Include(x => x.UnitType)
                 .Select(x => new GetByIDQueryResponse
                     {
-                        Number = x.Number,
                         UnitType = x.UnitType,
-                        Surface = x.Surface,
+                        Number = x.Number,
+                        Building = x.Building,
                         Floor = x.Floor,
-                        Building = x.Building
+                        Surface = x.Surface
                     })
                     .ToListAsync();
 
