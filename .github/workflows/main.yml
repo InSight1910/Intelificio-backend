@@ -21,9 +21,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore Backend
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore Backend
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal IntelificioBackTest
   sonarcloud:
     name: Build and analyze
     needs: build
@@ -64,7 +64,7 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"InSight1910_Intelificio-backend" /o:"insight1910" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
+          dotnet build Backend
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   build-docker:
     name: Build and Push Docker image
