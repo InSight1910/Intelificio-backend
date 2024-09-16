@@ -9,7 +9,7 @@ namespace Backend.Features.Authentication.Common
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthenticationController(IMediator mediator) : ControllerBase
+    public class CommunityController(IMediator mediator) : ControllerBase
     {
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
@@ -17,7 +17,10 @@ namespace Backend.Features.Authentication.Common
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Created(),
-                onFailure: BadRequest);
+                onFailure: (errors) =>
+                {
+                    return BadRequest(errors);
+                });
         }
 
         [HttpPost("login")]
@@ -26,7 +29,11 @@ namespace Backend.Features.Authentication.Common
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
-                onFailure: BadRequest);
+                onFailure: (errors) =>
+                {
+                    return BadRequest(errors);
+                }
+                );
         }
 
         [HttpPost("refresh")]
