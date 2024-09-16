@@ -5,8 +5,6 @@ name: .NET
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["master"]
   pull_request:
     branches: ["master"]
 
@@ -21,7 +19,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./Intelificio-Back/Backend.csproj
       - name: Build
         run: dotnet build --no-restore
       - name: Test
