@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Intelificio-Back
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelificioBackTest", "IntelificioBackTest\IntelificioBackTest.csproj", "{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4FE0EE31-BDE5-401D-B4A0-2220BE2717CD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FE0EE31-BDE5-401D-B4A0-2220BE2717CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FE0EE31-BDE5-401D-B4A0-2220BE2717CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FE0EE31-BDE5-401D-B4A0-2220BE2717CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FE0EE31-BDE5-401D-B4A0-2220BE2717CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
