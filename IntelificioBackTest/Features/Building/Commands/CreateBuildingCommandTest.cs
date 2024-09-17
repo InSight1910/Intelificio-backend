@@ -1,23 +1,22 @@
-﻿using AutoMapper;
-using Backend.Common.Profiles;
-using Backend.Features.Building.Commands.AddUnit;
-using Backend.Features.Building.Common;
+﻿using Backend.Features.Building.Commands.Create;
 using Backend.Models;
-using IntelificioBackTest.Fixtures;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
+using AutoMapper;
+using Backend.Common.Profiles;
+using IntelificioBackTest.Fixtures;
+using Backend.Features.Building.Common;
 
 namespace IntelificioBackTest.Features.Building.Commands
 {
-    public class AddUnitBuildingCommandTest
+    public class CreateBuildingCommandTest
     {
-        private readonly AddUnitBuildingCommandHandler _handler;
+        private readonly CreateBuildingCommandHandler _handler;
         private readonly IntelificioDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly Mock<ILogger<AddUnitBuildingCommandHandler>> _logger;
+        private readonly Mock<ILogger<CreateBuildingCommandHandler>> _logger;
+        private IMapper _mapper;
 
-        public AddUnitBuildingCommandTest()
+        public CreateBuildingCommandTest()
         {
             var mapperConfig = new MapperConfiguration(config =>
             {
@@ -25,9 +24,9 @@ namespace IntelificioBackTest.Features.Building.Commands
             });
 
             _mapper = new Mapper(mapperConfig);
-            _logger = new Mock<ILogger<AddUnitBuildingCommandHandler>>();
+            _logger = new Mock<ILogger<CreateBuildingCommandHandler>>();
             _context = DbContextFixture.GetDbContext();
-            _handler = new AddUnitBuildingCommandHandler(_context, _logger.Object, _mapper);
+            _handler = new CreateBuildingCommandHandler(_context, _logger.Object, _mapper);
         }
 
         [Fact]
@@ -40,11 +39,12 @@ namespace IntelificioBackTest.Features.Building.Commands
         [Fact]
         public async Task Handle_Success()
         {
-            //Arrange
-            var command = new AddUnitBuildingCommand
+            // Arrange
+            var command = new CreateBuildingCommand
             {
-                BuildingId = 1,
-                UnitId = 1
+                Name = "Juan",
+                Floors = 10,
+                CommunityId = 1
             };
             await DbContextFixture.SeedData(_context);
 
@@ -52,42 +52,21 @@ namespace IntelificioBackTest.Features.Building.Commands
             var result = await _handler.Handle(command, default);
 
             // Assert
+            Assert.False(result.IsSuccess);
             Assert.True(result.IsSuccess);
-            Assert.False(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
         }
 
         [Fact]
-        public async Task Failure_Handle_Building_Not_Found()
+        public async Task Failure_Handle_Building_Name_Empty()
         {
             // Arrange
-            var command = new AddUnitBuildingCommand
-            { 
-                BuildingId = 0,
-                UnitId = 1
-            };
-            await DbContextFixture.SeedData(_context);
-
-            // Act
-            var result = await _handler.Handle(command, default);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.True(result.IsFailure);
-            Assert.Null(result.Response);
-            Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.BuildingNotFoundOnAddUnit.Message);
-        }
-
-        [Fact]
-        public async Task Failure_Handle_Unit_not_Found()
-        {
-            // Arrange
-            var command = new AddUnitBuildingCommand
+            var command = new CreateBuildingCommand
             {
-                BuildingId = 1,
-                UnitId = 0
+                Name = "  ",
+                Floors = 1,
+                CommunityId = 1
             };
             await DbContextFixture.SeedData(_context);
 
@@ -99,24 +78,20 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.UnitNotFoundOnAddUnit.Message);
+            Assert.Contains(result.Error.Message,BuildingErrors.BuildingNameEmptyOnCreate.Message);
         }
 
         [Fact]
-        public async Task Failure_Handle_Unit_Already_Exist()
+        public async Task Failure_Handle_Building_Without_Floors()
         {
             // Arrange
-            var command = new AddUnitBuildingCommand
+            var command = new CreateBuildingCommand
             {
-                BuildingId = 1,
-                UnitId = 1
+                Name = "A",
+                Floors = 0,
+                CommunityId = 1
             };
             await DbContextFixture.SeedData(_context);
-
-            var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == command.UnitId);
-            var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == command.BuildingId);
-
-            building?.Units.Add(unit); 
 
             // Act
             var result = await _handler.Handle(command, default);
@@ -126,7 +101,27 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.UnitAlreadyExistsOnAddUnit.Message);
+            Assert.Contains(result.Error.Message, BuildingErrors.BuildingWithoutFloorsOnCreate.Message);
+        }
+
+        [Fact]
+        public async Task Failure_Handle_Community_Not_Found()
+        {
+            // Arrange
+            var command = BuildingFixture.GetCreateBuildingCommandTest();
+            await DbContextFixture.SeedData(_context);
+
+            command.CommunityId = 0;
+
+            // Act
+            var result = await _handler.Handle(command, default);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.True(result.IsFailure);
+            Assert.Null(result.Response);
+            Assert.Null(result.Errors);
+            Assert.Contains(result.Error.Message, BuildingErrors.CommunityNotFoundOnCreate.Message);
         }
     }
 }

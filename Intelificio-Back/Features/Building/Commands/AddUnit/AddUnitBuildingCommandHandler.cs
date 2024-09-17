@@ -23,12 +23,12 @@ namespace Backend.Features.Building.Commands.AddUnit
         public async Task<Result> Handle(AddUnitBuildingCommand request, CancellationToken cancellationToken) 
         { 
             var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
-            if (building == null ) return Result.Failure(BuildingErrors.BuildingNotFoundAddUnit);
+            if (building == null ) return Result.Failure(BuildingErrors.BuildingNotFoundOnAddUnit);
 
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.UnitId);
-            if (unit == null) return Result.Failure(BuildingErrors.UnitNotFound);
+            if (unit == null) return Result.Failure(BuildingErrors.UnitNotFoundOnAddUnit);
 
-            if (building.Units.Contains(unit)) return Result.Failure(BuildingErrors.UnitAlreadyExist);
+            if (building.Units.Contains(unit)) return Result.Failure(BuildingErrors.UnitAlreadyExistsOnAddUnit);
 
             building.Units.Add(unit);
             _ = await _context.SaveChangesAsync();

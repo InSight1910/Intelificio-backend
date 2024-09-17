@@ -28,6 +28,8 @@ namespace IntelificioBackTest.Features.Community.Commands
             _logger = new Mock<ILogger<CreateCommunityCommandHandler>>();
             _handler = new CreateCommunityCommandHandler(_context, _logger.Object, _mapper);
         }
+
+        [Fact]
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();

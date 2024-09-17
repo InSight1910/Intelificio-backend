@@ -19,7 +19,7 @@ namespace Backend.Features.Building.Queries.GetAllByCommunity
         {
             var checkCommunity = await _context.Community.AnyAsync(x => x.ID == request.CommunityId);
 
-            if (!checkCommunity) return Result.Failure(BuildingErrors.CommunityQueryNotFound);
+            if (!checkCommunity) return Result.Failure(BuildingErrors.CommunityNotFoundOnQuery);
             var buildings = await _context.Buildings
                        .Where(b => b.Community.ID == request.CommunityId)
                        .Select(b => new GetAllByCommunityQueryResponse

@@ -11,10 +11,10 @@ namespace Backend.Features.Building.Commands.Update
     {
 
         private readonly IntelificioDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<UpdateBuildigCommandHandler> _logger;
         private readonly IMapper _mapper;
 
-        public UpdateBuildigCommandHandler(IntelificioDbContext context, ILogger logger, IMapper mapper)
+        public UpdateBuildigCommandHandler(IntelificioDbContext context, ILogger<UpdateBuildigCommandHandler> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
@@ -23,8 +23,15 @@ namespace Backend.Features.Building.Commands.Update
 
         public async Task<Result> Handle(UpdateBuildingCommand request, CancellationToken cancellationToken)
         {
-           var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.Id);
-            if (building == null) return Result.Failure(BuildingErrors.BuildingUpdateNotFound);
+            var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.Id);
+            if (building == null) return Result.Failure(BuildingErrors.BuildingUpdateNotFoundOnUpdate);
+
+            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
+            if (community == null) return Result.Failure(BuildingErrors.CommunityNotFoundOnUpdate);
+
+            if (string.IsNullOrWhiteSpace(request.Name)) return Result.Failure(BuildingErrors.BuildingNameEmptyOnCreate);
+
+            if (request.Floors <= 0) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnCreate);
 
             building = _mapper.Map(request, building);
             _ = _context.Buildings.Update(building);

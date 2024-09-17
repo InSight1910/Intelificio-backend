@@ -4,13 +4,35 @@ namespace Backend.Features.Building.Common
 {
     public class BuildingErrors
     {
-        public static Error CommunityNotFound = new("Building.Create.CommunityNotFound","Comunidad no fue encontrada.");
-        public static Error CommunityQueryNotFound = new("Building.GetAllByCommunity.CommunityQueryNotFound", "Comunidad no fue encontrada.");
-        public static Error BuildingNotFound = new("Building.Delete.BuildingNotFound", "Edificio no fue encontrado.");
-        public static Error BuildingUpdateNotFound = new("Building.Delete.BuildingUpdateNotFound", "Edificio no fue encontrado.");
-        public static Error UnitNotFound = new("Building.AddUnit.UnitNotFound", "Unidad no fue encontrada.");
-        public static Error BuildingNotFoundAddUnit = new("Building.AddUnit.BuildingNotFoundAddUnit", "Edificio no fue encontrada.");
-        public static Error UnitAlreadyExist = new("Building.AddUnit.UnitAlreadyExist", "Unidad ya se encuentra en Edificio.");
-        public static Error BuildingQueryNotFound = new("Building.GetbyId.BuildingQueryNotFound", "Edificio no fue encontrado.");
+        // Errores de  Create
+        public static Error BuildingNameEmptyOnCreate = new("Building.Create.BuildingNameEmptyOnCreate", "El nombre del edificio no puede estar vacio.");
+        public static Error BuildingWithoutFloorsOnCreate = new("Building.Create.BuildingWithoutFloorsOnCreate", "El edificio debe tener al menos 1 piso asignado.");
+        public static Error CommunityNotFoundOnCreate = new("Building.Create.CommunityNotFoundOnCreate","Comunidad no fue encontrada.");
+
+        // Errores de  Delete
+        public static Error BuildingNotFoundOnDelete = new("Building.Delete.BuildingNotFound", "Edificio no fue encontrado.");
+        public static Error HasAssignedUnitsOnDelete = new("Building.Delete.HasAssignedUnits", "El Edificio tiene unidades asignadas.");
+
+        // Errores de  Update
+        public static Error BuildingUpdateNotFoundOnUpdate = new("Building.Update.BuildingUpdateNotFoundOnUpdate", "Edificio no fue encontrado.");
+        public static Error CommunityNotFoundOnUpdate = new("Building.Create.CommunityNotFoundOnUpdate", "Comunidad no fue encontrada.");
+        public static Error BuildingNameEmptyOnUpdate = new("Building.Create.BuildingNameEmptyOnUpdate", "El nombre del edificio no puede estar vacio.");
+        public static Error BuildingWithoutFloorsOnUpdate = new("Building.Create.BuildingWithoutFloorsOnUpdate", "El edificio debe tener al menos 1 piso asignado.");
+
+        // Errores de  AddUnit
+        public static Error UnitNotFoundOnAddUnit = new("Building.AddUnit.UnitNotFoundOnAddUnit", "Unidad no fue encontrada.");
+        public static Error BuildingNotFoundOnAddUnit = new("Building.AddUnit.BuildingNotFoundOnAddUnit", "Edificio no fue encontrado.");
+        public static Error UnitAlreadyExistsOnAddUnit = new("Building.AddUnit.UnitAlreadyExistsOnAddUnit", "Unidad ya pertenece al Edificio indicado.");
+
+        // Errores de  RemoveInit
+        public static Error BuildingNotFoundOnRemoveUnit = new("Building.RemoveUnit.BuildingNotFoundOnRemoveUnit", "Edificio no fue encontrado.");
+        public static Error UnitNotFoundOnRemoveUnit = new("Building.RemoveUnit.UnitNotFoundOnRemoveUnit", "Unidad no fue encontrada.");
+        public static Error UnitDoesNotExistInBuildingOnRemoveUnit = new("Building.RemoveUnit.UnitDoesNotExistInBuildingOnRemoveUnit", "La Unidad no existe en edificio indicado.");
+
+        // Errores de Query's
+        public static Error CommunityNotFoundOnQuery = new("Building.GetAllByCommunity.CommunityNotFoundOnQuery", "Comunidad no fue encontrada.");
+        public static Error BuildingNotFoundOnQuery = new("Building.GetbyId.BuildingNotFoundOnQuery", "Edificio no fue encontrado.");
+
+        
     }
 }
