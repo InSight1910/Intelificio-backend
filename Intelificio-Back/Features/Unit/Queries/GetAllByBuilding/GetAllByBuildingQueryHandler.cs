@@ -34,7 +34,7 @@ namespace Backend.Features.Unit.Queries.GetAllByBuilding
                 })
                 .ToListAsync();
 
-            if (!units.Any()) return Result.Failure(UnitErrors.UnitNotFound);
+            if (units == null) return Result.Failure(UnitErrors.UnitNotFoundGetAllByBuilding);
 
             return Result.WithResponse(new ResponseData
             {

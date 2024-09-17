@@ -22,11 +22,13 @@ namespace Backend.Features.Unit.Commands.AddUser
         {
             var unit = await _context.Units.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.UnitId);
 
-            if (unit == null) return Result.Failure(UnitErrors.UnitNotFound);
+            if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundAddUser);
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
 
             if (user == null) return Result.Failure(UnitErrors.UserNotFound);
+
+            if (unit.Users.Contains(user)) return Result.Failure(UnitErrors.UserAlreadyAssigned);
 
             unit.Users.Add(user);
 

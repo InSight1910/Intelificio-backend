@@ -34,7 +34,7 @@ namespace Backend.Features.Unit.Queries.GetByUser
                 })
                 .ToListAsync();
 
-            if (unit == null) return Result.Failure(UnitErrors.UnitNotFound);
+            if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundGetByUser);
 
             return Result.WithResponse(new ResponseData()
             {

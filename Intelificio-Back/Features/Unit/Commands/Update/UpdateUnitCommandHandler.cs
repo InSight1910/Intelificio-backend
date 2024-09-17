@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
+using Backend.Features.Unit.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,10 @@ namespace Backend.Features.Unit.Commands.Update
         public async Task<Result> Handle(UpdateUnitCommand request, CancellationToken cancellationToken)
         {
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.Id);
-            if (unit is null) return Result.Failure(null);
+           
+            if (unit is null) return Result.Failure(UnitErrors.UnitNotFoundUpdate);
+
+            unit = _mapper.Map(request, unit);
 
             // Update unidad
 
@@ -32,9 +36,9 @@ namespace Backend.Features.Unit.Commands.Update
             if (request.UnitTypeId > 0)
             {
                 unitType = await _context.UnitTypes.FirstOrDefaultAsync(x => x.ID == request.UnitTypeId);
-                if (unitType is null) return Result.Failure(null);
+                if (unitType is null) return Result.Failure(UnitErrors.UnitTypeNotFoundUpdate);
             }
-            unit = _mapper.Map(request, unit);
+
             if (unitType is not null) unit.UnitType = unitType;
 
             // Update edificio
@@ -44,29 +48,10 @@ namespace Backend.Features.Unit.Commands.Update
             if (request.BuildingId > 0)
             {
                 building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
-                if (building is null) return Result.Failure(null);
+                if (building is null) return Result.Failure(UnitErrors.BuildingNotFoundUpdate);
             }
 
-            unit = _mapper.Map(request, unit);
             if (building is not null) unit.Building = building;
-
-            // Update numero
-            if (!string.IsNullOrEmpty(request.Number))
-            {
-                unit.Number = request.Number;
-            }
-
-            //Update piso
-            if (request.Floor.HasValue)
-            {
-                unit.Floor = request.Floor.Value;
-            }
-
-            // Update superficie
-            if (request.Surface > 0) 
-            {
-                unit.Surface = request.Surface;
-            }
 
             await _context.SaveChangesAsync();
             return Result.Success();

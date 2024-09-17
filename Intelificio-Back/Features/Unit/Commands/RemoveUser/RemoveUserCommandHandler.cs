@@ -21,11 +21,13 @@ namespace Backend.Features.Unit.Commands.RemoveUser
         {
             var unit = await _context.Units.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.UnitId);
 
-            if (unit == null) return Result.Failure(UnitErrors.UnitNotFound);
+            if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundRemoveUser);
 
             var user = unit.Users.FirstOrDefault(x => x.Id == request.UserId);
 
-            if (user == null) return Result.Failure(UnitErrors.UserNotFound);
+            if (user == null) return Result.Failure(UnitErrors.UserNotFoundRemoveUser);
+
+            if (!unit.Users.Contains(user)) return Result.Failure(UnitErrors.UserAlreadyRemoved);
 
             unit.Users.Remove(user);
 

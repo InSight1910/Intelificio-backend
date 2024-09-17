@@ -21,20 +21,24 @@ namespace Backend.Features.Unit.Commands.Create
         }
         public async Task<Result> Handle(CreateUnitCommand request, CancellationToken cancellationToken)
         {
+            var checkUnitType = await _context.UnitTypes.FirstOrDefaultAsync(x => x.ID == request.UnitTypeId);
+
+            if (checkUnitType == null) return Result.Failure(UnitErrors.UnitTypeNotFound);
+
             var checkBuilding = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
 
             if (checkBuilding == null) return Result.Failure(UnitErrors.BuildingNotFound);
 
-            var checkUnitType = await _context.UnitTypes.FirstOrDefaultAsync(x => x.ID == request.UnitTypeId);
+            var checkUnitId = await _context.Units.AnyAsync(x => x.Number == request.Number && x.Building == checkBuilding);
 
-            if (checkUnitType == null) return Result.Failure(UnitErrors.UnitTypeNotFound);
+            if (checkUnitId) return Result.Failure(UnitErrors.UnitAlreadyExists);
 
 
             var newUnit = _mapper.Map<Models.Unit>(request);
 
             newUnit.Building = checkBuilding;
 
-            newUnit.Type = checkUnitType;
+            newUnit.UnitType = checkUnitType;
 
             await _context.Units.AddAsync(newUnit);
 

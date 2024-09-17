@@ -36,7 +36,7 @@ namespace Backend.Features.Unit.Queries.GetByID
                     })
                     .ToListAsync();
 
-            if (unit == null) return Result.Failure(UnitErrors.UnitNotFound);
+            if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundGetByID);
 
             return Result.WithResponse(new ResponseData()
             {
