@@ -6,13 +6,13 @@ using Moq;
 
 namespace IntelificioBackTest.Features.Community.Queries
 {
-    public class GetByIdCommunityTest
+    public class GetByIdCommunityQueryTest
     {
         private readonly IntelificioDbContext _context;
         private readonly Mock<ILogger<GetByIdCommunityQueryHandler>> _logger;
         private readonly GetByIdCommunityQueryHandler _handler;
 
-        public GetByIdCommunityTest()
+        public GetByIdCommunityQueryTest()
         {
             _context = DbContextFixture.GetDbContext();
             _logger = new Mock<ILogger<GetByIdCommunityQueryHandler>>();

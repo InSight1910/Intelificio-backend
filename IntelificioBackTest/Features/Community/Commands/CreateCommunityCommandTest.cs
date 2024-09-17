@@ -22,10 +22,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             {
                 config.AddProfile<CommunityProfile>();
             });
+            _mapper = new Mapper(mapperConfig);
 
             _context = DbContextFixture.GetDbContext();
-            _mapper = new Mapper(mapperConfig);
             _logger = new Mock<ILogger<CreateCommunityCommandHandler>>();
+
             _handler = new CreateCommunityCommandHandler(_context, _logger.Object, _mapper);
         }
         public void Dispose()
@@ -51,6 +52,7 @@ namespace IntelificioBackTest.Features.Community.Commands
             Assert.Null(result.Errors);
 
         }
+
 
         [Fact]
         public async Task Failure_Handle_Community_Already_Exists()
