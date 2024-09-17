@@ -90,6 +90,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             User user = UserFixture.GetUserTest();
             user.EmailConfirmed = true;
             user.LockoutEnabled = true;
+            user.LockoutEnd = DateTime.UtcNow.AddDays(1);
 
             _ = _userManager
                     .Setup(x => x.FindByNameAsync(It.IsAny<string>()))

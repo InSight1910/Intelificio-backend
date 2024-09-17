@@ -2,3 +2,6 @@
 bin/
 obj/
 Intelificio-Back/appsettings.json
+seq/
+docker-compose.dcproj
+Intelificio-Back/Migrations

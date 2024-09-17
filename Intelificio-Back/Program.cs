@@ -1,6 +1,7 @@
 using Backend.Common.Behavior;
 using Backend.Common.Profiles;
 using Backend.Common.Security;
+using Backend.Features.Community.Commands.Create;
 using Backend.Models;
 using Backend.Models.Extensions;
 using FluentValidation;
@@ -9,11 +10,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,15 +24,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TokenProvider>();
-builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
 
 builder.Services.AddDbContext<IntelificioDbContext>(
     options =>
     {
         _ = options
                 .UseMySQL(builder.Configuration.GetConnectionString("Default") ?? "")
+
                 .AddInterceptors(new SoftDeleteInterceptor());
     });
 
@@ -64,10 +66,11 @@ builder.Services
         };
     });
 
-builder.Services.AddMediatR(cfg =>
-{
-    _ = cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
-});
+builder.Services.AddValidatorsFromAssembly(typeof(CreateCommunityCommandValidator).Assembly);
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
 
 var app = builder.Build();
@@ -87,4 +90,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
