@@ -17,7 +17,7 @@ namespace Backend.Features.Authentication.Commands.Login
 
             if (!user.EmailConfirmed) return Result.Failure(AuthenticationErrors.EmailNotConfirmed);
 
-            if (user.LockoutEnabled && user.LockoutEnd != null) return Result.Failure(AuthenticationErrors.UserBlocked);
+            if (user.LockoutEnabled && user.LockoutEnd != null && user.LockoutEnd > DateTime.UtcNow) return Result.Failure(AuthenticationErrors.UserBlocked);
 
             if (!await userManager.CheckPasswordAsync(user, request.Password))
             {

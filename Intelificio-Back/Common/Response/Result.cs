@@ -1,4 +1,6 @@
-﻿namespace Backend.Common.Response
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Backend.Common.Response
 {
     public class Result
     {
@@ -28,7 +30,7 @@
             IsSuccess = isSuccess;
             Error = error;
         }
-        private Result(bool isSuccess, Error[] errors)
+        private Result(bool isSuccess, ICollection<Error> errors)
         {
             if (
                 isSuccess && errors == null ||
@@ -42,29 +44,41 @@
         public bool IsSuccess { get; }
         public bool IsFailure => !IsSuccess;
         public Error Error { get; }
-        public Error[] Errors { get; }
+        public ICollection<Error> Errors { get; }
         public ResponseData Response { get; }
         public static Result Success() => new(true);
         public static Result WithResponse(ResponseData response) => new(true, response);
         public static Result Failure(Error error) => new(false, error);
-        public static Result WithErrors(Error[] errors) => new(false, errors);
+        public static Result WithErrors(ICollection<Error> errors) => new(false, errors);
 
     }
     public static class ResultExtension
     {
         public static T Match<T>(
                 this Result result,
-                Func<ResponseData, T> onSuccess,
-                Func<Error, T> onFailure)
+                Func<ResponseData?, T> onSuccess,
+                Func<ICollection<Error>, T> onFailure)
+            where T : IActionResult
         {
-            return result.IsSuccess ? onSuccess(result.Response) : onFailure(result.Error);
+            if (result.IsSuccess) return onSuccess(result.Response);
+
+            if (result.Errors != null && result.Errors.Any()) return onFailure(result.Errors);
+
+            return onFailure(new List<Error> { result.Error });
         }
         public static T Match<T>(
                 this Result result,
                 Func<T> onSuccess,
-                Func<Error, T> onFailure)
+                Func<ICollection<Error>, T> onFailure)
+            where T : IActionResult
         {
-            return result.IsSuccess ? onSuccess() : onFailure(result.Error);
+            if (result.IsSuccess) return onSuccess();
+
+            if (result.Errors != null && result.Errors.Any()) return onFailure(result.Errors);
+
+            return onFailure(new List<Error> { result.Error });
         }
+
+
     }
 }
