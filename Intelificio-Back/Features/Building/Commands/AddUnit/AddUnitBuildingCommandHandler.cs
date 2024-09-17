@@ -10,10 +10,10 @@ namespace Backend.Features.Building.Commands.AddUnit
     public class AddUnitBuildingCommandHandler : IRequestHandler<AddUnitBuildingCommand, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<AddUnitBuildingCommandHandler> _logger;
         private readonly IMapper _mapper;
 
-        public AddUnitBuildingCommandHandler(IntelificioDbContext context, ILogger logger, IMapper mapper)
+        public AddUnitBuildingCommandHandler(IntelificioDbContext context, ILogger<AddUnitBuildingCommandHandler> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
@@ -28,11 +28,11 @@ namespace Backend.Features.Building.Commands.AddUnit
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.UnitId);
             if (unit == null) return Result.Failure(BuildingErrors.UnitNotFound);
 
-            if (building.Units.Contains(unit)) return Result.Failure(BuildingErrors.UnitAlreadyExists);
+            if (building.Units.Contains(unit)) return Result.Failure(BuildingErrors.UnitAlreadyExist);
 
             building.Units.Add(unit);
             _ = await _context.SaveChangesAsync();
             return Result.Success();
         }
     }
-}s
+}

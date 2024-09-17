@@ -10,11 +10,13 @@ namespace Backend.Features.Building.Commands.Create
     public class CreateBuildingHandler : IRequestHandler<CreateBuildingCommand, Result>
     {
         private readonly IntelificioDbContext _context;
+        private readonly ILogger<CreateBuildingHandler> _logger;
         private readonly IMapper _mapper;
 
-        public CreateBuildingHandler(IntelificioDbContext context, IMapper mapper)
+        public CreateBuildingHandler(IntelificioDbContext context, ILogger<CreateBuildingHandler> logger, IMapper mapper)
         {
             _context = context;
+            _logger = logger;
             _mapper = mapper;
         }
 

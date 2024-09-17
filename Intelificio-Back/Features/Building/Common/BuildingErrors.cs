@@ -10,7 +10,7 @@ namespace Backend.Features.Building.Common
         public static Error BuildingUpdateNotFound = new("Building.Delete.BuildingUpdateNotFound", "Edificio no fue encontrado.");
         public static Error UnitNotFound = new("Building.AddUnit.UnitNotFound", "Unidad no fue encontrada.");
         public static Error BuildingNotFoundAddUnit = new("Building.AddUnit.BuildingNotFoundAddUnit", "Edificio no fue encontrada.");
-        public static Error UnitAlreadyExists = new("Building.AddUnit.UnitAlreadyExists", "Unidad ya se encuentra en Edificio.");
+        public static Error UnitAlreadyExist = new("Building.AddUnit.UnitAlreadyExist", "Unidad ya se encuentra en Edificio.");
         public static Error BuildingQueryNotFound = new("Building.GetbyId.BuildingQueryNotFound", "Edificio no fue encontrado.");
     }
 }
