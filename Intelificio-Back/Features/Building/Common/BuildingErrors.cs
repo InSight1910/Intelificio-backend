@@ -5,7 +5,6 @@ namespace Backend.Features.Building.Common
     public class BuildingErrors
     {
         // Errores de  Create
-        public static Error BuildingNameEmptyOnCreate = new("Building.Create.BuildingNameEmptyOnCreate", "El nombre del edificio no puede estar vacio.");
         public static Error BuildingWithoutFloorsOnCreate = new("Building.Create.BuildingWithoutFloorsOnCreate", "El edificio debe tener al menos 1 piso asignado.");
         public static Error CommunityNotFoundOnCreate = new("Building.Create.CommunityNotFoundOnCreate","Comunidad no fue encontrada.");
 
@@ -14,10 +13,9 @@ namespace Backend.Features.Building.Common
         public static Error HasAssignedUnitsOnDelete = new("Building.Delete.HasAssignedUnits", "El Edificio tiene unidades asignadas.");
 
         // Errores de  Update
-        public static Error BuildingUpdateNotFoundOnUpdate = new("Building.Update.BuildingUpdateNotFoundOnUpdate", "Edificio no fue encontrado.");
-        public static Error CommunityNotFoundOnUpdate = new("Building.Create.CommunityNotFoundOnUpdate", "Comunidad no fue encontrada.");
-        public static Error BuildingNameEmptyOnUpdate = new("Building.Create.BuildingNameEmptyOnUpdate", "El nombre del edificio no puede estar vacio.");
-        public static Error BuildingWithoutFloorsOnUpdate = new("Building.Create.BuildingWithoutFloorsOnUpdate", "El edificio debe tener al menos 1 piso asignado.");
+        public static Error BuildingWithoutFloorsOnUpdate = new("Building.Update.BuildingWithoutFloorsOnUpdate", "El edificio debe tener al menos 1 piso asignado.");
+        public static Error BuildingNotFoundOnUpdate = new("Building.Update.BuildingNotFoundOnUpdate", "Edificio no fue encontrado.");
+        public static Error CommunityNotFoundOnUpdate = new("Building.Update.CommunityNotFoundOnUpdate", "Comunidad no fue encontrada.");
 
         // Errores de  AddUnit
         public static Error UnitNotFoundOnAddUnit = new("Building.AddUnit.UnitNotFoundOnAddUnit", "Unidad no fue encontrada.");

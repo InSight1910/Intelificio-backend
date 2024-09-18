@@ -24,14 +24,12 @@ namespace Backend.Features.Building.Commands.Update
         public async Task<Result> Handle(UpdateBuildingCommand request, CancellationToken cancellationToken)
         {
             var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.Id);
-            if (building == null) return Result.Failure(BuildingErrors.BuildingUpdateNotFoundOnUpdate);
+            if (building == null) return Result.Failure(BuildingErrors.BuildingNotFoundOnUpdate);
 
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
             if (community == null) return Result.Failure(BuildingErrors.CommunityNotFoundOnUpdate);
 
-            if (string.IsNullOrWhiteSpace(request.Name)) return Result.Failure(BuildingErrors.BuildingNameEmptyOnCreate);
-
-            if (request.Floors <= 0) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnCreate);
+            if (request.Floors <= 0 ) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnUpdate);
 
             building = _mapper.Map(request, building);
             _ = _context.Buildings.Update(building);

@@ -36,7 +36,7 @@ namespace IntelificioBackTest.Features.Building.Commands
         public async Task Handle_Success()
         {
             // Arrange
-            var command = new DeleteBuildingCommand { Id = 1 };
+            var command = new DeleteBuildingCommand { Id = 5 };
             await DbContextFixture.SeedData(_context);
 
             // Act

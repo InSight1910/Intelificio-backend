@@ -9,10 +9,12 @@ namespace Backend.Features.Building.Queries.GetAllByCommunity
     public class GetAllByCommunityQueryHandler : IRequestHandler<GetAllByCommunityQuery, Result>
     {
         private readonly IntelificioDbContext _context;
+        private readonly ILogger<GetAllByCommunityQueryHandler> _logger;
         
-        public GetAllByCommunityQueryHandler(IntelificioDbContext context)
+        public GetAllByCommunityQueryHandler(IntelificioDbContext context, ILogger<GetAllByCommunityQueryHandler> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<Result> Handle(GetAllByCommunityQuery request, CancellationToken cancellationToken)

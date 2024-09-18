@@ -22,19 +22,17 @@ namespace Backend.Features.Building.Commands.Create
 
         public async Task<Result> Handle(CreateBuildingCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(request.Name)) return Result.Failure(BuildingErrors.BuildingNameEmptyOnCreate);
 
             if (request.Floors <= 0) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnCreate);
            
-            var checkCommunity = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
+            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
 
-            if(checkCommunity == null) return Result.Failure(BuildingErrors.CommunityNotFoundOnCreate);
+            if(community is null) return Result.Failure(BuildingErrors.CommunityNotFoundOnCreate);
 
-            var newBuilding = _mapper.Map<Models.Building>(request);
-            
-            newBuilding.Community = checkCommunity;
+            var building = _mapper.Map<Models.Building>(request);
+            building.Community = community;
 
-            await _context.Buildings.AddAsync(newBuilding);
+            await _context.Buildings.AddAsync(building);
 
             return Result.Success();
            

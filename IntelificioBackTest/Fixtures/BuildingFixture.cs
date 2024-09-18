@@ -1,9 +1,4 @@
 ﻿using Backend.Features.Building.Commands.Create;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntelificioBackTest.Fixtures
 {
@@ -13,7 +8,7 @@ namespace IntelificioBackTest.Fixtures
         {
             return new()
             {
-                Name = "A",
+                Name = "As",
                 Floors = 10,
                 CommunityId = 1
             };

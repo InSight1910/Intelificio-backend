@@ -7,6 +7,5 @@ namespace Backend.Features.Building.Queries.GetById
         public required string Name { get; set; } 
         public required string CommunityName { get; set; }
         public required int Floors { get; set; }
-        public required int Units { get; set; }
     }
 }

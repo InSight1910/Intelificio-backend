@@ -171,6 +171,12 @@ namespace IntelificioBackTest.Fixtures
                             Name = "Torre 2",
                             Floors = 10
                         },
+                        new Building
+                        {
+                            Community = community2,
+                            Name = "Torre 3",
+                            Floors = 10
+                        },
                     };
 
                 await context.Buildings.AddRangeAsync(buildings);

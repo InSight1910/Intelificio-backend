@@ -40,45 +40,17 @@ namespace IntelificioBackTest.Features.Building.Commands
         public async Task Handle_Success()
         {
             // Arrange
-            var command = new CreateBuildingCommand
-            {
-                Name = "Juan",
-                Floors = 10,
-                CommunityId = 1
-            };
+            var command = BuildingFixture.GetCreateBuildingCommandTest();
             await DbContextFixture.SeedData(_context);
 
             // Act
             var result = await _handler.Handle(command, default);
 
             // Assert
-            Assert.False(result.IsSuccess);
             Assert.True(result.IsSuccess);
+            Assert.False(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-        }
-
-        [Fact]
-        public async Task Failure_Handle_Building_Name_Empty()
-        {
-            // Arrange
-            var command = new CreateBuildingCommand
-            {
-                Name = "  ",
-                Floors = 1,
-                CommunityId = 1
-            };
-            await DbContextFixture.SeedData(_context);
-
-            // Act
-            var result = await _handler.Handle(command, default);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.True(result.IsFailure);
-            Assert.Null(result.Response);
-            Assert.Null(result.Errors);
-            Assert.Contains("El nombre del edificio no puede estar vacio.", result.Error.Message);
         }
 
         [Fact]

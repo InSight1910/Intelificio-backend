@@ -24,7 +24,7 @@ namespace Backend.Features.Building.Queries.GetById
         {
             var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
 
-            if (building == null) return Result.Failure(BuildingErrors.BuildingNotFoundOnQuery);
+            if (building is null) return Result.Failure(BuildingErrors.BuildingNotFoundOnQuery);
 
             var response = _mapper.Map<GetByIDQueryResponse>(building);
 
