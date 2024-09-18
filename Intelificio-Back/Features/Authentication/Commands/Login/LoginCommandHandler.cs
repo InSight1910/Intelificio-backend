@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Features.Authentication.Commands.Login
 {
-    public class LoginCommandHandler(UserManager<User> userManager, TokenProvider tokenProvider, IConfiguration configuration) : IRequestHandler<LoginCommand, Result>
+    public class LoginCommandHandler(UserManager<User> userManager, SignInManager<User> signInManager, TokenProvider tokenProvider, IConfiguration configuration) : IRequestHandler<LoginCommand, Result>
     {
         public async Task<Result> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
@@ -15,21 +15,23 @@ namespace Backend.Features.Authentication.Commands.Login
 
             if (user == null) return Result.Failure(AuthenticationErrors.UserNotFound);
 
-            if (!user.EmailConfirmed) return Result.Failure(AuthenticationErrors.EmailNotConfirmed);
+            if (!await userManager.IsEmailConfirmedAsync(user)) return Result.Failure(AuthenticationErrors.EmailNotConfirmed);
 
-            if (user.LockoutEnabled && user.LockoutEnd != null && user.LockoutEnd > DateTime.UtcNow) return Result.Failure(AuthenticationErrors.UserBlocked);
+            if (await userManager.IsLockedOutAsync(user)) return Result.Failure(AuthenticationErrors.UserBlocked);
 
-            if (!await userManager.CheckPasswordAsync(user, request.Password))
+            var result = await signInManager.PasswordSignInAsync(user, request.Password, false, true);
+
+            if (result.IsLockedOut)
             {
-                var result = await userManager.AccessFailedAsync(user);
-                return ValidateResponse(result);
+                _ = await userManager.AccessFailedAsync(user);
+                return Result.Failure(AuthenticationErrors.UserBlocked);
             }
 
             string token = tokenProvider.CreateToken(user);
             string refreshToken = tokenProvider.CreateRefreshToken();
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiry = DateTime.Now.AddMinutes(configuration.GetValue<double>("Jwt:RefreshTokenExpireInMinutes"));
+            user.RefreshTokenExpiry = DateTime.UtcNow.AddMinutes(configuration.GetValue<double>("Jwt:RefreshTokenExpireInMinutes"));
             _ = await userManager.UpdateAsync(user);
             var response = new ResponseData
             {
@@ -40,22 +42,6 @@ namespace Backend.Features.Authentication.Commands.Login
                 }
             };
             return Result.WithResponse(response);
-        }
-        private static Result ValidateResponse(IdentityResult result)
-        {
-            if (result.Succeeded)
-            {
-                return Result.Failure(AuthenticationErrors.InvalidCredentials(new List<string> { "Invalid Password" }));
-            }
-            else
-            {
-                var errors = new List<string>();
-                foreach (var error in result.Errors)
-                {
-                    errors.Add(error.Description);
-                }
-                return Result.Failure(AuthenticationErrors.InvalidCredentials(errors));
-            }
         }
     }
 }
