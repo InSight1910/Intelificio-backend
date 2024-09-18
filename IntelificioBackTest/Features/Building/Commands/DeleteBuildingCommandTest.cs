@@ -25,7 +25,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new DeleteBuildingCommandHandler(_context, _logger.Object);
         }
 
-        [Fact]
+        
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();
@@ -64,14 +64,13 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.BuildingNotFoundOnDelete.Message);
+            Assert.Equal("Edificio no fue encontrado.", result.Error.Message);
         }
 
         [Fact]
         public async Task Failure_Handle_Building_Has_Assigned_Units()
         {
             // Arrange
-            var db = DbContextFixture.GetDbContext();
             await DbContextFixture.SeedData(_context);
 
             var command = new DeleteBuildingCommand { Id = 1 };
@@ -84,7 +83,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.HasAssignedUnitsOnDelete.Message);
+            Assert.Equal("El Edificio tiene unidades asignadas.", result.Error.Message);
         }
     }
 

@@ -29,7 +29,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new UpdateBuildigCommandHandler(_context, _logger.Object, _mapper);
         }
 
-        [Fact]
+       
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();

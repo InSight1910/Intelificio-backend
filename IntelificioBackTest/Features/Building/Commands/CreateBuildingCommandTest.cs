@@ -29,7 +29,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new CreateBuildingCommandHandler(_context, _logger.Object, _mapper);
         }
 
-        [Fact]
+        
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();
@@ -78,7 +78,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message,BuildingErrors.BuildingNameEmptyOnCreate.Message);
+            Assert.Contains("El nombre del edificio no puede estar vacio.", result.Error.Message);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.BuildingWithoutFloorsOnCreate.Message);
+            Assert.Equal("El edificio debe tener al menos 1 piso asignado.", result.Error.Message);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.CommunityNotFoundOnCreate.Message);
+            Assert.Equal("Comunidad no fue encontrada.", result.Error.Message);
         }
     }
 }

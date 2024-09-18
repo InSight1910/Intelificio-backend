@@ -34,7 +34,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new RemoveUnitBuildingCommandHandler(_context, _logger.Object, _mapper);
         }
 
-        [Fact]
+        
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();
@@ -81,7 +81,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.BuildingNotFoundOnRemoveUnit.Message);
+            Assert.Equal("Edificio no fue encontrado.", result.Error.Message);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.UnitNotFoundOnRemoveUnit.Message);
+            Assert.Equal("Unidad no fue encontrada.", result.Error.Message);
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.UnitDoesNotExistInBuildingOnRemoveUnit.Message);
+            Assert.Equal("La Unidad no existe en edificio indicado.", result.Error.Message);
         }
 
     }

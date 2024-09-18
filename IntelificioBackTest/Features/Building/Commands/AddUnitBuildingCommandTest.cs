@@ -30,7 +30,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new AddUnitBuildingCommandHandler(_context, _logger.Object, _mapper);
         }
 
-        [Fact]
+        
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();
@@ -41,6 +41,7 @@ namespace IntelificioBackTest.Features.Building.Commands
         public async Task Handle_Success()
         {
             //Arrange
+            // Crear una nueva unidad agregarla al arrange
             var command = new AddUnitBuildingCommand
             {
                 BuildingId = 1,
@@ -77,7 +78,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.BuildingNotFoundOnAddUnit.Message);
+            Assert.Equal("Edificio no fue encontrado.", result.Error.Message);
         }
 
         [Fact]
@@ -99,7 +100,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.UnitNotFoundOnAddUnit.Message);
+            Assert.Equal("Unidad no fue encontrada.", result.Error.Message);
         }
 
         [Fact]
@@ -126,7 +127,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             Assert.True(result.IsFailure);
             Assert.Null(result.Response);
             Assert.Null(result.Errors);
-            Assert.Contains(result.Error.Message, BuildingErrors.UnitAlreadyExistsOnAddUnit.Message);
+            Assert.Equal("Unidad ya pertenece al Edificio indicado.", result.Error.Message);
         }
     }
 }
