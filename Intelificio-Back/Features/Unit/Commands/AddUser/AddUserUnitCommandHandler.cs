@@ -7,18 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Unit.Commands.AddUser
 {
-    public class AddUserCommandHandler : IRequestHandler<AddUserCommand, Result>
+    public class AddUserUnitCommandHandler : IRequestHandler<AddUserUnitCommand, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<AddUserCommandHandler> _logger;
+        private readonly ILogger<AddUserUnitCommandHandler> _logger;
 
-        public AddUserCommandHandler(IntelificioDbContext context, ILogger<AddUserCommandHandler> logger)
+        public AddUserUnitCommandHandler(IntelificioDbContext context, ILogger<AddUserUnitCommandHandler> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public async Task<Result> Handle(AddUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(AddUserUnitCommand request, CancellationToken cancellationToken)
         {
             var unit = await _context.Units.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.UnitId);
 

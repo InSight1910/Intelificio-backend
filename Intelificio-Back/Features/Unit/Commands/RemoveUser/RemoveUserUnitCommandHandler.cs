@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Unit.Commands.RemoveUser
 {
-    public class RemoveUserCommandHandler : IRequestHandler<RemoveUserCommand, Result>
+    public class RemoveUserUnitCommandHandler : IRequestHandler<RemoveUserUnitCommand, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<RemoveUserCommandHandler> _logger;
+        private readonly ILogger<RemoveUserUnitCommandHandler> _logger;
 
-        public RemoveUserCommandHandler(IntelificioDbContext context, ILogger<RemoveUserCommandHandler> logger)
+        public RemoveUserUnitCommandHandler(IntelificioDbContext context, ILogger<RemoveUserUnitCommandHandler> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public async Task<Result> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RemoveUserUnitCommand request, CancellationToken cancellationToken)
         {
             var unit = await _context.Units.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.UnitId);
 
@@ -27,7 +27,7 @@ namespace Backend.Features.Unit.Commands.RemoveUser
 
             if (user == null) return Result.Failure(UnitErrors.UserNotFoundRemoveUser);
 
-            if (!unit.Users.Contains(user)) return Result.Failure(UnitErrors.UserAlreadyRemoved);
+            if (!unit.Users.Contains(user)) return Result.Failure(UnitErrors.UserIsNotAssigned);
 
             unit.Users.Remove(user);
 

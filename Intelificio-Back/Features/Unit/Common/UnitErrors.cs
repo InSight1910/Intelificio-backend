@@ -21,8 +21,8 @@ namespace Backend.Features.Unit.Common
         public static Error UserNotFoundRemoveUser = new Error(
             "Unit.RemoveUser.UserNotFoundRemoveUser", "El usuario no fue encontrado");
 
-        public static Error UserAlreadyRemoved = new Error(
-            "Unit.RemoveUser.UserAlreadyRemoved", "El usuario ya ha sido eliminado");
+        public static Error UserIsNotAssigned = new Error(
+            "Unit.RemoveUser.UserIsNotAssigned", "El usuario no ha sido registrado");
 
         //-----------------------------------------------------------------------------
 

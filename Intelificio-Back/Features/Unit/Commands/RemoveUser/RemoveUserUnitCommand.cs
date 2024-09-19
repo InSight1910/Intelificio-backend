@@ -2,9 +2,9 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Backend.Features.Unit.Commands.AddUser
+namespace Backend.Features.Unit.Commands.RemoveUser
 {
-    public class AddUserCommand : IRequest<Result>
+    public class RemoveUserUnitCommand : IRequest<Result>
     {
         [JsonIgnore]
         public int? UnitId { get; set; }

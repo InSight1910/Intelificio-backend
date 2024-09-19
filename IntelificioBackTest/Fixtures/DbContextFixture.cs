@@ -180,7 +180,7 @@ namespace IntelificioBackTest.Fixtures
                     {
                         new UnitType
                         {
-                            Description = "Unidad",
+                            Description = "Departamento",
                         },
                         new UnitType
                         {

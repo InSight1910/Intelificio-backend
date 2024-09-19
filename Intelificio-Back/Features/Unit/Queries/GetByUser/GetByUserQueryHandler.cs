@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Backend.Common.Response;
+﻿using Backend.Common.Response;
 using Backend.Features.Unit.Common;
 using Backend.Models;
 using MediatR;
@@ -11,13 +10,11 @@ namespace Backend.Features.Unit.Queries.GetByUser
     {
         private readonly IntelificioDbContext _context;
         private readonly ILogger<GetByUserQueryHandler> _logger;
-        private readonly IMapper _mapper;
 
-        public GetByUserQueryHandler(IntelificioDbContext context, ILogger<GetByUserQueryHandler> logger, IMapper mapper)
+        public GetByUserQueryHandler(IntelificioDbContext context, ILogger<GetByUserQueryHandler> logger)
         {
             _context = context;
             _logger = logger;
-            _mapper = mapper;
         }
 
         public async Task<Result> Handle(GetByUserQuery request, CancellationToken cancellationToken)

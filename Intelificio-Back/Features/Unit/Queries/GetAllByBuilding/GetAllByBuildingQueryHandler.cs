@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Backend.Common.Response;
+﻿using Backend.Common.Response;
 using Backend.Features.Unit.Common;
 using Backend.Models;
 using MediatR;
@@ -11,13 +10,11 @@ namespace Backend.Features.Unit.Queries.GetAllByBuilding
     {
         private readonly IntelificioDbContext _context;
         private readonly ILogger<GetAllByBuildingQueryHandler> _logger;
-        private readonly IMapper _mapper;
 
-        public GetAllByBuildingQueryHandler(IntelificioDbContext context, ILogger<GetAllByBuildingQueryHandler> logger, IMapper mapper)
+        public GetAllByBuildingQueryHandler(IntelificioDbContext context, ILogger<GetAllByBuildingQueryHandler> logger)
         {
             _context = context;
             _logger = logger;
-            _mapper = mapper;
         }
 
         public async Task<Result> Handle(GetAllByBuildingQuery request, CancellationToken cancellationToken)
