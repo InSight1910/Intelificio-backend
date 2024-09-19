@@ -1,0 +1,48 @@
+<div class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-4 box p-6">
+          <h2
+            class="is-size-3 is-centered has-text-weight-bold login-header-title"
+          >
+            Inicio de sesión
+          </h2>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="field mt-5">
+              <label for="username" class="label">Email</label>
+              <div class="control has-icons-left">
+                <input
+                  type="text"
+                  class="input"
+                  autocomplete="email"
+                  formControlName="username"
+                  placeholder="example@email.com"
+                  id="username"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fa-regular fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="password" class="label">Contraseña</label>
+              <div class="control has-icons-left">
+                <input type="password" class="input" placeholder="*******" />
+                <span class="icon is-small is-left"
+                  ><i class="fa-solid fa-lock"></i
+                ></span>
+              </div>
+            </div>
+
+            <div class="field mt-6">
+              <div class="control">
+                <button class="button is-link">Iniciar sesion</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

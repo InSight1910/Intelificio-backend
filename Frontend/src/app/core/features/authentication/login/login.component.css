@@ -1,0 +1,9 @@
+.login-card {
+  /* width: 500px; */
+}
+
+@media (prefers-color-scheme: dark) {
+  .login-header-title {
+    color: #fff;
+  }
+}
