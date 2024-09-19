@@ -7,4 +7,10 @@
     <!-- Folder where production build objects will be placed -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist\Frontend\</PublishAssetsDirectory>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app\core\" />
+    <Folder Include="src\app\features\authentication\" />
+    <Folder Include="src\app\state\" />
+    <Folder Include="src\app\shared" />
+  </ItemGroup>
 </Project>
