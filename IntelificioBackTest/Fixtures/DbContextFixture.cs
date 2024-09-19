@@ -151,21 +151,31 @@ namespace IntelificioBackTest.Fixtures
                         {
                             Community = community1,
                             Name = "Torre 1",
+                            Floors = 10
                         },
                         new Building
                         {
                             Community = community1,
                             Name = "Torre 2",
+                            Floors = 10
                         },
                         new Building
                         {
                             Community = community2,
                             Name = "Torre 1",
+                            Floors = 10
                         },
                         new Building
                         {
                             Community = community2,
                             Name = "Torre 2",
+                            Floors = 10
+                        },
+                        new Building
+                        {
+                            Community = community2,
+                            Name = "Torre 3",
+                            Floors = 10
                         },
                     };
 
@@ -283,7 +293,6 @@ namespace IntelificioBackTest.Fixtures
                             Type = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
                             Number = "01"
                         },
-
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,

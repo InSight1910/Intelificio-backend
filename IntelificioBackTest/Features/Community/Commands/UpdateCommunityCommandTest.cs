@@ -31,6 +31,7 @@ namespace IntelificioBackTest.Features.Community.Commands
             _handler = new UpdateCommunityCommandHandler(_context, _logger.Object, _mapper);
         }
 
+        
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();
