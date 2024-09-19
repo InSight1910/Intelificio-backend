@@ -2,6 +2,6 @@
 {
     public class ResponseData
     {
-        public object Data { get; set; }
+        public required object Data { get; set; }
     }
 }

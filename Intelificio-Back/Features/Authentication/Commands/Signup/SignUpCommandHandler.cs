@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Features.Authentication.Commands.Signup
 {
-    public class SignUpCommandHandler(UserManager<User> userManager, IMapper mapper) : IRequestHandler<SignUpCommand, Result>
+    public class SignUpCommandHandler(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper) : IRequestHandler<SignUpCommand, Result>
     {
         public async Task<Result> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
@@ -27,6 +27,11 @@ namespace Backend.Features.Authentication.Commands.Signup
                 }
                 return Result.Failure(AuthenticationErrors.InvalidParameters(errors));
             }
+            var role = await roleManager.FindByNameAsync("Usuario");
+            _ = await userManager.AddToRoleAsync(user, role!.Name!);
+
+            var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            _ = await userManager.ConfirmEmailAsync(user, confirmationToken);
 
             return Result.Success();
         }

@@ -1,5 +1,4 @@
 ﻿using Backend.Common.Response;
-using Backend.Models;
 using MediatR;
 
 namespace Backend.Features.Authentication.Commands.Signup
@@ -13,7 +12,5 @@ namespace Backend.Features.Authentication.Commands.Signup
         public required string Password { get; set; }
         public required string Rut { get; set; }
         public DateTime BirthDate { get; set; }
-        public DateTime Admission { get; set; }
-        public required Role Role { get; set; }
     }
 }

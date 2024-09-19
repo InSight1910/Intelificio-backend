@@ -8,13 +8,13 @@ using Moq;
 
 namespace IntelificioBackTest.Features.Community.Commands
 {
-    public class RemoveUserCommunityCommandHandlerTest
+    public class RemoveUserCommunityCommandTest
     {
         private readonly RemoveUserCommunityCommandHandler _handler;
         private readonly IntelificioDbContext _context;
         private readonly Mock<ILogger<RemoveUserCommunityCommandHandler>> _logger;
 
-        public RemoveUserCommunityCommandHandlerTest()
+        public RemoveUserCommunityCommandTest()
         {
             _logger = new Mock<ILogger<RemoveUserCommunityCommandHandler>>();
             _context = DbContextFixture.GetDbContext();

@@ -11,11 +11,13 @@ namespace IntelificioBackTest.Features.Community.Queries
     {
         private readonly IntelificioDbContext _context;
         private readonly Mock<ILogger<GetAllByUserQueryHandler>> _logger;
+        private readonly GetAllByUserQueryHandler _handler;
 
         public GetAllByUserCommunityQueryTest()
         {
             _context = DbContextFixture.GetDbContext();
             _logger = new Mock<ILogger<GetAllByUserQueryHandler>>();
+            _handler = new GetAllByUserQueryHandler(_context, _logger.Object);
         }
 
         public void Dispose()
@@ -29,10 +31,9 @@ namespace IntelificioBackTest.Features.Community.Queries
         {
             // Arrange
             var query = new GetAllByUserQuery { UserId = 1 };
-            var handler = new GetAllByUserQueryHandler(_context, _logger.Object);
 
             // Act
-            var result = await handler.Handle(query, CancellationToken.None);
+            var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             Assert.True(result.IsFailure);
@@ -49,23 +50,17 @@ namespace IntelificioBackTest.Features.Community.Queries
             community!.Users.Add(await _context.Users.FirstAsync(x => x.Id == 1));
             _ = await _context.SaveChangesAsync();
 
-
-
             var query = new GetAllByUserQuery { UserId = 1 };
-            var handler = new GetAllByUserQueryHandler(_context, _logger.Object);
+
 
             // Act
-
-            var result = await handler.Handle(query, CancellationToken.None);
+            var result = await _handler.Handle(query, default);
 
             // Assert
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Response);
 
-            var response = result.Response;
-            Assert.NotNull(response.Data as ICollection<GetAllByUserResponse>);
-
-            var data = response.Data as ICollection<GetAllByUserResponse>;
+            var data = result.Response.Data as ICollection<GetAllByUserResponse>;
 
             Assert.NotEmpty(data!);
             Assert.Equal(1, data!.Count);
@@ -83,10 +78,9 @@ namespace IntelificioBackTest.Features.Community.Queries
 
 
             var query = new GetAllByUserQuery { UserId = 2 };
-            var handler = new GetAllByUserQueryHandler(_context, _logger.Object);
 
             // Act
-            var result = await handler.Handle(query, CancellationToken.None);
+            var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             Assert.True(result.IsSuccess);
