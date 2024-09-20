@@ -45,12 +45,25 @@
 
   </div>
 
+  @if (!notification) {
+  } @else {
+    <div class="notification is-danger">
+      <button class="delete" (click)="closeNotification()"></button>
+      No es posible eliminar Edificio, <strong>existen unidades asociadas</strong>.
+    </div>
+  }
+
   <div class="buttons">
     @if (isEdited) {
-      <button class="button is-primary">Guardar</button>
-      <button class="button is-primary"(click)="exitdit()">Cancelar</button>
+      <button type="submit"  class="button is-primary" (click)="update()">Guardar</button>
+      <button class="button is-link" (click)="exitdit()">Cancelar</button>
+    } @else if (isCreation){
+      <button type="submit"  class="button is-primary" (click)="saveCreate()">Guardar</button>
+      <button class="button is-link" (click)="exitcreation()">Cancelar</button>
     }  @else {
+      <button class="button is-primary" (click)="create()">Agregar</button>
       <button class="button is-primary" (click)="edit()">Editar</button>
+      <button class="button is-link"(click)="delete()">Eliminar</button>
     }
   </div>
-</form>
+</form> 

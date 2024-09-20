@@ -25,13 +25,15 @@ namespace Backend.Features.Building.Queries.GetAllByCommunity
             if (!checkCommunity) return Result.Failure(BuildingErrors.CommunityNotFoundOnQuery);
             var buildings = await _context.Buildings
                        .Where(b => b.Community.ID == request.CommunityId)
+                       .Where(b => b.IsDeleted == false)
                        .Select(b => new GetAllByCommunityQueryResponse
                        {
                            Id = b.ID,
                            Name = b.Name,
                            Floors = b.Floors,
                            Units = b.Units.Count(),
-                           CommunityName = b.Community.Name
+                           CommunityName = b.Community.Name,
+                           CommunityId = b.Community.ID
                        }).ToListAsync(cancellationToken: cancellationToken);
 
 

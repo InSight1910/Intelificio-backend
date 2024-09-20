@@ -12,25 +12,44 @@ import { Building } from '../../../shared/models/building.model';
 })
 export class BuildingComponent implements OnInit {
     
-    Edificios: Building[] = [];
+    Edificios: Building[] = [{
+      id: 1, 
+      name: 'Edificio 1', 
+      floors: 1, 
+      units: 10, 
+      communityId: 1, 
+      communityName: 'Comunidad de prueba' 
+    },
+    {
+      id: 2, 
+      name: 'Edificio 2', 
+      floors: 1, 
+      units: 10, 
+      communityId: 1, 
+      communityName: 'Comunidad de prueba' 
+    }];
+
     selectedBuildingId: number = 1;
+
     Edificio: Building = {
-      id: 0, 
+      id: 1, 
       name: 'Edificio de prueba', 
       floors: 1, 
       units: 10, 
-      CommunityID: 1, 
+      communityId: 1, 
       communityName: 'Comunidad de prueba' 
     };
     
     buildingForm = new FormGroup({
-      nombreEdificio: new FormControl(''),
-      pisosEdificio: new FormControl(0),
-      ComunidadEdificio: new FormControl(''),
-      CantidadUnidades: new FormControl(0)
+      nombreEdificio: new FormControl('', Validators.required),
+      pisosEdificio: new FormControl(0, Validators.required),
+      ComunidadEdificio: new FormControl('', Validators.required),
+      CantidadUnidades: new FormControl(0, Validators.required)
     });
 
     isEdited = false;
+    notification = false;
+    isCreation = false;
     
     constructor(
       private service: BuildingService
@@ -38,6 +57,7 @@ export class BuildingComponent implements OnInit {
 
     ngOnInit(): void {
         this.getNumberOfBuilding();
+        this.disableFields();
     }
 
     async getNumberOfBuilding(){
@@ -45,7 +65,6 @@ export class BuildingComponent implements OnInit {
         (response: {data: Building[]}) => {
             this.Edificios = response.data;
             if (this.Edificios.length > 0) {
-              // Seleccionar el primer edificio por defecto
               this.selectedBuildingId = this.Edificios[0].id;
               this.detail(this.selectedBuildingId);
             }
@@ -59,18 +78,19 @@ export class BuildingComponent implements OnInit {
     detail(id: number){
       this.selectedBuildingId = id; 
       this.isEdited = false;
+      this.notification = false;
       const selectedBuilding = this.Edificios?.find(building => building.id === id);
   
       if (selectedBuilding) {
         this.Edificio = selectedBuilding;
-        this.populateUserData();
+        this.populateFields();
         this.disableFields();
       } else {
         console.error('Edificio no encontrado');
       }
     }
 
-    private populateUserData(): void {
+    private populateFields(): void {
       this.buildingForm.controls['nombreEdificio'].setValue(this.Edificio.name);
       this.buildingForm.controls['pisosEdificio'].setValue(this.Edificio.floors);
       this.buildingForm.controls['CantidadUnidades'].setValue(this.Edificio.units);
@@ -87,18 +107,110 @@ export class BuildingComponent implements OnInit {
     private enableFields(){
       this.buildingForm.controls['nombreEdificio'].enable();
       this.buildingForm.controls['pisosEdificio'].enable();
-      this.buildingForm.controls['CantidadUnidades'].enable();
-      this.buildingForm.controls['ComunidadEdificio'].enable();
     }
+
+    private cleanFields(){
+      this.buildingForm.controls['nombreEdificio'].setValue('');
+      this.buildingForm.controls['nombreEdificio'].enable();
+      this.buildingForm.controls['pisosEdificio'].setValue(0);
+      this.buildingForm.controls['pisosEdificio'].enable();
+      this.buildingForm.controls['CantidadUnidades'].setValue(0);
+      this.buildingForm.controls['CantidadUnidades'].disable();
+    }
+
 
     edit(){
       this.isEdited = true;
+      this.notification = false;
       this.enableFields();
     }
 
     exitdit(){
       this.isEdited = false;
-      this.populateUserData();
+      this.notification = false;
+      this.populateFields();
       this.disableFields();
     }
+
+    exitcreation(){
+      this.isCreation = false;
+      this.isEdited = false;
+      this.notification = false;
+      this.populateFields();
+      this.disableFields();
+    }
+
+    delete(){
+      if (this.Edificio.units >= 1){
+        this.notification = true;
+      } else {
+        this.service.delete(this.Edificio.id).subscribe({
+          next: (response) => {
+            if (response.status === 200){
+              this.ngOnInit();
+            }
+          },
+          error: (error) => {
+            console.log('Error:', error);
+          }
+        });
+      }
+    }
+
+    closeNotification(){
+      this.notification = false;
+    }
+
+    update(){
+      if (this.buildingForm.valid) {
+
+        const updateBuilding = {
+          Name : this.buildingForm.controls['nombreEdificio'].value,
+          Floors : this.buildingForm.controls['pisosEdificio'].value,
+          communityId : this.Edificio.communityId
+        };
+         this.service.update(this.Edificio.id, updateBuilding).subscribe({
+          next: (response) => {
+            if (response.status === 200) {
+              this.ngOnInit();
+            }
+          },
+          error: (error) => {
+            console.log('Error:', error);
+          }
+          });
+      }
+    }
+
+    create(){
+      this.isCreation = true;
+      this.notification = false;
+      this.cleanFields();
+    }
+
+    saveCreate(){
+      if (this.buildingForm.valid) {
+        const createBuilding = {
+          Name : this.buildingForm.controls['nombreEdificio'].value,
+          Floors : this.buildingForm.controls['pisosEdificio'].value,
+          communityId : this.Edificio.communityId
+        };
+        console.log(createBuilding); 
+
+        this.service.create(createBuilding).subscribe({
+          next: (response) => {
+            if (response.status === 204) {
+              this.isCreation = false;
+              this.ngOnInit();
+            }
+          },
+          error: (error) => {
+            console.log('Error:', error);
+          }
+          });
+
+      }
+    }
+
+
 }

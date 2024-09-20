@@ -34,10 +34,10 @@ namespace Backend.Features.Building.Common
                 onFailure: BadRequest);
         }
 
-        [HttpPut("{iD}")]
-        public async Task<IActionResult> Update(int iD, [FromBody] UpdateBuildingCommand command)
+        [HttpPut("{ID}")]
+        public async Task<IActionResult> Update(int ID, [FromBody] UpdateBuildingCommand command)
         {
-            command.Id = iD;
+            command.Id = ID;
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Ok(),

@@ -1,8 +1,8 @@
 export interface Building {
     id: number;
     name: string;
-    floors: number;
+    floors: number; 
     units: number;
-    CommunityID: number;
+    communityId: number;
     communityName: string;
 }

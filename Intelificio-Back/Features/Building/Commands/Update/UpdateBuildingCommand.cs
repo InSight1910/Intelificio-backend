@@ -7,7 +7,7 @@ namespace Backend.Features.Building.Commands.Update
     public class UpdateBuildingCommand : IRequest<Result>
     {
         [JsonIgnore]
-        public required int Id { get; set; }
+        public int Id { get; set; }
         public required string Name { get; set; }
         public required int CommunityId { get; set; }
         public required int Floors { get; set; }

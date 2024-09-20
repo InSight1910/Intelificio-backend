@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Building } from '../../shared/models/building.model';
 
@@ -11,16 +11,16 @@ export class BuildingService {
   private apiUrl: string = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
-  create(building : {}): Observable<Building> {
-    return this.http.post<Building>(`${this.apiUrl}/building`,building);
+  create(building : {}): Observable<HttpResponse<any>> {
+    return this.http.post<any>(`${this.apiUrl}/building`,building,{ observe: 'response' });
   }
 
-  delete(id: number): Observable<any>{
-    return this.http.delete<any>(`${this.apiUrl}/building/${id}`)
+  delete(id: number): Observable<HttpResponse<any>>{
+    return this.http.delete<any>(`${this.apiUrl}/building/${id}`,{ observe: 'response' })
   }
 
-  update(id: number,building: {}): Observable<Building>{
-    return this.http.put<Building>(`${this.apiUrl}/building/${id}`,building)
+  update(id: number,building: {}): Observable<HttpResponse<any>>{
+    return this.http.put<any>(`${this.apiUrl}/building/${id}`,building,{ observe: 'response' })
   }
 
   getById(id: number): Observable<Building>{
