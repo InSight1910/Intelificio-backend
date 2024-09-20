@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Intelificio-Back
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelificioBackTest", "IntelificioBackTest\IntelificioBackTest.csproj", "{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}"
-EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Frontend", "Frontend\Frontend.esproj", "{0CD98E96-662D-4330-BAD0-EDCAEE74B924}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CD98E96-662D-4330-BAD0-EDCAEE74B924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CD98E96-662D-4330-BAD0-EDCAEE74B924}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD98E96-662D-4330-BAD0-EDCAEE74B924}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

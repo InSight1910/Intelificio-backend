@@ -39,6 +39,7 @@ builder.Services.AddAutoMapper(cfg =>
 {
     cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
     cfg.AddProfile<CommunityProfile>();
+    cfg.AddProfile<BuildingProfile>();
     cfg.AddProfile<UserProfile>();
 });
 
@@ -75,7 +76,19 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("All", cfg =>
+    {
+        _ = cfg
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+app.UseCors("All");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

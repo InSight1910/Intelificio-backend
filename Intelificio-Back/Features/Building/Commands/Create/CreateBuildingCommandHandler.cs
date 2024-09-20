@@ -33,6 +33,7 @@ namespace Backend.Features.Building.Commands.Create
             building.Community = community;
 
             await _context.Buildings.AddAsync(building);
+            await _context.SaveChangesAsync();
 
             return Result.Success();
            
