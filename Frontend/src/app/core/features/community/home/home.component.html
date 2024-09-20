@@ -1,0 +1,64 @@
+<div class="card mt-6">
+  <div class="card-header">
+    <div class="card-header-title">Modificar comunidad</div>
+  </div>
+  <div class="card-content">
+    <div class="content">
+      <form [formGroup]="form">
+        <div class="field">
+          <label for="" class="label">Administrador</label>
+          <div class="control">
+            <input type="text" class="input" formControlName="adminName" />
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control is-expanded">
+            <label for="" class="label">Nombre</label>
+            <input type="text" class="input" formControlName="name" />
+          </div>
+          <div class="control is-expanded">
+            <label for="" class="label">Direccion</label>
+            <input type="text" class="input" formControlName="address" />
+          </div>
+        </div>
+        <div class="field is-grouped">
+          <div class="control is-expanded">
+            <label for="" class="label">Region</label>
+            <input type="text" class="input" formControlName="regionId" />
+          </div>
+          <div class="control is-expanded">
+            <label for="" class="label">Ciudad</label>
+            <input type="text" class="input" formControlName="cityId" />
+          </div>
+          <div class="control is-expanded">
+            <label for="" class="label">Region</label>
+            <input type="text" class="input" formControlName="regionId" />
+          </div>
+        </div>
+
+        @if (errors | async) {
+        <article class="message is-danger">
+          <div class="message-body">
+            @for (error of (errors | async); track $index){
+            <p>{{ error }}</p>
+            }
+          </div>
+        </article>
+        }
+        <div class="field">
+          <div class="control">
+            <button
+              class="button is-primary is-fullwidth"
+              [ngClass]="{ 'is-loading': isLoading | async }"
+              (click)="onClick()"
+            >
+              Modificar
+            </button>
+          </div>
+        </div>
+        <input type="hidden" formControlName="id" />
+      </form>
+    </div>
+  </div>
+</div>

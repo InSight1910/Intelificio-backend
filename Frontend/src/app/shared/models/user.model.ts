@@ -1,12 +1,12 @@
 export interface User {
-  id: number;
+  sub: number;
   email: string;
-  name: string;
+  given_name: string;
   role: string;
 }
 
 export interface AuthState {
   user: User | null;
   loading: boolean;
-  error: string | null;
+  error: string[] | null;
 }

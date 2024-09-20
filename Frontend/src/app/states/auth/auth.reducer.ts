@@ -1,9 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
-import * as AuthActions from './auth.actions';
+import { AuthActions } from './auth.actions';
 import { AuthState } from '../../shared/models/user.model';
+import { jwtDecode } from 'jwt-decode';
 
 export const initialState: AuthState = {
-  user: null,
+  user: localStorage.getItem('token')
+    ? jwtDecode(localStorage.getItem('token')!)
+    : null,
   loading: false,
   error: null,
 };
@@ -27,7 +30,7 @@ export const authReducer = createReducer(
     loading: false,
     error,
   })),
-  on(AuthActions.logout, (state) => ({
+  on(AuthActions.logout, (state,) => ({
     ...state,
     user: null,
   }))

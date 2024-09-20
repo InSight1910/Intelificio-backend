@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
-import { Login } from '../../shared/models/auth.model';
+import { environment } from '../../../../environments/environment.development';
+import { Login } from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -14,11 +14,11 @@ export class AuthService {
 
   login(email: string, password: string): Observable<Login> {
     return this.http
-      .post<Login>(`${this.apiUrl}/login`, { email, password })
+      .post<Login>(`${this.apiUrl}/auth/login`, { email, password })
       .pipe(
         map((response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('refreshToken', response.refreshToken);
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
           return response;
         })
       );
@@ -27,5 +27,6 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('community');
   }
 }
