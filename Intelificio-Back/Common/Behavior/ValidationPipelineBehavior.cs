@@ -9,7 +9,6 @@ namespace Backend.Common.Behavior
         where TRequest : IRequest<TResponse>
 
 
-
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 

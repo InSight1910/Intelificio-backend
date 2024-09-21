@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Backend.Common.Profiles;
 using Backend.Features.Buildings.Queries.GetById;
+using Backend.Features.Community.Queries.GetById;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;

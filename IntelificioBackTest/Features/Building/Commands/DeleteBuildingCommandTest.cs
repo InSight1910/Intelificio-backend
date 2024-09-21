@@ -1,4 +1,5 @@
 ﻿using Backend.Features.Buildings.Commands.Delete;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;

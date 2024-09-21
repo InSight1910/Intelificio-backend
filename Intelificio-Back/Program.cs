@@ -39,6 +39,7 @@ builder.Services.AddAutoMapper(cfg =>
 {
     cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
     cfg.AddProfile<CommunityProfile>();
+    cfg.AddProfile<BuildingProfile>();
     cfg.AddProfile<UserProfile>();
     cfg.AddProfile<LocationProfile>();
 });
@@ -74,6 +75,17 @@ builder.Services.AddValidatorsFromAssembly(typeof(CreateCommunityCommandValidato
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("All", cfg =>
+    {
+        _ = cfg
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddCors(options =>
 {
