@@ -3,6 +3,9 @@ version: '3.4'
 services:
   backend:
     image: ${DOCKER_REGISTRY-}backend
+    ports:
+      - "8080:8080"
+      - "8081:8081"
     build:
       context: .
       dockerfile: Intelificio-Back/Dockerfile
