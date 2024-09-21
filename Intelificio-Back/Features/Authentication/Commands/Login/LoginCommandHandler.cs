@@ -33,6 +33,9 @@ namespace Backend.Features.Authentication.Commands.Login
 
             var role = await userManager.GetRolesAsync(user);
 
+            // TODO: Validar que rol no venga vacio, de venir vacio, arrojar error -----> Esta arrojando excepcion
+
+
             string token = tokenProvider.CreateToken(user, role.FirstOrDefault());
             string refreshToken = tokenProvider.CreateRefreshToken();
 

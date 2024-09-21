@@ -19,14 +19,15 @@ namespace Backend.Features.Community.Queries.GetById
 
         public async Task<Result> Handle(GetByIdCommunityQuery request, CancellationToken cancellationToken)
         {
-            var community = await _context.Community.Where(x => x.ID == request.Id).Select(x => new GetByIdCommunityResponse
+            var community = await _context.Community.Include(x => x.Users).ThenInclude(u => u.Role).Where(x => x.ID == request.Id).Select(x => new GetByIdCommunityResponse
             {
                 Id = x.ID,
                 Address = x.Address,
                 MunicipalityId = x.Municipality.ID,
                 CityId = x.Municipality.City.ID,
                 RegionId = x.Municipality.City.Region.ID,
-                Name = x.Name
+                Name = x.Name,
+                AdminName = x.Users.Where(user => user.Role.Name == "Administrador" && user.Communities.Any(c => c.ID == user.Id)).Select(u => string.Format("{0} {1}", u.FirstName, u.LastName)).FirstOrDefault() ?? "Sin Administrador"
             }).FirstOrDefaultAsync();
 
             if (community is null) return Result.Failure(CommunityErrors.CommunityNotFoundGetByID);
