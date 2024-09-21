@@ -37,8 +37,8 @@
             />
           </div>
         </div>
-        <div class="field is-grouped">
-          <div class="select is-expanded">
+        <div class="field">
+          <div class="select">
             <select
               (change)="onChangeRegion($event)"
               formControlName="regionId"
@@ -50,7 +50,9 @@
               }
             </select>
           </div>
-          <div class="select is-expanded">
+        </div>
+        <div class="field">
+          <div class="select">
             <select
               (change)="onChangeCity($event)"
               formControlName="cityId"
@@ -62,7 +64,9 @@
               }
             </select>
           </div>
-          <div class="select is-expanded">
+        </div>
+        <div class="field">
+          <div class="select">
             <select
               formControlName="municipalityId"
               [ngClass]="{ 'is-skeleton': loadingLocation }"

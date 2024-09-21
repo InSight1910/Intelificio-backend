@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import { Login } from '../../../shared/models/auth.model';
+import { Login, UserEmail } from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -28,5 +28,12 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('community');
+  }
+
+  getUserByEmail(email: string) {
+    return this.http.post<{ data: UserEmail }>(
+      `${this.apiUrl}/auth/user/byEmail`,
+      { email }
+    );
   }
 }

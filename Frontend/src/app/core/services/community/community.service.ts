@@ -37,4 +37,11 @@ export class CommunityService {
       `${this.baseUrl}/community/${communityId}/users`
     );
   }
+
+  addUserToCommunity(communityId: number, userId: number) {
+    return this.http.put(
+      `${this.baseUrl}/community/add/${communityId}/${userId}`,
+      {}
+    );
+  }
 }

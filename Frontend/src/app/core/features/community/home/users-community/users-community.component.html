@@ -1,4 +1,7 @@
-<h3 class="title is-3">Usuarios</h3>
+<div class="level">
+  <h3 class="title is-3">Usuarios</h3>
+  <app-add-user-modal />
+</div>
 @if (isLoading) {
 <div class="skeleton-lines">
   <div></div>
@@ -16,6 +19,7 @@
       <th>Numero Telefonico</th>
       <th>Cantidad de Unidades</th>
       <th>Role</th>
+      <th>Eliminar</th>
     </tr>
   </thead>
 
@@ -36,6 +40,7 @@
           {{ user.role }}
         </span>
       </td>
+      <td><button class="button is-danger" (click)="onClickDeleting()" [ngClass]="{'is-loading' : isDeleting}">Eliminar</button></td>
     </tr>
     }
   </tbody>
