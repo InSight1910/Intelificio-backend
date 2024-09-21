@@ -25,6 +25,7 @@
         <input class="input" id="nombrecomunidad" type="text" formControlName="ComunidadEdificio" />
       </label>
     </div>
+
   </div>
 
   <div class="columns">
@@ -53,12 +54,30 @@
     </div>
   }
 
+  @if (postUpdateOrCreate && isCreation) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()" ></button>
+      Edificio creado exitosamente.
+    </div>
+  } @else if (postUpdateOrCreate && isEdited) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()" ></button>
+      Edificio actualizado exitosamente.
+    </div>
+  } @else if (postUpdateOrCreate && isDeletion) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()" ></button>
+      Edificio eliminado exitosamente.
+    </div>
+  }
+
+
   <div class="buttons">
     @if (isEdited) {
-      <button type="submit"  class="button is-primary" (click)="update()">Guardar</button>
+      <button type="submit"  class="button is-primary" (click)="update()" [disabled]="!buildingForm.valid">Guardar</button>
       <button class="button is-link" (click)="exitdit()">Cancelar</button>
     } @else if (isCreation){
-      <button type="submit"  class="button is-primary" (click)="saveCreate()">Guardar</button>
+      <button type="submit"  class="button is-primary" (click)="saveCreate()" [disabled]="!buildingForm.valid">Guardar</button>
       <button class="button is-link" (click)="exitcreation()">Cancelar</button>
     }  @else {
       <button class="button is-primary" (click)="create()">Agregar</button>
@@ -66,4 +85,5 @@
       <button class="button is-link"(click)="delete()">Eliminar</button>
     }
   </div>
+
 </form> 

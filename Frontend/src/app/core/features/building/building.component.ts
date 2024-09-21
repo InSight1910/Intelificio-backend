@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup,Validators, FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { FormControl, FormGroup,Validators,ReactiveFormsModule} from '@angular/forms';
 import { BuildingService } from '../../services/building.service';
 import { Building } from '../../../shared/models/building.model';
 
@@ -14,7 +14,7 @@ export class BuildingComponent implements OnInit {
     
     Edificios: Building[] = [{
       id: 1, 
-      name: 'Edificio 1', 
+      name: 'Edificio Test 1', 
       floors: 1, 
       units: 10, 
       communityId: 1, 
@@ -22,18 +22,16 @@ export class BuildingComponent implements OnInit {
     },
     {
       id: 2, 
-      name: 'Edificio 2', 
+      name: 'Edificio Test 2', 
       floors: 1, 
       units: 10, 
       communityId: 1, 
       communityName: 'Comunidad de prueba' 
     }];
 
-    selectedBuildingId: number = 1;
-
     Edificio: Building = {
       id: 1, 
-      name: 'Edificio de prueba', 
+      name: 'Edificio Test 1', 
       floors: 1, 
       units: 10, 
       communityId: 1, 
@@ -42,20 +40,26 @@ export class BuildingComponent implements OnInit {
     
     buildingForm = new FormGroup({
       nombreEdificio: new FormControl('', Validators.required),
-      pisosEdificio: new FormControl(0, Validators.required),
+      pisosEdificio: new FormControl(0 , [Validators.required, Validators.min(1)]),
       ComunidadEdificio: new FormControl('', Validators.required),
       CantidadUnidades: new FormControl(0, Validators.required)
     });
 
     isEdited = false;
+    isDeletion = false;
     notification = false;
     isCreation = false;
+    postUpdateOrCreate = false;
+    selectedBuildingId: number = 1;
+    createdMessage: string = 'Edificio creado.';
+    updatedMessage: string = 'Edificio actualizado.';
     
     constructor(
       private service: BuildingService
     ){}
 
     ngOnInit(): void {
+        this.populateFields();
         this.getNumberOfBuilding();
         this.disableFields();
     }
@@ -73,21 +77,6 @@ export class BuildingComponent implements OnInit {
           console.error('Error al obtener edificios', error);
         }
       );
-    }
-
-    detail(id: number){
-      this.selectedBuildingId = id; 
-      this.isEdited = false;
-      this.notification = false;
-      const selectedBuilding = this.Edificios?.find(building => building.id === id);
-  
-      if (selectedBuilding) {
-        this.Edificio = selectedBuilding;
-        this.populateFields();
-        this.disableFields();
-      } else {
-        console.error('Edificio no encontrado');
-      }
     }
 
     private populateFields(): void {
@@ -118,16 +107,33 @@ export class BuildingComponent implements OnInit {
       this.buildingForm.controls['CantidadUnidades'].disable();
     }
 
+    detail(id: number){
+      this.selectedBuildingId = id; 
+      this.isEdited = false;
+      this.isCreation = false;
+      this.notification = false;
+      const selectedBuilding = this.Edificios?.find(building => building.id === id);
+  
+      if (selectedBuilding) {
+        this.Edificio = selectedBuilding;
+        this.populateFields();
+        this.disableFields();
+      } else {
+        console.error('Edificio no encontrado');
+      }
+    }
 
     edit(){
       this.isEdited = true;
       this.notification = false;
+      this.postUpdateOrCreate = false;
       this.enableFields();
     }
 
     exitdit(){
       this.isEdited = false;
       this.notification = false;
+      this.postUpdateOrCreate = false;
       this.populateFields();
       this.disableFields();
     }
@@ -136,29 +142,18 @@ export class BuildingComponent implements OnInit {
       this.isCreation = false;
       this.isEdited = false;
       this.notification = false;
+      this.postUpdateOrCreate = false;
       this.populateFields();
       this.disableFields();
     }
 
-    delete(){
-      if (this.Edificio.units >= 1){
-        this.notification = true;
-      } else {
-        this.service.delete(this.Edificio.id).subscribe({
-          next: (response) => {
-            if (response.status === 200){
-              this.ngOnInit();
-            }
-          },
-          error: (error) => {
-            console.log('Error:', error);
-          }
-        });
-      }
-    }
-
     closeNotification(){
       this.notification = false;
+      this.isCreation = false;
+      this.isEdited = false;
+      this.postUpdateOrCreate = false;
+      this.isDeletion = false;
+      this.postUpdateOrCreate = false;
     }
 
     update(){
@@ -172,7 +167,12 @@ export class BuildingComponent implements OnInit {
          this.service.update(this.Edificio.id, updateBuilding).subscribe({
           next: (response) => {
             if (response.status === 200) {
-              this.ngOnInit();
+              this.postUpdateOrCreate = true;
+              setTimeout(() => {
+                this.isEdited = false;
+                this.postUpdateOrCreate = false;
+                this.ngOnInit();
+              }, 3000);
             }
           },
           error: (error) => {
@@ -185,6 +185,7 @@ export class BuildingComponent implements OnInit {
     create(){
       this.isCreation = true;
       this.notification = false;
+      this.postUpdateOrCreate = false;
       this.cleanFields();
     }
 
@@ -200,8 +201,12 @@ export class BuildingComponent implements OnInit {
         this.service.create(createBuilding).subscribe({
           next: (response) => {
             if (response.status === 204) {
-              this.isCreation = false;
-              this.ngOnInit();
+              this.postUpdateOrCreate = true;
+              setTimeout(() => {
+                this.isCreation = false;
+                this.postUpdateOrCreate = false;
+                this.ngOnInit();
+              }, 3000);
             }
           },
           error: (error) => {
@@ -212,5 +217,27 @@ export class BuildingComponent implements OnInit {
       }
     }
 
-
+    delete(){
+      if (this.Edificio.units >= 1){
+        this.notification = true;
+      } else {
+        this.service.delete(this.Edificio.id).subscribe({
+          next: (response) => {
+            if (response.status === 200){
+              this.postUpdateOrCreate = true;
+              this.isDeletion = true;
+              setTimeout(() => {
+                this.isCreation = false;
+                this.isDeletion = false;
+                this.postUpdateOrCreate = false;
+                this.ngOnInit();
+              }, 3000);
+            }
+          },
+          error: (error) => {
+            console.log('Error:', error);
+          }
+        });
+      }
+    }
 }
