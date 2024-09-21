@@ -25,7 +25,6 @@ namespace Backend.Features.Building.Queries.GetAllByCommunity
             if (!checkCommunity) return Result.Failure(BuildingErrors.CommunityNotFoundOnQuery);
             var buildings = await _context.Buildings
                        .Where(b => b.Community.ID == request.CommunityId)
-                       .Where(b => b.IsDeleted == false)
                        .Select(b => new GetAllByCommunityQueryResponse
                        {
                            Id = b.ID,
