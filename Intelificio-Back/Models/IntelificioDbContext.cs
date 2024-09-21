@@ -126,9 +126,6 @@ namespace Backend.Models
                 _ = entity.HasMany(p => p.Charges)
                       .WithOne(p => p.Community);
 
-                _ = entity.HasOne(p => p.Municipality)
-                      .WithMany(p => p.Community);
-
                 _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 

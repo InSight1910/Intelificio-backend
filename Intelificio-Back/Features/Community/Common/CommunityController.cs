@@ -7,6 +7,7 @@ using Backend.Features.Community.Commands.Update;
 using Backend.Features.Community.Queries.GetAll;
 using Backend.Features.Community.Queries.GetAllByUser;
 using Backend.Features.Community.Queries.GetById;
+using Backend.Features.Community.Queries.GetUsersByCommunity;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,17 @@ namespace Backend.Features.Community.Common
         public async Task<IActionResult> GetAllByUser(int userId)
         {
             var query = new GetAllByUserQuery { UserId = userId };
+
+            var result = await mediator.Send(query);
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: NotFound);
+        }
+
+        [HttpGet("{communityId}/users")]
+        public async Task<IActionResult> GetUsersByCommunity(int communityId)
+        {
+            var query = new GetUsersByCommunityQuery { CommunityId = communityId };
 
             var result = await mediator.Send(query);
             return result.Match<IActionResult>(
@@ -50,7 +62,7 @@ namespace Backend.Features.Community.Common
             var result = await mediator.Send(new AddUserCommunityCommand { CommunityId = id, UserId = userId });
             return result.Match<IActionResult>(
                 onSuccess: response => Ok(response),
-                onFailure: NotFound
+                onFailure: error => NotFound(error)
                 );
         }
 

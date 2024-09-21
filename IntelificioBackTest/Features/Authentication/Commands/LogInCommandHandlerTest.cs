@@ -16,6 +16,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<UserManager<User>> _userManager;
+        private readonly Mock<SignInManager<User>> _signInManager;
         private readonly TokenProvider _tokenProvider;
         private readonly LoginCommandHandler _handler;
         private readonly Mock<IConfiguration> _config;
@@ -36,10 +37,11 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             });
             _mapper = new Mapper(mapperConfig);
             _userManager = UserManagerMock.CreateUserManager();
+            _signInManager = new Mock<SignInManager<User>>();
             _config = ConfigMock.CreateConfigMock();
             ConfigureConfiguration(_config);
             _tokenProvider = new TokenProvider(_config.Object);
-            _handler = new LoginCommandHandler(_userManager.Object, _tokenProvider, _config.Object);
+            _handler = new LoginCommandHandler(_userManager.Object, _signInManager.Object, _tokenProvider, _config.Object);
         }
 
         [Fact]

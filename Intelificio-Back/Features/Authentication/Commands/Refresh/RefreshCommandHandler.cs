@@ -48,8 +48,9 @@ namespace Backend.Features.Authentication.Commands.Refresh
                 }
             }
 
+            var role = (await userManager.GetRolesAsync(user)).FirstOrDefault();
 
-            var newToken = tokenProvider.CreateToken(user);
+            var newToken = tokenProvider.CreateToken(user, role);
             var refreshToken = tokenProvider.CreateRefreshToken();
 
             user.RefreshToken = refreshToken;

@@ -24,9 +24,9 @@ namespace Backend.Features.Unit.Queries.GetByID
                 .Include(x => x.UnitType)
                 .Select(x => new GetByIDQueryResponse
                     {
-                        UnitType = x.UnitType,
+                        UnitType = x.UnitType.Description,
                         Number = x.Number,
-                        Building = x.Building,
+                        Building = x.Building.Name,
                         Floor = x.Floor,
                         Surface = x.Surface
                     })

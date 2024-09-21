@@ -11,7 +11,7 @@ namespace Backend.Common.Security
 {
     public class TokenProvider(IConfiguration _configuration)
     {
-        public string CreateToken(User user)
+        public string CreateToken(User user, string role)
         {
             string secretKey = _configuration.GetValue<string>("Jwt:Secret") ?? "";
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -22,7 +22,9 @@ namespace Backend.Common.Security
             {
                 Subject = new ClaimsIdentity([
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+                    new Claim(JwtRegisteredClaimNames.GivenName, string.Format("{0} {1}", user.FirstName, user.LastName)),
+                    new Claim("role", role)
                 ]),
                 Expires = DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Jwt:TokenExpirationInMinutes")),
                 SigningCredentials = credentials,

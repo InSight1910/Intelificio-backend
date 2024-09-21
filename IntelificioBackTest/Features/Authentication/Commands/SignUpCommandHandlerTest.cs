@@ -14,6 +14,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<UserManager<User>> _userManager;
+        private readonly Mock<RoleManager<Role>> _roleManager;
         private readonly SignUpCommandHandler _handler;
         public SignUpCommandHandlerTest()
         {
@@ -23,8 +24,8 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             });
             _mapper = new Mapper(mapperConfig);
             _userManager = UserManagerMock.CreateUserManager();
-
-            _handler = new SignUpCommandHandler(_userManager.Object, _mapper);
+            _roleManager = new Mock<RoleManager<Role>>();
+            _handler = new SignUpCommandHandler(_userManager.Object, _roleManager.Object, _mapper);
         }
 
         [Fact]
@@ -39,10 +40,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                 Password = "Test",
                 PhoneNumber = "123",
                 Rut = "123",
-                Role = new Role
-                {
-                    Name = "Role"
-                }
+
             };
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                         .ReturnsAsync(UserFixture.GetUserTest());
@@ -68,10 +66,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                 Password = "Test",
                 PhoneNumber = "123",
                 Rut = "123",
-                Role = new Role
-                {
-                    Name = "Role"
-                }
+
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
@@ -99,11 +94,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                 LastName = "LastTest",
                 Password = "Test",
                 PhoneNumber = "123",
-                Rut = "123",
-                Role = new Role
-                {
-                    Name = "Role"
-                }
+                Rut = "123"
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))

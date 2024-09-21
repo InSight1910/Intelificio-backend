@@ -2,6 +2,7 @@
 using Backend.Features.Authentication.Commands.Login;
 using Backend.Features.Authentication.Commands.Refresh;
 using Backend.Features.Authentication.Commands.Signup;
+using Backend.Features.Authentication.Queries.GetUserByEmail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,15 @@ namespace Backend.Features.Authentication.Common
             return result.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
+        }
+
+        [HttpPost("user/byEmail")]
+        public async Task<IActionResult> GetUserByEmail([FromBody] GetUserByEmailQuery query)
+        {
+            var result = await mediator.Send(query);
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: NotFound);
         }
     }
 }

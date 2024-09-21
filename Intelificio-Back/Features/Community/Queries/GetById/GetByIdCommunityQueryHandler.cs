@@ -21,6 +21,7 @@ namespace Backend.Features.Community.Queries.GetById
         {
             var community = await _context.Community.Where(x => x.ID == request.Id).Select(x => new GetByIdCommunityResponse
             {
+                Id = x.ID,
                 Address = x.Address,
                 MunicipalityId = x.Municipality.ID,
                 CityId = x.Municipality.City.ID,
