@@ -2,7 +2,7 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Backend.Features.Building.Commands.AddUnit
+namespace Backend.Features.Buildings.Commands.AddUnit
 {
     public class AddUnitBuildingCommand : IRequest<Result>
     {

@@ -1,7 +1,7 @@
 ﻿using Backend.Common.Response;
 using MediatR;
 
-namespace Backend.Features.Building.Commands.Create
+namespace Backend.Features.Buildings.Commands.Create
 {
     public class CreateBuildingCommand : IRequest<Result>
     {

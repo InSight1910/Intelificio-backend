@@ -1,15 +1,15 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Building.Commands.AddUnit;
-using Backend.Features.Building.Commands.Create;
-using Backend.Features.Building.Commands.Delete;
-using Backend.Features.Building.Commands.RemoveUnit;
-using Backend.Features.Building.Commands.Update;
-using Backend.Features.Building.Queries.GetAllByCommunity;
-using Backend.Features.Building.Queries.GetById;
+using Backend.Features.Buildings.Commands.AddUnit;
+using Backend.Features.Buildings.Commands.Create;
+using Backend.Features.Buildings.Commands.Delete;
+using Backend.Features.Buildings.Commands.RemoveUnit;
+using Backend.Features.Buildings.Commands.Update;
+using Backend.Features.Buildings.Queries.GetAllByCommunity;
+using Backend.Features.Buildings.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Features.Building.Common
+namespace Backend.Features.Buildings.Common
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
-using Backend.Features.Building.Common;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Building.Commands.Update
+namespace Backend.Features.Buildings.Commands.Update
 {
-    public class UpdateBuildigCommandHandler : IRequestHandler<UpdateBuildingCommand,Result>
+    public class UpdateBuildigCommandHandler : IRequestHandler<UpdateBuildingCommand, Result>
     {
 
         private readonly IntelificioDbContext _context;
@@ -29,7 +29,7 @@ namespace Backend.Features.Building.Commands.Update
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
             if (community == null) return Result.Failure(BuildingErrors.CommunityNotFoundOnUpdate);
 
-            if (request.Floors <= 0 ) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnUpdate);
+            if (request.Floors <= 0) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnUpdate);
 
             building = _mapper.Map(request, building);
             _ = _context.Buildings.Update(building);

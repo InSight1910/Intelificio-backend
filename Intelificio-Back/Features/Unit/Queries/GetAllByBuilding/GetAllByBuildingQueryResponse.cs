@@ -6,7 +6,7 @@ namespace Backend.Features.Unit.Queries.GetAllByBuilding
     {
         public required UnitType UnitType { get; set; }
         public required string Number { get; set; }
-        public required Building Building { get; set; }
+        public required Models.Building Building { get; set; }
         public required int Floor { get; set; }
         public required float Surface { get; set; }
     }

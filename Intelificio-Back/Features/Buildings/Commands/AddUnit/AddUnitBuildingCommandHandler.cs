@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
-using Backend.Features.Building.Common;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Building.Commands.AddUnit
+namespace Backend.Features.Buildings.Commands.AddUnit
 {
     public class AddUnitBuildingCommandHandler : IRequestHandler<AddUnitBuildingCommand, Result>
     {
@@ -20,10 +20,10 @@ namespace Backend.Features.Building.Commands.AddUnit
             _mapper = mapper;
         }
 
-        public async Task<Result> Handle(AddUnitBuildingCommand request, CancellationToken cancellationToken) 
-        { 
+        public async Task<Result> Handle(AddUnitBuildingCommand request, CancellationToken cancellationToken)
+        {
             var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
-            if (building == null ) return Result.Failure(BuildingErrors.BuildingNotFoundOnAddUnit);
+            if (building == null) return Result.Failure(BuildingErrors.BuildingNotFoundOnAddUnit);
 
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.UnitId);
             if (unit == null) return Result.Failure(BuildingErrors.UnitNotFoundOnAddUnit);

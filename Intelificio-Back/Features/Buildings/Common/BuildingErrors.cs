@@ -1,12 +1,12 @@
 ﻿using Backend.Common.Response;
 
-namespace Backend.Features.Building.Common
+namespace Backend.Features.Buildings.Common
 {
     public class BuildingErrors
     {
         // Errores de  Create
         public static Error BuildingWithoutFloorsOnCreate = new("Building.Create.BuildingWithoutFloorsOnCreate", "El edificio debe tener al menos 1 piso asignado.");
-        public static Error CommunityNotFoundOnCreate = new("Building.Create.CommunityNotFoundOnCreate","Comunidad no fue encontrada.");
+        public static Error CommunityNotFoundOnCreate = new("Building.Create.CommunityNotFoundOnCreate", "Comunidad no fue encontrada.");
 
         // Errores de  Delete
         public static Error BuildingNotFoundOnDelete = new("Building.Delete.BuildingNotFound", "Edificio no fue encontrado.");
@@ -31,6 +31,6 @@ namespace Backend.Features.Building.Common
         public static Error CommunityNotFoundOnQuery = new("Building.GetAllByCommunity.CommunityNotFoundOnQuery", "Comunidad no fue encontrada.");
         public static Error BuildingNotFoundOnQuery = new("Building.GetbyId.BuildingNotFoundOnQuery", "Edificio no fue encontrado.");
 
-        
+
     }
 }

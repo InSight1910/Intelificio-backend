@@ -2,7 +2,7 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Backend.Features.Building.Commands.RemoveUnit
+namespace Backend.Features.Buildings.Commands.RemoveUnit
 {
     public class RemoveUnitBuildingCommand : IRequest<Result>
     {

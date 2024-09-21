@@ -8,6 +8,6 @@ namespace Backend.Features.Unit.Queries.GetByUser
         public required int Floor { get; set; }
         public required float Surface { get; set; }
         public required UnitType UnitType { get; set; }
-        public required Building Building { get; set; }
+        public required Models.Building Building { get; set; }
     }
 }

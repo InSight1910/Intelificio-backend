@@ -2,7 +2,7 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Backend.Features.Building.Commands.Update
+namespace Backend.Features.Buildings.Commands.Update
 {
     public class UpdateBuildingCommand : IRequest<Result>
     {

@@ -4,7 +4,7 @@ using Backend.Features.Unit.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+
 
 namespace Backend.Features.Unit.Commands.Update
 {
@@ -24,7 +24,7 @@ namespace Backend.Features.Unit.Commands.Update
         public async Task<Result> Handle(UpdateUnitCommand request, CancellationToken cancellationToken)
         {
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.Id);
-           
+
             if (unit is null) return Result.Failure(UnitErrors.UnitNotFoundUpdate);
 
             unit = _mapper.Map(request, unit);
@@ -53,7 +53,7 @@ namespace Backend.Features.Unit.Commands.Update
 
             if (building is not null) unit.Building = building;
 
-            await _context.SaveChangesAsync();
+            _ = await _context.SaveChangesAsync();
             return Result.Success();
         }
     }

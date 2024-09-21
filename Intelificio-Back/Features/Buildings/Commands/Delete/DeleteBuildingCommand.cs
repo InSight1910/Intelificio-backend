@@ -2,7 +2,7 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Backend.Features.Building.Commands.Delete
+namespace Backend.Features.Buildings.Commands.Delete
 {
     public class DeleteBuildingCommand : IRequest<Result>
     {

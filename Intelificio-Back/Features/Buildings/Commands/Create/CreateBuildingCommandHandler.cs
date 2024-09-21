@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
-using Backend.Features.Building.Common;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Building.Commands.Create
+namespace Backend.Features.Buildings.Commands.Create
 {
     public class CreateBuildingCommandHandler : IRequestHandler<CreateBuildingCommand, Result>
     {
@@ -24,18 +24,18 @@ namespace Backend.Features.Building.Commands.Create
         {
 
             if (request.Floors <= 0) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnCreate);
-           
+
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
 
-            if(community is null) return Result.Failure(BuildingErrors.CommunityNotFoundOnCreate);
+            if (community is null) return Result.Failure(BuildingErrors.CommunityNotFoundOnCreate);
 
             var building = _mapper.Map<Models.Building>(request);
             building.Community = community;
 
-            await _context.Buildings.AddAsync(building);
+            _ = await _context.Buildings.AddAsync(building);
 
             return Result.Success();
-           
+
         }
     }
 }

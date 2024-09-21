@@ -1,4 +1,4 @@
-﻿namespace Backend.Features.Building.Queries.GetAllByCommunity
+﻿namespace Backend.Features.Buildings.Queries.GetAllByCommunity
 {
     public class GetAllByCommunityQueryResponse
     {

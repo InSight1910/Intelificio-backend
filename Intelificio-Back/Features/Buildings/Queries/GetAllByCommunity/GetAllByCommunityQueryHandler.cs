@@ -1,16 +1,16 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Building.Common;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Building.Queries.GetAllByCommunity
+namespace Backend.Features.Buildings.Queries.GetAllByCommunity
 {
     public class GetAllByCommunityQueryHandler : IRequestHandler<GetAllByCommunityQuery, Result>
     {
         private readonly IntelificioDbContext _context;
         private readonly ILogger<GetAllByCommunityQueryHandler> _logger;
-        
+
         public GetAllByCommunityQueryHandler(IntelificioDbContext context, ILogger<GetAllByCommunityQueryHandler> logger)
         {
             _context = context;

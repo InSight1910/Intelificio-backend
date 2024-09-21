@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
-using Backend.Features.Building.Common;
-using Backend.Features.Community.Queries.GetAllByUser;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Building.Queries.GetById
+namespace Backend.Features.Buildings.Queries.GetById
 {
     public class GetByIDQueryHandler : IRequestHandler<GetByIDQuery, Result>
     {

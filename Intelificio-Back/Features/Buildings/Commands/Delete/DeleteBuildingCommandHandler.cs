@@ -1,16 +1,16 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Building.Common;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Building.Commands.Delete
+namespace Backend.Features.Buildings.Commands.Delete
 {
     public class DeleteBuildingCommandHandler : IRequestHandler<DeleteBuildingCommand, Result>
     {
         private readonly IntelificioDbContext _context;
         private readonly ILogger<DeleteBuildingCommandHandler> _logger;
-        
+
         public DeleteBuildingCommandHandler(IntelificioDbContext context, ILogger<DeleteBuildingCommandHandler> logger)
         {
             _context = context;
@@ -19,14 +19,14 @@ namespace Backend.Features.Building.Commands.Delete
 
         public async Task<Result> Handle(DeleteBuildingCommand request, CancellationToken cancellationToken)
         {
-           var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.Id);
-       
-           if (building == null) return Result.Failure(BuildingErrors.BuildingNotFoundOnDelete);
+            var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.Id);
 
-           if (building.Units.Count >= 1) return Result.Failure(BuildingErrors.HasAssignedUnitsOnDelete); 
+            if (building == null) return Result.Failure(BuildingErrors.BuildingNotFoundOnDelete);
 
-            _context.Buildings.Remove(building);
-            await _context.SaveChangesAsync();
+            if (building.Units.Count >= 1) return Result.Failure(BuildingErrors.HasAssignedUnitsOnDelete);
+
+            _ = _context.Buildings.Remove(building);
+            _ = await _context.SaveChangesAsync();
             return Result.Success();
         }
 
