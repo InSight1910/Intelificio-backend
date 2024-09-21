@@ -16,12 +16,13 @@ export const routes: Routes = [
   {
     path: 'Edificios',
     component: BuildingComponent
-  }
+  },
   // {
   //   path: '**',
   //   redirectTo: 'login',
   // },
-    path: 'select-community',
+  {
+  path: 'select-community',
     component: SelectCommunityComponent,
   },
   {
