@@ -27,7 +27,7 @@ export class UsersCommunityComponent {
 
   loadCommunity() {
     this.communityService
-      .getUsersByCommunity(+this.communityId)
+      .getUsersByCommunity(+localStorage.getItem('communityId')!)
       .subscribe((users) => {
         this.isLoading = false;
         this.users = users.data;

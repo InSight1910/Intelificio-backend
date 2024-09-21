@@ -82,10 +82,12 @@ export class SelectCommunityComponent {
   }
 
   onClick() {
-    console.log(this.communitySelected);
     localStorage.setItem(
       'communityId',
       JSON.stringify(this.communitySelected.id)
+    );
+    this.store.dispatch(
+      CommunityActions.getCommunity({ id: this.communitySelected.id! })
     );
     this.router.navigate(['/community']);
   }

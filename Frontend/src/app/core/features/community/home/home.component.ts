@@ -63,34 +63,28 @@ export class HomeCommunityComponent {
   ngOnInit() {
     this.store.dispatch(NavBarActions.select({ title: 'Comunidad' }));
     var id = localStorage.getItem('communityId')!;
+    console.log(id);
     this.loadingLocation = true;
     this.store.select(selectCommunity).subscribe((community) => {
-      console.log(community);
       this.form.patchValue(community!);
       this.form.disable();
+      if (community != null) {
+        this.locationService.getRegions().subscribe((regions) => {
+          this.regions = regions.data;
+        });
+
+        this.locationService
+          .getCitiesByRegion(this.form.value.regionId)
+          .subscribe((cities) => (this.cities = cities.data));
+
+        this.locationService
+          .getMunicipalitiesByCity(this.form.value.cityId)
+          .subscribe((municipalities) => {
+            this.municipalities = municipalities.data;
+            this.loadingLocation = false;
+          });
+      }
     });
-
-    this.locationService.getRegions().subscribe((regions) => {
-      this.regions = regions.data;
-    });
-
-    console.log(this.form.value);
-
-    this.locationService
-      .getCitiesByRegion(this.form.value.regionId)
-      .subscribe((cities) => (this.cities = cities.data));
-
-    this.locationService
-      .getMunicipalitiesByCity(this.form.value.cityId)
-      .subscribe((municipalities) => {
-        this.municipalities = municipalities.data;
-        this.loadingLocation = false;
-      });
-    this.store.dispatch(
-      CommunityActions.getCommunity({
-        id: Number.parseInt(id),
-      })
-    );
   }
 
   onClickSave() {
