@@ -1,4 +1,4 @@
-﻿using Backend.Features.Building.Queries.GetAllByCommunity;
+﻿using Backend.Features.Buildings.Queries.GetAllByCommunity;
 using Backend.Models;
 using Castle.Core.Logging;
 using IntelificioBackTest.Fixtures;

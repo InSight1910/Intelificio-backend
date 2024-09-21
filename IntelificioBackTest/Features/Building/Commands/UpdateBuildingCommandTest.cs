@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Common.Profiles;
-using Backend.Features.Building.Commands.Update;
+using Backend.Features.Buildings.Commands.Update;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;

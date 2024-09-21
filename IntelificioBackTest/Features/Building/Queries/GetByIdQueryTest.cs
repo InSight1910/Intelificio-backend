@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Common.Profiles;
-using Backend.Features.Building.Queries.GetById;
+using Backend.Features.Buildings.Queries.GetById;
 using Backend.Features.Community.Queries.GetById;
 using Backend.Models;
 using Castle.Components.DictionaryAdapter.Xml;
