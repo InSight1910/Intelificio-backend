@@ -56,5 +56,7 @@ namespace Backend.Features.Authentication.Common
             Code = "Authentication.GetUserByEmail.UserNotFound",
             Message = "El usuario indicado no existe en nuestros registros."
         };
+
+        public static List<Error> SignUpMassiveError(List<Error> errors) => errors;
     }
 }

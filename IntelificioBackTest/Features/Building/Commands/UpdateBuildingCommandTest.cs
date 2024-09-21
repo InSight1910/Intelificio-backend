@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Common.Profiles;
-using Backend.Features.Building.Commands.Update;
+using Backend.Features.Buildings.Commands.Update;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;
@@ -29,7 +29,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new UpdateBuildigCommandHandler(_context, _logger.Object, _mapper);
         }
 
-       
+
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();

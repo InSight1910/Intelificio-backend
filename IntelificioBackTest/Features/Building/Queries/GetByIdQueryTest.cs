@@ -1,17 +1,10 @@
 ﻿using AutoMapper;
 using Backend.Common.Profiles;
-using Backend.Features.Building.Queries.GetById;
-using Backend.Features.Community.Queries.GetById;
+using Backend.Features.Buildings.Queries.GetById;
 using Backend.Models;
-using Castle.Components.DictionaryAdapter.Xml;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntelificioBackTest.Features.Building.Queries
 {
@@ -41,7 +34,7 @@ namespace IntelificioBackTest.Features.Building.Queries
         }
 
         [Fact]
-        public async Task GetByID_BuildingNotFound() 
+        public async Task GetByID_BuildingNotFound()
         {
             // Arrange
             var query = new GetByIDQuery { BuildingId = 0 };
@@ -74,7 +67,7 @@ namespace IntelificioBackTest.Features.Building.Queries
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Response);
             Assert.NotNull(result.Response.Data);
-            Assert.Equal(bulding.Name,data.Name);
+            Assert.Equal(bulding.Name, data.Name);
             Assert.Equal(bulding.Floors, data.Floors);
             Assert.Equal(bulding.Community.Name, data.CommunityName);
 

@@ -11,6 +11,27 @@ namespace Backend.Features.Authentication.Commands.Signup
     {
         public async Task<Result> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
+            if (request.User != null)
+            {
+                return await DoSignUp(request.User);
+            }
+            else if (request.Users != null)
+            {
+                var tasks = new List<Task<Result>>();
+                foreach (var user in request.Users)
+                {
+                    tasks.Add(DoSignUp(user));
+                }
+                var results = await Task.WhenAll(tasks);
+                if (results.Any(r => r.IsFailure)) return Result.WithErrors(AuthenticationErrors.SignUpMassiveError(results.SelectMany(r => r.Errors).ToList()));
+                return Result.Success();
+            }
+            return Result.Failure(null);
+        }
+
+
+        private async Task<Result> DoSignUp(UserObject request)
+        {
             var userExist = await userManager.FindByEmailAsync(request.Email);
             if (userExist != null) return Result.Failure(AuthenticationErrors.AlreadyCreated);
 
@@ -32,9 +53,7 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
             _ = await userManager.ConfirmEmailAsync(user, confirmationToken);
-
             return Result.Success();
         }
-
     }
 }
