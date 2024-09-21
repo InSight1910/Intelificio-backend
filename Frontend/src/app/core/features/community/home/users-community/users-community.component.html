@@ -1,3 +1,4 @@
+<h3 class="title is-3">Usuarios</h3>
 @if (isLoading) {
 <div class="skeleton-lines">
   <div></div>
@@ -5,7 +6,7 @@
   <div></div>
   <div></div>
 </div>
-}
+} @else {
 <table class="table is-fullwidth">
   <thead>
     <tr>
@@ -13,7 +14,7 @@
       <th>Nombre</th>
       <th>Correo</th>
       <th>Numero Telefonico</th>
-      <th>Cantidad de unidades</th>
+      <th>Cantidad de Unidades</th>
       <th>Role</th>
     </tr>
   </thead>
@@ -39,3 +40,4 @@
     }
   </tbody>
 </table>
+}

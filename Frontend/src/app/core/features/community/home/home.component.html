@@ -40,7 +40,7 @@
         <div class="field is-grouped">
           <div class="select is-expanded">
             <select
-              (change)="onChangeRegion()"
+              (change)="onChangeRegion($event)"
               formControlName="regionId"
               [ngClass]="{ 'is-skeleton': loadingLocation }"
             >
@@ -52,6 +52,7 @@
           </div>
           <div class="select is-expanded">
             <select
+              (change)="onChangeCity($event)"
               formControlName="cityId"
               [ngClass]="{ 'is-skeleton': loadingLocation }"
             >
@@ -87,13 +88,22 @@
         }
         <div class="field">
           <div class="control">
+            @if(!isModifying) {
+            <button
+              (click)="onClickEdit()"
+              class="button is-primary is-fullwidth"
+            >
+              Editar
+            </button>
+            } @else {
             <button
               class="button is-primary is-fullwidth"
               [ngClass]="{ 'is-loading': isLoading | async }"
-              (click)="onClick()"
+              (click)="onClickSave()"
             >
               Modificar
             </button>
+            }
           </div>
         </div>
         <input type="hidden" formControlName="id" />

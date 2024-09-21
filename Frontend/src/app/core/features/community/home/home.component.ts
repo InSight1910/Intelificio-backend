@@ -23,7 +23,7 @@ import {
   Municipality,
   Region,
 } from '../../../../shared/models/location.model';
-import { UsersCommunityComponent } from "./users-community/users-community.component";
+import { UsersCommunityComponent } from './users-community/users-community.component';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +40,7 @@ export class HomeCommunityComponent {
   cities: City[] = [];
   regions: Region[] = [];
   municipalities: Municipality[] = [];
+  isModifying: boolean = false;
 
   loadingLocation: boolean = false;
 
@@ -51,10 +52,10 @@ export class HomeCommunityComponent {
     this.form = this.fb.group({
       name: [''],
       address: [''],
-      adminName: [{ value: '', disabled: true }],
+      adminName: [''],
       id: [0],
-      municipalityId: [{ value: '', disabled: true }],
-      cityId: [{ value: '', disabled: false }],
+      municipalityId: [''],
+      cityId: [''],
       regionId: [''],
     });
   }
@@ -65,6 +66,7 @@ export class HomeCommunityComponent {
     this.loadingLocation = true;
     this.store.select(selectCommunity).subscribe((community) => {
       this.form.patchValue(community!);
+      this.form.disable();
     });
 
     this.locationService.getRegions().subscribe((regions) => {
@@ -90,7 +92,7 @@ export class HomeCommunityComponent {
     );
   }
 
-  onClick() {
+  onClickSave() {
     const updateCommunity: Community = {
       id: this.form.value.id as number,
       name: this.form.value.name,
@@ -101,16 +103,43 @@ export class HomeCommunityComponent {
     this.store.dispatch(
       CommunityActions.updateCommunity({ community: updateCommunity })
     );
-    this.isLoading = this.store.select(isLoading);
+    this.isLoading = this.store.select(isLoading).pipe(
+      tap((loading) => {
+        if (!loading) {
+          this.form.disable();
+          this.isModifying = false;
+        }
+      })
+    );
     this.errors = this.store.select(selectError);
   }
+  onClickEdit() {
+    this.isModifying = true;
+    this.form.enable();
+    this.form.get('adminName')?.disable();
+  }
 
-  onChangeRegion() {
+  onChangeRegion(e: any) {
     this.locationService
-      .getCities()
+      .getCitiesByRegion(e.target.value)
       .pipe(
         tap((cities) => {
           this.cities = cities.data;
+          this.form.patchValue({ cityId: '|', municipalityId: '|' });
+          this.form.get('municipalityId')?.disable();
+        })
+      )
+      .subscribe();
+  }
+
+  onChangeCity(e: any) {
+    this.locationService
+      .getMunicipalitiesByCity(e.target.value)
+      .pipe(
+        tap((municipalities) => {
+          this.municipalities = municipalities.data;
+          this.form.patchValue({ municipalityId: '|' });
+          this.form.get('municipalityId')?.enable();
         })
       )
       .subscribe();

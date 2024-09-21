@@ -23,7 +23,7 @@ export class UsersCommunityComponent {
     this.communityService
       .getUsersByCommunity(+this.communityId)
       .subscribe((users) => {
-        // this.isLoading = false;
+        this.isLoading = false;
         this.users = users.data;
       });
   }
