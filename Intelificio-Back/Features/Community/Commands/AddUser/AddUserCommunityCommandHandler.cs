@@ -19,7 +19,7 @@ namespace Backend.Features.Community.Commands.Assign
 
         public async Task<Result> Handle(AddUserCommunityCommand request, CancellationToken cancellationToken)
         {
-            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
+            var community = await _context.Community.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.CommunityId);
             if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundAddUser);
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);

@@ -21,13 +21,19 @@ namespace Backend.Features.Authentication.Commands.Login
 
             var result = await signInManager.PasswordSignInAsync(user, request.Password, false, true);
 
-            if (result.IsLockedOut)
+            if (!result.Succeeded)
             {
-                _ = await userManager.AccessFailedAsync(user);
-                return Result.Failure(AuthenticationErrors.UserBlocked);
+                if (result.IsLockedOut)
+                {
+                    _ = await userManager.AccessFailedAsync(user);
+                    return Result.Failure(AuthenticationErrors.UserBlocked);
+                }
+                return Result.Failure(AuthenticationErrors.WrongPassword);
             }
 
-            string token = tokenProvider.CreateToken(user);
+            var role = await userManager.GetRolesAsync(user);
+
+            string token = tokenProvider.CreateToken(user, role.FirstOrDefault());
             string refreshToken = tokenProvider.CreateRefreshToken();
 
             user.RefreshToken = refreshToken;
