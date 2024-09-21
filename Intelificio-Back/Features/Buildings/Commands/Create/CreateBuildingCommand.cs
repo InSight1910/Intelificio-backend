@@ -9,6 +9,5 @@ namespace Backend.Features.Buildings.Commands.Create
         public required int Floors { get; set; }
         public int CommunityId { get; set; }
 
-
     }
 }

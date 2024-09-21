@@ -32,7 +32,8 @@ namespace Backend.Features.Buildings.Commands.Create
             var building = _mapper.Map<Models.Building>(request);
             building.Community = community;
 
-            _ = await _context.Buildings.AddAsync(building);
+            await _context.Buildings.AddAsync(building);
+            await _context.SaveChangesAsync();
 
             return Result.Success();
 
