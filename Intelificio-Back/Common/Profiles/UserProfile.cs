@@ -8,7 +8,7 @@ namespace Backend.Common.Profiles
     {
         public UserProfile()
         {
-            _ = CreateMap<SignUpCommand, User>().AfterMap((x, y) =>
+            _ = CreateMap<UserObject, User>().AfterMap((x, y) =>
             {
                 y.UserName = x.Email;
             });
