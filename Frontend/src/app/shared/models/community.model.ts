@@ -9,3 +9,13 @@ export interface Community {
   cityId?: number;
   regionId?: number;
 }
+
+export interface UsersCommunity {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  phoneNumber: string;
+  unitCount: number;
+  
+}

@@ -1,0 +1,41 @@
+@if (isLoading) {
+<div class="skeleton-lines">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+}
+<table class="table is-fullwidth">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Numero Telefonico</th>
+      <th>Cantidad de unidades</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (user of users; track user.id) {
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phoneNumber }}</td>
+      <td>{{ user.unitCount }}</td>
+      <td>
+        <span
+          class="tag {{
+            user.role == 'Administrador' ? 'is-danger' : 'is-info'
+          }}"
+        >
+          {{ user.role }}
+        </span>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
