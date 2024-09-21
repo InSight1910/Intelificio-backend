@@ -12,6 +12,8 @@
 
         public Error(string code, string message, IEnumerable<string> errors) : this(code, message)
         {
+            Code = code;
+            Message = message;
             Errors = errors;
         }
 

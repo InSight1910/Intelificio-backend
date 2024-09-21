@@ -46,6 +46,8 @@ builder.Services.AddIdentity<User, Role>(cfg =>
 {
     cfg.User.RequireUniqueEmail = true;
     cfg.Password.RequiredLength = 8;
+    cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    cfg.SignIn.RequireConfirmedEmail = true;
 })
 
     .AddEntityFrameworkStores<IntelificioDbContext>()

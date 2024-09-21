@@ -131,21 +131,25 @@ namespace Backend.Models.Extensions
                         {
                             Community = community1,
                             Name = "Torre 1",
+                            Floors = 10
                         },
                         new Building
                         {
                             Community = community1,
                             Name = "Torre 2",
+                            Floors = 10
                         },
                         new Building
                         {
                             Community = community2,
                             Name = "Torre 1",
+                            Floors = 10
                         },
                         new Building
                         {
                             Community = community2,
                             Name = "Torre 2",
+                            Floors = 10
                         },
                     };
 

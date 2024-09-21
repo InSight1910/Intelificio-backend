@@ -17,7 +17,7 @@ namespace Backend.Features.Community.Common
         public static Error CommunityAlreadyExist = new Error
         {
             Code = "Community.Create.CommunityAlreadyExist",
-            Message = "La comunidad ingresada ya se encuentra registrada."
+            Message = "La comunidad ingresada ya se encuentra registrada.",
         };
 
         public static Error CommunityNotFoundGetByID = new Error
