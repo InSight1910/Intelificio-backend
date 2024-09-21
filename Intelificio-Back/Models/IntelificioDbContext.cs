@@ -126,9 +126,6 @@ namespace Backend.Models
                 _ = entity.HasMany(p => p.Charges)
                       .WithOne(p => p.Community);
 
-                _ = entity.HasOne(p => p.Municipality)
-                      .WithMany(p => p.Community);
-
                 _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
 
@@ -170,7 +167,7 @@ namespace Backend.Models
             {
                 _ = entity.HasKey(p => p.ID);
 
-                _ = entity.HasOne(p => p.Type)
+                _ = entity.HasOne(p => p.UnitType)
                       .WithMany(p => p.Units);
             });
 
@@ -187,7 +184,7 @@ namespace Backend.Models
                       .WithOne(p => p.User);
 
                 _ = entity.HasMany(p => p.Units)
-                       .WithMany(p => p.users);
+                       .WithMany(p => p.Users);
 
                 _ = entity.HasMany(p => p.Charges)
                     .WithOne(p => p.User);

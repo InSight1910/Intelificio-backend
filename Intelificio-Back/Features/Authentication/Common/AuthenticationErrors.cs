@@ -44,7 +44,17 @@ namespace Backend.Features.Authentication.Common
             Message = "El token indicado es invalido."
         };
 
-        public static Error RefreshTokenError(IEnumerable<string> errors) => new Error(
-            "Authentication.Refresh.RefreshTokenError", "Error is an error with the Refresh Token", errors);
+        public static Error RefreshTokenError(IEnumerable<string> errors) => new Error
+        {
+            Code = "Authentication.Refresh.RefreshTokenError",
+            Message = "Error is an error with the Refresh Token",
+            Errors = errors
+        };
+
+        public static Error UserNotFoundGetByEmail = new Error
+        {
+            Code = "Authentication.GetUserByEmail.UserNotFound",
+            Message = "El usuario indicado no existe en nuestros registros."
+        };
     }
 }

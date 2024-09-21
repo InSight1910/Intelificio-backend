@@ -37,6 +37,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             });
             _mapper = new Mapper(mapperConfig);
             _userManager = UserManagerMock.CreateUserManager();
+            _signInManager = new Mock<SignInManager<User>>();
             _config = ConfigMock.CreateConfigMock();
             ConfigureConfiguration(_config);
             _tokenProvider = new TokenProvider(_config.Object);

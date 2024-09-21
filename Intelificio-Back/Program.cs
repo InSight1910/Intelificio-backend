@@ -41,6 +41,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<CommunityProfile>();
     cfg.AddProfile<BuildingProfile>();
     cfg.AddProfile<UserProfile>();
+    cfg.AddProfile<LocationProfile>();
 });
 
 builder.Services.AddIdentity<User, Role>(cfg =>
@@ -75,6 +76,16 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("All", cfg =>
+    {
+        _ = cfg
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddCors(options =>
 {

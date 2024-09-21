@@ -1,5 +1,5 @@
-import * as AuthActions from './auth.actions';
-import { Inject, Injectable } from '@angular/core';
+import { AuthActions } from './auth.actions';
+import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
@@ -10,68 +10,14 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../shared/models/user.model';
 import { Login, LoginRequest } from '../../shared/models/auth.model';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Injectable()
 export class AuthEffects {
-  constructor(
-    private router: Router,
-    private actions$: Actions,
-    private authService: AuthService
-  ) {
-    console.log('test');
-  }
-
-  login$ = createEffect(() => {
-    console.log(this.router);
-    return this.actions$.pipe(
-      ofType(AuthActions.login),
-      mergeMap((action: LoginRequest) =>
-        this.authService.login(action.email, action.password).pipe(
-          map((login: Login) => {
-            const user: User = this.decodeToken(login.token);
-            return AuthActions.loginSuccess({ user });
-          }),
-          catchError((error) => {
-            console.error(error);
-            return of(AuthActions.loginFailure({ error: error.message }));
-          })
-        )
-      )
-    );
-  });
-
-  loginSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loginSuccess),
-        map(() => this.router.navigate(['/home']))
-      ),
-    { dispatch: false }
-  );
-
-  loginFailure$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loginFailure),
-        tap(() => {
-          console.log('Fail');
-        })
-      ),
-    { dispatch: false }
-  );
-
-  logout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => {
-          this.authService.logout();
-          this.router.navigate(['/login']);
-        })
-      ),
-    { dispatch: false }
-  );
+  login$;
+  loginSuccess$;
+  loginFailure$;
+  logout$;
 
   private decodeToken(token: string): any {
     try {
@@ -80,5 +26,65 @@ export class AuthEffects {
       console.error('Invalid token', error);
       return null;
     }
+  }
+
+  constructor(
+    private router: Router,
+    private actions$: Actions,
+    private authService: AuthService
+  ) {
+    this.login$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(AuthActions.login),
+        mergeMap((action: LoginRequest) =>
+          this.authService.login(action.email, action.password).pipe(
+            map((login: Login) => {
+              const user: User = this.decodeToken(login.data.token);
+              return AuthActions.loginSuccess({ user });
+            }),
+            catchError((error: { error: { message: string }[] }) => {
+              console.log(error);
+              return of(
+                AuthActions.loginFailure({
+                  error: error.error.map((x) => x.message),
+                })
+              );
+            })
+          )
+        )
+      );
+    });
+
+    this.loginSuccess$ = createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(AuthActions.loginSuccess),
+          map(() => this.router.navigate(['/select-community']))
+        ),
+      { dispatch: false }
+    );
+
+    this.loginFailure$ = createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(AuthActions.loginFailure),
+          tap((e) => {
+            console.log(e);
+          })
+        ),
+      { dispatch: false }
+    );
+
+    this.logout$ = createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(AuthActions.logout),
+          tap(() => {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          })
+        ),
+      { dispatch: false }
+    );
   }
 }

@@ -1,0 +1,118 @@
+<div class="card mt-6">
+  <div class="card-header">
+    <div class="card-header-title">Modificar comunidad</div>
+  </div>
+  <div class="card-content">
+    <div class="content">
+      <form [formGroup]="form">
+        <div class="field">
+          <label for="" class="label">Administrador</label>
+          <div class="control">
+            <input
+              type="text"
+              class="input"
+              formControlName="adminName"
+              [ngClass]="{ 'is-skeleton': loadingLocation }"
+            />
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control is-expanded">
+            <label for="" class="label">Nombre</label>
+            <input
+              type="text"
+              class="input"
+              formControlName="name"
+              [ngClass]="{ 'is-skeleton': loadingLocation }"
+            />
+          </div>
+          <div class="control is-expanded">
+            <label for="" class="label">Direccion</label>
+            <input
+              type="text"
+              class="input"
+              formControlName="address"
+              [ngClass]="{ 'is-skeleton': loadingLocation }"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <div class="select">
+            <select
+              (change)="onChangeRegion($event)"
+              formControlName="regionId"
+              [ngClass]="{ 'is-skeleton': loadingLocation }"
+            >
+              <option value="|">Seleccione Region</option>
+              @for (region of regions; track $index) {
+              <option value="{{ region.id }}">{{ region.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="select">
+            <select
+              (change)="onChangeCity($event)"
+              formControlName="cityId"
+              [ngClass]="{ 'is-skeleton': loadingLocation }"
+            >
+              <option value="|">Seleccione Ciudad</option>
+              @for (city of cities; track $index) {
+              <option value="{{ city.id }}">{{ city.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="select">
+            <select
+              formControlName="municipalityId"
+              [ngClass]="{ 'is-skeleton': loadingLocation }"
+            >
+              <option value="|">Seleccione Comuna</option>
+              @for (municipality of municipalities; track $index) {
+              <option value="{{ municipality.id }}">
+                {{ municipality.name }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (errors | async) {
+        <article class="message is-danger">
+          <div class="message-body">
+            @for (error of (errors | async); track $index){
+            <p>{{ error }}</p>
+            }
+          </div>
+        </article>
+        }
+        <div class="field">
+          <div class="control">
+            @if(!isModifying) {
+            <button
+              (click)="onClickEdit()"
+              class="button is-primary is-fullwidth"
+            >
+              Editar
+            </button>
+            } @else {
+            <button
+              class="button is-primary is-fullwidth"
+              [ngClass]="{ 'is-loading': isLoading | async }"
+              (click)="onClickSave()"
+            >
+              Modificar
+            </button>
+            }
+          </div>
+        </div>
+        <input type="hidden" formControlName="id" />
+      </form>
+    </div>
+  </div>
+</div>
+<app-users-community communityId="{{ this.form.value.id }}" />

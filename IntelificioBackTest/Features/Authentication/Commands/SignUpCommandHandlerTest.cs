@@ -24,8 +24,8 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             });
             _mapper = new Mapper(mapperConfig);
             _userManager = UserManagerMock.CreateUserManager();
-
-            _handler = new SignUpCommandHandler(_userManager.Object,_roleManager.Object, _mapper);
+            _roleManager = new Mock<RoleManager<Role>>();
+            _handler = new SignUpCommandHandler(_userManager.Object, _roleManager.Object, _mapper);
         }
 
         [Fact]
@@ -39,7 +39,8 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                 LastName = "LastTest",
                 Password = "Test",
                 PhoneNumber = "123",
-                Rut = "123"
+                Rut = "123",
+
             };
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                         .ReturnsAsync(UserFixture.GetUserTest());
@@ -64,7 +65,8 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                 LastName = "LastTest",
                 Password = "Test",
                 PhoneNumber = "123",
-                Rut = "123"
+                Rut = "123",
+
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))

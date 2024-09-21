@@ -13,10 +13,12 @@ namespace Backend.Features.Authentication.Commands.Login
                 {
                     string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
                     return Regex.IsMatch(x, emailPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
-                });
+                })
+                .WithMessage("El correo enviado no es valido.");
             _ = RuleFor(x => x.Password)
                 .NotEmpty()
-                .MinimumLength(8);
+                .MinimumLength(8)
+                .WithMessage("La contraseña debe tener una longitud minima de 8 caracteres.");
         }
     }
 }

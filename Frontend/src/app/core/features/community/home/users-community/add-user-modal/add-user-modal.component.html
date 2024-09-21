@@ -1,0 +1,101 @@
+<button class="button is-primary" (click)="onClickOpenModal()">
+  Agregar Usuario
+</button>
+<div class="modal" [ngClass]="{ 'is-active': isOpen }">
+  <div class="modal-background" (click)="onClickCloseModal()"></div>
+  <div class="modal-content">
+    <div class="box py-5 px-6 is-rounded">
+      <h4 class="title is-4">Agregar usuario</h4>
+      <form [formGroup]="form">
+        <div class="field">
+          <label class="label">Correo</label>
+        </div>
+        <div class="has-addons field">
+          <div class="control is-expanded">
+            <input
+              class="input"
+              type="email"
+              placeholder="Correo"
+              formControlName="email"
+            />
+          </div>
+          <div class="control">
+            <button
+              class="button is-info"
+              [ngClass]="{ 'is-loading': isSearching }"
+              (click)="onClickSearch()"
+            >
+              Buscar
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Nombre</label>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              placeholder="Nombre"
+              formControlName="name"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Numero Telefonico</label>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              placeholder="Numero Telefonico"
+              formControlName="phoneNumber"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Role</label>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              placeholder="Role"
+              formControlName="role"
+            />
+          </div>
+        </div>
+        @if (errors) {
+        <div class="message is-danger">
+          <div class="message-body">
+            @for(error of errors; track $index){
+            {{ error.message }}
+
+            }
+          </div>
+        </div>
+        } @if (isSuccess) {
+        <div class="message is-success">
+          <div class="message-body">Usuario agregado correctamente</div>
+        </div>
+        }
+        <input type="hidden" name="id" formControlName="id" />
+        <div class="field mt-6 mb-3">
+          <div class="control">
+            <button
+              class="button is-primary"
+              [disabled]="!canAddUser"
+              (click)="onClickAddUser()"
+              [ngClass]="{ 'is-loading': isAdding }"
+              form
+            >
+              Agregar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <button
+    class="modal-close is-large"
+    aria-label="close"
+    (click)="onClickCloseModal()"
+  ></button>
+</div>

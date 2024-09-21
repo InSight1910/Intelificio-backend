@@ -1,0 +1,78 @@
+<div class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-4">
+          <h2
+            class="is-size-3 is-centered has-text-weight-bold login-header-title"
+          >
+            Seleccione una comunidad
+          </h2>
+          <form [formGroup]="form">
+            <div class="select is-fullwidth">
+              <select (change)="onchange($event)">
+                <option value="|">Seleccione una comunidad</option>
+                @for (community of communities; track community.id) {
+                <option value="{{ community.id }}">{{ community.name }}</option>
+                }
+              </select>
+            </div>
+            @if(showData) {
+            <div class="field">
+              <label for="" class="label">Direccion</label>
+              <div class="control">
+                <input type="text" class="input" formControlName="address" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="" class="label">Administrador</label>
+              <div class="control">
+                <input type="text" class="input" formControlName="adminName" />
+              </div>
+            </div>
+
+            <div class="columns">
+              <div class="column is-half">
+                <div class="field">
+                  <label for="" class="label">N° Edificios</label>
+                  <div class="control">
+                    <input
+                      type="text"
+                      class="input"
+                      formControlName="buildingCount"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="column is-half">
+                <div class="field">
+                  <label for="" class="label">N° Unidades</label>
+                  <div class="control">
+                    <input
+                      type="text"
+                      class="input"
+                      formControlName="unitCount"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <button
+                  class="button is-primary is-fullwidth"
+                  (click)="onClick()"
+                >
+                  Seleccionar
+                </button>
+              </div>
+            </div>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

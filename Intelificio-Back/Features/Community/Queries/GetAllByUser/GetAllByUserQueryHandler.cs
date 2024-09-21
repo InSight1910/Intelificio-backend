@@ -30,6 +30,7 @@ namespace Backend.Features.Community.Queries.GetAllByUser
                                           .Where(x => x.Users.Any(user => user.Id == request.UserId))
                                           .Select(x => new GetAllByUserResponse
                                           {
+                                              Id = x.ID,
                                               Name = x.Name,
                                               Address = x.Address,
                                               BuildingCount = _context.Buildings.Count(b => b.Community.ID == x.ID),
