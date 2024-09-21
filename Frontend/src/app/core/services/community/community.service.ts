@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import { Community } from '../../../shared/models/community.model';
+import {
+  Community,
+  UsersCommunity,
+} from '../../../shared/models/community.model';
 import { map } from 'rxjs';
 
 @Injectable({
@@ -26,6 +29,12 @@ export class CommunityService {
   getCommunity(id: number) {
     return this.http.get<{ data: Community }>(
       `${this.baseUrl}/community/${id}`
+    );
+  }
+
+  getUsersByCommunity(communityId: number) {
+    return this.http.get<{ data: UsersCommunity[] }>(
+      `${this.baseUrl}/community/${communityId}/users`
     );
   }
 }

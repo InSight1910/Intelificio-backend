@@ -77,7 +77,6 @@ namespace IntelificioBackTest.Features.Community.Queries
             _ = await _context.SaveChangesAsync();
 
 
-
             var query = new GetAllByUserQuery { UserId = 2 };
 
             // Act
