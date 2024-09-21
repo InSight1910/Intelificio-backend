@@ -44,4 +44,10 @@ export class CommunityService {
       {}
     );
   }
+  deleteUserFromCommunity(communityId: number, userId: number) {
+    return this.http.put(
+      `${this.baseUrl}/community/remove/${communityId}/${userId}`,
+      {}
+    );
+  }
 }

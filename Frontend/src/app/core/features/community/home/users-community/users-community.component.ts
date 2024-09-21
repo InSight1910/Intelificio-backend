@@ -14,7 +14,7 @@ import { AddUserModalComponent } from './add-user-modal/add-user-modal.component
 export class UsersCommunityComponent {
   @Input() communityId = '0';
   isLoading: boolean = false;
-  isDeleting: boolean = false;
+  isDeleting: { [key: number]: boolean } = {};
 
   constructor(private communityService: CommunityService) {}
 
@@ -22,6 +22,10 @@ export class UsersCommunityComponent {
 
   ngOnInit() {
     this.isLoading = true;
+    this.loadCommunity();
+  }
+
+  loadCommunity() {
     this.communityService
       .getUsersByCommunity(+this.communityId)
       .subscribe((users) => {
@@ -30,5 +34,20 @@ export class UsersCommunityComponent {
       });
   }
 
-  onClickDeleting() {}
+  updateList(updated: boolean) {
+    if (updated) {
+      this.loadCommunity();
+    }
+  }
+
+  onClickDeleting(userId: number) {
+    this.isDeleting[userId] = true;
+    this.communityService
+      .deleteUserFromCommunity(+this.communityId, userId)
+      .subscribe(() => {
+        this.users = this.users.filter((user) => user.id !== userId);
+        this.isDeleting[userId] = false;
+        this.loadCommunity();
+      });
+  }
 }

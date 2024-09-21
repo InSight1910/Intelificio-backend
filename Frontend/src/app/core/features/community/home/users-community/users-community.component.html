@@ -1,6 +1,6 @@
 <div class="level">
   <h3 class="title is-3">Usuarios</h3>
-  <app-add-user-modal />
+  <app-add-user-modal (addUserEvent)="updateList($event)" />
 </div>
 @if (isLoading) {
 <div class="skeleton-lines">
@@ -40,7 +40,15 @@
           {{ user.role }}
         </span>
       </td>
-      <td><button class="button is-danger" (click)="onClickDeleting()" [ngClass]="{'is-loading' : isDeleting}">Eliminar</button></td>
+      <td>
+        <button
+          class="button is-danger"
+          (click)="onClickDeleting(user.id)"
+          [ngClass]="{ 'is-loading': isDeleting[user.id] }"
+        >
+          Eliminar
+        </button>
+      </td>
     </tr>
     }
   </tbody>

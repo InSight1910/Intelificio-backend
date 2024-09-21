@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../../services/auth/auth.service';
 import { catchError, tap, of, timeout } from 'rxjs';
@@ -13,6 +13,7 @@ import { CommunityService } from '../../../../../services/community/community.se
   styleUrl: './add-user-modal.component.css',
 })
 export class AddUserModalComponent {
+  @Output() addUserEvent = new EventEmitter<boolean>();
   isOpen: boolean = false;
   form: FormGroup;
   errors!: { message: string }[] | null;
@@ -87,6 +88,7 @@ export class AddUserModalComponent {
             console.log('paso timeout');
           }, 2000);
           this.form.reset();
+          this.addUserEvent.emit(true);
         }),
         catchError((error) => {
           this.canAddUser = false;

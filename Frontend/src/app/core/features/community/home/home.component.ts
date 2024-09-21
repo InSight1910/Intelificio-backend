@@ -65,6 +65,7 @@ export class HomeCommunityComponent {
     var id = localStorage.getItem('communityId')!;
     this.loadingLocation = true;
     this.store.select(selectCommunity).subscribe((community) => {
+      console.log(community);
       this.form.patchValue(community!);
       this.form.disable();
     });
@@ -97,6 +98,9 @@ export class HomeCommunityComponent {
       id: this.form.value.id as number,
       name: this.form.value.name,
       address: this.form.value.address,
+      municipalityId: this.form.value.municipalityId,
+      cityId: this.form.value.cityId,
+      regionId: this.form.value.regionId,
     };
     console.log(updateCommunity);
 
