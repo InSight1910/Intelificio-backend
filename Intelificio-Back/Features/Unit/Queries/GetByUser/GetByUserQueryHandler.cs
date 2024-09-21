@@ -24,10 +24,10 @@ namespace Backend.Features.Unit.Queries.GetByUser
                 .Select(x => new GetByUserQueryResponse
                 {
                     Number = x.Number,
-                    UnitType = x.UnitType,
+                    UnitType = x.UnitType.Description,
                     Surface = x.Surface,
                     Floor = x.Floor,
-                    Building = x.Building
+                    Building = x.Building.Name
                 })
                 .ToListAsync();
 
