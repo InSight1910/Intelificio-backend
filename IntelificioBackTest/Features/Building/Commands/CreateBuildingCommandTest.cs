@@ -1,12 +1,13 @@
-﻿using Backend.Features.Building.Commands.Create;
+﻿
 using Backend.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
 using AutoMapper;
 using Backend.Common.Profiles;
 using IntelificioBackTest.Fixtures;
-using Backend.Features.Building.Common;
-using Backend.Features.Buildings.Commands.Create;
+using Backend.Features.Buildings;
+
+
 
 namespace IntelificioBackTest.Features.Building.Commands
 {
