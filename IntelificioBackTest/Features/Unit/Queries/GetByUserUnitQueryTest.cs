@@ -4,7 +4,7 @@ using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace IntelificioBackTest.Features.User.Queries
+namespace IntelificioBackTest.Features.Unit.Queries
 {
     public class GetByUserTest
     {

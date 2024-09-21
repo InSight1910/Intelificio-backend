@@ -23,7 +23,7 @@ namespace Backend.Features.Unit.Commands.RemoveUser
 
             if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundRemoveUser);
 
-            var user = unit.Users.FirstOrDefault(x => x.Id == request.UserId);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
 
             if (user == null) return Result.Failure(UnitErrors.UserNotFoundRemoveUser);
 

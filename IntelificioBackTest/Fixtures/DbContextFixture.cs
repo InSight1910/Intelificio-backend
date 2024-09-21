@@ -96,23 +96,13 @@ namespace IntelificioBackTest.Fixtures
             if (!await context.Municipality.AnyAsync())
             {
                 var city = (await context.City.FirstOrDefaultAsync(x => x.Name == "Santiago"))!;
-                var municipality = new List<Municipality>
+                var municipality = new Municipality
                 {
-                    new Municipality
-                    {
-                        Name = "La Florida",
-                        City = city
-                    },
-                    new Municipality
-                    {
-                        Name = "La Reina",
-                        City = city
-                    }
+                    Name = "La Florida",
+                    City = city
                 };
 
-
-
-                _ = context.Municipality.AddRangeAsync(municipality);
+                _ = context.Municipality.AddAsync(municipality);
                 _ = await context.SaveChangesAsync();
 
             }
@@ -180,7 +170,7 @@ namespace IntelificioBackTest.Fixtures
                     {
                         new UnitType
                         {
-                            Description = "Departamento",
+                            Description = "Unidad",
                         },
                         new UnitType
                         {
@@ -208,51 +198,67 @@ namespace IntelificioBackTest.Fixtures
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "101"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "101",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "102"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "102",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "103"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "103",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!,
-                            Number = "01"
+                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!,
+                            Number = "01",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
 
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Unidad"))!,
-                            Number = "101"
+                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Unidad"))!,
+                            Number = "101",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Unidad"))!,
-                            Number = "102"
+                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Unidad"))!,
+                            Number = "102",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "103"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "103",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!,
-                            Number = "01"
+                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!,
+                            Number = "01",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
 
 
@@ -262,51 +268,67 @@ namespace IntelificioBackTest.Fixtures
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "101"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "101",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "102"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "102",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "103"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "103",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            Type = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
-                            Number = "01"
+                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
+                            Number = "01",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
 
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "101"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "101",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "102"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "102",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
-                            Number = "103"
+                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            Number = "103",
+                            Floor = 1,
+                            Surface = 50.1F
                         },
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            Type = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
-                            Number = "01"
+                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
+                            Number = "01",
+                            Floor = 1,
+                            Surface = 50.1F
                         }
                     };
 

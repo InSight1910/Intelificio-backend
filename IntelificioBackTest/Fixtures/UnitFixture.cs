@@ -21,11 +21,12 @@ namespace IntelificioBackTest.Fixtures
         {
             return new()
             {
+                Id = 1,
                 Number = "2",
                 Floor = 2,
                 Surface = 50.2F,
-                UnitTypeId = 2,
-                BuildingId = 2
+                UnitTypeId = 1,
+                BuildingId = 1
             };
         }
     }

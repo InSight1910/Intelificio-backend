@@ -69,6 +69,8 @@ namespace IntelificioBackTest.Features.Unit.Commands
             var command = UnitFixture.GetUpdateUnitCommandTest();
             await DbContextFixture.SeedData(_context);
 
+            command.Id = 0;
+
             // Act
             var result = await _handler.Handle(command, default);
 
@@ -86,6 +88,8 @@ namespace IntelificioBackTest.Features.Unit.Commands
             // Arrange
             var command = UnitFixture.GetUpdateUnitCommandTest();
             await DbContextFixture.SeedData(_context);
+
+            command.UnitTypeId = 100;
 
             // Act
             var result = await _handler.Handle(command, default);
@@ -105,6 +109,7 @@ namespace IntelificioBackTest.Features.Unit.Commands
             // Arrange
             var command = UnitFixture.GetUpdateUnitCommandTest();
             await DbContextFixture.SeedData(_context);
+            command.BuildingId = 100;
 
             // Act
             var result = await _handler.Handle(command, default);
