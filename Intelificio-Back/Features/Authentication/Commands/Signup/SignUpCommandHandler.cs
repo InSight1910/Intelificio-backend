@@ -33,6 +33,8 @@ namespace Backend.Features.Authentication.Commands.Signup
         private async Task<Result> DoSignUp(UserObject request)
         {
             var userExist = await userManager.FindByEmailAsync(request.Email);
+
+
             if (userExist != null) return Result.Failure(AuthenticationErrors.AlreadyCreatedEmail(request.Email));
 
             var user = mapper.Map<User>(request);
