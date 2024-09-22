@@ -6,5 +6,5 @@ export interface singUp {
     password: string;
     rut: string;
     role: string;
-    birthDate: Date | null;
+    birthDate: string 
 }

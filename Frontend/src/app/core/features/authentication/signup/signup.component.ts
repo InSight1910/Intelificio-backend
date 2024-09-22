@@ -11,8 +11,8 @@ import { SignupDTO } from '../../../../shared/models/signUpCommand.model';
   selector: 'app-singup',
   standalone: true,
   imports: [ReactiveFormsModule,CommonModule],
-  templateUrl: './singup.component.html',
-  styleUrl: './singup.component.css'
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.css'
 })
 export class SingupComponent implements OnInit {
 
@@ -80,9 +80,7 @@ export class SingupComponent implements OnInit {
           password: this.singupForm.controls['password'].value?? '',
           rut: this.singupForm.controls['rut'].value?? '',
           role: this.singupForm.controls['rol'].value?? '',
-          birthDate: typeof this.singupForm.controls['birthDate'].value === 'string'
-          ? new Date(this.singupForm.controls['birthDate'].value)  
-          : this.singupForm.controls['birthDate'].value  
+          birthDate: this.singupForm.controls['birthDate'].value?? ''
         },
         Users: []
       };
@@ -92,7 +90,7 @@ export class SingupComponent implements OnInit {
 
       this.service.signup(signupDTO).subscribe({
         next: (response) => {
-          if (response.status === 204){
+          if (response.status === 500){
             this.notification = true;
             setTimeout(() => {
               this.notification = false;
@@ -109,15 +107,18 @@ export class SingupComponent implements OnInit {
     
   }
 
-  clean(){
-    this.singupForm.controls['firstName'].setValue('');
-    this.singupForm.controls['lastName'].setValue('');
-    this.singupForm.controls['email'].setValue('');
-    this.singupForm.controls['phoneNumber'].setValue('');
-    this.singupForm.controls['password'].setValue('');
-    this.singupForm.controls['rut'].setValue('');
-    this.singupForm.controls['rol'].setValue('');
-    this.singupForm.controls['birthDate'].setValue('');
+  clean() {
+    this.singupForm.reset({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      confirmPassword: '',
+      rut: '',
+      rol: '',
+      birthDate: ''
+    }, { emitEvent: false });
   }
 
   closeNotification(){
