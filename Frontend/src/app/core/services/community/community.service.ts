@@ -44,6 +44,14 @@ export class CommunityService {
       {}
     );
   }
+
+  addUserToCommunityWithFile(formData: FormData) {
+    return this.http.post(
+      `${this.baseUrl}/community/add/user/massive`,
+      formData
+    );
+  }
+
   deleteUserFromCommunity(communityId: number, userId: number) {
     return this.http.put(
       `${this.baseUrl}/community/remove/${communityId}/${userId}`,
