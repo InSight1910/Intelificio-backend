@@ -80,5 +80,7 @@ namespace Backend.Features.Community.Common
             Code = "Community.AddUser.UserAlreadyInCommunity",
             Message = "El usuario ya se encuentra asignado a la comunidad indicada."
         };
+
+        public static List<Error> AddUserMassive(List<Error> errors) => errors;
     }
 }

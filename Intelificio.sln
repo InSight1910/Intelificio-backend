@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelificioBackTest", "Inte
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Frontend", "Frontend\Frontend.esproj", "{0CD98E96-662D-4330-BAD0-EDCAEE74B924}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{0CD98E96-662D-4330-BAD0-EDCAEE74B924}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD98E96-662D-4330-BAD0-EDCAEE74B924}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CD98E96-662D-4330-BAD0-EDCAEE74B924}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F92BCB07-C84A-4ED7-BAF5-6F413409F18E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

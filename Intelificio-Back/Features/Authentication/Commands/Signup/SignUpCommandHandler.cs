@@ -17,13 +17,13 @@ namespace Backend.Features.Authentication.Commands.Signup
             }
             else if (request.Users != null)
             {
-                var tasks = new List<Task<Result>>();
+                var results = new List<Result>();
                 foreach (var user in request.Users)
                 {
-                    tasks.Add(DoSignUp(user));
+                    results.Add(await DoSignUp(user));
                 }
-                var results = await Task.WhenAll(tasks);
-                if (results.Any(r => r.IsFailure)) return Result.WithErrors(AuthenticationErrors.SignUpMassiveError(results.SelectMany(r => r.Errors).ToList()));
+
+                if (results.Any(r => r.IsFailure)) return Result.WithErrors(AuthenticationErrors.SignUpMassiveError(results.Select(r => r.Error).ToList()));
                 return Result.Success();
             }
             return Result.Failure(null);
@@ -33,9 +33,13 @@ namespace Backend.Features.Authentication.Commands.Signup
         private async Task<Result> DoSignUp(UserObject request)
         {
             var userExist = await userManager.FindByEmailAsync(request.Email);
-            if (userExist != null) return Result.Failure(AuthenticationErrors.AlreadyCreated);
+            if (userExist != null) return Result.Failure(AuthenticationErrors.AlreadyCreatedEmail(request.Email));
 
             var user = mapper.Map<User>(request);
+
+            var roleExist = await roleManager.FindByNameAsync(request.Role);
+            if (roleExist == null) return Result.Failure(AuthenticationErrors.RoleNotFound);
+            user.Role = roleExist;
 
             var result = await userManager.CreateAsync(user, request.Password);
 
@@ -48,8 +52,9 @@ namespace Backend.Features.Authentication.Commands.Signup
                 }
                 return Result.Failure(AuthenticationErrors.InvalidParameters(errors));
             }
-            var role = await roleManager.FindByNameAsync("Usuario");
-            _ = await userManager.AddToRoleAsync(user, role!.Name!);
+
+            _ = await userManager.AddToRoleAsync(user, user.Role.Name!);
+
 
             var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
             _ = await userManager.ConfirmEmailAsync(user, confirmationToken);

@@ -2,12 +2,12 @@
 {
     public enum SignUpMassiveColumns
     {
-        Rut,
-        FirstName,
-        LastName,
-        Email,
-        PhoneNumber,
-        BirthDate,
-        Role
+        Rut = 1,
+        FirstName = 2,
+        LastName = 3,
+        Email = 4,
+        PhoneNumber = 5,
+        BirthDate = 6,
+        Role = 7
     }
 }
