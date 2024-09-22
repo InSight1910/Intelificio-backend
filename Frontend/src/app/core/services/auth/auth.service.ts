@@ -1,8 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { Login, UserEmail } from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
+import { singUp } from '../../../shared/models/singup.model';
+import { Role } from '../../../shared/models/role.model';
+import { SignupDTO } from '../../../shared/models/signUpCommand.model';
+
 
 @Injectable({
   providedIn: 'root',
@@ -36,4 +40,15 @@ export class AuthService {
       { email }
     );
   }
+
+  signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
+    console.log("Servicio");
+    console.log(singupDTO);
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`,singupDTO);
+  }
+
+  getAllRole(): Observable<{data: Role[]}>{
+    return this.http.get<{data: Role[]}>(`${this.apiUrl}/auth/roles`);
+  }
+
 }

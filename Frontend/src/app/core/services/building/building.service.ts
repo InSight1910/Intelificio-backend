@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.development';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Building } from '../../shared/models/building.model';
+import { Building } from '../../../shared/models/building.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class BuildingService {
   constructor(private http: HttpClient) { }
 
   create(building : {}): Observable<HttpResponse<any>> {
-    return this.http.post<any>(`${this.apiUrl}/building`,building,{ observe: 'response' });
+    return this.http.post<any>(`${this.apiUrl}/building`,building,{ observe: 'response' })
   }
 
   delete(id: number): Observable<HttpResponse<any>>{
