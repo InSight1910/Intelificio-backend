@@ -2,9 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Backend.Features.Authentication.Commands.SignupMassive
+namespace Backend.Features.Community.Commands.AddUserMassive
 {
-    public class SignupMassiveCommand : IRequest<Result>
+    public class AddUserMassiveCommand : IRequest<Result>
     {
         public required IFormFile File { get; set; }
         [BindNever]
