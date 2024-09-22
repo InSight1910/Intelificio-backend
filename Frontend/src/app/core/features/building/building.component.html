@@ -1,0 +1,89 @@
+
+<div class="tabs">
+  <ul>
+    @for (building of Edificios; track building.id) {
+      <li [class.is-active]="building.id === selectedBuildingId" (click)="detail(building.id)"><a>{{ building.name}}</a></li>
+    }
+  </ul>
+</div>
+
+
+<form class="box" [formGroup]="buildingForm">
+
+  <div class="columns">
+
+    <div class="column field is-6">
+      <label class="label" for="nombre">
+        Nombre Edificio:
+        <input class="input" id="nombre" type="text" formControlName="nombreEdificio" />
+      </label>
+    </div>
+  
+    <div class="column field is-6">
+      <label class="label" for="nombrecomunidad">
+        Nombre Comunidad:
+        <input class="input" id="nombrecomunidad" type="text" formControlName="ComunidadEdificio" />
+      </label>
+    </div>
+
+  </div>
+
+  <div class="columns">
+
+    <div class="column field is-6">
+      <label class="label" for="cantidadpisos">
+        N° de Pisos:
+        <input class="input" id="cantidadpisos" type="text" formControlName="pisosEdificio" />
+      </label>
+    </div>
+
+    <div class="column field is-6">
+      <label class="label" for="cantidadunidades">
+        N° de Unidades:
+        <input class="input" id="cantidadunidades" type="text" formControlName="CantidadUnidades" />
+      </label>
+    </div>
+
+  </div>
+
+  @if (!notification) {
+  } @else {
+    <div class="notification is-danger">
+      <button class="delete" (click)="closeNotification()"></button>
+      No es posible eliminar Edificio, <strong>existen unidades asociadas</strong>.
+    </div>
+  }
+
+  @if (postUpdateOrCreate && isCreation) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()" ></button>
+      Edificio creado exitosamente.
+    </div>
+  } @else if (postUpdateOrCreate && isEdited) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()" ></button>
+      Edificio actualizado exitosamente.
+    </div>
+  } @else if (postUpdateOrCreate && isDeletion) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()" ></button>
+      Edificio eliminado exitosamente.
+    </div>
+  }
+
+
+  <div class="buttons">
+    @if (isEdited) {
+      <button type="submit"  class="button is-primary" (click)="update()" [disabled]="!buildingForm.valid">Guardar</button>
+      <button class="button is-link" (click)="exitdit()">Cancelar</button>
+    } @else if (isCreation){
+      <button type="submit"  class="button is-primary" (click)="saveCreate()" [disabled]="!buildingForm.valid">Guardar</button>
+      <button class="button is-link" (click)="exitcreation()">Cancelar</button>
+    }  @else {
+      <button class="button is-primary" (click)="create()">Agregar</button>
+      <button class="button is-primary" (click)="edit()">Editar</button>
+      <button class="button is-link"(click)="delete()">Eliminar</button>
+    }
+  </div>
+
+</form> 

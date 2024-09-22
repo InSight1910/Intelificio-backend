@@ -1,11 +1,15 @@
-﻿using Backend.Features.Building.Commands.Create;
+﻿
 using Backend.Models;
+using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;
 using Moq;
 using AutoMapper;
 using Backend.Common.Profiles;
 using IntelificioBackTest.Fixtures;
-using Backend.Features.Building.Common;
+using Backend.Features.Buildings.Commands.Create;
+
+
+
 
 namespace IntelificioBackTest.Features.Building.Commands
 {
@@ -14,7 +18,7 @@ namespace IntelificioBackTest.Features.Building.Commands
         private readonly CreateBuildingCommandHandler _handler;
         private readonly IntelificioDbContext _context;
         private readonly Mock<ILogger<CreateBuildingCommandHandler>> _logger;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public CreateBuildingCommandTest()
         {
@@ -29,7 +33,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new CreateBuildingCommandHandler(_context, _logger.Object, _mapper);
         }
 
-        
+
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();

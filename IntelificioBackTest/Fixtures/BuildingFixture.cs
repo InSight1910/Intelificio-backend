@@ -1,8 +1,8 @@
-﻿using Backend.Features.Building.Commands.Create;
+﻿using Backend.Features.Buildings.Commands.Create;
 
 namespace IntelificioBackTest.Fixtures
 {
-    public class BuildingFixture 
+    public class BuildingFixture
     {
         public static CreateBuildingCommand GetCreateBuildingCommandTest()
         {

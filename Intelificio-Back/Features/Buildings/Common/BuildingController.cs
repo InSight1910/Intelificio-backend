@@ -34,32 +34,10 @@ namespace Backend.Features.Buildings.Common
                 onFailure: BadRequest);
         }
 
-        [HttpPut("{iD}")]
-        public async Task<IActionResult> Update(int iD, [FromBody] UpdateBuildingCommand command)
+        [HttpPut("{ID}")]
+        public async Task<IActionResult> Update(int ID, [FromBody] UpdateBuildingCommand command)
         {
-            command.Id = iD;
-            var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
-                onSuccess: (_) => Ok(),
-                onFailure: BadRequest);
-        }
-
-        [HttpPut("{BuildingId}/AddUnit/{UnitId}")]
-        public async Task<IActionResult> Add(int BuildingId, int UnitId, [FromBody] AddUnitBuildingCommand command)
-        {
-            command.BuildingId = BuildingId;
-            command.UnitId = UnitId;
-            var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
-                onSuccess: (_) => Ok(),
-                onFailure: BadRequest);
-        }
-
-        [HttpPut("{BuildingId}/RemoveUnit/{UnitId}")]
-        public async Task<IActionResult> Remove(int BuildingId, int UnitId, [FromBody] RemoveUnitBuildingCommand command)
-        {
-            command.BuildingId = BuildingId;
-            command.UnitId = UnitId;
+            command.Id = ID;
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Ok(),
@@ -69,11 +47,10 @@ namespace Backend.Features.Buildings.Common
         [HttpGet("GetByID/{ID}")]
         public async Task<IActionResult> GetByID(int ID)
         {
-            var query = new GetByIDQuery { BuildingId = ID };
-            var building = await mediator.Send(query);
+            var building = await mediator.Send(new GetByIDQuery { BuildingId = ID });
             return building.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
-                onFailure: BadRequest);
+                onFailure: NotFound);
         }
 
         [HttpGet("GetAllByCommunity/{ID}")]

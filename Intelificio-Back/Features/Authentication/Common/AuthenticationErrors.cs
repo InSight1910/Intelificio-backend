@@ -11,6 +11,12 @@ namespace Backend.Features.Authentication.Common
             Code = "Authentication.SignUp.AlreadyCreated",
             Message = "El correo indicado ya se encuentra en nuestro sistema."
         };
+
+        public static Error AlreadyCreatedEmail(string email) => new Error
+        {
+            Code = "Authentication.SignUp.AlreadyCreated",
+            Message = string.Format("El correo {0} ya se encuentra en nuestro sistema.", email)
+        };
         public static Error UserNotFound = new Error
         {
             Code = "Authentication.LogIn.UserNotFound",
@@ -56,5 +62,9 @@ namespace Backend.Features.Authentication.Common
             Code = "Authentication.GetUserByEmail.UserNotFound",
             Message = "El usuario indicado no existe en nuestros registros."
         };
+
+        public static Error RoleNotFound { get; internal set; }
+
+        public static List<Error> SignUpMassiveError(List<Error> errors) => errors;
     }
 }

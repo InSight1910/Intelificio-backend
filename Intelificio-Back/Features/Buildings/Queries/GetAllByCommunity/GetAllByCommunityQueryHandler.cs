@@ -3,6 +3,7 @@ using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace Backend.Features.Buildings.Queries.GetAllByCommunity
 {
@@ -26,8 +27,12 @@ namespace Backend.Features.Buildings.Queries.GetAllByCommunity
                        .Where(b => b.Community.ID == request.CommunityId)
                        .Select(b => new GetAllByCommunityQueryResponse
                        {
+                           Id = b.ID,
                            Name = b.Name,
-                           Floors = b.Floors
+                           Floors = b.Floors,
+                           Units = b.Units.Count(),
+                           CommunityName = b.Community.Name,
+                           CommunityId = b.Community.ID
                        }).ToListAsync(cancellationToken: cancellationToken);
 
 
