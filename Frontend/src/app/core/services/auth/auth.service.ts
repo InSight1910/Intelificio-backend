@@ -5,6 +5,8 @@ import { Login, UserEmail } from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
 import { singUp } from '../../../shared/models/singup.model';
 import { Role } from '../../../shared/models/role.model';
+import { SignupDTO } from '../../../shared/models/signUpCommand.model';
+
 
 @Injectable({
   providedIn: 'root',
@@ -39,8 +41,10 @@ export class AuthService {
     );
   }
 
-  singup(singupDTO: {}): Observable<HttpResponse<any>> {
-    return this.http.post<any>(`${this.apiUrl}/auth/singup`,singupDTO);
+  signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
+    console.log("Servicio");
+    console.log(singupDTO);
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`,singupDTO);
   }
 
   getAllRole(): Observable<{data: Role[]}>{

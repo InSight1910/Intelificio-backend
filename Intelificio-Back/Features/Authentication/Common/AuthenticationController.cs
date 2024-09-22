@@ -17,7 +17,7 @@ namespace Backend.Features.Authentication.Common
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
         {
-            var result = await mediator.Send(command);
+                var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Created(),
                 onFailure: (errors) =>
