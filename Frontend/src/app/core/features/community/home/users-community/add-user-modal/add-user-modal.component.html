@@ -1,11 +1,23 @@
 <button class="button is-primary" (click)="onClickOpenModal()">
   Agregar Usuario
 </button>
-<div class="modal" [ngClass]="{ 'is-active': isOpen }">
+<div class="modal requires-no-scroll" [ngClass]="{ 'is-active': isOpen }">
   <div class="modal-background" (click)="onClickCloseModal()"></div>
   <div class="modal-content">
     <div class="box py-5 px-6 is-rounded">
-      <h4 class="title is-4">Agregar usuario</h4>
+      <div class="columns is-vcentered is-flex">
+        <div class="column is-three-quarters">
+          <h4 class="title is-4">Agregar usuario</h4>
+        </div>
+        <div class="column is-flex is-justify-content-flex-end">
+          <button
+            class="delete"
+            aria-label="close"
+            (click)="onClickCloseModal()"
+          ></button>
+        </div>
+      </div>
+
       <form [formGroup]="form">
         <div class="field">
           <label class="label">Correo</label>
@@ -22,7 +34,10 @@
           <div class="control">
             <button
               class="button is-info"
-              [ngClass]="{ 'is-loading': isSearching }"
+              [ngClass]="{
+                'is-loading': isSearching,
+              }"
+              [disabled]="!canSearch"
               (click)="onClickSearch()"
             >
               Buscar
@@ -62,6 +77,28 @@
             />
           </div>
         </div>
+        <p class="subtitle is-6">
+          O bien, realiza una carga masiva adjuntando un archivo
+        </p>
+        <div class="file" [ngClass]="{ 'has-name': isFileUploaded }">
+          <label class="file-label">
+            <input
+              class="file-input"
+              type="file"
+              name="resume"
+              (change)="onFileChange($event)"
+            />
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label"> Choose a file… </span>
+            </span>
+            @if (isFileUploaded) {
+            <span class="file-name">{{ selectedFileName }}</span>
+            }
+          </label>
+        </div>
         @if (errors) {
         <div class="message is-danger">
           <div class="message-body">
@@ -73,7 +110,13 @@
         </div>
         } @if (isSuccess) {
         <div class="message is-success">
-          <div class="message-body">Usuario agregado correctamente</div>
+          <div class="message-body">
+            {{
+              isFileUploaded
+                ? "Se enviara una notificacion en cuanto el proceso finalice"
+                : "Usuario agregado correctamente"
+            }}
+          </div>
         </div>
         }
         <input type="hidden" name="id" formControlName="id" />
@@ -93,9 +136,4 @@
       </form>
     </div>
   </div>
-  <button
-    class="modal-close is-large"
-    aria-label="close"
-    (click)="onClickCloseModal()"
-  ></button>
 </div>

@@ -1,6 +1,10 @@
 <div class="card mt-6">
   <div class="card-header">
+    @if(isModifying) {
     <div class="card-header-title">Modificar comunidad</div>
+    } @else {
+    <div class="card-header-title">Detalle de la comunidad</div>
+    }
   </div>
   <div class="card-content">
     <div class="content">
@@ -37,49 +41,69 @@
             />
           </div>
         </div>
-        <div class="field">
-          <div class="select">
-            <select
-              (change)="onChangeRegion($event)"
-              formControlName="regionId"
-              [ngClass]="{ 'is-skeleton': loadingLocation }"
-            >
-              <option value="|">Seleccione Region</option>
-              @for (region of regions; track $index) {
-              <option value="{{ region.id }}">{{ region.name }}</option>
-              }
-            </select>
+        <div class="columns is-multiline">
+          <div class="column is-one-third">
+            <div class="field">
+              <label for="" class="label">Region</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    (change)="onChangeRegion($event)"
+                    formControlName="regionId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="|">Seleccione Region</option>
+                    @for (region of regions; track $index) {
+                    <option value="{{ region.id }}">{{ region.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="field">
+              <label for="" class="label">Ciudad</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    (change)="onChangeCity($event)"
+                    formControlName="cityId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="|">Seleccione Ciudad</option>
+                    @for (city of cities; track $index) {
+                    <option value="{{ city.id }}">{{ city.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="field">
+              <label for="" class="label">Comuna</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    formControlName="municipalityId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="|">Seleccione Comuna</option>
+                    @for (municipality of municipalities; track $index) {
+                    <option value="{{ municipality.id }}">
+                      {{ municipality.name }}
+                    </option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="field">
-          <div class="select">
-            <select
-              (change)="onChangeCity($event)"
-              formControlName="cityId"
-              [ngClass]="{ 'is-skeleton': loadingLocation }"
-            >
-              <option value="|">Seleccione Ciudad</option>
-              @for (city of cities; track $index) {
-              <option value="{{ city.id }}">{{ city.name }}</option>
-              }
-            </select>
-          </div>
-        </div>
-        <div class="field">
-          <div class="select">
-            <select
-              formControlName="municipalityId"
-              [ngClass]="{ 'is-skeleton': loadingLocation }"
-            >
-              <option value="|">Seleccione Comuna</option>
-              @for (municipality of municipalities; track $index) {
-              <option value="{{ municipality.id }}">
-                {{ municipality.name }}
-              </option>
-              }
-            </select>
-          </div>
-        </div>
+        <!-- <div class="field"></div>
+        <div class="field"></div>
+        <div class="field"></div> -->
 
         @if (errors | async) {
         <article class="message is-danger">
@@ -100,13 +124,25 @@
               Editar
             </button>
             } @else {
-            <button
-              class="button is-primary is-fullwidth"
-              [ngClass]="{ 'is-loading': isLoading | async }"
-              (click)="onClickSave()"
-            >
-              Modificar
-            </button>
+            <div class="columns">
+              <div class="column is-half">
+                <button
+                  class="button is-primary is-fullwidth"
+                  [ngClass]="{ 'is-loading': isLoading | async }"
+                  (click)="onClickSave()"
+                >
+                  Modificar
+                </button>
+              </div>
+              <div class="column is-half">
+                <button
+                  class="button is-danger is-fullwidth"
+                  (click)="onClickCancel()"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
             }
           </div>
         </div>
