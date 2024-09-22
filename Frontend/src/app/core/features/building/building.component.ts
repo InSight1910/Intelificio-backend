@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators,ReactiveFormsModule} from '@angular/forms';
-import { BuildingService } from '../../services/building.service';
+import { BuildingService } from '../../services/building/building.service';
 import { Building } from '../../../shared/models/building.model';
 
 @Component({

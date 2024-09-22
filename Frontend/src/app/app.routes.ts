@@ -7,6 +7,7 @@ import { authReducer } from './states/auth/auth.reducer';
 import { SelectCommunityComponent } from './core/features/community/select-community/select-community.component';
 import { HomeCommunityComponent } from './core/features/community/home/home.component';
 import { BuildingComponent } from './core/features/building/building.component';
+import { SingupComponent } from './core/features/authentication/singup/singup.component';
 
 export const routes: Routes = [
   {
@@ -14,8 +15,12 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'Edificios',
+    path: 'Buildings',
     component: BuildingComponent
+  },
+  {
+    path: 'Singup',
+    component: SingupComponent
   },
   // {
   //   path: '**',

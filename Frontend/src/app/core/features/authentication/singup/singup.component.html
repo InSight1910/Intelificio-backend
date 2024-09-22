@@ -1,1 +1,83 @@
-<p>singup works!</p>
+
+<form class="box" [formGroup]="singupForm" (ngSubmit)="onSubmit()">
+
+<div class="columns">
+
+    <div class="column field is-4">
+    <label class="label">Nombre:</label>
+        <div class="control">
+            <input class="input" type="text" formControlName="firstName" />
+        </div>
+    </div>
+
+    <div class="column field is-4">
+    <label class="label" >Apellido:</label>
+    <div class="control">
+        <input class="input" type="text" formControlName="lastName" />
+    </div>
+    </div>
+
+    <div class="column field is-4">
+        <label class="label" > N° de RUT: </label>
+        <div class="control">
+            <input class="input" type="text" formControlName="rut" />
+        </div>
+    </div>
+
+</div>
+
+<div class="columns">
+
+    <div class="column field is-4">
+        <label class="label" >Fecha Nacimiento:</label>
+        <div class="control">
+            <input class="input" type="date" formControlName="birthDate" />
+        </div>
+    </div>
+
+    <div class="column field is-4">
+        <label class="label">N° teléfono:</label>
+        <div class="control">
+            <input class="input" type="tel" formControlName="phoneNumber" />
+        </div>
+    </div>
+
+    <div class="column field is-4">
+        <label class="label">Rol:</label>
+        <div class="control">
+          <div class="select">
+            <select formControlName="rol">
+              <option *ngFor="let rol of listaRol" [value]="rol.name">
+                {{ rol.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+</div>
+
+
+<div class="columns">
+
+    <div class="column field is-6">
+        <label class="label" >Correo:</label>
+        <div class="control">
+            <input class="input" type="email" formControlName="email" />
+        </div>
+    </div>
+
+    <div class="column field is-6">
+        <label class="label" >Password:</label>
+        <div class="control">
+            <input class="input"  type="password" formControlName="password" />
+        </div>
+    </div>
+
+</div>
+
+<div class="buttons">
+<button type="submit"  class="button is-primary"  [disabled]="!singupForm.valid">Guardar</button>
+</div>
+
+</form> 
