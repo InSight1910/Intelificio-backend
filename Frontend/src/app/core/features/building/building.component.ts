@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators,ReactiveFormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common'; 
 import { BuildingService } from '../../services/building/building.service';
 import { Building } from '../../../shared/models/building.model';
 
 @Component({
   selector: 'app-building',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './building.component.html',
   styleUrl: './building.component.css'
 })
@@ -99,12 +100,12 @@ export class BuildingComponent implements OnInit {
     }
 
     private cleanFields(){
-      this.buildingForm.controls['nombreEdificio'].setValue('');
-      this.buildingForm.controls['nombreEdificio'].enable();
-      this.buildingForm.controls['pisosEdificio'].setValue(0);
-      this.buildingForm.controls['pisosEdificio'].enable();
-      this.buildingForm.controls['CantidadUnidades'].setValue(0);
-      this.buildingForm.controls['CantidadUnidades'].disable();
+      this.buildingForm.reset({
+        nombreEdificio: '',
+        pisosEdificio: 0,
+        CantidadUnidades: 0
+      }, { emitEvent: false });
+      this.enableFields();
     }
 
     detail(id: number){
@@ -240,4 +241,12 @@ export class BuildingComponent implements OnInit {
         });
       }
     }
+
+    onInputChange(controlName: string): void {
+      const control = this.buildingForm.get(controlName);
+      if (control) {
+        control.markAsUntouched();
+      }
+    }
+
 }

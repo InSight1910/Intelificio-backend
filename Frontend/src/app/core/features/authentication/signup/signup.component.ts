@@ -192,7 +192,10 @@ export class SingupComponent implements OnInit {
   }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password')?.value;
+    var password = control.get('password')?.value;
+    if (password.length <= 0){
+      password = 1;
+    }
     const confirmPassword = control.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { passwordsDoNotMatch: true };
   }

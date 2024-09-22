@@ -15,7 +15,22 @@
     <div class="column field is-6">
       <label class="label" for="nombre">Nombre Edificio:</label>
       <div class="control">
-        <input class="input" id="nombre" type="text" formControlName="nombreEdificio" />
+        <input class="input" id="nombre" type="text" formControlName="nombreEdificio" (input)="onInputChange('nombreEdificio')"
+            [ngClass]="{'is-danger': buildingForm.get('nombreEdificio')?.invalid && buildingForm.get('nombreEdificio')?.touched}"
+            [ngClass]="{'is-success': buildingForm.get('nombreEdificio')?.valid && buildingForm.get('nombreEdificio')?.touched}"
+            />
+            <span *ngIf="buildingForm.get('nombreEdificio')?.invalid && buildingForm.get('nombreEdificio')?.touched">
+                <p class="help is-danger" *ngIf="buildingForm.get('nombreEdificio')?.invalid">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Debe ingresar el nombre del Edificio.
+                </p>
+            </span>
+            <span *ngIf="buildingForm.get('nombreEdificio')?.valid && buildingForm.get('nombreEdificio')?.touched">
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
+            </span>
       </div>
     </div>
   
@@ -33,7 +48,25 @@
     <div class="column field is-6">
       <label class="label" for="cantidadpisos">N° de Pisos:</label>
       <div class="control">
-        <input class="input" id="cantidadpisos" type="text" formControlName="pisosEdificio" />
+        <input class="input" id="cantidadpisos" type="text" formControlName="pisosEdificio" (input)="onInputChange('pisosEdificio')"
+            [ngClass]="{'is-danger': buildingForm.get('pisosEdificio')?.invalid && buildingForm.get('pisosEdificio')?.touched}"
+            [ngClass]="{'is-success': buildingForm.get('pisosEdificio')?.valid && buildingForm.get('pisosEdificio')?.touched}"
+            />
+            <span *ngIf="buildingForm.get('pisosEdificio')?.invalid && buildingForm.get('pisosEdificio')?.touched">
+                <p class="help is-danger" *ngIf="buildingForm.get('pisosEdificio')?.invalid">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    El edificio debe tener al menos 1 piso.
+                </p>
+                <p class="help is-right" *ngIf="buildingForm.get('pisosEdificio')?.valid">
+                  <i class="fas fa-check"></i>
+                </p>
+            </span>
+            <span *ngIf="buildingForm.get('pisosEdificio')?.valid && buildingForm.get('pisosEdificio')?.touched">
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
+            </span>
       </div>
     </div>
 

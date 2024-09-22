@@ -16,6 +16,12 @@
                     Debe ingresar un Nombre de usuario.
                 </p>
             </span>
+            <span *ngIf="singupForm.get('firstName')?.valid && singupForm.get('firstName')?.touched">
+                <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
+                </p>
+            </span>
         </div>
     </div>
 
@@ -30,6 +36,12 @@
             <p class="help is-danger" *ngIf="singupForm.get('lastName')?.errors?.['required']">
                 <i class="fas fa-exclamation-triangle"></i>
                 Debe ingresar un Apellido al usuario {{this.singupForm.controls['firstName'].value}}.
+            </p>
+        </span>
+        <span *ngIf="singupForm.get('lastName')?.valid && singupForm.get('lastName')?.touched">
+            <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
             </p>
         </span>
     </div>
@@ -51,6 +63,12 @@
                     <i class="fas fa-exclamation-triangle"></i>
                     El RUT ingresado no es válido.
                   </p>
+            </span>
+            <span *ngIf="singupForm.get('rut')?.valid && singupForm.get('rut')?.touched">
+                <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
+                </p>
             </span>
         </div>
     </div>
@@ -75,6 +93,12 @@
                     <i class="fas fa-exclamation-triangle"></i>
                     El usuario {{this.singupForm.controls['firstName'].value}} debe ser mayor de 2 años.
                   </p>
+            </span>
+            <span *ngIf="singupForm.get('birthDate')?.valid && singupForm.get('birthDate')?.touched">
+                <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
+                </p>
             </span>
         </div>
     </div>
@@ -102,6 +126,12 @@
                         No se aceptan más de 15 caracteres.
                     </p>
                 </span>
+                <span *ngIf="singupForm.get('phoneNumber')?.valid && singupForm.get('phoneNumber')?.touched">
+                    <p class="help is-right">
+                        <i class="fas fa-check"></i>
+                        Validado
+                    </p>
+                </span>
             </div>
         </div>
 
@@ -121,6 +151,12 @@
                 <p class="help is-danger" *ngIf="singupForm.get('rol')?.errors?.['required']">
                     <i class="fas fa-exclamation-triangle"></i>
                     ¿Qué rol tendrá el usuario {{this.singupForm.controls['firstName'].value}}?
+                </p>
+            </span>
+            <span *ngIf="singupForm.get('rol')?.valid && singupForm.get('rol')?.touched">
+                <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
                 </p>
             </span>
           </div>
@@ -145,11 +181,17 @@
                     Debe ingresar el correo de usuario {{this.singupForm.controls['firstName'].value}}.
                 </p>
             </span>
+            <span *ngIf="singupForm.get('email')?.valid && singupForm.get('email')?.touched">
+                <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
+                </p>
+            </span>
         </div>
     </div>
 
     <div class="column field is-4">
-        <label class="label" >Password:</label>
+        <label class="label" >Contraseña:</label>
         <div class="control">
             <input class="input" type="password" (input)="onInputChange('password')" formControlName="password" 
             [ngClass]="{'is-danger': singupForm.get('password')?.invalid && singupForm.get('password')?.touched}"
@@ -168,6 +210,12 @@
                 <p class="help is-danger" *ngIf="singupForm.get('password')?.errors?.['invalidPassword']">
                     <i class="fas fa-exclamation-triangle"></i>
                     La contraseña debe contener al menos una letra, un número y un símbolo.
+                </p>
+            </span>
+            <span *ngIf="singupForm.get('password')?.valid && singupForm.get('password')?.touched">
+                <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Contraseña Valida
                 </p>
             </span>
 
