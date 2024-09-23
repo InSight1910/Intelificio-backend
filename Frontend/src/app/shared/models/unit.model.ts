@@ -1,11 +1,11 @@
 export interface Unit {
-  id?: number;
+  id: number;
   floor: string;
   number: string;
   surface: number;
   user: string;
-  building: number;
-  unitType: number;
+  building: string;
+  unitType: string;
 }
 
 export interface CreateUnit {

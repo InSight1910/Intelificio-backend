@@ -3,7 +3,11 @@ import { UnitService } from '../../../services/unit/unit.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
-import { CreateUnit, Unit, UnitType } from '../../../../shared/models/unit.model';
+import {
+  CreateUnit,
+  Unit,
+  UnitType,
+} from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
 
@@ -12,7 +16,7 @@ import { Building } from '../../../../shared/models/building.model';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-modal.component.html',
-  styleUrl: './add-modal.component.css'
+  styleUrl: './add-modal.component.css',
 })
 export class AddModalComponent {
   @Output() addUnitEvent = new EventEmitter<boolean>();
@@ -24,8 +28,13 @@ export class AddModalComponent {
   canAddUnit: boolean = false;
   types: UnitType[] = [];
   buildings: Building[] = [];
+  floors: number[] = [];
 
-  constructor(private unitService: UnitService, private fb: FormBuilder, private buildingService: BuildingService) {
+  constructor(
+    private unitService: UnitService,
+    private fb: FormBuilder,
+    private buildingService: BuildingService
+  ) {
     this.unitForm = this.fb.group({
       id: [''],
       floor: [''],
@@ -33,7 +42,7 @@ export class AddModalComponent {
       surface: [''],
       user: [''],
       building: [''],
-      unitType: ['|']
+      unitType: [''],
     });
   }
 
@@ -41,23 +50,23 @@ export class AddModalComponent {
     this.unitService.getTypes().subscribe((types) => {
       this.types = types.data;
     });
-    const BuildingId = localStorage.getItem('communityId')!;
-    this.buildingService.getbyCommunityId(+BuildingId).subscribe((buildings) => {
-      this.buildings = buildings.data;
-    });
+    const communityId = localStorage.getItem('communityId')!;
+    this.buildingService
+      .getbyCommunityId(+communityId)
+      .subscribe((buildings) => {
+        this.buildings = buildings.data;
+      });
   }
 
   onClickAddUnit() {
     this.isAdding = true;
-    const unit:CreateUnit = {
+    const unit: CreateUnit = {
       floor: this.unitForm.get('floor')?.value,
       number: this.unitForm.get('number')?.value,
       surface: 5,
       buildingId: this.unitForm.get('building')?.value,
-      unitTypeId: this.unitForm.get('unitType')?.value
+      unitTypeId: this.unitForm.get('unitType')?.value,
     };
-    const BuildingId = localStorage.getItem('BuildingId')!;
-    console.log(unit, BuildingId);
 
     this.unitService
       .createUnit(unit)
@@ -69,7 +78,19 @@ export class AddModalComponent {
             this.isSuccess = false;
             console.log('paso timeout');
           }, 2000);
-          this.unitForm.reset();
+
+          this.unitForm.reset({
+            floor: '',
+            number: '',
+            surface: '',
+            user: '',
+            building: '',
+            unitType: '',
+          });
+
+          this.floors = [];
+          this.errors = null;
+
           this.addUnitEvent.emit(true);
         }),
         catchError((error) => {
@@ -91,4 +112,15 @@ export class AddModalComponent {
     this.unitForm.reset();
   }
 
+  onChangeBuilding() {
+    console.log(this.unitForm.get('building')?.value);
+    const building = this.buildings.find(
+      (x) => x.id == this.unitForm.get('building')?.value
+    )!;
+    console.log(building);
+    this.floors = Array.from(
+      { length: building.floors },
+      (_, index) => index + 1
+    );
+  }
 }
