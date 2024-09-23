@@ -3,7 +3,9 @@ import { UnitService } from '../../../services/unit/unit.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
-import { Unit, UnitType } from '../../../../shared/models/unit.model';
+import { CreateUnit, Unit, UnitType } from '../../../../shared/models/unit.model';
+import { BuildingService } from '../../../services/building/building.service';
+import { Building } from '../../../../shared/models/building.model';
 
 @Component({
   selector: 'app-add-modal',
@@ -21,8 +23,9 @@ export class AddModalComponent {
   isSuccess: boolean = false;
   canAddUnit: boolean = false;
   types: UnitType[] = [];
+  buildings: Building[] = [];
 
-  constructor(private unitService: UnitService, private fb: FormBuilder) {
+  constructor(private unitService: UnitService, private fb: FormBuilder, private buildingService: BuildingService) {
     this.unitForm = this.fb.group({
       id: [''],
       floor: [''],
@@ -38,17 +41,20 @@ export class AddModalComponent {
     this.unitService.getTypes().subscribe((types) => {
       this.types = types.data;
     });
+    const BuildingId = localStorage.getItem('communityId')!;
+    this.buildingService.getbyCommunityId(+BuildingId).subscribe((buildings) => {
+      this.buildings = buildings.data;
+    });
   }
 
   onClickAddUnit() {
     this.isAdding = true;
-    const unit:Unit = {
+    const unit:CreateUnit = {
       floor: this.unitForm.get('floor')?.value,
       number: this.unitForm.get('number')?.value,
-      surface: this.unitForm.get('surface')?.value,
-      user: this.unitForm.get('user')?.value,
-      building: this.unitForm.get('building')?.value,
-      unitType: this.unitForm.get('unitType')?.value
+      surface: 5,
+      buildingId: this.unitForm.get('building')?.value,
+      unitTypeId: this.unitForm.get('unitType')?.value
     };
     const BuildingId = localStorage.getItem('BuildingId')!;
     console.log(unit, BuildingId);

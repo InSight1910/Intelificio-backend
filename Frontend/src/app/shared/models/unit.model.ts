@@ -8,6 +8,14 @@ export interface Unit {
   unitType: number;
 }
 
+export interface CreateUnit {
+  floor: string;
+  number: string;
+  surface: number;
+  buildingId: number;
+  unitTypeId: number;
+}
+
 export interface UnitType {
   id: number;
   name: string;

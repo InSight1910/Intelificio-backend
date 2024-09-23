@@ -21,7 +21,7 @@
                 <div class="field">
                     <div class="select">
                         <select formControlName="unitType">
-                            <option value="|">Seleccione Tipo</option>
+                            <option value="|">Seleccione Tipo de Unidad</option>
                             @for (type of types; track $index) {
                             <option value="{{ type.id }}">
                                 {{ type.name }}
@@ -30,18 +30,27 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="field">
-                    <label class="label">Edificio</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Edificio" formControlName="building" />
+                    <div class="select">
+                        <select formControlName="building">
+                            <option value="|">Seleccione Edificio</option>
+                            @for (building of buildings; track $index) {
+                            <option value="{{ building.id }}">
+                                {{ building.name }}
+                            </option>
+                            }
+                        </select>
                     </div>
                 </div>
+
                 <div class="field">
                     <label class="label">Piso</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="Piso" formControlName="floor" />
                     </div>
                 </div>
+                
                 @if (errors) {
                 <div class="message is-danger">
                     <div class="message-body">

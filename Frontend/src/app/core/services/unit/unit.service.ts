@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import { Unit, UnitType } from '../../../shared/models/unit.model';
+import { CreateUnit, Unit, UnitType } from '../../../shared/models/unit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class UnitService {
     return this.http.put(`${this.baseUrl}/unit/Update/${unit.id}`, unit);
   }
 
-  createUnit(unit: Unit) {
+  createUnit(unit: CreateUnit) {
     return this.http.post(`${this.baseUrl}/unit`, unit);
   }
 
