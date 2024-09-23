@@ -64,6 +64,7 @@ namespace Backend.Features.Authentication.Common
         };
 
         public static Error RoleNotFound { get; internal set; }
+        public static Error EmailNotSent { get; internal set; }
 
         public static List<Error> SignUpMassiveError(List<Error> errors) => errors;
     }

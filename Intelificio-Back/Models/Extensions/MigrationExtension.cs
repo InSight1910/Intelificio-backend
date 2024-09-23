@@ -49,6 +49,8 @@ namespace Backend.Models.Extensions
                         Role = (await roleManager.FindByNameAsync("Usuario"))!,
                         Rut = "123456789"
                     };
+                    _ = await userManager.CreateAsync(user, "User.1234");
+                    _ = await userManager.CreateAsync(admin, "Admin.123");
                     _ = await context.SaveChangesAsync();
 
                 }

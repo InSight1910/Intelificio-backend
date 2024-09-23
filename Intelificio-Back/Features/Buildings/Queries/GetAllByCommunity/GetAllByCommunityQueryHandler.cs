@@ -1,4 +1,4 @@
-﻿using Backend.Common.Response;
+using Backend.Common.Response;
 using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;

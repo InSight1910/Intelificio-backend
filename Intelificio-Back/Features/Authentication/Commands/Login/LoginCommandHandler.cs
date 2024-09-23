@@ -36,7 +36,7 @@ namespace Backend.Features.Authentication.Commands.Login
             // TODO: Validar que rol no venga vacio, de venir vacio, arrojar error -----> Esta arrojando excepcion
 
 
-            string token = tokenProvider.CreateToken(user, role.FirstOrDefault());
+            string token = tokenProvider.CreateToken(user, role.FirstOrDefault("Usuario"));
             string refreshToken = tokenProvider.CreateRefreshToken();
 
             user.RefreshToken = refreshToken;

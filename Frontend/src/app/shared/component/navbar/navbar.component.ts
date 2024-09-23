@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AppState } from '../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectTitle } from '../../../states/navbar/navbar.selectors';
@@ -17,6 +17,8 @@ import { selectCommunity } from '../../../states/community/community.selectors';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  @Output() openNavbar: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(private store: Store<AppState>) {}
   title!: string;
   user!: Observable<User | null>;
@@ -40,5 +42,6 @@ export class NavbarComponent {
 
   togleNavbar() {
     this.navbarDisplay = !this.navbarDisplay;
+    this.openNavbar.emit(this.navbarDisplay);
   }
 }

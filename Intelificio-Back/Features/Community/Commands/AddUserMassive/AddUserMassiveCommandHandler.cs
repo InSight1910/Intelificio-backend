@@ -46,6 +46,7 @@ namespace Backend.Features.Community.Commands.AddUserMassive
 
                 for (int row = 2; row <= rowCount; row++)
                 {
+                    if (IsRowEmpty(excelWorksheet, row)) { break; }
                     var user = new AddUserObject
                     {
                         CommunityId = int.Parse(excelWorksheet.Cells[row, 1].Value.ToString()!),
@@ -57,5 +58,22 @@ namespace Backend.Features.Community.Commands.AddUserMassive
             }
             return addUserCommand;
         }
+
+
+        private bool IsRowEmpty(ExcelWorksheet worksheet, int rowNumber)
+        {
+            var row = worksheet.Cells[rowNumber, 1, rowNumber, worksheet.Dimension.End.Column];
+
+            foreach (var cell in row)
+            {
+                if (!string.IsNullOrWhiteSpace(cell.Text)) // Check if cell contains text
+                {
+                    return false; // Row is not empty
+                }
+            }
+
+            return true; // Row is empty
+        }
+
     }
 }

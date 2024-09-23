@@ -1,10 +1,12 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Authentication.Commands.ChangePasswordOne;
+using Backend.Features.Authentication.Commands.ChangePasswordTwo;
 using Backend.Features.Authentication.Commands.Login;
 using Backend.Features.Authentication.Commands.Refresh;
 using Backend.Features.Authentication.Commands.Signup;
 using Backend.Features.Authentication.Commands.SignupMassive;
-using Backend.Features.Authentication.Queries.GetUserByEmail;
 using Backend.Features.Authentication.Queries.GetAllRoles;
+using Backend.Features.Authentication.Queries.GetUserByEmail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +19,7 @@ namespace Backend.Features.Authentication.Common
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
         {
-                var result = await mediator.Send(command);
+            var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: (_) => Created(),
                 onFailure: (errors) =>
@@ -97,7 +99,25 @@ namespace Backend.Features.Authentication.Common
             return result.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
-                
+
+        }
+
+        [HttpPost("change-password-one")]
+        public async Task<IActionResult> ChangePasswordStepOne([FromBody] ChangePasswordOneCommand command)
+        {
+            var result = await mediator.Send(command);
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
+        }
+
+        [HttpPost("change-password-two")]
+        public async Task<IActionResult> ChangePasswordStepTwo([FromBody] ChangePasswordTwoCommand command)
+        {
+            var result = await mediator.Send(command);
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
         }
     }
 }

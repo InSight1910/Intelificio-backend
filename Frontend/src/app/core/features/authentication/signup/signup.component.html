@@ -1,8 +1,5 @@
-
 <form class="box" [formGroup]="singupForm" (ngSubmit)="onSubmit()">
-
-<div class="columns">
-
+  <div class="columns">
     <div class="column field is-4">
         <label class="label">Nombre:</label>
             <div class="control">
@@ -29,7 +26,7 @@
         <label class="label" >Apellido:</label>
             <div class="control">
                 <input class="input" type="text" (input)="onInputChange('lastName')" formControlName="lastName"  placeholder="Apellido"
-                
+
                 [ngClass]="{'is-danger': singupForm.get('lastName')?.invalid && singupForm.get('lastName')?.touched}"
                 [ngClass]="{'is-success': singupForm.get('lastName')?.valid && singupForm.get('lastName')?.touched}"/>
 
@@ -76,11 +73,9 @@
                 }
             </div>
     </div>
+  </div>
 
-</div>
-
-<div class="columns">
-
+  <div class="columns">
     <div class="column field is-4">
         <label class="label" >Fecha Nacimiento:</label>
         <div class="control">
@@ -117,7 +112,7 @@
                 <input class="input" type="tel" formControlName="phoneNumber" (input)="onInputChange('phoneNumber')" placeholder="+56xxxxxxxxx"
                 [ngClass]="{'is-danger': singupForm.get('phoneNumber')?.invalid && singupForm.get('phoneNumber')?.touched}"
                 [ngClass]="{'is-success': singupForm.get('phoneNumber')?.valid && singupForm.get('phoneNumber')?.touched}" />
-                
+
                 @if(singupForm.get('phoneNumber')?.invalid && singupForm.get('phoneNumber')?.touched){
 
                     @if (singupForm.get('phoneNumber')?.errors && singupForm.get('phoneNumber')?.errors?.['minlength'] && singupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
@@ -134,28 +129,28 @@
                         <p class="help is-danger">
                             <i class="fas fa-exclamation-triangle"></i>
                             Formato incorrecto, debe ser +56xxxxxxxxx
-                        </p>    
+                        </p>
                     } @else {
                         <p class="help is-danger">
                             <i class="fas fa-exclamation-triangle"></i>
                             Debe ingresar un valor
                         </p>
-                    } 
+                    }
                 } @else if (singupForm.get('phoneNumber')?.valid && singupForm.get('phoneNumber')?.touched) {
                     <p class="help is-right">
                         <i class="fas fa-check"></i>
                         Validado
                     </p>
-                } 
+                }
             </div>
         </div>
 
     <div class="column field is-4">
         <label class="label">Rol:</label>
         <div class="control">
-          <div class="select" 
+          <div class="select"
           [ngClass]="{'is-danger': singupForm.get('rol')?.invalid && singupForm.get('rol')?.touched}"
-          [ngClass]="{'is-success': singupForm.get('rol')?.valid && singupForm.get('rol')?.touched}"  
+          [ngClass]="{'is-success': singupForm.get('rol')?.valid && singupForm.get('rol')?.touched}"
           >
             <select formControlName="rol" (input)="onInputChange('rol')">
               <option *ngFor="let rol of listaRol" [value]="rol.name">
@@ -178,12 +173,11 @@
           </div>
         </div>
       </div>
-      
+
 </div>
 
 
-<div class="columns">
-
+  <div class="columns">
     <div class="column field is-4">
         <label class="label" >Correo:</label>
         <div class="control">
@@ -282,4 +276,4 @@
 <button class="button is-link" (click)="clean()">Limpiar</button>
 </div>
 
-</form> 
+</form>
