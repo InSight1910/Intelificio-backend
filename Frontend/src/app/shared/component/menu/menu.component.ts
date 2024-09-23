@@ -9,5 +9,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './menu.component.css',
 })
 export class MenuComponent {
-  @Input() openNavbar: boolean = true;
+  @Input() openNavbar: boolean = false;
 }

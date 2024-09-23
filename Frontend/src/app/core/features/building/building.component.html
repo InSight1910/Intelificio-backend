@@ -1,122 +1,220 @@
-
+@if (isLoading) {
+<div class="skeleton-block">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta laborum
+  mollitia perferendis, id molestias dolor eaque architecto maxime. Repudiandae
+  repellat, voluptates quo totam natus iusto molestias soluta. Nihil, aspernatur
+  praesentium! Repellendus nihil, culpa quam a quae distinctio facilis sint
+  corporis incidunt aspernatur quos et sed amet placeat vel atque, autem
+  pariatur asperiores nobis, iusto laborum magni illo beatae! Placeat, minus.
+  Optio saepe eius repellendus tempore vel adipisci et corporis illo expedita
+  veniam, cupiditate blanditiis accusamus libero ut minima ratione eligendi
+  neque. Enim, autem sit repudiandae vel saepe natus ipsum impedit! In soluta
+  facere ad deleniti sit hic rem fugit modi ut dicta. Nam error delectus
+  molestias eius quisquam ullam at in dolorem ratione ducimus repudiandae quis
+  consectetur neque, eos eaque? Officiis ea quis aliquam asperiores placeat.
+  Maxime eligendi obcaecati facere nisi ipsum. Nesciunt accusamus ex laboriosam
+  esse! Sapiente, eos odio eius unde provident dicta praesentium accusamus,
+  dolore doloremque deleniti consectetur? Velit necessitatibus, aliquid ut
+  cumque hic doloribus illo rem eius autem magnam vel non, consectetur molestias
+</div>
+} @else {
 <div class="tabs">
   <ul>
     @for (building of Edificios; track building.id) {
-      <li [class.is-active]="building.id === selectedBuildingId" (click)="detail(building.id)"><a>{{ building.name}}</a></li>
+    <li
+      [class.is-active]="building.id === selectedBuildingId"
+      (click)="detail(building.id)"
+    >
+      <a>{{ building.name }}</a>
+    </li>
     }
   </ul>
 </div>
 
-
 <form class="box" [formGroup]="buildingForm">
-
   <div class="columns">
-
     <div class="column field is-6">
       <label class="label" for="nombre">Nombre Edificio:</label>
       <div class="control">
-        <input class="input" id="nombre" type="text" formControlName="nombreEdificio" (input)="onInputChange('nombreEdificio')"
-            [ngClass]="{'is-danger': buildingForm.get('nombreEdificio')?.invalid && buildingForm.get('nombreEdificio')?.touched}"
-            [ngClass]="{'is-success': buildingForm.get('nombreEdificio')?.valid && buildingForm.get('nombreEdificio')?.touched}"
-            />
-            <span *ngIf="buildingForm.get('nombreEdificio')?.invalid && buildingForm.get('nombreEdificio')?.touched">
-                <p class="help is-danger" *ngIf="buildingForm.get('nombreEdificio')?.invalid">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Debe ingresar el nombre del Edificio.
-                </p>
-            </span>
-            <span *ngIf="buildingForm.get('nombreEdificio')?.valid && buildingForm.get('nombreEdificio')?.touched">
-              <p class="help is-right">
-                <i class="fas fa-check"></i>
-                Validado
-              </p>
-            </span>
+        <input
+          class="input"
+          id="nombre"
+          type="text"
+          formControlName="nombreEdificio"
+          (input)="onInputChange('nombreEdificio')"
+          [ngClass]="{
+            'is-danger':
+              buildingForm.get('nombreEdificio')?.invalid &&
+              buildingForm.get('nombreEdificio')?.touched
+          }"
+          [ngClass]="{
+            'is-success':
+              buildingForm.get('nombreEdificio')?.valid &&
+              buildingForm.get('nombreEdificio')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            buildingForm.get('nombreEdificio')?.invalid &&
+            buildingForm.get('nombreEdificio')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="buildingForm.get('nombreEdificio')?.invalid"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar el nombre del Edificio.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            buildingForm.get('nombreEdificio')?.valid &&
+            buildingForm.get('nombreEdificio')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
       </div>
     </div>
-  
+
     <div class="column field is-6">
       <label class="label" for="nombrecomunidad">Nombre Comunidad:</label>
       <div class="control">
-        <input class="input" id="nombrecomunidad" type="text" formControlName="ComunidadEdificio" />
+        <input
+          class="input"
+          id="nombrecomunidad"
+          type="text"
+          formControlName="ComunidadEdificio"
+        />
       </div>
     </div>
-
   </div>
 
   <div class="columns">
-
     <div class="column field is-6">
       <label class="label" for="cantidadpisos">N° de Pisos:</label>
       <div class="control">
-        <input class="input" id="cantidadpisos" type="text" formControlName="pisosEdificio" (input)="onInputChange('pisosEdificio')"
-            [ngClass]="{'is-danger': buildingForm.get('pisosEdificio')?.invalid && buildingForm.get('pisosEdificio')?.touched}"
-            [ngClass]="{'is-success': buildingForm.get('pisosEdificio')?.valid && buildingForm.get('pisosEdificio')?.touched}"
-            />
-            <span *ngIf="buildingForm.get('pisosEdificio')?.invalid && buildingForm.get('pisosEdificio')?.touched">
-                <p class="help is-danger" *ngIf="buildingForm.get('pisosEdificio')?.invalid">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    El edificio debe tener al menos 1 piso.
-                </p>
-                <p class="help is-right" *ngIf="buildingForm.get('pisosEdificio')?.valid">
-                  <i class="fas fa-check"></i>
-                </p>
-            </span>
-            <span *ngIf="buildingForm.get('pisosEdificio')?.valid && buildingForm.get('pisosEdificio')?.touched">
-              <p class="help is-right">
-                <i class="fas fa-check"></i>
-                Validado
-              </p>
-            </span>
+        <input
+          class="input"
+          id="cantidadpisos"
+          type="number"
+          formControlName="pisosEdificio"
+          (input)="onInputChange('pisosEdificio')"
+          [ngClass]="{
+            'is-danger':
+              buildingForm.get('pisosEdificio')?.invalid &&
+              buildingForm.get('pisosEdificio')?.touched
+          }"
+          [ngClass]="{
+            'is-success':
+              buildingForm.get('pisosEdificio')?.valid &&
+              buildingForm.get('pisosEdificio')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            buildingForm.get('pisosEdificio')?.invalid &&
+            buildingForm.get('pisosEdificio')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="buildingForm.get('pisosEdificio')?.invalid"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            El edificio debe tener al menos 1 piso.
+          </p>
+          <p
+            class="help is-right"
+            *ngIf="buildingForm.get('pisosEdificio')?.valid"
+          >
+            <i class="fas fa-check"></i>
+          </p>
+        </span>
+        <span
+          *ngIf="
+            buildingForm.get('pisosEdificio')?.valid &&
+            buildingForm.get('pisosEdificio')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
       </div>
     </div>
 
     <div class="column field is-6">
       <label class="label" for="cantidadunidades">N° de Unidades:</label>
       <div class="control">
-        <input class="input" id="cantidadunidades" type="text" formControlName="CantidadUnidades" />
+        <input
+          class="input"
+          id="cantidadunidades"
+          type="text"
+          formControlName="CantidadUnidades"
+        />
       </div>
     </div>
-
   </div>
 
-  @if (!notification) {
-  } @else {
-    <div class="notification is-danger">
-      <button class="delete" (click)="closeNotification()"></button>
-      No es posible eliminar Edificio, <strong>existen unidades asociadas</strong>.
-    </div>
-  }
-
-  @if (postUpdateOrCreate && isCreation) {
-    <div class="notification is-success">
-      <button class="delete" (click)="closeNotification()" ></button>
-      Edificio creado exitosamente.
-    </div>
+  @if (!notification) { } @else {
+  <div class="notification is-danger">
+    <button class="delete" (click)="closeNotification()"></button>
+    No es posible eliminar Edificio,
+    <strong>existen unidades asociadas</strong>.
+  </div>
+  } @if (postUpdateOrCreate && isCreation) {
+  <div class="notification is-success">
+    <button class="delete" (click)="closeNotification()"></button>
+    Edificio creado exitosamente.
+  </div>
   } @else if (postUpdateOrCreate && isEdited) {
-    <div class="notification is-success">
-      <button class="delete" (click)="closeNotification()" ></button>
-      Edificio actualizado exitosamente.
-    </div>
+  <div class="notification is-success">
+    <button class="delete" (click)="closeNotification()"></button>
+    Edificio actualizado exitosamente.
+  </div>
   } @else if (postUpdateOrCreate && isDeletion) {
-    <div class="notification is-success">
-      <button class="delete" (click)="closeNotification()" ></button>
-      Edificio eliminado exitosamente.
-    </div>
+  <div class="notification is-success">
+    <button class="delete" (click)="closeNotification()"></button>
+    Edificio eliminado exitosamente.
+  </div>
   }
-
 
   <div class="buttons">
     @if (isEdited) {
-      <button type="submit"  class="button is-primary" (click)="update()" [disabled]="!buildingForm.valid">Guardar</button>
-      <button class="button is-link" (click)="exitdit()">Cancelar</button>
+    <button
+      type="submit"
+      class="button is-primary"
+      (click)="update()"
+      [disabled]="!buildingForm.valid"
+      [ngClass]="{
+        'is-loading': isSubmit
+      }"
+    >
+      Guardar
+    </button>
+    <button class="button is-link" (click)="exitdit()">Cancelar</button>
     } @else if (isCreation){
-      <button type="submit"  class="button is-primary" (click)="saveCreate()" [disabled]="!buildingForm.valid">Guardar</button>
-      <button class="button is-link" (click)="exitcreation()">Cancelar</button>
-    }  @else {
-      <button class="button is-primary" (click)="create()">Agregar</button>
-      <button class="button is-primary" (click)="edit()">Editar</button>
-      <button class="button is-link"(click)="delete()">Eliminar</button>
+    <button
+      type="submit"
+      class="button is-primary"
+      (click)="saveCreate()"
+      [disabled]="!buildingForm.valid"
+    >
+      Guardar
+    </button>
+    <button class="button is-link" (click)="exitcreation()">Cancelar</button>
+    } @else {
+    <button class="button is-primary" (click)="create()">Agregar</button>
+    <button class="button is-warning" (click)="edit()">Editar</button>
+    <button class="button is-danger" (click)="delete()">Eliminar</button>
     }
   </div>
+</form>
 
-</form> 
+}
