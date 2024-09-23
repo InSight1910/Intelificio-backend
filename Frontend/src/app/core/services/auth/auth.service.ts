@@ -7,7 +7,6 @@ import { singUp } from '../../../shared/models/singup.model';
 import { Role } from '../../../shared/models/role.model';
 import { SignupDTO } from '../../../shared/models/signUpCommand.model';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -42,13 +41,44 @@ export class AuthService {
   }
 
   signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
-    console.log("Servicio");
+    console.log('Servicio');
     console.log(singupDTO);
-    return this.http.post<any>(`${this.apiUrl}/auth/signup`,singupDTO);
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`, singupDTO);
   }
 
-  getAllRole(): Observable<{data: Role[]}>{
-    return this.http.get<{data: Role[]}>(`${this.apiUrl}/auth/roles`);
+  signupMassive(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/auth/signup/massive`, formData, {
+      observe: 'response',
+    });
   }
 
+  getAllRole(): Observable<{ data: Role[] }> {
+    return this.http.get<{ data: Role[] }>(`${this.apiUrl}/auth/roles`);
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post(
+      `${this.apiUrl}/auth/change-password-one`,
+      {
+        email,
+      },
+      {
+        observe: 'response',
+      }
+    );
+  }
+
+  changePassword(email: string, token: string, password: any) {
+    return this.http.post(
+      `${this.apiUrl}/auth/change-password-two`,
+      {
+        email,
+        token,
+        password,
+      },
+      {
+        observe: 'response',
+      }
+    );
+  }
 }

@@ -144,8 +144,8 @@ export class AddUserModalComponent {
     this.errors = null;
     this.form.reset();
 
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflowY = 'clip';
+    document.documentElement.style.overflowY = 'scroll';
     window.removeEventListener('scroll', this.preventScroll);
   }
 
