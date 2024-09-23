@@ -1,273 +1,259 @@
-import { Component, OnInit} from '@angular/core';
-import { FormControl, FormGroup,Validators,ReactiveFormsModule} from '@angular/forms';
-import { CommonModule } from '@angular/common'; 
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { BuildingService } from '../../services/building/building.service';
 import { Building } from '../../../shared/models/building.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../states/intelificio.state';
+import {
+  selectCommunity,
+  isLoading,
+} from '../../../states/community/community.selectors';
+import { Community } from '../../../shared/models/community.model';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-building',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './building.component.html',
-  styleUrl: './building.component.css'
+  styleUrl: './building.component.css',
 })
 export class BuildingComponent implements OnInit {
-    
-    Edificios: Building[] = [{
-      id: 1, 
-      name: 'Edificio Test 1', 
-      floors: 1, 
-      units: 10, 
-      communityId: 1, 
-      communityName: 'Comunidad de prueba' 
-    },
-    {
-      id: 2, 
-      name: 'Edificio Test 2', 
-      floors: 1, 
-      units: 10, 
-      communityId: 1, 
-      communityName: 'Comunidad de prueba' 
-    }];
+  Edificios!: Building[];
 
-    Edificio: Building = {
-      id: 1, 
-      name: 'Edificio Test 1', 
-      floors: 1, 
-      units: 10, 
-      communityId: 1, 
-      communityName: 'Comunidad de prueba' 
-    };
-    
-    buildingForm = new FormGroup({
-      nombreEdificio: new FormControl('', Validators.required),
-      pisosEdificio: new FormControl(0 , [Validators.required, Validators.min(1)]),
-      ComunidadEdificio: new FormControl('', Validators.required),
-      CantidadUnidades: new FormControl(0, Validators.required)
-    });
+  Edificio!: Building;
 
-    isEdited = false;
-    isDeletion = false;
-    notification = false;
-    isCreation = false;
-    postUpdateOrCreate = false;
-    loading = false;
-    selectedBuildingId: number = 1;
-    ActivateModal = false;
-    createdMessage: string = 'Edificio creado.';
-    updatedMessage: string = 'Edificio actualizado.';
-    
-    constructor(
-      private service: BuildingService
-    ){}
+  buildingForm = new FormGroup({
+    nombreEdificio: new FormControl('', Validators.required),
+    pisosEdificio: new FormControl(0, [Validators.required, Validators.min(1)]),
+    ComunidadEdificio: new FormControl('', Validators.required),
+    CantidadUnidades: new FormControl(0, Validators.required),
+  });
 
-    ngOnInit(): void {
-        this.populateFields();
-        this.getNumberOfBuilding();
-        this.disableFields();
-    }
+  isEdited = false;
+  isDeletion = false;
+  notification = false;
+  isCreation = false;
+  isLoading = false;
+  isSubmit = false;
+  postUpdateOrCreate = false;
+  selectedBuildingId: number = 1;
+  createdMessage: string = 'Edificio creado.';
+  updatedMessage: string = 'Edificio actualizado.';
+  community!: Community | null;
 
-    async getNumberOfBuilding(){
-      this.service.getbyCommunityId(2).subscribe(
-        (response: {data: Building[]}) => {
-            this.Edificios = response.data;
-            if (this.Edificios.length > 0) {
-              this.selectedBuildingId = this.Edificios[0].id;
-              this.detail(this.selectedBuildingId);
+  constructor(
+    private service: BuildingService,
+    private store: Store<AppState>
+  ) {}
+
+  async ngOnInit() {
+    await this.getNumberOfBuilding();
+    this.buildingForm.disable();
+  }
+
+  async getNumberOfBuilding() {
+    this.isLoading = true;
+    this.store
+      .select(selectCommunity)
+      .pipe(
+        tap((c) => {
+          console.log('Community:', c);
+          this.community = c;
+          this.service.getbyCommunityId(c?.id!).subscribe(
+            (response: { data: Building[] }) => {
+              this.Edificios = response.data;
+              if (this.Edificios.length > 0) {
+                this.selectedBuildingId = this.Edificios[0].id;
+                this.detail(this.selectedBuildingId);
+                this.isLoading = false;
+              }
+            },
+            (error) => {
+              this.isLoading = false;
+              console.error('Error al obtener edificios', error);
             }
-        },
-        (error) => {
-          console.error('Error al obtener edificios', error);
-        }
-      );
-    }
+          );
+        })
+      )
+      .subscribe();
+  }
 
-    private populateFields(): void {
-      this.buildingForm.controls['nombreEdificio'].setValue(this.Edificio.name);
-      this.buildingForm.controls['pisosEdificio'].setValue(this.Edificio.floors);
-      this.buildingForm.controls['CantidadUnidades'].setValue(this.Edificio.units);
-      this.buildingForm.controls['ComunidadEdificio'].setValue(this.Edificio.communityName);
-    }
+  private populateFields(): void {
+    this.buildingForm.controls['nombreEdificio'].setValue(this.Edificio.name);
+    this.buildingForm.controls['pisosEdificio'].setValue(this.Edificio.floors);
+    this.buildingForm.controls['CantidadUnidades'].setValue(
+      this.Edificio.units
+    );
+    this.buildingForm.controls['ComunidadEdificio'].setValue(
+      this.Edificio.communityName
+    );
+  }
 
-    private disableFields(){
-      this.buildingForm.controls['nombreEdificio'].disable();
-      this.buildingForm.controls['pisosEdificio'].disable();
-      this.buildingForm.controls['CantidadUnidades'].disable();
-      this.buildingForm.controls['ComunidadEdificio'].disable();
-    }
+  private enableFields() {
+    this.buildingForm.controls['nombreEdificio'].enable();
+    this.buildingForm.controls['pisosEdificio'].enable();
+  }
 
-    private enableFields(){
-      this.buildingForm.controls['nombreEdificio'].enable();
-      this.buildingForm.controls['pisosEdificio'].enable();
-    }
-
-    private cleanFields(){
-      this.buildingForm.reset({
+  private cleanFields() {
+    this.buildingForm.reset(
+      {
         nombreEdificio: '',
         pisosEdificio: 0,
-        CantidadUnidades: 0
-      }, { emitEvent: false });
-      this.enableFields();
-    }
+        CantidadUnidades: 0,
+      },
+      { emitEvent: false }
+    );
+    this.enableFields();
+  }
 
-    detail(id: number){
-      this.selectedBuildingId = id; 
-      this.isEdited = false;
-      this.isCreation = false;
-      this.notification = false;
-      const selectedBuilding = this.Edificios?.find(building => building.id === id);
-  
-      if (selectedBuilding) {
-        this.Edificio = selectedBuilding;
-        this.populateFields();
-        this.disableFields();
-      } else {
-        console.error('Edificio no encontrado');
-      }
-    }
+  detail(id: number) {
+    this.selectedBuildingId = id;
+    this.isEdited = false;
+    this.isCreation = false;
+    this.notification = false;
+    const selectedBuilding = this.Edificios?.find(
+      (building) => building.id === id
+    );
 
-    edit(){
-      this.isEdited = true;
-      this.notification = false;
-      this.postUpdateOrCreate = false;
-      this.enableFields();
-    }
-
-    exitdit(){
-      this.isEdited = false;
-      this.notification = false;
-      this.postUpdateOrCreate = false;
+    if (selectedBuilding) {
+      this.Edificio = selectedBuilding;
       this.populateFields();
-      this.disableFields();
+      this.buildingForm.disable();
+    } else {
+      console.error('Edificio no encontrado');
     }
+  }
 
-    exitcreation(){
-      this.isCreation = false;
-      this.isEdited = false;
-      this.notification = false;
-      this.postUpdateOrCreate = false;
-      this.populateFields();
-      this.disableFields();
-    }
+  edit() {
+    this.isEdited = true;
+    this.notification = false;
+    this.postUpdateOrCreate = false;
+    this.enableFields();
+  }
 
-    closeNotification(){
-      this.notification = false;
-      this.isCreation = false;
-      this.isEdited = false;
-      this.postUpdateOrCreate = false;
-      this.isDeletion = false;
-    }
+  exitdit() {
+    this.isEdited = false;
+    this.notification = false;
+    this.postUpdateOrCreate = false;
+    this.populateFields();
+    this.buildingForm.disable();
+  }
 
-    update(){
-      if (this.buildingForm.valid) {
-        const updateBuilding = {
-          Name : this.buildingForm.controls['nombreEdificio'].value,
-          Floors : this.buildingForm.controls['pisosEdificio'].value,
-          communityId : this.Edificio.communityId
-        };
-         this.service.update(this.Edificio.id, updateBuilding).subscribe({
-          next: (response) => {
-            if (response.status === 200) {
-              this.postUpdateOrCreate = true;
-              setTimeout(() => {
-                this.isEdited = false;
-                this.postUpdateOrCreate = false;
-                this.ngOnInit();
-              }, 3000);
-            }
-          },
-          error: (error) => {
-            console.log('Error:', error);
+  exitcreation() {
+    this.isCreation = false;
+    this.isEdited = false;
+    this.notification = false;
+    this.postUpdateOrCreate = false;
+    this.populateFields();
+    this.buildingForm.disable();
+  }
+
+  closeNotification() {
+    this.notification = false;
+    this.isCreation = false;
+    this.isEdited = false;
+    this.postUpdateOrCreate = false;
+    this.isDeletion = false;
+    this.postUpdateOrCreate = false;
+  }
+
+  update() {
+    if (this.buildingForm.valid) {
+      this.isSubmit = true;
+      const updateBuilding = {
+        Name: this.buildingForm.controls['nombreEdificio'].value,
+        Floors: this.buildingForm.controls['pisosEdificio'].value,
+        communityId: this.Edificio.communityId,
+      };
+      this.service.update(this.Edificio.id, updateBuilding).subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.postUpdateOrCreate = true;
+            setTimeout(() => {
+              this.isEdited = false;
+              this.postUpdateOrCreate = false;
+              this.ngOnInit();
+            }, 3000);
           }
-          });
-      }
+          this.isSubmit = false;
+        },
+        error: (error) => {
+          this.isSubmit = false;
+          console.log('Error:', error);
+        },
+      });
     }
+  }
 
-    create(){
-      this.isCreation = true;
-      this.notification = false;
-      this.postUpdateOrCreate = false;
-      this.cleanFields();
-    }
+  create() {
+    this.isCreation = true;
+    this.notification = false;
+    this.postUpdateOrCreate = false;
+    this.cleanFields();
+  }
 
-    saveCreate(){
-      if (this.buildingForm.valid) {
-        const createBuilding = {
-          Name : this.buildingForm.controls['nombreEdificio'].value,
-          Floors : this.buildingForm.controls['pisosEdificio'].value,
-          communityId : this.Edificio.communityId
-        };
-        console.log(createBuilding); 
+  saveCreate() {
+    if (this.buildingForm.valid) {
+      const createBuilding = {
+        Name: this.buildingForm.controls['nombreEdificio'].value,
+        Floors: this.buildingForm.controls['pisosEdificio'].value,
+        communityId: this.Edificio.communityId,
+      };
+      console.log(createBuilding);
 
-        this.service.create(createBuilding).subscribe({
-          next: (response) => {
-            if (response.status === 204) {
-              this.postUpdateOrCreate = true;
-              setTimeout(() => {
-                this.isCreation = false;
-                this.postUpdateOrCreate = false;
-                this.ngOnInit();
-              }, 3000);
-            }
-          },
-          error: (error) => {
-            console.log('Error:', error);
+      this.service.create(createBuilding).subscribe({
+        next: (response) => {
+          if (response.status === 204) {
+            this.postUpdateOrCreate = true;
+            setTimeout(() => {
+              this.isCreation = false;
+              this.postUpdateOrCreate = false;
+              this.ngOnInit();
+            }, 3000);
           }
-          });
-
-      }
+        },
+        error: (error) => {
+          console.log('Error:', error);
+        },
+      });
     }
+  }
 
-    openmodal(){
-      if (this.Edificio.units >= 1){
-        this.notification = true;
-        setTimeout(() => {
-          this.notification = false;
-        }, 5000);
-      } else {
-        this.ActivateModal = true;
-      }
-    }
-
-    closemodal(){
-      this.ActivateModal = false;
-    }
-
-    deletebuilding(){
-      if (this.Edificio.units >= 1){
-        this.notification = true;
-        setTimeout(() => {
-          this.notification = false;
-        }, 5000);
-      } else {
-        this.loading = true;
-        this.service.delete(this.Edificio.id).subscribe({
-          next: (response) => {
-            if (response.status === 200){
-              this.loading = false;
-              this.ActivateModal = false;
-              this.postUpdateOrCreate = true;
-              this.isDeletion = true;
-              setTimeout(() => {
-                this.isCreation = false;
-                this.isDeletion = false;
-                this.postUpdateOrCreate = false;
-                this.ngOnInit();
-              }, 5000);
-            }
-          },
-          error: (error) => {
-            console.log('Error:', error);
+  delete() {
+    if (this.Edificio.units >= 1) {
+      this.notification = true;
+    } else {
+      this.service.delete(this.Edificio.id).subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.postUpdateOrCreate = true;
+            this.isDeletion = true;
+            setTimeout(() => {
+              this.isCreation = false;
+              this.isDeletion = false;
+              this.postUpdateOrCreate = false;
+              this.ngOnInit();
+            }, 3000);
           }
-        });
-      }
+        },
+        error: (error) => {
+          console.log('Error:', error);
+        },
+      });
     }
+  }
 
-    onInputChange(controlName: string): void {
-      const control = this.buildingForm.get(controlName);
-      if (control) {
-        control.markAsUntouched();
-      }
+  onInputChange(controlName: string): void {
+    const control = this.buildingForm.get(controlName);
+    if (control) {
+      control.markAsUntouched();
     }
-
+  }
 }
