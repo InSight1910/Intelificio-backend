@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Backend.Models.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Models
@@ -58,6 +59,7 @@ namespace Backend.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            _ = builder.ApplySoftDeleteQueryFilter();
             _ = builder.Entity<Guest>().HasKey(p => p.ID);
 
             _ = builder.Entity<Charge>(entity =>

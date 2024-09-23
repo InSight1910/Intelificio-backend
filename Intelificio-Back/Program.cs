@@ -33,8 +33,8 @@ builder.Services.AddDbContext<IntelificioDbContext>(
     {
         _ = options
                 .UseMySQL(builder.Configuration.GetConnectionString("Default") ?? "")
-
                 .AddInterceptors(new SoftDeleteInterceptor());
+
     });
 
 builder.Services.AddAutoMapper(cfg =>
