@@ -1,4 +1,5 @@
 using Backend.Common.Behavior;
+using Backend.Common.Helpers;
 using Backend.Common.Profiles;
 using Backend.Common.Security;
 using Backend.Features.Community.Commands.Create;
@@ -24,6 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TokenProvider>();
+builder.Services.AddSingleton<SendMail>();
 
 
 builder.Services.AddDbContext<IntelificioDbContext>(
