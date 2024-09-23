@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup,Validators,ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { BuildingService } from '../../services/building/building.service';
@@ -51,7 +51,9 @@ export class BuildingComponent implements OnInit {
     notification = false;
     isCreation = false;
     postUpdateOrCreate = false;
+    loading = false;
     selectedBuildingId: number = 1;
+    ActivateModal = false;
     createdMessage: string = 'Edificio creado.';
     updatedMessage: string = 'Edificio actualizado.';
     
@@ -154,12 +156,10 @@ export class BuildingComponent implements OnInit {
       this.isEdited = false;
       this.postUpdateOrCreate = false;
       this.isDeletion = false;
-      this.postUpdateOrCreate = false;
     }
 
     update(){
       if (this.buildingForm.valid) {
-
         const updateBuilding = {
           Name : this.buildingForm.controls['nombreEdificio'].value,
           Floors : this.buildingForm.controls['pisosEdificio'].value,
@@ -218,13 +218,34 @@ export class BuildingComponent implements OnInit {
       }
     }
 
-    delete(){
+    openmodal(){
       if (this.Edificio.units >= 1){
         this.notification = true;
+        setTimeout(() => {
+          this.notification = false;
+        }, 5000);
       } else {
+        this.ActivateModal = true;
+      }
+    }
+
+    closemodal(){
+      this.ActivateModal = false;
+    }
+
+    deletebuilding(){
+      if (this.Edificio.units >= 1){
+        this.notification = true;
+        setTimeout(() => {
+          this.notification = false;
+        }, 5000);
+      } else {
+        this.loading = true;
         this.service.delete(this.Edificio.id).subscribe({
           next: (response) => {
             if (response.status === 200){
+              this.loading = false;
+              this.ActivateModal = false;
               this.postUpdateOrCreate = true;
               this.isDeletion = true;
               setTimeout(() => {
@@ -232,7 +253,7 @@ export class BuildingComponent implements OnInit {
                 this.isDeletion = false;
                 this.postUpdateOrCreate = false;
                 this.ngOnInit();
-              }, 3000);
+              }, 5000);
             }
           },
           error: (error) => {
