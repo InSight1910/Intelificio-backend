@@ -28,7 +28,6 @@ namespace Backend.Features.Buildings.Queries.GetAllByCommunity
                        .Select(b => new GetAllByCommunityQueryResponse
                        {
                            Id = b.ID,
-                           Id = b.ID,
                            Name = b.Name,
                            Floors = b.Floors,
                            Units = b.Units.Count(),
