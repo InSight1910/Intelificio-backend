@@ -4,17 +4,18 @@ import { Unit } from '../../../shared/models/unit.model';
 import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, tap, of } from 'rxjs';
-import { AddModalComponent } from "./add-modal/add-modal.component";
+import { AddModalComponent } from './add-modal/add-modal.component';
 
 @Component({
   selector: 'app-unit',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, AddModalComponent],
   templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.css']
+  styleUrls: ['./unit.component.css'],
 })
 export class UnitComponent implements OnInit {
   units: Unit[] = [];
+  buildingName: string = '';
   selectedUnit: Unit | null = null;
   unitForm: FormGroup;
   isUpdating: { [key: number]: boolean } = {};
@@ -33,17 +34,15 @@ export class UnitComponent implements OnInit {
       surface: [''],
       user: [''],
       building: [''],
-      unitType: ['']
+      unitType: [''],
     });
   }
 
   ngOnInit(): void {
     const buildingId = 1;
-    this.unitService.getUnitsByBuilding(buildingId).subscribe((data) => {
-      this.units = data.data;
-    });
-  }
 
+    this.loadUnit(buildingId);
+  }
 
   onClickEdit(unitId: number) {
     this.isUpdating[unitId] = true;
@@ -56,26 +55,23 @@ export class UnitComponent implements OnInit {
     //   });
   }
 
-  loadUnit() {
-    this.unitService
-      .getUnitsByBuilding(+localStorage.getItem('unitId')!)
-      .subscribe((units) => {
-        this.isLoading = false;
-        this.units = units.data;
-      });
+  loadUnit(buildingId: number) {
+    this.unitService.getUnitsByBuilding(buildingId).subscribe((data) => {
+      console.log(data);
+      this.units = data.data;
+      this.buildingName = data.data[0].building;
+    });
   }
 
   onCancel(): void {
     this.selectedUnit = null;
   }
 
-  updateList(updated:boolean): void {
-    if(updated) {
-      this.loadUnit();
+  updateList(updated: boolean): void {
+    if (updated) {
+      this.loadUnit(1);
     }
-
   }
-
 }
 
 /*
@@ -103,7 +99,7 @@ export class UnitComponent implements OnInit {
   constructor(private unitService: UnitService) {}
 
   ngOnInit(): void {
-    const buildingId = 2; 
+    const buildingId = 2;
     this.unitService.getUnitsByBuilding(buildingId).subscribe((data) => {
       console.log(data);
       this.units = data.data;
