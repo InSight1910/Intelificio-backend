@@ -8,6 +8,8 @@ import { SelectCommunityComponent } from './core/features/community/select-commu
 import { HomeCommunityComponent } from './core/features/community/home/home.component';
 import { BuildingComponent } from './core/features/building/building.component';
 import { SingupComponent } from './core/features/authentication/signup/signup.component';
+import { ChangePasswordOneComponent } from './core/features/authentication/change-password-one/change-password-one.component';
+import { ChangePasswordTwoComponent } from './core/features/authentication/change-password-two/change-password-two.component';
 
 export const routes: Routes = [
   {
@@ -15,19 +17,27 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'Buildings',
-    component: BuildingComponent
+    path: 'building',
+    component: BuildingComponent,
   },
   {
-    path: 'Signup',
-    component: SingupComponent
+    path: 'signup',
+    component: SingupComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ChangePasswordOneComponent,
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordTwoComponent,
   },
   // {
   //   path: '**',
   //   redirectTo: 'login',
   // },
   {
-  path: 'select-community',
+    path: 'select-community',
     component: SelectCommunityComponent,
   },
   {
