@@ -1,4 +1,6 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Community.Commands.AddUser;
+using Backend.Features.Community.Commands.AddUserMassive;
 using Backend.Features.Community.Commands.Assign;
 using Backend.Features.Community.Commands.Create;
 using Backend.Features.Community.Commands.Delete;
@@ -59,7 +61,14 @@ namespace Backend.Features.Community.Common
         [HttpPut("add/{id}/{userId}")]
         public async Task<IActionResult> AddUserToCommunity(int id, int userId)
         {
-            var result = await mediator.Send(new AddUserCommunityCommand { CommunityId = id, UserId = userId });
+            var result = await mediator.Send(new AddUserCommunityCommand
+            {
+                User = new AddUserObject
+                {
+                    CommunityId = id,
+                    UserId = userId
+                }
+            });
             return result.Match<IActionResult>(
                 onSuccess: response => Ok(response),
                 onFailure: error => NotFound(error)
@@ -104,6 +113,38 @@ namespace Backend.Features.Community.Common
                 onSuccess: _ => Ok(),
                 onFailure: BadRequest
                 );
+        }
+
+        [HttpPost("add/user/massive")]
+        public IActionResult SignUpMassive([FromForm] AddUserMassiveCommand command, [FromServices] IServiceScopeFactory serviceScopeFactory)
+        {
+
+            var memoryStream = new MemoryStream();
+            command.File.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            command.Stream = memoryStream;
+
+            _ = Task.Run(async () =>
+            {
+                using (var scope = serviceScopeFactory.CreateScope())
+                {
+                    try
+                    {
+                        // Resolve IMediator inside the new scope
+                        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                        var result = await mediator.Send(command);
+                        // TODO: Enviar mensaje informando resultado
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log any exceptions that might occur
+                        Console.WriteLine("Exception: " + ex.Message);
+                    }
+                    return Task.CompletedTask;
+                }
+            });
+            return Accepted();
         }
 
 

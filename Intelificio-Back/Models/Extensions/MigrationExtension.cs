@@ -35,7 +35,6 @@ namespace Backend.Models.Extensions
                         UserName = "admin@outlook.com",
                         FirstName = "Admin",
                         LastName = "Admin",
-                        Password = "Admin.123",
                         PhoneNumber = "1234567890",
                         Role = (await roleManager.FindByNameAsync("Administrador"))!,
                         Rut = "123456789"
@@ -46,13 +45,12 @@ namespace Backend.Models.Extensions
                         UserName = "user@outlook.com",
                         FirstName = "User",
                         LastName = "User",
-                        Password = "User.123",
                         PhoneNumber = "1234567890",
                         Role = (await roleManager.FindByNameAsync("Usuario"))!,
                         Rut = "123456789"
                     };
-                    _ = await userManager.CreateAsync(user, user.Password);
-                    _ = await userManager.CreateAsync(admin, admin.Password);
+                    _ = await userManager.CreateAsync(user, "User.1234");
+                    _ = await userManager.CreateAsync(admin, "Admin.123");
                     _ = await context.SaveChangesAsync();
 
                 }

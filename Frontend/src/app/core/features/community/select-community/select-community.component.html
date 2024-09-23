@@ -1,19 +1,23 @@
-<div class="hero is-fullheight">
+<div class="hero is-fullheight-with-navbar">
   <div class="hero-body">
-    <div class="container">
+    <div class="container has-text-centered">
       <div class="columns is-centered">
         <div class="column is-4">
-          <h2
-            class="is-size-3 is-centered has-text-weight-bold login-header-title"
-          >
+          <h2 class="title is-2 has-text-weight-bold">
             Seleccione una comunidad
           </h2>
           <form [formGroup]="form">
             <div class="select is-fullwidth">
-              <select (change)="onchange($event)">
+              <select
+                (change)="onchange($event)"
+                [disabled]="communities.length == 0"
+              >
+                @if (communities.length > 0) {
                 <option value="|">Seleccione una comunidad</option>
                 @for (community of communities; track community.id) {
                 <option value="{{ community.id }}">{{ community.name }}</option>
+                } } @else {
+                <option value="|">No hay comunidades asignadas</option>
                 }
               </select>
             </div>

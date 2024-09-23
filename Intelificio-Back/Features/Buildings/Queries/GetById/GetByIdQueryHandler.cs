@@ -21,7 +21,7 @@ namespace Backend.Features.Buildings.Queries.GetById
         }
         public async Task<Result> Handle(GetByIDQuery request, CancellationToken cancellationToken)
         {
-            var building = await _context.Buildings.FirstOrDefaultAsync(x => x.ID == request.BuildingId);
+            var building = await _context.Buildings.Include(x => x.Community).FirstOrDefaultAsync(x => x.ID == request.BuildingId);
 
             if (building is null) return Result.Failure(BuildingErrors.BuildingNotFoundOnQuery);
 

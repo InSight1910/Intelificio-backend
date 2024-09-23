@@ -142,4 +142,9 @@ export class HomeCommunityComponent {
       )
       .subscribe();
   }
+
+  onClickCancel() {
+    this.isModifying = false;
+    this.form.disable();
+  }
 }

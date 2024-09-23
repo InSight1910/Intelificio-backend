@@ -16,7 +16,7 @@ namespace IntelificioBackTest.Features.Unit.Queries
         {
             _context = DbContextFixture.GetDbContext();
             _logger = new Mock<ILogger<GetByIDQueryHandler>>();
-            _handler = new GetByIDQueryHandler(_context, _logger.Object); 
+            _handler = new GetByIDQueryHandler(_context, _logger.Object);
         }
 
         [Fact]
@@ -40,8 +40,8 @@ namespace IntelificioBackTest.Features.Unit.Queries
             Assert.Equal(unit.Number, data.Number);
             Assert.Equal(unit.Floor, data.Floor);
             Assert.Equal(unit.Surface, data.Surface);
-            Assert.Equal(unit.UnitType.ID, data.UnitType.ID);
-            Assert.Equal(unit.Building.ID, data.Building.ID);
+            Assert.Equal(unit.UnitType.Description, data.UnitType);
+            Assert.Equal(unit.Building.Name, data.Building);
         }
 
         [Fact]

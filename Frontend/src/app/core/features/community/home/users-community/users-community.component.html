@@ -10,47 +10,49 @@
   <div></div>
 </div>
 } @else {
-<table class="table is-fullwidth">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Nombre</th>
-      <th>Correo</th>
-      <th>Numero Telefonico</th>
-      <th>Cantidad de Unidades</th>
-      <th>Role</th>
-      <th>Eliminar</th>
-    </tr>
-  </thead>
+<div class="table-container">
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Numero Telefonico</th>
+        <th>Cantidad de Unidades</th>
+        <th>Role</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    @for (user of users; track user.id) {
-    <tr>
-      <td>{{ user.id }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.phoneNumber }}</td>
-      <td>{{ user.unitCount }}</td>
-      <td>
-        <span
-          class="tag {{
-            user.role == 'Administrador' ? 'is-danger' : 'is-info'
-          }}"
-        >
-          {{ user.role }}
-        </span>
-      </td>
-      <td>
-        <button
-          class="button is-danger"
-          (click)="onClickDeleting(user.id)"
-          [ngClass]="{ 'is-loading': isDeleting[user.id] }"
-        >
-          Eliminar
-        </button>
-      </td>
-    </tr>
-    }
-  </tbody>
-</table>
+    <tbody>
+      @for (user of users; track user.id) {
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phoneNumber }}</td>
+        <td>{{ user.unitCount }}</td>
+        <td>
+          <span
+            class="tag {{
+              user.role == 'Administrador' ? 'is-danger' : 'is-info'
+            }}"
+          >
+            {{ user.role }}
+          </span>
+        </td>
+        <td>
+          <button
+            class="button is-danger"
+            (click)="onClickDeleting(user.id)"
+            [ngClass]="{ 'is-loading': isDeleting[user.id] }"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
 }

@@ -1,4 +1,15 @@
-<app-navbar />
-<div class="container is-fluid">
-  <router-outlet />
+@if (isLogin) {
+<router-outlet />
+} @else {
+<app-navbar (openNavbar)="openNavbar = $event" />
+<div class="columns">
+  <div class="column is-one-fifth">
+    <app-menu [openNavbar]="openNavbar" />
+  </div>
+  <div class="column">
+    <div class="container is-fluid">
+      <router-outlet />
+    </div>
+  </div>
 </div>
+}

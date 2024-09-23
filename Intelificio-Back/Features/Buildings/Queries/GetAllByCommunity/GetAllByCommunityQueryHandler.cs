@@ -1,8 +1,9 @@
-﻿using Backend.Common.Response;
+using Backend.Common.Response;
 using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace Backend.Features.Buildings.Queries.GetAllByCommunity
 {
@@ -28,7 +29,10 @@ namespace Backend.Features.Buildings.Queries.GetAllByCommunity
                        {
                            Id = b.ID,
                            Name = b.Name,
-                           Floors = b.Floors
+                           Floors = b.Floors,
+                           Units = b.Units.Count(),
+                           CommunityName = b.Community.Name,
+                           CommunityId = b.Community.ID
                        }).ToListAsync(cancellationToken: cancellationToken);
 
 

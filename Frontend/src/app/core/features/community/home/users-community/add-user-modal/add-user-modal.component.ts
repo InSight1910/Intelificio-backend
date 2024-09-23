@@ -19,9 +19,14 @@ export class AddUserModalComponent {
   errors!: { message: string }[] | null;
   isSuccess: boolean = false;
   canAddUser: boolean = false;
+  canSearch: boolean = true;
 
   isSearching: boolean = false;
   isAdding: boolean = false;
+
+  selectedFile: File | null = null;
+  selectedFileName: string = '';
+  isFileUploaded: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -72,40 +77,90 @@ export class AddUserModalComponent {
   }
 
   onClickAddUser() {
-    this.isAdding = true;
-    const userID = this.form.get('id')?.value;
-    const communityID = localStorage.getItem('communityId')!;
-    console.log(userID, communityID);
+    if (this.isFileUploaded) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile!);
 
-    this.communityService
-      .addUserToCommunity(+communityID, userID)
-      .pipe(
-        tap(() => {
-          this.isSuccess = true;
-          this.isAdding = false;
-          setTimeout(() => {
-            this.isSuccess = false;
-            console.log('paso timeout');
-          }, 2000);
-          this.form.reset();
-          this.addUserEvent.emit(true);
-        }),
-        catchError((error) => {
-          this.canAddUser = false;
-          this.isAdding = false;
-          this.errors = error.error;
-          return of(error);
-        })
-      )
-      .subscribe();
+      this.communityService
+        .addUserToCommunityWithFile(formData)
+        .pipe(
+          tap(() => {
+            this.isSuccess = true;
+            this.isAdding = false;
+            setTimeout(() => {
+              this.isSuccess = false;
+              this.form.reset();
+              this.canSearch = true;
+              this.selectedFile = null;
+              this.selectedFileName = '';
+              this.isFileUploaded = false;
+            }, 2000);
+            this.addUserEvent.emit(true);
+          })
+        )
+        .subscribe();
+    } else {
+      this.isAdding = true;
+      const userID = this.form.get('id')?.value;
+      const communityID = localStorage.getItem('communityId')!;
+      console.log(userID, communityID);
+
+      this.communityService
+        .addUserToCommunity(+communityID, userID)
+        .pipe(
+          tap(() => {
+            this.isSuccess = true;
+            this.isAdding = false;
+            setTimeout(() => {
+              this.isSuccess = false;
+            }, 2000);
+            this.form.reset();
+            this.addUserEvent.emit(true);
+          }),
+          catchError((error) => {
+            this.canAddUser = false;
+            this.isAdding = false;
+            this.errors = error.error;
+            return of(error);
+          })
+        )
+        .subscribe();
+    }
+  }
+  preventScroll(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
   }
 
   onClickOpenModal() {
     this.isOpen = true;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    window.addEventListener('scroll', this.preventScroll, { passive: false });
   }
   onClickCloseModal() {
     this.isOpen = false;
     this.errors = null;
     this.form.reset();
+
+    document.body.style.overflowY = 'clip';
+    document.documentElement.style.overflowY = 'scroll';
+    window.removeEventListener('scroll', this.preventScroll);
+  }
+
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    console.log(input.files);
+    if (input.files?.length) {
+      this.form.disable();
+      this.form.reset();
+
+      this.selectedFile = input.files![0];
+      this.selectedFileName = input.files![0].name;
+      this.isFileUploaded = true;
+      this.canAddUser = true;
+      this.canSearch = false;
+    }
   }
 }

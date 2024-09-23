@@ -51,6 +51,10 @@ namespace Backend.Common.Response
         public static Result Failure(Error error) => new(false, error);
         public static Result WithErrors(ICollection<Error> errors) => new(false, errors);
 
+        internal static Result Failure(object passwordNotChanged)
+        {
+            throw new NotImplementedException();
+        }
     }
     public static class ResultExtension
     {

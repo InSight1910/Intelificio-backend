@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { Login, UserEmail } from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
+import { singUp } from '../../../shared/models/singup.model';
+import { Role } from '../../../shared/models/role.model';
+import { SignupDTO } from '../../../shared/models/signUpCommand.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +37,48 @@ export class AuthService {
     return this.http.post<{ data: UserEmail }>(
       `${this.apiUrl}/auth/user/byEmail`,
       { email }
+    );
+  }
+
+  signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
+    console.log('Servicio');
+    console.log(singupDTO);
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`, singupDTO);
+  }
+
+  signupMassive(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/auth/signup/massive`, formData, {
+      observe: 'response',
+    });
+  }
+
+  getAllRole(): Observable<{ data: Role[] }> {
+    return this.http.get<{ data: Role[] }>(`${this.apiUrl}/auth/roles`);
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post(
+      `${this.apiUrl}/auth/change-password-one`,
+      {
+        email,
+      },
+      {
+        observe: 'response',
+      }
+    );
+  }
+
+  changePassword(email: string, token: string, password: any) {
+    return this.http.post(
+      `${this.apiUrl}/auth/change-password-two`,
+      {
+        email,
+        token,
+        password,
+      },
+      {
+        observe: 'response',
+      }
     );
   }
 }

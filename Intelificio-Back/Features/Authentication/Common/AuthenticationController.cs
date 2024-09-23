@@ -1,7 +1,11 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Authentication.Commands.ChangePasswordOne;
+using Backend.Features.Authentication.Commands.ChangePasswordTwo;
 using Backend.Features.Authentication.Commands.Login;
 using Backend.Features.Authentication.Commands.Refresh;
 using Backend.Features.Authentication.Commands.Signup;
+using Backend.Features.Authentication.Commands.SignupMassive;
+using Backend.Features.Authentication.Queries.GetAllRoles;
 using Backend.Features.Authentication.Queries.GetUserByEmail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +26,39 @@ namespace Backend.Features.Authentication.Common
                 {
                     return BadRequest(errors);
                 });
+        }
+
+        [HttpPost("signup/massive")]
+        public IActionResult SignUpMassive([FromForm] SignupMassiveCommand command, [FromServices] IServiceScopeFactory serviceScopeFactory)
+        {
+
+            var memoryStream = new MemoryStream();
+            command.File.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            command.Stream = memoryStream;
+
+            _ = Task.Run(async () =>
+            {
+                using (var scope = serviceScopeFactory.CreateScope())
+                {
+                    try
+                    {
+                        // Resolve IMediator inside the new scope
+                        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                        var result = await mediator.Send(command);
+
+                        // Handle the result in the background
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log any exceptions that might occur
+                        Console.WriteLine("Exception: " + ex.Message);
+                    }
+                    return Task.CompletedTask;
+                }
+            });
+            return Accepted();
         }
 
         [HttpPost("login")]
@@ -53,6 +90,34 @@ namespace Backend.Features.Authentication.Common
             return result.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
+        }
+
+        [HttpGet("roles")]
+        public async Task<IActionResult> GetAllRoles()
+        {
+            var result = await mediator.Send(new GetAllRolesQuery());
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: NotFound);
+
+        }
+
+        [HttpPost("change-password-one")]
+        public async Task<IActionResult> ChangePasswordStepOne([FromBody] ChangePasswordOneCommand command)
+        {
+            var result = await mediator.Send(command);
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
+        }
+
+        [HttpPost("change-password-two")]
+        public async Task<IActionResult> ChangePasswordStepTwo([FromBody] ChangePasswordTwoCommand command)
+        {
+            var result = await mediator.Send(command);
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
         }
     }
 }

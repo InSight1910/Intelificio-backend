@@ -1,4 +1,5 @@
 using Backend.Common.Behavior;
+using Backend.Common.Helpers;
 using Backend.Common.Profiles;
 using Backend.Common.Security;
 using Backend.Features.Community.Commands.Create;
@@ -24,6 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TokenProvider>();
+builder.Services.AddSingleton<SendMail>();
 
 
 builder.Services.AddDbContext<IntelificioDbContext>(
@@ -39,6 +41,7 @@ builder.Services.AddAutoMapper(cfg =>
 {
     cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
     cfg.AddProfile<CommunityProfile>();
+    cfg.AddProfile<BuildingProfile>();
     cfg.AddProfile<UserProfile>();
     cfg.AddProfile<LocationProfile>();
 });
@@ -74,6 +77,17 @@ builder.Services.AddValidatorsFromAssembly(typeof(CreateCommunityCommandValidato
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("All", cfg =>
+    {
+        _ = cfg
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddCors(options =>
 {

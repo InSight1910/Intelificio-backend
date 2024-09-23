@@ -1,14 +1,9 @@
-﻿using Backend.Features.Building.Commands.Delete;
-using Backend.Features.Building.Common;
+﻿using Backend.Features.Buildings.Commands.Delete;
+using Backend.Features.Buildings.Common;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntelificioBackTest.Features.Building.Commands
 {
@@ -25,7 +20,7 @@ namespace IntelificioBackTest.Features.Building.Commands
             _handler = new DeleteBuildingCommandHandler(_context, _logger.Object);
         }
 
-        
+
         public void Dispose()
         {
             _ = _context.Database.EnsureDeleted();

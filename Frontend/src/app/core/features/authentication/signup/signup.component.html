@@ -1,0 +1,498 @@
+<form class="box" [formGroup]="singupForm" (ngSubmit)="onSubmit()">
+  <div class="columns">
+    <div class="column field is-4">
+      <label class="label">Nombre:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          formControlName="firstName"
+          (input)="onInputChange('firstName')"
+          placeholder="Nombre"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('firstName')?.invalid &&
+              singupForm.get('firstName')?.touched
+          }"
+          [ngClass]="{
+            'is-success':
+              singupForm.get('firstName')?.valid &&
+              singupForm.get('firstName')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            singupForm.get('firstName')?.invalid &&
+            singupForm.get('firstName')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('firstName')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar un Nombre de usuario.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            singupForm.get('firstName')?.valid &&
+            singupForm.get('firstName')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <div class="column field is-4">
+      <label class="label">Apellido:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          (input)="onInputChange('lastName')"
+          formControlName="lastName"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('lastName')?.invalid &&
+              singupForm.get('lastName')?.touched,
+            'is-success':
+              singupForm.get('lastName')?.valid &&
+              singupForm.get('lastName')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            singupForm.get('lastName')?.invalid &&
+            singupForm.get('lastName')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('lastName')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar un Apellido al usuario
+            {{ this.singupForm.controls["firstName"].value }}.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            singupForm.get('lastName')?.valid &&
+            singupForm.get('lastName')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <div class="column field is-4">
+      <label class="label"> N° de RUT: </label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          (input)="onInputChange('rut')"
+          formControlName="rut"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('rut')?.invalid && singupForm.get('rut')?.touched,
+            'is-success':
+              singupForm.get('rut')?.valid && singupForm.get('rut')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            singupForm.get('rut')?.invalid && singupForm.get('rut')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('rut')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar el rut de usuario
+            {{ this.singupForm.controls["firstName"].value }}.
+          </p>
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('rut')?.errors?.['invalidRut']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            El RUT ingresado no es válido.
+          </p>
+        </span>
+        <span
+          *ngIf="singupForm.get('rut')?.valid && singupForm.get('rut')?.touched"
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column field is-4">
+      <label class="label">Fecha Nacimiento:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="date"
+          (input)="onInputChange('birthDate')"
+          formControlName="birthDate"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('birthDate')?.invalid &&
+              singupForm.get('birthDate')?.touched,
+            'is-success':
+              singupForm.get('birthDate')?.valid &&
+              singupForm.get('birthDate')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            singupForm.get('birthDate')?.invalid &&
+            singupForm.get('birthDate')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('birthDate')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar el fecha de nacimiento de usuario
+            {{ this.singupForm.controls["firstName"].value }}.
+          </p>
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('birthDate')?.errors?.['tooRecent']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            El usuario {{ this.singupForm.controls["firstName"].value }} debe
+            ser mayor de 2 años.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            singupForm.get('birthDate')?.valid &&
+            singupForm.get('birthDate')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <div class="column field is-4">
+      <label class="label">N° teléfono:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="tel"
+          formControlName="phoneNumber"
+          (input)="onInputChange('phoneNumber')"
+          placeholder="+56xxxxxxxxx"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('phoneNumber')?.invalid &&
+              singupForm.get('phoneNumber')?.touched,
+            'is-success':
+              singupForm.get('phoneNumber')?.valid &&
+              singupForm.get('phoneNumber')?.touched
+          }"
+        />
+
+        <span
+          *ngIf="
+            singupForm.get('phoneNumber')?.invalid &&
+            singupForm.get('phoneNumber')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('phoneNumber')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar un valor.
+          </p>
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('phoneNumber')?.errors && singupForm.get('phoneNumber')?.errors?.['minlength'] && singupForm.get('phoneNumber')?.errors?.['prohoneprefix']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            El N° debe ser mayor de 12 digitos en formato +56xxxxxxxxx.
+          </p>
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('phoneNumber')?.errors && singupForm.get('phoneNumber')?.errors?.['maxlength']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            No se aceptan más de 15 caracteres.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            singupForm.get('phoneNumber')?.valid &&
+            singupForm.get('phoneNumber')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <div class="column field is-4">
+      <label class="label">Rol:</label>
+      <div class="control">
+        <div
+          class="select"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('rol')?.invalid && singupForm.get('rol')?.touched,
+            'is-success':
+              singupForm.get('rol')?.valid && singupForm.get('rol')?.touched
+          }"
+        >
+          <select formControlName="rol" (input)="onInputChange('rol')">
+            <option value="">Seleccione un rol</option>
+            <option *ngFor="let rol of listaRol" [value]="rol.name">
+              {{ rol.name }}
+            </option>
+          </select>
+          <span
+            *ngIf="
+              singupForm.get('rol')?.invalid && singupForm.get('rol')?.touched
+            "
+          >
+            <p
+              class="help is-danger"
+              *ngIf="singupForm.get('rol')?.errors?.['required']"
+            >
+              <i class="fas fa-exclamation-triangle"></i>
+              ¿Qué rol tendrá el usuario
+              {{ this.singupForm.controls["firstName"].value }}?
+            </p>
+          </span>
+          <span
+            *ngIf="
+              singupForm.get('rol')?.valid && singupForm.get('rol')?.touched
+            "
+          >
+            <p class="help is-right">
+              <i class="fas fa-check"></i>
+              Validado
+            </p>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column field is-4">
+      <label class="label">Correo:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="email"
+          (input)="onInputChange('email')"
+          formControlName="email"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('email')?.invalid &&
+              singupForm.get('email')?.touched,
+            'is-success':
+              singupForm.get('email')?.valid && singupForm.get('email')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            singupForm.get('email')?.invalid && singupForm.get('email')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('email')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar el correo de usuario
+            {{ this.singupForm.controls["firstName"].value }}.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            singupForm.get('email')?.valid && singupForm.get('email')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <div class="column field is-4">
+      <label class="label">Contraseña:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="password"
+          (input)="onInputChange('password')"
+          formControlName="password"
+          [ngClass]="{
+            'is-danger':
+              singupForm.get('password')?.invalid &&
+              singupForm.get('password')?.touched,
+            'is-success':
+              singupForm.get('password')?.valid &&
+              singupForm.get('password')?.touched
+          }"
+        />
+
+        <span
+          *ngIf="
+            singupForm.get('password')?.invalid &&
+            singupForm.get('password')?.touched
+          "
+        >
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('password')?.errors?.['required']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe crear una contraseña al usuario
+            {{ this.singupForm.controls["firstName"].value }}.
+          </p>
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('password')?.errors?.['minlength']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            La contraseña debe tener al menos 8 caracteres.
+          </p>
+          <p
+            class="help is-danger"
+            *ngIf="singupForm.get('password')?.errors?.['invalidPassword']"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            La contraseña debe contener al menos una letra, un número y un
+            símbolo.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            singupForm.get('password')?.valid &&
+            singupForm.get('password')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Contraseña Valida
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <div class="column field is-4">
+      <label class="label">Confirmar Contraseña:</label>
+      <div class="control">
+        <input
+          class="input"
+          type="password"
+          (input)="onInputChange('confirmPassword')"
+          formControlName="confirmPassword"
+          [ngClass]="{
+            'is-danger':
+              singupForm.hasError('passwordsDoNotMatch') &&
+              singupForm.get('confirmPassword')?.touched,
+            'is-success':
+              !singupForm.hasError('passwordsDoNotMatch') &&
+              singupForm.get('confirmPassword')?.touched
+          }"
+        />
+        <span
+          *ngIf="
+            singupForm.hasError('passwordsDoNotMatch') &&
+            singupForm.get('confirmPassword')?.touched
+          "
+        >
+          <p class="help is-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            Las contraseñas no coinciden.
+          </p>
+        </span>
+        <span
+          *ngIf="
+            !singupForm.hasError('passwordsDoNotMatch') &&
+            singupForm.get('confirmPassword')?.touched
+          "
+        >
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Las contraseñas coinciden.
+          </p>
+        </span>
+      </div>
+    </div>
+  </div>
+  <p class="subtitle is-6">
+    O bien, realiza una carga masiva adjuntando un archivo
+  </p>
+  <div class="file" [ngClass]="{ 'has-name': isFileUploaded }">
+    <label class="file-label">
+      <input
+        class="file-input"
+        type="file"
+        name="resume"
+        (change)="onChangeFile($event)"
+      />
+      <span class="file-cta">
+        <span class="file-icon">
+          <i class="fas fa-upload"></i>
+        </span>
+        <span class="file-label"> Choose a file… </span>
+      </span>
+      @if (isFileUploaded) {
+      <span class="file-name">{{ selectedFileName }}</span>
+      }
+    </label>
+  </div>
+
+  @if (notification) {
+  <div class="notification is-success">
+    <button class="delete" (click)="closeNotification()"></button>
+    @if (isFileUploaded) { Archivo cargado exitosamente. <br />Se enviara un
+    correo informado el resultado de la operación. } @else { Usuario creado
+    exitosamente. }
+  </div>
+  }
+
+  <div class="buttons">
+    <button
+      type="submit"
+      class="button is-primary"
+      [disabled]="!singupForm.valid && !isFileUploaded"
+    >
+      Guardar
+    </button>
+    <button class="button is-link" (click)="clean()">Limpiar</button>
+  </div>
+</form>

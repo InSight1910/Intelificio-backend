@@ -1,4 +1,5 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Community.Commands.AddUser;
 using Backend.Features.Community.Common;
 using Backend.Models;
 using MediatR;
@@ -18,6 +19,26 @@ namespace Backend.Features.Community.Commands.Assign
         }
 
         public async Task<Result> Handle(AddUserCommunityCommand request, CancellationToken cancellationToken)
+        {
+            if (request.User != null)
+            {
+
+            }
+            else if (request.Users != null)
+            {
+                var results = new List<Result>();
+                foreach (var user in request.Users)
+                {
+                    results.Add(await DoAddUsers(user));
+                }
+
+                if (results.Any(r => r.IsFailure)) return Result.WithErrors(CommunityErrors.AddUserMassive(results.Select(r => r.Error).ToList()));
+                return Result.Success();
+            }
+            return Result.Failure(null);
+        }
+
+        private async Task<Result> DoAddUsers(AddUserObject request)
         {
             var community = await _context.Community.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.CommunityId);
             if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundAddUser);

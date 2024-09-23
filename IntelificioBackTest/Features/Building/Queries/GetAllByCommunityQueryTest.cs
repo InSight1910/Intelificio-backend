@@ -1,14 +1,8 @@
-﻿using Backend.Features.Building.Queries.GetAllByCommunity;
+﻿using Backend.Features.Buildings.Queries.GetAllByCommunity;
 using Backend.Models;
-using Castle.Core.Logging;
 using IntelificioBackTest.Fixtures;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntelificioBackTest.Features.Building.Queries
 {
@@ -30,7 +24,7 @@ namespace IntelificioBackTest.Features.Building.Queries
         }
 
         [Fact]
-        public async Task GetAllByCommunity_CommunityNotFound() 
+        public async Task GetAllByCommunity_CommunityNotFound()
         {
             // Arrange
             var query = new GetAllByCommunityQuery { CommunityId = 0 };
