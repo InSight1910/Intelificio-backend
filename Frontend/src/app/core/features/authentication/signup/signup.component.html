@@ -209,7 +209,7 @@
                 </p>
                 <p class="help is-danger" *ngIf="singupForm.get('password')?.errors?.['invalidPassword']">
                     <i class="fas fa-exclamation-triangle"></i>
-                    La contraseña debe contener al menos una letra, un número y un símbolo.
+                    La contraseña debe contener al menos una letra mayúscula, un número y un símbolo.
                 </p>
             </span>
             <span *ngIf="singupForm.get('password')?.valid && singupForm.get('password')?.touched">
@@ -246,15 +246,23 @@
 
 </div>
 
+
 @if (notification) {
-    <div class="notification is-success">
-        <button class="delete" (click)="closeNotification()"></button>
-        Usuario creado exitosamente.
-    </div>
+    @if (IsSuccess){
+        <div class="notification is-success">
+            <button class="delete" (click)="closeNotification()"></button>
+            {{this.notificationMessage}}
+        </div>
+    } @else if (IsError){
+        <div class="notification is-danger">
+            <button class="delete" (click)="closeNotification()"></button>
+            {{this.notificationMessage}}
+        </div>
+    }
 }
 
 <div class="buttons">
-<button type="submit"  class="button is-primary"  [disabled]="!singupForm.valid">Guardar</button>
+<button type="submit"  class="button is-primary"  [ngClass]="{'is-loading': loading}" [disabled]="!singupForm.valid">Guardar</button>
 <button class="button is-link" (click)="clean()">Limpiar</button>
 </div>
 

@@ -21,6 +21,11 @@ export class SingupComponent implements OnInit {
   ){}
 
   notification = false;
+  notificationMessage = "";
+  IsSuccess = false;
+  IsError = false;
+  loading = false;
+  notificationSuccess = "Usuario creado exitosamente";
 
   listaRol: Role[] =
   [
@@ -85,21 +90,34 @@ export class SingupComponent implements OnInit {
         Users: []
       };
 
-      console.log("Imprime Mierda")
-      console.log(signupDTO)
-
+      this.loading = true;
       this.service.signup(signupDTO).subscribe({
         next: (response) => {
-          if (response.status === 500){
-            this.notification = true;
-            setTimeout(() => {
-              this.notification = false;
-              this.clean();
-            }, 3000);
-          }
+          this.notificationMessage = this.notificationSuccess;
+          this.IsSuccess = true;
+          this.notification = true;
+          this.loading = false;
+          setTimeout(() => {
+            this.notification = false;
+            this.IsSuccess = false;
+            this.clean();
+          }, 5000); 
         },
         error: (error) => {
-            console.log('Error:', error);
+          if (error.status === 400 && error.error && error.error[0]?.code === "Authentication.SignUp.AlreadyCreated") {
+            const errorMessage = error.error[0].message; 
+            this.notificationMessage = errorMessage;
+            this.IsError = true;
+            this.notification = true;
+            this.loading = false;
+            setTimeout(() => {
+              this.notification = false;
+              this.IsError = false;
+            }, 5000);
+          } else {
+            console.log('Error no controlado:', error);
+          }
+
           }
       })
 
@@ -182,8 +200,8 @@ export class SingupComponent implements OnInit {
       if (!value) {
         return null; 
       }
-  
-      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
+      const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
   
       const valid = passwordPattern.test(value);
   
@@ -265,6 +283,3 @@ export class SingupComponent implements OnInit {
   }
 
 }
-
-//"Passwords must be at least 8 characters.",
-// "Passwords must have at least one non alphanumeric character."

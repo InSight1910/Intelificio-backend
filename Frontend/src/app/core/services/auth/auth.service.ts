@@ -42,8 +42,6 @@ export class AuthService {
   }
 
   signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
-    console.log("Servicio");
-    console.log(singupDTO);
     return this.http.post<any>(`${this.apiUrl}/auth/signup`,singupDTO);
   }
 
