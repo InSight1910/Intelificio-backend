@@ -24,8 +24,9 @@ namespace Backend.Features.Unit.Queries.GetAllByBuilding
                 .Where(x => x.Building.ID == request.BuildingId)
                 .Select(x => new GetAllByBuildingQueryResponse
                 {
+                    Id = x.ID,
                     Number = x.Number,
-                    UnitType = x.UnitType.Description,                   
+                    UnitType = x.UnitType.Description,
                     Building = x.Building.Name,
                     Floor = x.Floor,
                     Surface = x.Surface
