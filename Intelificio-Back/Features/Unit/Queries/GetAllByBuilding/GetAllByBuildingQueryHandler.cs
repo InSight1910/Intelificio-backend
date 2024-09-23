@@ -20,11 +20,12 @@ namespace Backend.Features.Unit.Queries.GetAllByBuilding
         public async Task<Result> Handle(GetAllByBuildingQuery request, CancellationToken cancellationToken)
         {
             var units = await _context.Units
+                .Include(x => x.Building)
                 .Where(x => x.Building.ID == request.BuildingId)
                 .Select(x => new GetAllByBuildingQueryResponse
                 {
-                    UnitType = x.UnitType.Description,
                     Number = x.Number,
+                    UnitType = x.UnitType.Description,                   
                     Building = x.Building.Name,
                     Floor = x.Floor,
                     Surface = x.Surface

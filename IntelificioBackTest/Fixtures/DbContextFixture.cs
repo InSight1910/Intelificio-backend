@@ -202,6 +202,7 @@ namespace IntelificioBackTest.Fixtures
                 var towers1 = context.Buildings.Where(x => x.Community.Name == "Comunidad 1").ToList();
                 var towers2 = context.Buildings.Where(x => x.Community.Name == "Comunidad 2").ToList();
                 var unitTypes = await context.UnitTypes.ToListAsync();
+                var users = await context.Users.ToListAsync();
 
                 var unidades = new List<Unit>
                     {
@@ -211,7 +212,8 @@ namespace IntelificioBackTest.Fixtures
                             UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
                             Number = "101",
                             Floor = 1,
-                            Surface = 50.1F
+                            Surface = 50.1F,
+                            Users = users.Where(x => x.FirstName == "Juan").FirstOrDefault()!
                         },
                         new Unit
                         {

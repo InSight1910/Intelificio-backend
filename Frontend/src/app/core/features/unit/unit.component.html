@@ -1,0 +1,88 @@
+<div class="table-responsive">
+    <div>
+        <h3 class="title is-3">Unidades</h3>
+        <h6 class="title is-5">{{ units[0].building }}</h6>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Tipo</th>
+                <th>Edificio</th>
+                <th>Piso</th>
+                <th>Superficie</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (unit of units; track unit.id){
+            <tr>
+                <td>{{ unit.number }}</td>
+                <td>{{ unit.unitType }}</td>
+                <td>{{ unit.building }}</td>
+                <td>{{ unit.floor }}</td>
+                <td>{{ unit.surface }}</td>
+                <td>{{ unit.user }}</td>
+                <td>
+                    <!-- <button class="button is-warning" (click)="onClickEdit(unit.id)"
+                        [ngClass]="{ 'is-loading': isUpdating[unit.id] }">
+                        Editar
+                    </button> -->
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <app-add-modal (addUnitEvent)="updateList($event)"></app-add-modal>
+</div>
+
+
+<!-- <div class="table-responsive">
+
+    <div>
+        <div>
+            <h3 class="title is-3">Unidades</h3>
+        </div>
+        <div>
+            <h6 class="title is-5">{{ units[0].building }}</h6>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Numero</th>
+          <th>Tipo</th>
+          <th>Edificio</th>
+          <th>Piso</th>
+          <th>Superficie</th>
+          <th>Usuario</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (unit of units; track unit.id){
+            <tr>
+                <td>{{ unit.number }}</td>
+                <td>{{ unit.unitType }}</td>
+                <td>{{ unit.building }}</td>
+                <td>{{ unit.floor }}</td>
+                <td>{{ unit.surface }}</td>
+                <td>{{ unit.user }}</td>
+                <td>
+                    <button
+                      class="button is-warning"
+                      (click)="onClickEdit(unit.id)"
+                      [ngClass]="{ 'is-loading': isUpdating[unit.id] }"
+                    >
+                      Editar
+                    </button>
+                  </td>            
+            </tr>
+        }
+      </tbody>
+      <h6 class="title is-6">Total de Unidades: {{ units.length }}</h6>
+    </table>
+  </div>
+-->

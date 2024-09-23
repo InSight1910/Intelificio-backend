@@ -6,6 +6,8 @@ import { provideStore } from '@ngrx/store';
 import { authReducer } from './states/auth/auth.reducer';
 import { SelectCommunityComponent } from './core/features/community/select-community/select-community.component';
 import { HomeCommunityComponent } from './core/features/community/home/home.component';
+import { UnitComponent } from './core/features/unit/unit.component';
+
 
 export const routes: Routes = [
   {
@@ -19,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'community',
     component: HomeCommunityComponent,
+  },
+  {
+    path: 'unit',
+    component: UnitComponent,
   },
 ];

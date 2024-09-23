@@ -26,6 +26,7 @@ namespace Backend.Features.Buildings.Queries.GetAllByCommunity
                        .Where(b => b.Community.ID == request.CommunityId)
                        .Select(b => new GetAllByCommunityQueryResponse
                        {
+                           Id = b.ID,
                            Name = b.Name,
                            Floors = b.Floors
                        }).ToListAsync(cancellationToken: cancellationToken);
