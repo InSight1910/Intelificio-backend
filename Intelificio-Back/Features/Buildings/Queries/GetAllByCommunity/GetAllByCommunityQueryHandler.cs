@@ -1,4 +1,4 @@
-﻿using Backend.Common.Response;
+using Backend.Common.Response;
 using Backend.Features.Buildings.Common;
 using Backend.Models;
 using MediatR;
@@ -27,6 +27,7 @@ namespace Backend.Features.Buildings.Queries.GetAllByCommunity
                        .Where(b => b.Community.ID == request.CommunityId)
                        .Select(b => new GetAllByCommunityQueryResponse
                        {
+                           Id = b.ID,
                            Id = b.ID,
                            Name = b.Name,
                            Floors = b.Floors,

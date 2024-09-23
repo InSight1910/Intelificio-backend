@@ -2,6 +2,8 @@
 using Backend.Features.Unit.Commands.Create;
 using Backend.Features.Unit.Commands.Delete;
 using Backend.Features.Unit.Commands.Update;
+using Backend.Features.Unit.Queries.GetAllByBuilding;
+using Backend.Features.Unit.Queries.GetAllTypes;
 using Backend.Features.Unit.Queries.GetByID;
 using Backend.Features.Unit.Queries.GetByUser;
 using MediatR;
@@ -54,6 +56,20 @@ namespace Backend.Features.Unit.Common
         public async Task<IActionResult> GetByUser(int id)
         {
             var result = await mediator.Send(new GetByUserQuery { UserId = id });
+            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+        }
+
+        [HttpGet("GetAllByBuilding/{id}")]
+        public async Task<IActionResult> GetAllByBuilding(int id)
+        {
+            var result = await mediator.Send(new GetAllByBuildingQuery { BuildingId = id });
+            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+        }
+
+        [HttpGet("Types")]
+        public async Task<IActionResult> GetAllTypes()
+        {
+            var result = await mediator.Send(new GetAllTypesQuery());
             return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
     }
