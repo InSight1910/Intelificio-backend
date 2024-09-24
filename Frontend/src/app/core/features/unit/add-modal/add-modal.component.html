@@ -1,30 +1,27 @@
-<button class="button is-primary" (click)="onClickOpenModal()">
+<div class="button is-primary is-normal is-responsive is-fullwidth" (click)="onClickOpenModal()">
   Agregar Unidad
-</button>
+</div>
+
 <div class="modal" [ngClass]="{ 'is-active': isOpen }">
   <div class="modal-background" (click)="onClickCloseModal()"></div>
-  <div class="modal-content">
+  <div class="modal-content columns is-centered">
     <div class="box py-5 px-6 is-rounded">
-      <h4 class="title is-4">Agregar Unidad</h4>
+      <h4 class="title is-4 has-text-centered">Agregar Unidad</h4>
 
       <form [formGroup]="unitForm">
-        <div class="field">
-          <label class="label">Numero</label>
+
+        <div class="field has-text-centered">
         </div>
         <div class="has-addons field">
           <div class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              placeholder="Numero"
-              formControlName="number"
-            />
+            <input class="input" type="text" placeholder="Numero" formControlName="number" />
           </div>
         </div>
-        <div class="field">
+
+        <div class="field has-text-centered">
           <div class="select">
             <select formControlName="unitType">
-              <option value="|">Seleccione Tipo</option>
+              <option value="">Seleccione Tipo de Unidad</option>
               @for (type of types; track $index) {
               <option value="{{ type.id }}">
                 {{ type.name }}
@@ -33,28 +30,33 @@
             </select>
           </div>
         </div>
-        <div class="field">
-          <label class="label">Edificio</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              placeholder="Edificio"
-              formControlName="building"
-            />
+
+        <div class="field has-text-centered">
+          <div class="select is-fullwidth">
+            <select formControlName="building" (change)="onChangeBuilding()">
+              <option value="">Seleccione Edificio</option>
+              @for (building of buildings; track $index) {
+              <option value="{{ building.id }}">
+                {{ building.name }}
+              </option>
+              }
+            </select>
           </div>
         </div>
-        <div class="field">
-          <label class="label">Piso</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              placeholder="Piso"
-              formControlName="floor"
-            />
+
+        <div class="field has-text-centered">
+          <div class="select is-fullwidth">
+            <select formControlName="floor">
+              <option value="">Seleccione Piso</option>
+              @for (floor of floors; track $index) {
+              <option value="{{ floor }}">
+                {{ floor }}
+              </option>
+              }
+            </select>
           </div>
         </div>
+
         @if (errors) {
         <div class="message is-danger">
           <div class="message-body">
@@ -69,25 +71,19 @@
           <div class="message-body">Unidad agregada correctamente</div>
         </div>
         }
+
         <input type="hidden" name="id" formControlName="id" />
         <div class="field mt-6 mb-3">
-          <div class="control">
-            <button
-              class="button is-primary"
-              (click)="onClickAddUnit()"
-              [ngClass]="{ 'is-loading': isAdding }"
-              form
-            >
+          <div class="buttons is-centered">
+            <button class="button is-primary" (click)="onClickAddUnit()" [ngClass]="{ 'is-loading': isAdding }" form>
               Agregar
+            </button>
+            <button class="button is-warning" (click)="onClickCloseModal()">
+              Cerrar
             </button>
           </div>
         </div>
       </form>
     </div>
   </div>
-  <button
-    class="modal-close is-large"
-    aria-label="close"
-    (click)="onClickCloseModal()"
-  ></button>
 </div>
