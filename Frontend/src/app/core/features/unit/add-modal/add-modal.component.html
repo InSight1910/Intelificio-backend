@@ -1,6 +1,7 @@
 <button class="button is-primary" (click)="onClickOpenModal()">
   Agregar Unidad
 </button>
+
 <div class="modal" [ngClass]="{ 'is-active': isOpen }">
   <div class="modal-background" (click)="onClickCloseModal()"></div>
   <div class="modal-content">
@@ -13,12 +14,7 @@
         </div>
         <div class="has-addons field">
           <div class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              placeholder="Numero"
-              formControlName="number"
-            />
+            <input class="input" type="text" placeholder="Numero" formControlName="number" />
           </div>
         </div>
         <div class="field">
@@ -77,12 +73,7 @@
         <input type="hidden" name="id" formControlName="id" />
         <div class="field mt-6 mb-3">
           <div class="control">
-            <button
-              class="button is-primary"
-              (click)="onClickAddUnit()"
-              [ngClass]="{ 'is-loading': isAdding }"
-              form
-            >
+            <button class="button is-primary" (click)="onClickAddUnit()" [ngClass]="{ 'is-loading': isAdding }" form>
               Agregar
             </button>
           </div>
@@ -90,9 +81,5 @@
       </form>
     </div>
   </div>
-  <button
-    class="modal-close is-large"
-    aria-label="close"
-    (click)="onClickCloseModal()"
-  ></button>
+  <button class="modal-close is-large" aria-label="close" (click)="onClickCloseModal()"></button>
 </div>

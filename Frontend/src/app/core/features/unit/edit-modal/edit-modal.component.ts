@@ -1,25 +1,27 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UnitService } from '../../../services/unit/unit.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
 import {
-  CreateUnit,
+  UpdateUnit,
   UnitType,
+  Unit
 } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
 
 @Component({
-  selector: 'app-add-modal',
+  selector: 'app-edit-modal',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './add-modal.component.html',
-  styleUrl: './add-modal.component.css',
+  templateUrl: './edit-modal.component.html',
+  styleUrl: './edit-modal.component.css',
 })
-export class AddModalComponent {
-  @Output() addUnitEvent = new EventEmitter<boolean>();
-  unitForm: FormGroup;
+export class EditModalComponent {
+  @Output() editUnitEvent = new EventEmitter<boolean>();
+  @Input() unitId!: string;
+  editForm: FormGroup;
   isOpen: boolean = false;
   errors!: { message: string }[] | null;
   isAdding: boolean = false;
@@ -28,13 +30,14 @@ export class AddModalComponent {
   types: UnitType[] = [];
   buildings: Building[] = [];
   floors: number[] = [];
+  unit!: Unit;
 
   constructor(
     private unitService: UnitService,
     private fb: FormBuilder,
     private buildingService: BuildingService
   ) {
-    this.unitForm = this.fb.group({
+    this.editForm = this.fb.group({
       id: [''],
       floor: [''],
       number: [''],
@@ -45,7 +48,7 @@ export class AddModalComponent {
     });
   }
 
-  ngOnInit() {
+  onClick() {
     this.unitService.getTypes().subscribe((types) => {
       this.types = types.data;
     });
@@ -55,20 +58,22 @@ export class AddModalComponent {
       .subscribe((buildings) => {
         this.buildings = buildings.data;
       });
-  }
+      this.getUnits(+this.unitId);
+    }
 
-  onClickAddUnit() {
+  onClickUpdateUnit() {
     this.isAdding = true;
-    const unit: CreateUnit = {
-      floor: this.unitForm.get('floor')?.value,
-      number: this.unitForm.get('number')?.value,
-      surface: 5,
-      buildingId: this.unitForm.get('building')?.value,
-      unitTypeId: this.unitForm.get('unitType')?.value,
+    const unit: UpdateUnit = {
+      id: +this.unitId,
+      floor: this.editForm.get('floor')?.value,
+      number: this.editForm.get('number')?.value,
+      surface: this.editForm.get('surface')?.value,
+      buildingId: this.editForm.get('building')?.value,
+      unitTypeId: this.editForm.get('unitType')?.value,
     };
-
+    console.log(unit);
     this.unitService
-      .createUnit(unit)
+      .updateUnit(unit)
       .pipe(
         tap(() => {
           this.isSuccess = true;
@@ -78,7 +83,7 @@ export class AddModalComponent {
             console.log('paso timeout');
           }, 2000);
 
-          this.unitForm.reset({
+          this.editForm.reset({
             floor: '',
             number: '',
             surface: '',
@@ -90,7 +95,7 @@ export class AddModalComponent {
           this.floors = [];
           this.errors = null;
 
-          this.addUnitEvent.emit(true);
+          this.editUnitEvent.emit(true);
         }),
         catchError((error) => {
           this.canAddUnit = false;
@@ -105,21 +110,38 @@ export class AddModalComponent {
   onClickOpenModal() {
     this.isOpen = true;
   }
+
   onClickCloseModal() {
     this.isOpen = false;
     this.errors = null;
-    this.unitForm.reset();
+    this.editForm.reset();
   }
 
   onChangeBuilding() {
-    console.log(this.unitForm.get('building')?.value);
     const building = this.buildings.find(
-      (x) => x.id == this.unitForm.get('building')?.value
+      (x) => x.id == this.editForm.get('building')?.value
     )!;
-    console.log(building);
     this.floors = Array.from(
       { length: building.floors },
       (_, index) => index + 1
     );
   }
+
+  getUnits(id: number) {
+    this.unitService.getById(id).subscribe((response) => {
+      this.unit = response.data;
+      console.log(response.data);
+      console.log(this.unit);
+      this.editForm.patchValue({
+        id: this.unit.id,
+        floor: this.unit.floor,
+        number: this.unit.number,
+        surface: this.unit.surface,
+        user: this.unit.user,
+        building: this.unit.building,
+        unitType: this.unit.unitType,
+      });
+    }  );  
+}
+
 }
