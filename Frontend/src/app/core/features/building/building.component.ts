@@ -43,7 +43,9 @@ export class BuildingComponent implements OnInit {
   isLoading = false;
   isSubmit = false;
   postUpdateOrCreate = false;
+  loading = false;
   selectedBuildingId: number = 1;
+  ActivateModal = false;
   createdMessage: string = 'Edificio creado.';
   updatedMessage: string = 'Edificio actualizado.';
   community!: Community | null;
@@ -226,13 +228,34 @@ export class BuildingComponent implements OnInit {
     }
   }
 
-  delete() {
+  openmodal() {
     if (this.Edificio.units >= 1) {
       this.notification = true;
+      setTimeout(() => {
+        this.notification = false;
+      }, 5000);
     } else {
+      this.ActivateModal = true;
+    }
+  }
+
+  closemodal() {
+    this.ActivateModal = false;
+  }
+
+  deletebuilding() {
+    if (this.Edificio.units >= 1) {
+      this.notification = true;
+      setTimeout(() => {
+        this.notification = false;
+      }, 5000);
+    } else {
+      this.loading = true;
       this.service.delete(this.Edificio.id).subscribe({
         next: (response) => {
           if (response.status === 200) {
+            this.loading = false;
+            this.ActivateModal = false;
             this.postUpdateOrCreate = true;
             this.isDeletion = true;
             setTimeout(() => {
@@ -240,7 +263,7 @@ export class BuildingComponent implements OnInit {
               this.isDeletion = false;
               this.postUpdateOrCreate = false;
               this.ngOnInit();
-            }, 3000);
+            }, 5000);
           }
         },
         error: (error) => {
