@@ -22,7 +22,8 @@ namespace Backend.Features.Community.Commands.Assign
         {
             if (request.User != null)
             {
-
+                var result = await DoAddUsers(request.User);
+                return result;
             }
             else if (request.Users != null)
             {
