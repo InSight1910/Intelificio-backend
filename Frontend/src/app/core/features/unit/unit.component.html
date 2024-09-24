@@ -1,36 +1,44 @@
-<div class="table-responsive">
+<div style="margin-top: 1em;">
 
-  <div>
-    <h3 class="title is-3">Unidades</h3>
-    <h6 class="title is-5">{{ buildingName }}</h6>
+  <div class="level">
+    <div class="level-left">
+      <h3 class="title level-item">Unidades</h3>
+      <h6 class="subtitle level-item">{{ buildingName }}</h6>
+    </div>
+    <div class="level-right">
     <app-add-modal (addUnitEvent)="updateList($event)"></app-add-modal>
+    </div>
   </div>
 
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Numero</th>
-        <th>Tipo</th>
-        <th>Edificio</th>
-        <th>Piso</th>
-        <th>Superficie</th>
-        <th>Usuario</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (unit of units; track unit.id){
-      <tr>
-        <td>{{ unit.number }}</td>
-        <td>{{ unit.unitType }}</td>
-        <td>{{ unit.building }}</td>
-        <td>{{ unit.floor }}</td>
-        <td>{{ unit.surface }}</td>
-        <td>{{ unit.user }}</td>
-        <td>
+  <div class="box table-container">
+    <table class="table is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>Numero</th>
+          <th>Tipo</th>
+          <th>Edificio</th>
+          <th>Piso</th>
+          <th>Superficie</th>
+          <th>Usuario</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (unit of units; track unit.id){
+        <tr>
+          <td>{{ unit.number }}</td>
+          <td>{{ unit.unitType }}</td>
+          <td>{{ unit.building }}</td>
+          <td>{{ unit.floor }}</td>
+          <td>{{ unit.surface }}</td>
+          <td>{{ unit.user }}</td>
+          <td>
             <app-edit-modal (editUnitEvent)="editList($event)" unitId="{{unit.id}}"></app-edit-modal>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
 </div>
