@@ -6,6 +6,7 @@ using Backend.Features.Authentication.Commands.Refresh;
 using Backend.Features.Authentication.Commands.Signup;
 using Backend.Features.Authentication.Commands.SignupMassive;
 using Backend.Features.Authentication.Queries.GetAllRoles;
+using Backend.Features.Authentication.Queries.GetAllUserAdmin;
 using Backend.Features.Authentication.Queries.GetUserByEmail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -96,6 +97,16 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> GetAllRoles()
         {
             var result = await mediator.Send(new GetAllRolesQuery());
+            return result.Match<IActionResult>(
+                onSuccess: (response) => Ok(response),
+                onFailure: NotFound);
+
+        }
+
+        [HttpGet("User/admin")]
+        public async Task<IActionResult> GetAllUserAdmin()
+        {
+            var result = await mediator.Send(new GetAllUserAdminQuery());
             return result.Match<IActionResult>(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
