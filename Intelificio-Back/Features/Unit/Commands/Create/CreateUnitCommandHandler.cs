@@ -21,6 +21,8 @@ namespace Backend.Features.Unit.Commands.Create
         }
         public async Task<Result> Handle(CreateUnitCommand request, CancellationToken cancellationToken)
         {
+            var checkUnitName = await _context.Units.AnyAsync(x => x.Number == request.Number && x.Building.ID == request.Id);
+
             var checkUnitType = await _context.UnitTypes.FirstOrDefaultAsync(x => x.ID == request.UnitTypeId);
 
             if (checkUnitType == null) return Result.Failure(UnitErrors.UnitTypeNotFound);
@@ -40,7 +42,7 @@ namespace Backend.Features.Unit.Commands.Create
 
             newUnit.UnitType = checkUnitType;
 
-            await _context.Units.AddAsync(newUnit);
+            _ = await _context.Units.AddAsync(newUnit);
 
             return Result.Success();
 

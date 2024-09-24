@@ -34,12 +34,16 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             //Arrange
             var command = new SignUpCommand
             {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "LastTest",
-                Password = "Test",
-                PhoneNumber = "123",
-                Rut = "123",
+                User = new UserObject
+                {
+                    Email = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "LastTest",
+                    Password = "Test",
+                    PhoneNumber = "123",
+                    Rut = "123",
+                    Role = "Propietario"
+                }
 
             };
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
@@ -60,19 +64,22 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             //Arrange
             var command = new SignUpCommand
             {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "LastTest",
-                Password = "Test",
-                PhoneNumber = "123",
-                Rut = "123",
-
+                User = new UserObject
+                {
+                    Email = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "LastTest",
+                    Password = "Test",
+                    PhoneNumber = "123",
+                    Rut = "123",
+                    Role = "Administrador"
+                }
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
-                            .ReturnsAsync((User)null);
+                        .ReturnsAsync((User)null);
             _ = _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-                            .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Password too weak" }));
+                        .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Password too weak" }));
 
             //Act
             var result = await _handler.Handle(command, default);
@@ -89,12 +96,16 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             //Arrange
             var command = new SignUpCommand
             {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "LastTest",
-                Password = "Test",
-                PhoneNumber = "123",
-                Rut = "123"
+                User = new UserObject
+                {
+                    Email = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "LastTest",
+                    Password = "Test",
+                    PhoneNumber = "123",
+                    Rut = "123",
+                    Role = "Administrador"
+                }
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))

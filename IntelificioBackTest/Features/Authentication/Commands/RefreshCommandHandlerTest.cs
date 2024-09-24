@@ -38,7 +38,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
         {
             //Arrange
             var user = UserFixture.GetUserTest();
-            var token = _tokenProvider.CreateToken(user, user.Role.Name);
+            var token = _tokenProvider.CreateToken(user, "Propietario");
             var refreshToken = _tokenProvider.CreateRefreshToken();
             var command = new RefreshCommand
             {
@@ -72,7 +72,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
         {
             //Arrange
             var user = UserFixture.GetUserTest();
-            var token = _tokenProvider.CreateToken(user, user.Role.Name);
+            var token = _tokenProvider.CreateToken(user, "Administrador");
             var refreshToken = _tokenProvider.CreateRefreshToken();
             var command = new RefreshCommand
             {
@@ -104,7 +104,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
         {
             //Arrange
             var user = UserFixture.GetUserTest();
-            var token = _tokenProvider.CreateToken(user, user.Role.Name);
+            var token = _tokenProvider.CreateToken(user, "Administrador");
             var refreshToken = _tokenProvider.CreateRefreshToken();
             var command = new RefreshCommand
             {
@@ -135,7 +135,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
         {
             //Arrange
             var user = UserFixture.GetUserTest();
-            var token = _tokenProvider.CreateToken(user, user.Role.Name);
+            var token = _tokenProvider.CreateToken(user, "Administrador");
             var refreshToken = _tokenProvider.CreateRefreshToken();
             var command = new RefreshCommand
             {

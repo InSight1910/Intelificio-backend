@@ -41,7 +41,6 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             var roleExist = await roleManager.FindByNameAsync(request.Role);
             if (roleExist == null) return Result.Failure(AuthenticationErrors.RoleNotFound);
-            user.Role = roleExist;
 
             var result = await userManager.CreateAsync(user, request.Password);
 
@@ -55,7 +54,7 @@ namespace Backend.Features.Authentication.Commands.Signup
                 return Result.Failure(AuthenticationErrors.InvalidParameters(errors));
             }
 
-            _ = await userManager.AddToRoleAsync(user, user.Role.Name!);
+            _ = await userManager.AddToRoleAsync(user, roleExist.Name!);
 
 
             var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);

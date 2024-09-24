@@ -32,8 +32,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                CommunityId = 1,
-                UserId = 1
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 1,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
@@ -52,8 +55,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                CommunityId = 0,
-                UserId = 1
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 0,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
@@ -74,8 +80,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                CommunityId = 1,
-                UserId = 0
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 0,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
@@ -95,13 +104,16 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                CommunityId = 1,
-                UserId = 1
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 0,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == command.UserId);
-            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == command.CommunityId);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == command.User.UserId);
+            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == command.User.CommunityId);
 
             community.Users.Add(user);
 

@@ -23,7 +23,10 @@ namespace Backend.Features.Community.Commands.Create
         public async Task<Result> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {
             var checkCommunityName = await _context.Community.AnyAsync(x => x.Name == request.Name);
-            if (checkCommunityName) return Result.Failure(CommunityErrors.CommunityAlreadyExist);
+            if (checkCommunityName) return Result.Failure(CommunityErrors.CommunityNameAlreadyExist);
+
+            var checkCommunityRut = await _context.Community.AnyAsync(x => x.Rut == request.RUT);
+            if (checkCommunityRut) return Result.Failure(CommunityErrors.CommunityNameAlreadyExist);
 
             var municipality = await _context.Municipality.FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
 

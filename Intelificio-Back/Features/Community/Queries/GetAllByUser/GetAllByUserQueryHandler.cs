@@ -2,42 +2,56 @@
 using Backend.Features.Community.Common;
 using Backend.Models;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Community.Queries.GetAllByUser
 {
     public class GetAllByUserQueryHandler : IRequestHandler<GetAllByUserQuery, Result>
     {
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly IntelificioDbContext _context;
         private readonly ILogger<GetAllByUserQueryHandler> _logger;
 
-
-        public GetAllByUserQueryHandler(IntelificioDbContext context, ILogger<GetAllByUserQueryHandler> logger)
+        public GetAllByUserQueryHandler(UserManager<User> userManager, RoleManager<Role> roleManager, IntelificioDbContext context, ILogger<GetAllByUserQueryHandler> logger)
         {
+            _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
             _logger = logger;
         }
 
         public async Task<Result> Handle(GetAllByUserQuery request, CancellationToken cancellationToken)
         {
-            var checkUser = _context.Users.Any(x => x.Id == request.UserId);
+            var checkUser = await _userManager.Users.AnyAsync(x => x.Id == request.UserId);
 
             if (!checkUser) return Result.Failure(CommunityErrors.UserNotFound);
             try
             {
-                var communities = await _context.Community
-                                          .Include(x => x.Users)
-                                          .Where(x => x.Users.Any(user => user.Id == request.UserId))
-                                          .Select(x => new GetAllByUserResponse
-                                          {
-                                              Id = x.ID,
-                                              Name = x.Name,
-                                              Address = x.Address,
-                                              BuildingCount = _context.Buildings.Count(b => b.Community.ID == x.ID),
-                                              UnitCount = _context.Units.Count(u => u.Building.Community.ID == x.ID),
-                                              AdminName = x.Users.Where(user => user.Role.Name == "Administrador" && user.Communities.Any(c => c.ID == user.Id)).Select(u => string.Format("{0} {1}", u.FirstName, u.LastName)).FirstOrDefault() ?? "Sin Administrador"
-                                          })
-                                          .ToListAsync();
+                var adminUsers = await _userManager.GetUsersInRoleAsync("Administrador");
+                var adminUserIds = adminUsers.Select(u => u.Id).ToList();
+                var adminUsersWithCommunities = await _context.Users
+                                                    .Where(u => adminUserIds.Contains(u.Id))
+                                                    .Include(u => u.Communities)             // Include their communities
+                                                    .ToListAsync();
+
+                var communities = _context.Community
+                                                .Where(x => x.Users.Any(u => u.Id == request.UserId))
+                                                .AsEnumerable()
+                                                .Select(x => new GetAllByUserResponse
+                                                {
+                                                    Id = x.ID,
+                                                    Name = x.Name,
+                                                    Address = x.Address,
+                                                    BuildingCount = x.Buildings.Count(),
+                                                    UnitCount = x.Buildings.SelectMany(b => b.Units).Count(),
+                                                    AdminName = adminUsersWithCommunities
+                                                                    .Where(u => u.Communities.Any(c => c.ID == x.ID))
+                                                                    .Select(u => $"{u.FirstName} {u.LastName}")
+                                                                    .FirstOrDefault() ?? "Sin Administrador"
+                                                })
+                                                .ToList();
                 return Result.WithResponse(new ResponseData()
                 {
                     Data = communities

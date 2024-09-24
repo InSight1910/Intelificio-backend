@@ -10,7 +10,6 @@ namespace Backend.Models
         public required string Rut { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime Admission { get; set; }
-        public Role Role { get; set; }
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime? RefreshTokenExpiry { get; set; }
 
