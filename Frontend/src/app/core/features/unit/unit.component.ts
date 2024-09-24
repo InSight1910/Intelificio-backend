@@ -52,13 +52,13 @@ export class UnitComponent implements OnInit {
 
   updateList(updated: boolean): void {
     if (updated) {
-      this.loadUnit(1);
+      this.loadUnit(2);
     }
   }
 
   editList(updated: boolean): void {
     if (updated) {
-      this.loadUnit(1);
+      this.loadUnit(2);
     }
   }
 }

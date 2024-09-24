@@ -108,7 +108,15 @@ export class AddModalComponent {
   onClickCloseModal() {
     this.isOpen = false;
     this.errors = null;
-    this.unitForm.reset();
+    this.unitForm.reset({
+      floor: '',
+      number: '',
+      surface: '',
+      user: '',
+      building: '',
+      unitType: '',
+      id: ''
+    });
   }
 
   onChangeBuilding() {

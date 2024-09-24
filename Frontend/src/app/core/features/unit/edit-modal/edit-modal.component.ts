@@ -57,8 +57,8 @@ export class EditModalComponent {
       .getbyCommunityId(+communityId)
       .subscribe((buildings) => {
         this.buildings = buildings.data;
+        this.getUnits(+this.unitId);
       });
-      this.getUnits(+this.unitId);
     }
 
   onClickUpdateUnit() {
@@ -121,6 +121,8 @@ export class EditModalComponent {
     const building = this.buildings.find(
       (x) => x.id == this.editForm.get('building')?.value
     )!;
+    console.log(this.editForm.get('building')?.value);
+    console.log(this.buildings)
     this.floors = Array.from(
       { length: building.floors },
       (_, index) => index + 1
@@ -138,9 +140,10 @@ export class EditModalComponent {
         number: this.unit.number,
         surface: this.unit.surface,
         user: this.unit.user,
-        building: this.unit.building,
-        unitType: this.unit.unitType,
+        building: this.unit.buildingId,
+        unitType: this.unit.unitTypeId,
       });
+      this.onChangeBuilding()
     }  );  
 }
 
