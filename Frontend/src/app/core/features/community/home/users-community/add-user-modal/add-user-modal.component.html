@@ -7,7 +7,10 @@
     <div class="box py-5 px-6 is-rounded">
       <div class="columns is-vcentered is-flex">
         <div class="column is-three-quarters">
-          <h4 class="title is-4">Agregar usuario</h4>
+          <h4 class="title is-4">
+            Agregar usuario a
+            <span class="has-text-info">{{ (community | async)?.name }}</span>
+          </h4>
         </div>
         <div class="column is-flex is-justify-content-flex-end">
           <button
@@ -56,23 +59,23 @@
           </div>
         </div>
         <div class="field">
-          <label class="label">Numero Telefonico</label>
+          <label class="label">Teléfono</label>
           <div class="control">
             <input
               class="input"
               type="text"
-              placeholder="Numero Telefonico"
+              placeholder="Teléfono"
               formControlName="phoneNumber"
             />
           </div>
         </div>
         <div class="field">
-          <label class="label">Role</label>
+          <label class="label">Rol</label>
           <div class="control">
             <input
               class="input"
               type="text"
-              placeholder="Role"
+              placeholder="Rol"
               formControlName="role"
             />
           </div>
@@ -92,7 +95,7 @@
               <span class="file-icon">
                 <i class="fas fa-upload"></i>
               </span>
-              <span class="file-label"> Choose a file… </span>
+              <span class="file-label">Elige un archivo</span>
             </span>
             @if (isFileUploaded) {
             <span class="file-name">{{ selectedFileName }}</span>

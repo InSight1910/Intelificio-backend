@@ -2,10 +2,8 @@
   <div class="hero-body">
     <div class="container has-text-centered">
       <div class="columns is-centered">
-        <div class="column is-4">
-          <h2 class="title is-2 has-text-weight-bold">
-            Seleccione una comunidad
-          </h2>
+        <div class="column is-6">
+          <h2 class="title is-2">¿Qué comunidad deseas administrar?</h2>
           <form [formGroup]="form">
             <div class="select is-fullwidth">
               <select
@@ -13,7 +11,9 @@
                 [disabled]="communities.length == 0"
               >
                 @if (communities.length > 0) {
-                <option value="|">Seleccione una comunidad</option>
+                <option value="|">
+                  Selecciona la comunidad que desa administrar
+                </option>
                 @for (community of communities; track community.id) {
                 <option value="{{ community.id }}">{{ community.name }}</option>
                 } } @else {
@@ -22,8 +22,8 @@
               </select>
             </div>
             @if(showData) {
-            <div class="field">
-              <label for="" class="label">Direccion</label>
+            <div class="field mt-4">
+              <label for="" class="label">Dirección</label>
               <div class="control">
                 <input type="text" class="input" formControlName="address" />
               </div>
@@ -69,7 +69,7 @@
                   class="button is-primary is-fullwidth"
                   (click)="onClick()"
                 >
-                  Seleccionar
+                  Administrar
                 </button>
               </div>
             </div>

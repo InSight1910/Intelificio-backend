@@ -34,7 +34,7 @@
 <form class="box" [formGroup]="buildingForm">
   <div class="columns">
     <div class="column field is-6">
-      <label class="label" for="nombre">Nombre Edificio:</label>
+      <label class="label" for="nombre">Nombre Edificio</label>
       <div class="control">
         <input
           class="input"
@@ -53,22 +53,25 @@
               buildingForm.get('nombreEdificio')?.touched
           }"
         />
-        @if (buildingForm.get('nombreEdificio')?.invalid && buildingForm.get('nombreEdificio')?.touched) {
-          <p class="help is-danger">
-            <i class="fas fa-exclamation-triangle"></i>
-            Debe ingresar el nombre del Edificio.
+        @if (buildingForm.get('nombreEdificio')?.invalid &&
+        buildingForm.get('nombreEdificio')?.touched) {
+        <p class="help is-danger">
+          <i class="fas fa-exclamation-triangle"></i>
+          Debe ingresar el nombre del Edificio.
         </p>
-        } @else if (buildingForm.get('nombreEdificio')?.valid && buildingForm.get('nombreEdificio')?.touched) {
-          <p class="help is-right">
-            <i class="fas fa-check"></i>
-            Validado
-          </p>
+        } @else if (buildingForm.get('nombreEdificio')?.valid &&
+        buildingForm.get('nombreEdificio')?.touched) {
+        <p class="help is-right">
+          <i class="fas fa-check"></i>
+          Validado
+        </p>
         }
       </div>
     </div>
 
+    @if (!isCreation) {
     <div class="column field is-6">
-      <label class="label" for="nombrecomunidad">Nombre Comunidad:</label>
+      <label class="label" for="nombrecomunidad">Nombre Comunidad</label>
       <div class="control">
         <input
           class="input"
@@ -78,11 +81,12 @@
         />
       </div>
     </div>
+    }
   </div>
 
   <div class="columns">
     <div class="column field is-6">
-      <label class="label" for="cantidadpisos">N° de Pisos:</label>
+      <label class="label" for="cantidadpisos">N° de Pisos</label>
       <div class="control">
         <input
           class="input"
@@ -101,22 +105,28 @@
               buildingForm.get('pisosEdificio')?.touched
           }"
         />
-        @if (buildingForm.get('pisosEdificio')?.invalid && buildingForm.get('pisosEdificio')?.touched) {
-          <p class="help is-danger" *ngIf="buildingForm.get('pisosEdificio')?.invalid">
-            <i class="fas fa-exclamation-triangle"></i>
-            El edificio debe tener al menos 1 piso.
-          </p>
-        } @else if (buildingForm.get('pisosEdificio')?.valid && buildingForm.get('pisosEdificio')?.touched) {
-          <p class="help is-right">
-            <i class="fas fa-check"></i>
-            Validado
-          </p>
+        @if (buildingForm.get('pisosEdificio')?.invalid &&
+        buildingForm.get('pisosEdificio')?.touched) {
+        <p
+          class="help is-danger"
+          *ngIf="buildingForm.get('pisosEdificio')?.invalid"
+        >
+          <i class="fas fa-exclamation-triangle"></i>
+          El edificio debe tener al menos 1 piso.
+        </p>
+        } @else if (buildingForm.get('pisosEdificio')?.valid &&
+        buildingForm.get('pisosEdificio')?.touched) {
+        <p class="help is-right">
+          <i class="fas fa-check"></i>
+          Validado
+        </p>
         }
       </div>
     </div>
 
+    @if (!isCreation) {
     <div class="column field is-6">
-      <label class="label" for="cantidadunidades">N° de Unidades:</label>
+      <label class="label" for="cantidadunidades">N° de Unidades</label>
       <div class="control">
         <input
           class="input"
@@ -126,6 +136,7 @@
         />
       </div>
     </div>
+    }
   </div>
 
   @if (!notification) { } @else {

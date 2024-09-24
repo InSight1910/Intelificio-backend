@@ -3,11 +3,14 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-4 box p-6">
-          <h2
-            class="is-size-3 is-centered has-text-weight-bold login-header-title"
+          <h1
+            class="is-size-1 is-centered has-text-weight-bold login-header-title"
           >
-            Inicio de sesión
-          </h2>
+            Bienvenido a
+            <span class="is-size-1 has-text-primary is-centered"
+              >Intelificio</span
+            >
+          </h1>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="field mt-5">
               <label for="username" class="label">Email</label>
@@ -39,6 +42,7 @@
                 ></span>
               </div>
             </div>
+            <a href="#">¿Problemas para ingresar?</a>
             @if (errors$ | async) {
             <article class="message is-danger">
               <div class="message-body">
@@ -54,7 +58,7 @@
                   class="button is-link"
                   [ngClass]="{ 'is-loading': loading$ | async }"
                 >
-                  Iniciar sesion
+                  Iniciar sesión
                 </button>
               </div>
             </div>

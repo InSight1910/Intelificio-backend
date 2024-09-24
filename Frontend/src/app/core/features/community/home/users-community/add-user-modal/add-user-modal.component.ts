@@ -2,8 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../../services/auth/auth.service';
-import { catchError, tap, of, timeout } from 'rxjs';
+import { catchError, tap, of, timeout, Observable } from 'rxjs';
 import { CommunityService } from '../../../../../services/community/community.service';
+import { Community } from '../../../../../../shared/models/community.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../../states/intelificio.state';
+import { selectCommunity } from '../../../../../../states/community/community.selectors';
 
 @Component({
   selector: 'app-add-user-modal',
@@ -27,11 +31,13 @@ export class AddUserModalComponent {
   selectedFile: File | null = null;
   selectedFileName: string = '';
   isFileUploaded: boolean = false;
+  community!: Observable<Community | null>;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private communityService: CommunityService
+    private communityService: CommunityService,
+    private store: Store<AppState>
   ) {
     this.form = this.fb.group({
       id: [''],
@@ -40,6 +46,7 @@ export class AddUserModalComponent {
       phoneNumber: [{ value: '', disabled: true }],
       role: [{ value: '', disabled: true }],
     });
+    this.community = this.store.select(selectCommunity);
   }
 
   onClickSearch() {
@@ -120,6 +127,7 @@ export class AddUserModalComponent {
           catchError((error) => {
             this.canAddUser = false;
             this.isAdding = false;
+            this.isSuccess = false;
             this.errors = error.error;
             return of(error);
           })

@@ -10,7 +10,7 @@ import { Unit, UnitType } from '../../../../shared/models/unit.model';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-modal.component.html',
-  styleUrl: './add-modal.component.css'
+  styleUrl: './add-modal.component.css',
 })
 export class AddModalComponent {
   @Output() addUnitEvent = new EventEmitter<boolean>();
@@ -30,7 +30,7 @@ export class AddModalComponent {
       surface: [''],
       user: [''],
       building: [''],
-      unitType: ['|']
+      unitType: ['|'],
     });
   }
 
@@ -42,13 +42,13 @@ export class AddModalComponent {
 
   onClickAddUnit() {
     this.isAdding = true;
-    const unit:Unit = {
+    const unit: Unit = {
       floor: this.unitForm.get('floor')?.value,
       number: this.unitForm.get('number')?.value,
       surface: this.unitForm.get('surface')?.value,
       user: this.unitForm.get('user')?.value,
       building: this.unitForm.get('building')?.value,
-      unitType: this.unitForm.get('unitType')?.value
+      unitType: this.unitForm.get('unitType')?.value,
     };
     const BuildingId = localStorage.getItem('BuildingId')!;
     console.log(unit, BuildingId);
@@ -84,5 +84,4 @@ export class AddModalComponent {
     this.errors = null;
     this.unitForm.reset();
   }
-
 }

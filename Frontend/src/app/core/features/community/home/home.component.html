@@ -32,7 +32,7 @@
             />
           </div>
           <div class="control is-expanded">
-            <label for="" class="label">Direccion</label>
+            <label for="" class="label">Dirección</label>
             <input
               type="text"
               class="input"
@@ -44,7 +44,7 @@
         <div class="columns is-multiline">
           <div class="column is-one-third">
             <div class="field">
-              <label for="" class="label">Region</label>
+              <label for="" class="label">Región</label>
               <div class="control">
                 <div class="select is-fullwidth">
                   <select
@@ -52,7 +52,7 @@
                     formControlName="regionId"
                     [ngClass]="{ 'is-skeleton': loadingLocation }"
                   >
-                    <option value="|">Seleccione Region</option>
+                    <option value="|">Seleccione Región</option>
                     @for (region of regions; track $index) {
                     <option value="{{ region.id }}">{{ region.name }}</option>
                     }
@@ -119,27 +119,27 @@
             @if(!isModifying) {
             <button
               (click)="onClickEdit()"
-              class="button is-primary is-fullwidth"
+              class="button is-warning is-fullwidth"
             >
-              Editar
+              Modificar
             </button>
             } @else {
             <div class="columns">
               <div class="column is-half">
                 <button
-                  class="button is-primary is-fullwidth"
-                  [ngClass]="{ 'is-loading': isLoading | async }"
-                  (click)="onClickSave()"
+                  class="button is-danger is-fullwidth"
+                  (click)="onClickCancel()"
                 >
-                  Modificar
+                  Salir
                 </button>
               </div>
               <div class="column is-half">
                 <button
-                  class="button is-danger is-fullwidth"
-                  (click)="onClickCancel()"
+                  class="button is-warning is-fullwidth"
+                  [ngClass]="{ 'is-loading': isLoading | async }"
+                  (click)="onClickSave()"
                 >
-                  Cancelar
+                  Modificar
                 </button>
               </div>
             </div>
