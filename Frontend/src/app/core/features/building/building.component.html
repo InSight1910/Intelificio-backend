@@ -53,16 +53,18 @@
               buildingForm.get('nombreEdificio')?.touched
           }"
         />
-        @if (buildingForm.get('nombreEdificio')?.invalid && buildingForm.get('nombreEdificio')?.touched) {
-          <p class="help is-danger">
-            <i class="fas fa-exclamation-triangle"></i>
-            Debe ingresar el nombre del Edificio.
+        @if (buildingForm.get('nombreEdificio')?.invalid &&
+        buildingForm.get('nombreEdificio')?.touched) {
+        <p class="help is-danger">
+          <i class="fas fa-exclamation-triangle"></i>
+          Debe ingresar el nombre del Edificio.
         </p>
-        } @else if (buildingForm.get('nombreEdificio')?.valid && buildingForm.get('nombreEdificio')?.touched) {
-          <p class="help is-right">
-            <i class="fas fa-check"></i>
-            Validado
-          </p>
+        } @else if (buildingForm.get('nombreEdificio')?.valid &&
+        buildingForm.get('nombreEdificio')?.touched) {
+        <p class="help is-right">
+          <i class="fas fa-check"></i>
+          Validado
+        </p>
         }
       </div>
     </div>
@@ -101,16 +103,21 @@
               buildingForm.get('pisosEdificio')?.touched
           }"
         />
-        @if (buildingForm.get('pisosEdificio')?.invalid && buildingForm.get('pisosEdificio')?.touched) {
-          <p class="help is-danger" *ngIf="buildingForm.get('pisosEdificio')?.invalid">
-            <i class="fas fa-exclamation-triangle"></i>
-            El edificio debe tener al menos 1 piso.
-          </p>
-        } @else if (buildingForm.get('pisosEdificio')?.valid && buildingForm.get('pisosEdificio')?.touched) {
-          <p class="help is-right">
-            <i class="fas fa-check"></i>
-            Validado
-          </p>
+        @if (buildingForm.get('pisosEdificio')?.invalid &&
+        buildingForm.get('pisosEdificio')?.touched) {
+        <p
+          class="help is-danger"
+          *ngIf="buildingForm.get('pisosEdificio')?.invalid"
+        >
+          <i class="fas fa-exclamation-triangle"></i>
+          El edificio debe tener al menos 1 piso.
+        </p>
+        } @else if (buildingForm.get('pisosEdificio')?.valid &&
+        buildingForm.get('pisosEdificio')?.touched) {
+        <p class="help is-right">
+          <i class="fas fa-check"></i>
+          Validado
+        </p>
         }
       </div>
     </div>
@@ -178,9 +185,42 @@
     } @else {
     <button class="button is-primary" (click)="create()">Agregar</button>
     <button class="button is-warning" (click)="edit()">Editar</button>
-    <button class="button is-danger" (click)="delete()">Eliminar</button>
+    <button class="button is-danger" (click)="deletebuilding()">
+      Eliminar
+    </button>
     }
   </div>
 </form>
+
+<div class="modal" [ngClass]="{ 'is-active': ActivateModal }">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        Eliminando edificio {{ this.Edificio.name }}
+      </p>
+      <button class="delete" aria-label="close" (click)="closemodal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>
+        Eliminará el edificio {{ this.Edificio.name }} de
+        {{ this.Edificio.communityName }}, esta acción no se puede revertir, por
+        favar confirme la acción:
+      </p>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-link"
+          (click)="deletebuilding()"
+          [ngClass]="{ 'is-loading': loading }"
+        >
+          Confirmar
+        </button>
+        <button class="button" (click)="closemodal()">Salir</button>
+      </div>
+    </footer>
+  </div>
+</div>
 
 }
