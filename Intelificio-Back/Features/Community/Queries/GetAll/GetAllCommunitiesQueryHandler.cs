@@ -22,13 +22,18 @@ namespace Backend.Features.Community.Queries.GetAll
                 .Include(x => x.Municipality.City.Region)
                 .IgnoreQueryFilters()
                 .Select(x => new GetAllCommunitiesResponse
-                {
+                {   
+                    Id = x.ID,
                     Address = x.Address,
                     CreationDate = x.FoundationDate,
                     Name = x.Name,
                     Municipality = x.Municipality.Name,
+                    MunicipalityId = x.Municipality.ID,
                     City = x.Municipality.City.Name,
-                    Region = x.Municipality.City.Region.Name
+                    CityId = x.Municipality.City.ID,
+                    Region = x.Municipality.City.Region.Name,
+                    RegionId = x.Municipality.City.Region.ID,
+                    AdminName = x.Users.Where(user => user.Role.Name == "Administrador" && user.Communities.Any(c => c.ID == user.Id)).Select(u => string.Format("{0} {1}", u.FirstName, u.LastName)).FirstOrDefault() ?? "Sin Administrador"
                 })
                 .ToListAsync();
             return Result.WithResponse(new ResponseData
