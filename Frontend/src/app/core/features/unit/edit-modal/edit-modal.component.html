@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="field has-text-centered">
-                        <div class="select">
+                        <div class="select is-fullwidth">
                             <select formControlName="building" (change)="onChangeBuilding()">
                                 <option value="">Seleccione Edificio</option>
                                 @for (building of buildings; track $index) {
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="field has-text-centered">
-                        <div class="select">
+                        <div class="select is-fullwidth">
                             <select formControlName="floor">
                                 <option value="">Seleccione Piso</option>
                                 @for (floor of floors; track $index) {
