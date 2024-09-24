@@ -3,6 +3,8 @@ import {
   Community,
   AllCommunity,
 } from '../../../../shared/models/community.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../states/auth/auth.state';
 import { CommunityService } from '../../../services/community/community.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -13,6 +15,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { LocationService } from '../../../services/location/location.service';
+import { CommunityActions } from '../../../../states/community/community.actions';
 import {
   City,
   Municipality,
@@ -45,7 +48,8 @@ export class AdminCommunityComponent implements OnInit {
   constructor(
     private service: CommunityService,
     private locationService: LocationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store<AppState>
   ) {
     this.communityForm = this.fb.group({
       id: [''],
@@ -169,6 +173,9 @@ export class AdminCommunityComponent implements OnInit {
             this.notificacion = false;
             this.ActivateModal = false;
             this.communityForm.enable();
+            this.store.dispatch(
+              CommunityActions.getCommunity({ id: this.communityForm.value.id })
+            );
           }, 3000);
         }
       },

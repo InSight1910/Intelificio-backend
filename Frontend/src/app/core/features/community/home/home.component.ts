@@ -96,7 +96,6 @@ export class HomeCommunityComponent {
       cityId: this.form.value.cityId,
       regionId: this.form.value.regionId,
     };
-    console.log(updateCommunity);
 
     this.store.dispatch(
       CommunityActions.updateCommunity({ community: updateCommunity })

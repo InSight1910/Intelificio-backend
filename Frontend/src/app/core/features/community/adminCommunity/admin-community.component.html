@@ -169,22 +169,24 @@
             } }
           </div>
         </div>
-
-        <div class="buttons">
-          <button
-            class="button is-danger"
-            [ngClass]="{ 'is-loading': updating }"
-            [disabled]="!communityForm.valid"
-            (click)="onClickSave()"
-          >
-            Confirmar
-          </button>
-          <button class="button" (click)="closemodal()" [disabled]="updating">
-            Salir
-          </button>
-        </div>
       </form>
     </section>
+
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-danger"
+          [ngClass]="{ 'is-loading': updating }"
+          [disabled]="!communityForm.valid"
+          (click)="onClickSave()"
+        >
+          Confirmar
+        </button>
+        <button class="button" (click)="closemodal()" [disabled]="updating">
+          Salir
+        </button>
+      </div>
+    </footer>
   </div>
 </div>
 
