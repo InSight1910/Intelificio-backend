@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../states/intelificio.state';
 import { NavBarActions } from '../../../../states/navbar/navbar.actions';
@@ -24,6 +24,7 @@ import {
   Region,
 } from '../../../../shared/models/location.model';
 import { UsersCommunityComponent } from './users-community/users-community.component';
+import { CommunityService } from '../../../services/community/community.service';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +36,7 @@ import { UsersCommunityComponent } from './users-community/users-community.compo
 export class HomeCommunityComponent {
   form: FormGroup;
   isLoading!: Observable<boolean>;
+  isLoadingData: boolean = false;
   errors!: Observable<string[] | null>;
 
   cities: City[] = [];
@@ -47,7 +49,9 @@ export class HomeCommunityComponent {
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private communityService: CommunityService,
+    private cdr: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       name: [''],
@@ -63,26 +67,45 @@ export class HomeCommunityComponent {
   ngOnInit() {
     this.store.dispatch(NavBarActions.select({ title: 'Comunidad' }));
     var id = localStorage.getItem('communityId')!;
-    console.log(id);
+    this.isLoadingData = true;
     this.loadingLocation = true;
+    this.loadCommunity();
+  }
+
+  loadCommunity() {
     this.store.select(selectCommunity).subscribe((community) => {
-      this.form.patchValue(community!);
-      this.form.disable();
-      if (community != null) {
-        this.locationService.getRegions().subscribe((regions) => {
-          this.regions = regions.data;
-        });
+      if (community?.adminName == null) {
+        this.communityService
+          .getCommunity(community!.id!)
+          .subscribe(({ data }) => {
+            this.isLoadingData = false;
+            this.form.patchValue({
+              name: data.name,
+              address: data.address,
+              adminName: data.adminName,
+              id: community?.id,
+              municipalityId: data.municipalityId,
+              cityId: data.cityId,
+              regionId: data.regionId,
+            });
+            if (community != null) {
+              this.locationService.getRegions().subscribe((regions) => {
+                this.regions = regions.data;
+              });
 
-        this.locationService
-          .getCitiesByRegion(this.form.value.regionId)
-          .subscribe((cities) => (this.cities = cities.data));
+              this.locationService
+                .getCitiesByRegion(this.form.value.regionId)
+                .subscribe((cities) => (this.cities = cities.data));
 
-        this.locationService
-          .getMunicipalitiesByCity(this.form.value.cityId)
-          .subscribe((municipalities) => {
-            this.municipalities = municipalities.data;
-            this.loadingLocation = false;
+              this.locationService
+                .getMunicipalitiesByCity(this.form.value.cityId)
+                .subscribe((municipalities) => {
+                  this.municipalities = municipalities.data;
+                  this.loadingLocation = false;
+                });
+            }
           });
+        this.form.disable();
       }
     });
   }
@@ -96,19 +119,17 @@ export class HomeCommunityComponent {
       cityId: this.form.value.cityId,
       regionId: this.form.value.regionId,
     };
-    console.log(updateCommunity);
 
     this.store.dispatch(
       CommunityActions.updateCommunity({ community: updateCommunity })
     );
-    this.isLoading = this.store.select(isLoading).pipe(
-      tap((loading) => {
-        if (!loading) {
-          this.form.disable();
-          this.isModifying = false;
-        }
-      })
-    );
+    this.store.select(isLoading).subscribe((loading) => {
+      if (!loading) {
+        this.form.disable();
+        this.isModifying = false;
+        this.loadCommunity();
+      }
+    });
     this.errors = this.store.select(selectError);
   }
   onClickEdit() {

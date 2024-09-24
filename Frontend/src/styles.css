@@ -1,1 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --bulma-navbar-height: 5rem!important;
+}

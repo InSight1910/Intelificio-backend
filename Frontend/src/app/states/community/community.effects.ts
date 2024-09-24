@@ -80,6 +80,7 @@ export class CommunityEffects {
           console.log(community);
           return this.communityService.updateCommunity(community).pipe(
             map(() => {
+              console.log(community);
               localStorage.setItem('community', JSON.stringify(community));
               return CommunityActions.updateSuccess({ community });
             }),
@@ -99,10 +100,11 @@ export class CommunityEffects {
     this.updateSuccess$ = createEffect(
       () => {
         return this.actions$.pipe(
-          ofType(CommunityActions.updateSuccess),
-          mergeMap(() => {
-            return of(this.router.navigate(['/community']));
-          })
+          ofType(CommunityActions.updateSuccess)
+          // mergeMap(() => {
+          //   return;
+          //   // return of(this.router.navigate(['/community']));
+          // })
         );
       },
       { dispatch: false }

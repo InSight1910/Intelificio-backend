@@ -109,30 +109,29 @@ export class AddUserModalComponent {
     } else {
       this.isAdding = true;
       const userID = this.form.get('id')?.value;
-      const communityID = localStorage.getItem('communityId')!;
-      console.log(userID, communityID);
-
-      this.communityService
-        .addUserToCommunity(+communityID, userID)
-        .pipe(
-          tap(() => {
-            this.isSuccess = true;
-            this.isAdding = false;
-            setTimeout(() => {
+      this.community.subscribe((community) => {
+        this.communityService
+          .addUserToCommunity(+community?.id!, userID)
+          .pipe(
+            tap(() => {
+              this.isSuccess = true;
+              this.isAdding = false;
+              setTimeout(() => {
+                this.isSuccess = false;
+              }, 2000);
+              this.form.reset();
+              this.addUserEvent.emit(true);
+            }),
+            catchError((error) => {
+              this.canAddUser = false;
+              this.isAdding = false;
               this.isSuccess = false;
-            }, 2000);
-            this.form.reset();
-            this.addUserEvent.emit(true);
-          }),
-          catchError((error) => {
-            this.canAddUser = false;
-            this.isAdding = false;
-            this.isSuccess = false;
-            this.errors = error.error;
-            return of(error);
-          })
-        )
-        .subscribe();
+              this.errors = error.error;
+              return of(error);
+            })
+          )
+          .subscribe();
+      });
     }
   }
   preventScroll(event: Event) {
@@ -170,5 +169,16 @@ export class AddUserModalComponent {
       this.canAddUser = true;
       this.canSearch = false;
     }
+  }
+
+  onClickReset(fileInput: HTMLInputElement) {
+    this.form.reset();
+    this.form.get('email')?.enable();
+    this.canAddUser = false;
+    this.canSearch = true;
+    this.selectedFile = null;
+    this.selectedFileName = '';
+    fileInput.value = '';
+    this.isFileUploaded = false;
   }
 }

@@ -12,7 +12,7 @@
               >
                 @if (communities.length > 0) {
                 <option value="|">
-                  Selecciona la comunidad que desa administrar
+                  Seleccione la comunidad que desea administrar
                 </option>
                 @for (community of communities; track community.id) {
                 <option value="{{ community.id }}">{{ community.name }}</option>
