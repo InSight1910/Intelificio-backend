@@ -26,11 +26,11 @@ export class SingupComponent implements OnInit {
   constructor(private service: AuthService) {}
 
   notification = false;
-  notificationMessage = "";
+  notificationMessage = '';
   IsSuccess = false;
   IsError = false;
   loading = false;
-  notificationSuccess = "Usuario creado exitosamente";
+  notificationSuccess = 'Usuario creado exitosamente';
   selectedFile: File | null = null;
   selectedFileName = '';
   isFileUploaded = false;
@@ -77,43 +77,67 @@ export class SingupComponent implements OnInit {
     this.getRoles();
   }
 
-  onSubmit(){
-    if (this.singupForm.valid){
+  onSubmit() {
+    if (this.selectedFile) {
+      console.log(this.selectedFile);
+      const formData: FormData = new FormData();
+      formData.append('file', this.selectedFile!);
+      formData.append('test', 'test');
+      console.log(formData);
 
-      const signupDTO: SignupDTO = {
-        User: {
-          firstName: this.singupForm.controls['firstName'].value?? '',
-          lastName: this.singupForm.controls['lastName'].value?? '',
-          email: this.singupForm.controls['email'].value?? '',
-          phoneNumber: this.singupForm.controls['phoneNumber'].value?? '',
-          password: this.singupForm.controls['password'].value?? '',
-          rut: this.singupForm.controls['rut'].value?? '',
-          role: this.singupForm.controls['rol'].value?? '',
-          birthDate: this.singupForm.controls['birthDate'].value?? ''
-        },
-        Users: []
-      };
+      this.service
+        .signupMassive(formData)
+        .pipe(
+          tap((response) => {
+            if (response.status === 202) {
+              this.notification = true;
+              setTimeout(() => {
+                this.notification = false;
+                this.clean();
+              }, 3000);
+            }
+          }),
+          catchError((error) => {
+            console.error('Error: ', error);
+            return of(error);
+          })
+        )
+        .subscribe();
+    } else {
+      if (this.singupForm.valid) {
+        const signupDTO: SignupDTO = {
+          User: {
+            firstName: this.singupForm.controls['firstName'].value ?? '',
+            lastName: this.singupForm.controls['lastName'].value ?? '',
+            email: this.singupForm.controls['email'].value ?? '',
+            phoneNumber: this.singupForm.controls['phoneNumber'].value ?? '',
+            password: this.singupForm.controls['password'].value ?? '',
+            rut: this.singupForm.controls['rut'].value ?? '',
+            role: this.singupForm.controls['rol'].value ?? '',
+            birthDate: this.singupForm.controls['birthDate'].value ?? '',
+          },
+          Users: [],
+        };
 
-      console.log("Imprime Mierda")
-      console.log(signupDTO)
+        console.log('Imprime Mierda');
+        console.log(signupDTO);
 
-      this.service.signup(signupDTO).subscribe({
-        next: (response) => {
-          if (response.status === 500){
-            this.notification = true;
-            setTimeout(() => {
-              this.notification = false;
-              this.clean();
-            }, 3000);
-          }
-        },
-        error: (error) => {
+        this.service.signup(signupDTO).subscribe({
+          next: (response) => {
+            if (response.status === 500) {
+              this.notification = true;
+              setTimeout(() => {
+                this.notification = false;
+                this.clean();
+              }, 3000);
+            }
+          },
+          error: (error) => {
             console.log('Error:', error);
-          }
-      })
-
+          },
+        });
+      }
     }
-
   }
 
   clean() {
@@ -280,7 +304,20 @@ export class SingupComponent implements OnInit {
       return remainder.toString();
     }
   }
+  onChangeFile(event: Event) {
+    const input = event.target as HTMLInputElement;
+    console.log(input.files);
 
+    if (input.files?.length) {
+      this.singupForm.disable();
+      this.singupForm.reset();
+
+      this.selectedFile = input.files![0];
+      console.log(this.selectedFile);
+      this.selectedFileName = input.files![0].name;
+      this.isFileUploaded = true;
+    }
+  }
 }
 
 //"Passwords must be at least 8 characters.",

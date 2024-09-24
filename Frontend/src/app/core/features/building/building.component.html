@@ -181,17 +181,22 @@
       type="submit"
       class="button is-primary"
       (click)="saveCreate()"
+      [ngClass]="{ 'is-loading': loading }"
       [disabled]="!buildingForm.valid"
     >
       Guardar
     </button>
-    <button class="button is-link" (click)="exitcreation()">Cancelar</button>
+    <button
+      class="button is-link"
+      [disabled]="loading"
+      (click)="exitcreation()"
+    >
+      Cancelar
+    </button>
     } @else {
     <button class="button is-primary" (click)="create()">Agregar</button>
     <button class="button is-warning" (click)="edit()">Editar</button>
-    <button class="button is-danger" (click)="deletebuilding()">
-      Eliminar
-    </button>
+    <button class="button is-danger" (click)="openmodal()">Eliminar</button>
     }
   </div>
 </form>
@@ -215,7 +220,7 @@
     <footer class="modal-card-foot">
       <div class="buttons">
         <button
-          class="button is-link"
+          class="button is-danger"
           (click)="deletebuilding()"
           [ngClass]="{ 'is-loading': loading }"
         >

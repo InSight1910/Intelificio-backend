@@ -202,26 +202,33 @@ export class BuildingComponent implements OnInit {
   }
 
   saveCreate() {
+    this.loading = true;
     if (this.buildingForm.valid) {
       const createBuilding = {
         Name: this.buildingForm.controls['nombreEdificio'].value,
         Floors: this.buildingForm.controls['pisosEdificio'].value,
         communityId: this.Edificio.communityId,
       };
-      console.log(createBuilding);
 
       this.service.create(createBuilding).subscribe({
         next: (response) => {
           if (response.status === 204) {
             this.postUpdateOrCreate = true;
             setTimeout(() => {
+              this.loading = false;
               this.isCreation = false;
               this.postUpdateOrCreate = false;
               this.ngOnInit();
             }, 3000);
+          } else {
+            this.isCreation = false;
+            this.postUpdateOrCreate = false;
+            this.loading = false;
+            this.ngOnInit();
           }
         },
         error: (error) => {
+          this.loading = false;
           console.log('Error:', error);
         },
       });
