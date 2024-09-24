@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   Community,
   AllCommunity,
+  UserAdmin,
 } from '../../../../shared/models/community.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../states/auth/auth.state';
@@ -22,6 +23,7 @@ import {
   Region,
 } from '../../../../shared/models/location.model';
 import { Observable, tap } from 'rxjs';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-admin-community',
@@ -40,6 +42,7 @@ export class AdminCommunityComponent implements OnInit {
   updating = false;
   notificacion = false;
   success = false;
+  adminUsers!: UserAdmin[];
 
   ActivateModal = false;
   loadingLocation: boolean = false;
@@ -47,6 +50,7 @@ export class AdminCommunityComponent implements OnInit {
 
   constructor(
     private service: CommunityService,
+    private authservice: AuthService,
     private locationService: LocationService,
     private fb: FormBuilder,
     private store: Store<AppState>
@@ -56,6 +60,7 @@ export class AdminCommunityComponent implements OnInit {
       name: [''],
       address: [''],
       adminName: [''],
+      adminId: [''],
       creationDate: [''],
       municipality: [''],
       municipalityId: [0],
@@ -83,6 +88,17 @@ export class AdminCommunityComponent implements OnInit {
     );
   }
 
+  getAllAdmins() {
+    this.authservice.getAllUserAdmin().subscribe(
+      (response: { data: UserAdmin[] }) => {
+        this.adminUsers = response.data;
+      },
+      (error) => {
+        console.error('Error al obtener comunidades', error);
+      }
+    );
+  }
+
   closemodal() {
     this.ActivateModal = false;
     this.success = false;
@@ -92,6 +108,7 @@ export class AdminCommunityComponent implements OnInit {
   edit(id: number) {
     this.loadingLocation = true;
     this.communityForm.disable();
+    this.getAllAdmins();
     const communitySelected = this.communities.find(
       (AllCommunity) => AllCommunity.id === id
     );

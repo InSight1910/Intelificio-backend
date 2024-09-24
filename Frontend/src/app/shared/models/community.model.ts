@@ -32,3 +32,11 @@ export interface AllCommunity {
   region: string;
   regionId: string;
 }
+
+export interface UserAdmin {
+  id: number;
+  fullname: string;
+  phonenumber: string;
+  email: string;
+  rut: string;
+}

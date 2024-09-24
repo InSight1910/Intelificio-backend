@@ -89,7 +89,7 @@ export class SingupComponent implements OnInit {
         .signupMassive(formData)
         .pipe(
           tap((response) => {
-            if (response.status === 202) {
+            if (response.status === 204) {
               this.notification = true;
               setTimeout(() => {
                 this.notification = false;
@@ -118,16 +118,14 @@ export class SingupComponent implements OnInit {
           },
           Users: [],
         };
-
-        console.log('Imprime Mierda');
-        console.log(signupDTO);
-
         this.service.signup(signupDTO).subscribe({
           next: (response) => {
-            if (response.status === 500) {
+            if (response.status === 204) {
+              this.IsSuccess = true;
               this.notification = true;
               setTimeout(() => {
                 this.notification = false;
+                this.IsSuccess = false;
                 this.clean();
               }, 3000);
             }
@@ -319,6 +317,3 @@ export class SingupComponent implements OnInit {
     }
   }
 }
-
-//"Passwords must be at least 8 characters.",
-// "Passwords must have at least one non alphanumeric character."
