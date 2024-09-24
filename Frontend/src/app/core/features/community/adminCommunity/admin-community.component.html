@@ -1,4 +1,4 @@
-<div class="level">
+<div class="leve l">
   <h3 class="title is-3">Comunidades</h3>
 </div>
 @if (isLoading) {
@@ -13,7 +13,7 @@
   <table class="table is-fullwidth">
     <thead>
       <tr>
-        <th>Id</th>
+        <th>#</th>
         <th>Nombre</th>
         <th>Dirección</th>
         <th>Administrado por</th>
@@ -22,9 +22,10 @@
     </thead>
 
     <tbody>
-      @for (community of communities; track community.id) {
+      @for (community of communities; track community.id; let idx = $index , e =
+      $even) {
       <tr>
-        <td>{{ community.id }}</td>
+        <td>{{ idx + 1 }}</td>
         <td>{{ community.name }}</td>
         <td>
           {{
@@ -52,7 +53,7 @@
   <div class="modal-content">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        Editando comunidad {{ this.communityForm.value.name }}
+        Editando {{ this.communityForm.value.name }}
       </p>
       <button class="delete" aria-label="close" (click)="closemodal()"></button>
     </header>

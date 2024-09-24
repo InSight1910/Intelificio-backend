@@ -87,6 +87,7 @@ export class AdminCommunityComponent implements OnInit {
 
   edit(id: number) {
     this.loadingLocation = true;
+    this.communityForm.disable();
     const communitySelected = this.communities.find(
       (AllCommunity) => AllCommunity.id === id
     );
@@ -94,6 +95,7 @@ export class AdminCommunityComponent implements OnInit {
     if (communitySelected) {
       this.communityForm.patchValue(communitySelected);
     }
+    this.communityForm.enable();
 
     this.locationService.getRegions().subscribe((regions) => {
       this.regions = regions.data;
