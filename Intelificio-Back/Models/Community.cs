@@ -5,6 +5,7 @@ namespace Backend.Models
     public class Community : BaseEntity
     {
         public required string Name { get; set; }
+        //public required string Rut { get; set; }
         public required string Address { get; set; }
         public DateTime FoundationDate { get; set; } = DateTime.UtcNow;
         public required Municipality Municipality { get; set; }

@@ -20,6 +20,7 @@ namespace Backend.Features.Community.Queries.GetAll
         {
             var communities = await _context.Community
                 .Include(x => x.Municipality.City.Region)
+                .IgnoreQueryFilters()
                 .Select(x => new GetAllCommunitiesResponse
                 {
                     Address = x.Address,
