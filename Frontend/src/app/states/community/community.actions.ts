@@ -7,8 +7,13 @@ export const CommunityActions = createActionGroup({
     updateCommunity: props<{ community: Community }>(),
     updateSuccess: props<{ community: Community }>(),
     updateFailure: props<{ error: string[] }>(),
+
     getCommunity: props<{ id: number }>(),
     getCommunitySuccess: props<{ community: Community }>(),
     getCommunityFailed: props<{ error: string[] }>(),
+
+    createCommunity: props<{ community: Community }>(),
+    createCommunitySuccess: props<{ community: Community }>(),
+    createCommunityFailed: props<{ error: string[] }>(),
   },
 });

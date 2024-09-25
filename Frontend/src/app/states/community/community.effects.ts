@@ -11,6 +11,10 @@ import { Community } from '../../shared/models/community.model';
 
 @Injectable()
 export class CommunityEffects {
+  create$;
+  createSuccess$;
+  createFailure$;
+
   update$;
   updateSuccess$;
   updateFailure$;
@@ -121,5 +125,26 @@ export class CommunityEffects {
       },
       { dispatch: false }
     );
+
+    this.create$ = createEffect(() => {
+      ofType(CommunityActions.createCommunity),
+        mergeMap(({ community }) => {
+          return this.communityService.createCommunity(community).pipe(
+            map(() => {
+              localStorage.setItem('community', JSON.stringify(community));
+              return CommunityActions.createCommunitySuccess({ community });
+            }),
+            catchError((error: { error: { message: string }[] }) => {
+              return of(
+                CommunityActions.createCommunityFailed({
+                  error: error.error.map((x) => x.message),
+                })
+              );
+            })
+          );
+        });
+    });
+    this.createSuccess$ = createEffect(() => {}, { dispatch: false });
+    this.createFailure$ = createEffect(() => {}, { dispatch: false });
   }
 }
