@@ -16,7 +16,6 @@ import { Building } from '../../../../shared/models/building.model';
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-modal.component.html',
   styleUrl: './add-modal.component.css',
-  styleUrl: './add-modal.component.css',
 })
 export class AddModalComponent {
   @Output() addUnitEvent = new EventEmitter<boolean>();

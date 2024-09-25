@@ -41,10 +41,10 @@ export class AuthService {
     );
   }
 
-  signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
-    console.log('Servicio');
-    console.log(singupDTO);
-    return this.http.post<any>(`${this.apiUrl}/auth/signup`, singupDTO);
+  signup(signupDTO: SignupDTO): Observable<HttpResponse<any>> {
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`, signupDTO, {
+      observe: 'response',
+    });
   }
 
   signupMassive(formData: FormData) {

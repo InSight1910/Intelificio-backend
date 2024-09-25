@@ -7,6 +7,9 @@
         public required string Address { get; set; }
 
         public required string AdminName { get; set; }
+
+        public required int AdminId { get; set; }
+
         public DateTime CreationDate { get; set; }
         public string Municipality { get; set; }
 

@@ -74,6 +74,25 @@
           </div>
 
           <div class="column field is-6">
+            <label class="label" for="adminId">Administrador</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select
+                  formControlName="adminId"
+                  [ngClass]="{ 'is-skeleton': loadingLocation }"
+                >
+                  <option value="|">Seleccione un Administrador</option>
+                  @for (admin of adminUsers; track $index) {
+                  <option value="{{ admin.id }}">{{ admin.fullName }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
             <label class="label" for="address">Dirección</label>
             <div class="control">
               <input

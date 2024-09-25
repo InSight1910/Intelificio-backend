@@ -24,6 +24,7 @@ export interface AllCommunity {
   name: string;
   address: string;
   adminName: string;
+  adminId: number;
   creationDate: string;
   municipality: string;
   municipalityId: string;
@@ -35,8 +36,8 @@ export interface AllCommunity {
 
 export interface UserAdmin {
   id: number;
-  fullname: string;
-  phonenumber: string;
+  fullName: string;
+  phoneNumber: string;
   email: string;
   rut: string;
 }

@@ -4,7 +4,7 @@ import {
   AllCommunity,
   UserAdmin,
 } from '../../../../shared/models/community.model';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../states/auth/auth.state';
 import { CommunityService } from '../../../services/community/community.service';
 import { CommonModule } from '@angular/common';
@@ -60,7 +60,7 @@ export class AdminCommunityComponent implements OnInit {
       name: [''],
       address: [''],
       adminName: [''],
-      adminId: [''],
+      adminId: [0],
       creationDate: [''],
       municipality: [''],
       municipalityId: [0],
@@ -109,6 +109,7 @@ export class AdminCommunityComponent implements OnInit {
     this.loadingLocation = true;
     this.communityForm.disable();
     this.getAllAdmins();
+
     const communitySelected = this.communities.find(
       (AllCommunity) => AllCommunity.id === id
     );
@@ -116,6 +117,7 @@ export class AdminCommunityComponent implements OnInit {
     if (communitySelected) {
       this.communityForm.patchValue(communitySelected);
     }
+
     this.communityForm.enable();
 
     this.locationService.getRegions().subscribe((regions) => {
