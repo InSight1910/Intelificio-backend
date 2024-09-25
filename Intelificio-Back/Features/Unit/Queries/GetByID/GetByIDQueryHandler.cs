@@ -23,14 +23,15 @@ namespace Backend.Features.Unit.Queries.GetByID
                 .Where(x => x.ID == request.UnitId)
                 .Include(x => x.UnitType)
                 .Select(x => new GetByIDQueryResponse
-                    {
-                        UnitType = x.UnitType.Description,
-                        Number = x.Number,
-                        Building = x.Building.Name,
-                        Floor = x.Floor,
-                        Surface = x.Surface
-                    })
-                    .ToListAsync();
+                {
+                    UnitType = x.UnitType.Description,
+                    UnitTypeId = x.UnitType.ID,
+                    Number = x.Number,
+                    Building = x.Building.Name,
+                    BuildingId = x.Building.ID,
+                    Floor = x.Floor,
+                    Surface = x.Surface
+                }).FirstOrDefaultAsync();
 
             if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundGetByID);
 

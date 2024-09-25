@@ -6,7 +6,7 @@ import { catchError, of, tap } from 'rxjs';
 import {
   UpdateUnit,
   UnitType,
-  Unit
+  Unit,
 } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
@@ -44,8 +44,51 @@ export class EditModalComponent {
       surface: [''],
       user: [''],
       building: [''],
-      unitType: [''],
+      unitTypeId: [''],
     });
+  }
+
+  onClickUpdateUnit() {
+    this.isAdding = true;
+    const unit: UpdateUnit = {
+      id: +this.unitId,
+      floor: this.editForm.get('floor')?.value,
+      number: this.editForm.get('number')?.value,
+      surface: this.editForm.get('surface')?.value,
+      buildingId: this.editForm.get('building')?.value,
+      unitTypeId: this.editForm.get('unitTypeId')?.value,
+    };
+    this.unitService
+      .updateUnit(unit)
+      .pipe(
+        tap(() => {
+          this.isSuccess = true;
+          this.isAdding = false;
+          this.editForm.disable();
+          setTimeout(() => {
+            this.isSuccess = false;
+            this.editForm.reset();
+            this.editForm.enable();
+            this.floors = [];
+            this.errors = null;
+            this.isOpen = false;
+          }, 2000);
+          this.editUnitEvent.emit(true);
+        }),
+        catchError((error) => {
+          this.canAddUnit = false;
+          this.isAdding = false;
+          this.errors = error.error;
+          return of(error);
+        })
+      )
+      .subscribe();
+  }
+
+  onClickCloseModal() {
+    this.isOpen = false;
+    this.errors = null;
+    this.editForm.reset();
   }
 
   onClick() {
@@ -59,70 +102,12 @@ export class EditModalComponent {
         this.buildings = buildings.data;
         this.getUnits(+this.unitId);
       });
-    }
-
-  onClickUpdateUnit() {
-    this.isAdding = true;
-    const unit: UpdateUnit = {
-      id: +this.unitId,
-      floor: this.editForm.get('floor')?.value,
-      number: this.editForm.get('number')?.value,
-      surface: this.editForm.get('surface')?.value,
-      buildingId: this.editForm.get('building')?.value,
-      unitTypeId: this.editForm.get('unitType')?.value,
-    };
-    console.log(unit);
-    this.unitService
-      .updateUnit(unit)
-      .pipe(
-        tap(() => {
-          this.isSuccess = true;
-          this.isAdding = false;
-          setTimeout(() => {
-            this.isSuccess = false;
-            console.log('paso timeout');
-          }, 2000);
-
-          this.editForm.reset({
-            floor: '',
-            number: '',
-            surface: '',
-            user: '',
-            building: '',
-            unitType: '',
-          });
-
-          this.floors = [];
-          this.errors = null;
-
-          this.editUnitEvent.emit(true);
-        }),
-        catchError((error) => {
-          this.canAddUnit = false;
-          this.isAdding = false;
-          this.errors = error.error;
-          return of(error);
-        })
-      )
-      .subscribe();
-  }
-
-  onClickOpenModal() {
-    this.isOpen = true;
-  }
-
-  onClickCloseModal() {
-    this.isOpen = false;
-    this.errors = null;
-    this.editForm.reset();
   }
 
   onChangeBuilding() {
     const building = this.buildings.find(
-      (x) => x.id == this.editForm.get('building')?.value
+      (x) => x.id == this.editForm.controls['building'].value
     )!;
-    console.log(this.editForm.get('building')?.value);
-    console.log(this.buildings)
     this.floors = Array.from(
       { length: building.floors },
       (_, index) => index + 1
@@ -132,19 +117,13 @@ export class EditModalComponent {
   getUnits(id: number) {
     this.unitService.getById(id).subscribe((response) => {
       this.unit = response.data;
-      console.log(response.data);
-      console.log(this.unit);
-      this.editForm.patchValue({
-        id: this.unit.id,
-        floor: this.unit.floor,
-        number: this.unit.number,
-        surface: this.unit.surface,
-        user: this.unit.user,
-        building: this.unit.buildingId,
-        unitType: this.unit.unitTypeId,
-      });
-      this.onChangeBuilding()
-    }  );  
-}
-
+      this.editForm.controls['number'].setValue(this.unit.number);
+      this.editForm.controls['building'].setValue(this.unit.buildingId);
+      this.editForm.controls['unitTypeId'].setValue(this.unit.unitTypeId);
+      this.editForm.controls['floor'].setValue(this.unit.floor);
+      this.editForm.controls['surface'].setValue(this.unit.surface);
+      this.onChangeBuilding();
+    });
+    this.isOpen = true;
+  }
 }
