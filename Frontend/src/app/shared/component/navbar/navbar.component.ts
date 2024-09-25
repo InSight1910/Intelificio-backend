@@ -31,7 +31,6 @@ export class NavbarComponent {
     });
 
     this.user = this.store.select(selectUser);
-    console.log(this.user);
 
     this.store.select(selectCommunity).subscribe((community) => {
       if (community) {

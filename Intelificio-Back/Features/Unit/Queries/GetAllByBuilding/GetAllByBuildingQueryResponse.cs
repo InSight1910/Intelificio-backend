@@ -1,9 +1,8 @@
-﻿using Backend.Models;
-
-namespace Backend.Features.Unit.Queries.GetAllByBuilding
+﻿namespace Backend.Features.Unit.Queries.GetAllByBuilding
 {
     public class GetAllByBuildingQueryResponse
     {
+        public required int Id { get; set; }
         public required string UnitType { get; set; }
         public required string Number { get; set; }
         public required string Building { get; set; }

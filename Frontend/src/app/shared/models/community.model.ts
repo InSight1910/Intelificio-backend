@@ -17,5 +17,27 @@ export interface UsersCommunity {
   role: string;
   phoneNumber: string;
   unitCount: number;
-  
+}
+
+export interface AllCommunity {
+  id: number;
+  name: string;
+  address: string;
+  adminName: string;
+  adminId: number;
+  creationDate: string;
+  municipality: string;
+  municipalityId: string;
+  city: string;
+  cityId?: string;
+  region: string;
+  regionId: string;
+}
+
+export interface UserAdmin {
+  id: number;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  rut: string;
 }

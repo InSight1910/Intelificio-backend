@@ -44,6 +44,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<BuildingProfile>();
     cfg.AddProfile<UserProfile>();
     cfg.AddProfile<LocationProfile>();
+    cfg.AddProfile<UnitProfile>();
 });
 
 builder.Services.AddIdentity<User, Role>(cfg =>

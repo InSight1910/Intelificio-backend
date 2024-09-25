@@ -1,0 +1,212 @@
+<div class="leve l">
+  <h3 class="title is-3">Comunidades</h3>
+</div>
+@if (isLoading) {
+<div class="skeleton-lines">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+} @else {
+<div class="table-container">
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Administrado por</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (community of communities; track community.id; let idx = $index , e =
+      $even) {
+      <tr>
+        <td>{{ idx + 1 }}</td>
+        <td>{{ community.name }}</td>
+        <td>
+          {{
+            community.address +
+              ", " +
+              community.municipality +
+              ", " +
+              community.city
+          }}
+        </td>
+        <td>{{ community.adminName }}</td>
+        <td>
+          <button class="button is-warning" (click)="edit(community.id)">
+            Editar
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': ActivateModal }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        Editando {{ this.communityForm.value.name }}
+      </p>
+      <button class="delete" aria-label="close" (click)="closemodal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <form class="box" [formGroup]="communityForm">
+        <div class="columns">
+          <div class="column field is-6">
+            <label class="label" for="name">Nombre</label>
+            <div class="control">
+              <input
+                class="input"
+                id="name"
+                type="text"
+                formControlName="name"
+                [ngClass]="{ 'is-skeleton': loadingLocation }"
+              />
+            </div>
+          </div>
+
+          <div class="column field is-6">
+            <label class="label" for="adminId">Administrador</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select
+                  formControlName="adminId"
+                  [ngClass]="{ 'is-skeleton': loadingLocation }"
+                >
+                  <option value="|">Seleccione un Administrador</option>
+                  @for (admin of adminUsers; track $index) {
+                  <option value="{{ admin.id }}">{{ admin.fullName }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <label class="label" for="address">Dirección</label>
+            <div class="control">
+              <input
+                class="input"
+                id="address"
+                type="text"
+                formControlName="address"
+                [ngClass]="{ 'is-skeleton': loadingLocation }"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <div class="field">
+              <label class="label" for="regionId">Región</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    (change)="onChangeRegion($event)"
+                    formControlName="regionId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="|">Seleccione Región</option>
+                    @for (region of regions; track $index) {
+                    <option value="{{ region.id }}">{{ region.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <div class="field">
+              <label class="label" for="cityId">Ciudad</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    (change)="onChangeCity($event)"
+                    formControlName="cityId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="|">Seleccione Ciudad</option>
+                    @for (city of cities; track $index) {
+                    <option value="{{ city.id }}">{{ city.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <div class="field">
+              <label class="label" for="municipalityId">Municipalidad</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    formControlName="municipalityId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="|">Seleccione Comuna</option>
+                    @for (municipality of municipalities; track $index) {
+                    <option value="{{ municipality.id }}">
+                      {{ municipality.name }}
+                    </option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            @if (notificacion) { @if(success){
+            <div class="notification is-success">
+              <button class="delete" (click)="closeNotification()"></button>
+              Comunidad actualizada.
+            </div>
+            } @else {
+            <div class="notification is-danger">
+              <button class="delete" (click)="closeNotification()"></button>
+              No fue posible actualizar la comunidad.
+            </div>
+            } }
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-danger"
+          [ngClass]="{ 'is-loading': updating }"
+          [disabled]="!communityForm.valid"
+          (click)="onClickSave()"
+        >
+          Confirmar
+        </button>
+        <button class="button" (click)="closemodal()" [disabled]="updating">
+          Salir
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+}

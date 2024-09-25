@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs';
 import { singUp } from '../../../shared/models/singup.model';
 import { Role } from '../../../shared/models/role.model';
 import { SignupDTO } from '../../../shared/models/signUpCommand.model';
+import { UserAdmin } from '../../../shared/models/community.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,10 +41,10 @@ export class AuthService {
     );
   }
 
-  signup(singupDTO: SignupDTO): Observable<HttpResponse<any>> {
-    console.log('Servicio');
-    console.log(singupDTO);
-    return this.http.post<any>(`${this.apiUrl}/auth/signup`, singupDTO);
+  signup(signupDTO: SignupDTO): Observable<HttpResponse<any>> {
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`, signupDTO, {
+      observe: 'response',
+    });
   }
 
   signupMassive(formData: FormData) {
@@ -54,6 +55,12 @@ export class AuthService {
 
   getAllRole(): Observable<{ data: Role[] }> {
     return this.http.get<{ data: Role[] }>(`${this.apiUrl}/auth/roles`);
+  }
+
+  getAllUserAdmin(): Observable<{ data: UserAdmin[] }> {
+    return this.http.get<{ data: UserAdmin[] }>(
+      `${this.apiUrl}/auth/User/admin`
+    );
   }
 
   forgotPassword(email: string) {

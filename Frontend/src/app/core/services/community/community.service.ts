@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import {
   Community,
   UsersCommunity,
+  AllCommunity,
 } from '../../../shared/models/community.model';
 import { map } from 'rxjs';
 
@@ -22,14 +24,22 @@ export class CommunityService {
     return result;
   }
 
-  updateCommunity(action: Community) {
-    return this.http.put(`${this.baseUrl}/community/${action.id}`, action);
+  updateCommunity(action: Community): Observable<HttpResponse<any>> {
+    return this.http.put<any>(
+      `${this.baseUrl}/community/${action.id}`,
+      action,
+      { observe: 'response' }
+    );
   }
 
   getCommunity(id: number) {
     return this.http.get<{ data: Community }>(
       `${this.baseUrl}/community/${id}`
     );
+  }
+
+  getAllCommunity() {
+    return this.http.get<{ data: AllCommunity[] }>(`${this.baseUrl}/community`);
   }
 
   getUsersByCommunity(communityId: number) {

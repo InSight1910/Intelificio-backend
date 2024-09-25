@@ -40,7 +40,8 @@ namespace Backend.Features.Unit.Commands.Create
 
             newUnit.UnitType = checkUnitType;
 
-            await _context.Units.AddAsync(newUnit);
+            _ = await _context.Units.AddAsync(newUnit);
+            _ = await _context.SaveChangesAsync();
 
             return Result.Success();
 
