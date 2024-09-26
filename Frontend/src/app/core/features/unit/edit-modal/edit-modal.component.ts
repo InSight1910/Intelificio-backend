@@ -7,7 +7,6 @@ import {
   UpdateUnit,
   UnitType,
   Unit,
-  Unit,
 } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
@@ -54,6 +53,7 @@ export class EditModalComponent {
   }
 
   onClick() {
+    this.isOpen = true;
     this.unitService.getTypes().subscribe((types) => {
       this.types = types.data;
     });
@@ -62,6 +62,7 @@ export class EditModalComponent {
         .getbyCommunityId(community?.id!)
         .subscribe((buildings) => {
           this.buildings = buildings.data;
+          console.log(this.unitId);
           this.getUnits(+this.unitId);
         });
     });
@@ -110,19 +111,6 @@ export class EditModalComponent {
     this.editForm.reset();
   }
 
-  onClick() {
-    this.unitService.getTypes().subscribe((types) => {
-      this.types = types.data;
-    });
-    const communityId = localStorage.getItem('communityId')!;
-    this.buildingService
-      .getbyCommunityId(+communityId)
-      .subscribe((buildings) => {
-        this.buildings = buildings.data;
-        this.getUnits(+this.unitId);
-      });
-  }
-
   onChangeBuilding() {
     const building = this.buildings.find(
       (x) => x.id == this.editForm.controls['building'].value
@@ -135,9 +123,10 @@ export class EditModalComponent {
   }
 
   getUnits(id: number) {
+    console.log(id);
     this.unitService.getById(id).subscribe((response) => {
       this.unit = response.data;
-      console.log(id);
+      console.log(this.unit);
 
       this.editForm.patchValue({
         id: this.unit.id,

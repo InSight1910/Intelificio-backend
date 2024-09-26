@@ -16,16 +16,11 @@ import { EditModalComponent } from './edit-modal/edit-modal.component';
 @Component({
   selector: 'app-unit',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    AddModalComponent,
-    EditModalComponent,
-  ],
+  imports: [CommonModule, AddModalComponent, EditModalComponent],
   templateUrl: './unit.component.html',
   styleUrls: ['./unit.component.css'],
 })
-export class UnitComponent implements OnChanges {
+export class UnitComponent {
   @Input() buildingId: string = '0';
   @Input() buildingName: string = '';
   units: Unit[] = [];
@@ -41,22 +36,21 @@ export class UnitComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.buildingId != '0') {
-      console.log(this.buildingId);
       this.loadUnit(+this.buildingId);
     }
   }
 
   onClickEdit(unitId: number) {
     this.isUpdating[unitId] = true;
-    this.unitService;
   }
 
   loadUnit(buildingId: number) {
     this.isLoading = true;
+
     this.unitService.getUnitsByBuilding(buildingId).subscribe((data) => {
+      console.log(data);
       this.isLoading = false;
       this.units = data.data;
-      console.log(this.units);
     });
   }
 

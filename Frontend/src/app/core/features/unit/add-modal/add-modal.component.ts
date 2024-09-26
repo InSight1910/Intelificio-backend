@@ -55,7 +55,6 @@ export class AddModalComponent {
         .getbyCommunityId(community?.id!)
         .subscribe((buildings) => {
           this.buildings = buildings.data;
-          console.log(this.buildings);
         });
     });
   }

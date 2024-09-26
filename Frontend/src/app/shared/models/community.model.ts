@@ -3,6 +3,7 @@ export interface Community {
   address?: string;
   name?: string;
   adminName?: string;
+  adminId?: number;
   rut?: string;
   buildingCount?: number;
   unitCount?: number;

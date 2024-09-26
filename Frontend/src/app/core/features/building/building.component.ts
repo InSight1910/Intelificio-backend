@@ -69,7 +69,6 @@ export class BuildingComponent implements OnInit {
       .select(selectCommunity)
       .pipe(
         tap((c) => {
-          console.log('Community:', c);
           this.community = c;
           this.service.getbyCommunityId(c?.id!).subscribe(
             (response: { data: Building[] }) => {
