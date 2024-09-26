@@ -3,20 +3,20 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { CommunityState } from './community.state';
 import { selectAuthState } from '../auth/auth.selectors';
 
-export const selectNavbarState =
+export const selectCommunityState =
   createFeatureSelector<CommunityState>('community');
 
 export const selectCommunity = createSelector(
-  selectNavbarState,
+  selectCommunityState,
   (state) => state.community
 );
 
 export const isLoading = createSelector(
-  selectNavbarState,
+  selectCommunityState,
   (state) => state.isLoading
 );
 
 export const selectError = createSelector(
-  selectNavbarState,
+  selectCommunityState,
   (state) => state.error
 );

@@ -177,6 +177,7 @@ export class AdminCommunityComponent implements OnInit {
       municipalityId: this.communityForm.value.municipalityId,
       cityId: this.communityForm.value.cityId,
       regionId: this.communityForm.value.regionId,
+      adminId: this.communityForm.value.adminId,
     };
     this.updating = true;
     this.service.updateCommunity(updateCommunity).subscribe({

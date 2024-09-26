@@ -54,7 +54,6 @@ export class LoginComponent {
   }
   onInputChange(controlName: string): void {
     const control = this.loginForm.get(controlName);
-    console.log(control);
     if (control) {
       control.markAsUntouched();
     }

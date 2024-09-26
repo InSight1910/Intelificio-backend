@@ -10,6 +10,9 @@ import {
 } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../states/intelificio.state';
+import { selectCommunity } from '../../../../states/community/community.selectors';
 
 @Component({
   selector: 'app-edit-modal',
@@ -35,7 +38,8 @@ export class EditModalComponent {
   constructor(
     private unitService: UnitService,
     private fb: FormBuilder,
-    private buildingService: BuildingService
+    private buildingService: BuildingService,
+    private store: Store<AppState>
   ) {
     this.editForm = this.fb.group({
       id: [''],
@@ -44,7 +48,23 @@ export class EditModalComponent {
       surface: [''],
       user: [''],
       building: [''],
-      unitTypeId: [''],
+      unitType: [''],
+    });
+  }
+
+  onClick() {
+    this.isOpen = true;
+    this.unitService.getTypes().subscribe((types) => {
+      this.types = types.data;
+    });
+    this.store.select(selectCommunity).subscribe((community) => {
+      this.buildingService
+        .getbyCommunityId(community?.id!)
+        .subscribe((buildings) => {
+          this.buildings = buildings.data;
+          console.log(this.unitId);
+          this.getUnits(+this.unitId);
+        });
     });
   }
 
@@ -91,23 +111,11 @@ export class EditModalComponent {
     this.editForm.reset();
   }
 
-  onClick() {
-    this.unitService.getTypes().subscribe((types) => {
-      this.types = types.data;
-    });
-    const communityId = localStorage.getItem('communityId')!;
-    this.buildingService
-      .getbyCommunityId(+communityId)
-      .subscribe((buildings) => {
-        this.buildings = buildings.data;
-        this.getUnits(+this.unitId);
-      });
-  }
-
   onChangeBuilding() {
     const building = this.buildings.find(
       (x) => x.id == this.editForm.controls['building'].value
     )!;
+    console.log(this.editForm.get('building')?.value);
     this.floors = Array.from(
       { length: building.floors },
       (_, index) => index + 1
@@ -115,15 +123,21 @@ export class EditModalComponent {
   }
 
   getUnits(id: number) {
+    console.log(id);
     this.unitService.getById(id).subscribe((response) => {
       this.unit = response.data;
-      this.editForm.controls['number'].setValue(this.unit.number);
-      this.editForm.controls['building'].setValue(this.unit.buildingId);
-      this.editForm.controls['unitTypeId'].setValue(this.unit.unitTypeId);
-      this.editForm.controls['floor'].setValue(this.unit.floor);
-      this.editForm.controls['surface'].setValue(this.unit.surface);
+      console.log(this.unit);
+
+      this.editForm.patchValue({
+        id: this.unit.id,
+        floor: this.unit.floor,
+        number: this.unit.number,
+        surface: this.unit.surface,
+        user: this.unit.user,
+        building: this.unit.buildingId,
+        unitType: this.unit.unitTypeId,
+      });
       this.onChangeBuilding();
     });
-    this.isOpen = true;
   }
 }
