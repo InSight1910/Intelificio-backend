@@ -11,5 +11,6 @@ namespace Backend.Features.Community.Commands.Update
         public string? Name { get; set; }
         public string? Address { get; set; }
         public int? MunicipalityId { get; set; }
+        public int AdminId { get; set; }
     }
 }

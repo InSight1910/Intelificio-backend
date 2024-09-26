@@ -84,6 +84,9 @@ namespace Backend.Features.Community.Common
             Code = "Community.AddUser.UserAlreadyInCommunity",
             Message = "El usuario ya se encuentra asignado a la comunidad indicada."
         };
+        internal static Error AdminNotAdminRole;
+
+        public static Error AdminNotFoundUpdate { get; internal set; }
 
         public static Error HasAssignedBuildingsOnDelete(int buildingNumber) => new Error
         {

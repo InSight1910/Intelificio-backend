@@ -2,7 +2,6 @@
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Backend.Features.Community.Queries.GetAll
 {
@@ -19,11 +18,12 @@ namespace Backend.Features.Community.Queries.GetAll
 
         public async Task<Result> Handle(GetAllCommunitiesQuery request, CancellationToken cancellationToken)
         {
+            var adminRoleId = _context.Roles.FirstOrDefault(x => x.Name == "Administrador")?.Id;
             var communities = await _context.Community
                 .Include(x => x.Municipality.City.Region)
                 .IgnoreQueryFilters()
                 .Select(x => new GetAllCommunitiesResponse
-                {   
+                {
                     Id = x.ID,
                     Address = x.Address,
                     CreationDate = x.FoundationDate,
@@ -34,8 +34,14 @@ namespace Backend.Features.Community.Queries.GetAll
                     CityId = x.Municipality.City.ID,
                     Region = x.Municipality.City.Region.Name,
                     RegionId = x.Municipality.City.Region.ID,
-                    AdminName = x.Users.Where(user => user.Role.Name == "Administrador" && user.Communities.Any(c => c.ID == user.Id)).Select(u => string.Format("{0} {1}", u.FirstName, u.LastName)).FirstOrDefault() ?? "Sin Administrador",
-                    AdminId = x.Users.Where(user => user.Role.Name == "Administrador" && user.Communities.Any(c => c.ID == user.Id)).Select(u => u.Id).FirstOrDefault()
+                    AdminName = x.Users
+                                    .Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == adminRoleId))
+                                    .Select(u => u.ToString())
+                                    .FirstOrDefault() ?? "Sin Administrador",
+                    AdminId = x.Users
+                                    .Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == adminRoleId))
+                                    .Select(u => u.Id)
+                                    .FirstOrDefault()
                 })
                 .ToListAsync();
             return Result.WithResponse(new ResponseData
