@@ -1,6 +1,7 @@
 ﻿using Backend.Common.Response;
 using Backend.Models;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Community.Queries.GetUsersByCommunity
@@ -8,29 +9,28 @@ namespace Backend.Features.Community.Queries.GetUsersByCommunity
     public class GetUsersByCommunityQueryHandler : IRequestHandler<GetUsersByCommunityQuery, Result>
     {
         private readonly IntelificioDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public GetUsersByCommunityQueryHandler(IntelificioDbContext context)
+        public GetUsersByCommunityQueryHandler(IntelificioDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<Result> Handle(GetUsersByCommunityQuery request, CancellationToken cancellationToken)
         {
-            var community = await _context.Community.Include(c => c.Users).ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.ID == request.CommunityId);
-            if (community == null)
-            {
-                return Result.Failure(null);
-            }
-
-            var users = community.Users.Select(u => new GetUsersByCommunityQueryResponse
-            {
-                Id = u.Id,
-                Name = string.Format("{0} {1}", u.FirstName, u.LastName),
-                Email = u.Email!,
-                PhoneNumber = u.PhoneNumber,
-                UnitCount = _context.Units.Count(x => x.ID == u.Id),
-                Role = u.Role.Name!
-            }).ToList();
+            var users = await _context.Community
+                .Where(c => c.ID == request.CommunityId)
+                .SelectMany(c => c.Users)
+                .Select(user => new GetUsersByCommunityQueryResponse
+                {
+                    Id = user.Id,
+                    Name = string.Format("{0} {1}", user.FirstName, user.LastName),
+                    Email = user.Email!,
+                    PhoneNumber = user.PhoneNumber!,
+                    Role = _context.Roles.Where(r => r.Id == _context.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId).FirstOrDefault()).Select(r => r.Name).FirstOrDefault()!,
+                    UnitCount = user.Units.Where(u => u.Building.Community.ID == request.CommunityId).Count()
+                }).ToListAsync();
 
             return Result.WithResponse(new ResponseData
             {

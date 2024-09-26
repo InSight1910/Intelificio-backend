@@ -22,6 +22,7 @@ namespace Backend.Features.Community.Commands.Update
 
         public async Task<Result> Handle(UpdateCommunityCommand request, CancellationToken cancellationToken)
         {
+            Municipality? municipality = null;
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.Id);
             if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundUpdate);
 
@@ -29,14 +30,23 @@ namespace Backend.Features.Community.Commands.Update
 
             if (request.MunicipalityId != null)
             {
-                var municipality = await _context.Municipality.FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
+                municipality = await _context.Municipality.Include(x => x.City).ThenInclude(x => x.Region).FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
                 if (municipality is null) return Result.Failure(CommunityErrors.MunicipalityNotFoundUpdate);
                 community.Municipality = municipality;
             }
 
             _ = _context.Community.Update(community);
-            _ = await _context.SaveChangesAsync();
-            return Result.Success();
+            var result = await _context.SaveChangesAsync();
+            var response = _mapper.Map<UpdateCommunityCommandResponse>(community);
+            if (municipality is not null)
+            {
+                response.RegionId = municipality!.City.Region.ID;
+                response.CityId = municipality.City.ID;
+                response.MunicipalityId = municipality.ID;
+            }
+
+            return Result.WithResponse(
+                new ResponseData { Data = response });
         }
     }
 }

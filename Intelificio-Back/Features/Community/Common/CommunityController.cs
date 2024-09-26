@@ -91,7 +91,7 @@ namespace Backend.Features.Community.Common
         {
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
-                onSuccess: _ => Created(),
+                onSuccess: result => Ok(result),
                 onFailure: (result) => BadRequest(result)
                 );
         }
@@ -110,7 +110,7 @@ namespace Backend.Features.Community.Common
             command.Id = id;
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
-                onSuccess: _ => Ok(),
+                onSuccess: response => Ok(response),
                 onFailure: BadRequest
                 );
         }

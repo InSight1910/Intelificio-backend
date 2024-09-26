@@ -1,6 +1,8 @@
 ﻿using Backend.Features.Community.Queries.GetAllByUser;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
+using IntelificioBackTest.Mocks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -12,12 +14,16 @@ namespace IntelificioBackTest.Features.Community.Queries
         private readonly IntelificioDbContext _context;
         private readonly Mock<ILogger<GetAllByUserQueryHandler>> _logger;
         private readonly GetAllByUserQueryHandler _handler;
+        private readonly Mock<UserManager<User>> _userManager;
+        private readonly Mock<RoleManager<Role>> _roleManager;
 
         public GetAllByUserCommunityQueryTest()
         {
             _context = DbContextFixture.GetDbContext();
             _logger = new Mock<ILogger<GetAllByUserQueryHandler>>();
-            _handler = new GetAllByUserQueryHandler(_context, _logger.Object);
+            _userManager = UserManagerMock.CreateUserManager();
+            _roleManager = new Mock<RoleManager<Role>>();
+            _handler = new GetAllByUserQueryHandler(_userManager.Object, _roleManager.Object, _context, _logger.Object);
         }
 
         public void Dispose()

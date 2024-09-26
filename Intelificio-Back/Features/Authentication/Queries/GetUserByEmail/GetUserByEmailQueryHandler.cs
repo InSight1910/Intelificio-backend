@@ -2,34 +2,37 @@
 using Backend.Features.Authentication.Common;
 using Backend.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Features.Authentication.Queries.GetUserByEmail
 {
     public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, Result>
     {
-        private readonly IntelificioDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public GetUserByEmailQueryHandler(IntelificioDbContext context)
+        public GetUserByEmailQueryHandler(UserManager<User> userManager)
         {
-            _context = context;
+            _userManager = userManager;
         }
 
         public async Task<Result> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Include(x => x.Role).Where(x => x.Email == request.Email).Select(x => new GetUserByEmailQueryResponse
-            {
-                Id = x.Id,
-                Name = string.Format("{0} {1}", x.FirstName, x.LastName),
-                PhoneNumber = x.PhoneNumber,
-                Role = x.Role.Name!,
-            }).FirstOrDefaultAsync();
-
+            var user = await _userManager.FindByNameAsync(request.Email);
             if (user is null) return Result.Failure(AuthenticationErrors.UserNotFoundGetByEmail);
+            var role = await _userManager.GetRolesAsync(user);
+            var response = new GetUserByEmailQueryResponse
+            {
+                Id = user.Id,
+                Name = string.Format("{0} {1}", user.FirstName, user.LastName),
+                PhoneNumber = user.PhoneNumber,
+                Role = role.FirstOrDefault("Sin Rol"),
+            };
+
+
 
             return Result.WithResponse(new ResponseData
             {
-                Data = user
+                Data = response
             });
         }
     }

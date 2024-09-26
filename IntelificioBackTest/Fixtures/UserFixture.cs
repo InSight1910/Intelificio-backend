@@ -11,13 +11,8 @@ namespace IntelificioBackTest.Fixtures
                 Email = "test@test.com",
                 FirstName = "Test",
                 LastName = "LastTest",
-                Password = "Test",
                 PhoneNumber = "123",
                 Rut = "123",
-                Role = new Role
-                {
-                    Name = "Role"
-                },
                 UserName = "test@test.com",
                 EmailConfirmed = true,
             };

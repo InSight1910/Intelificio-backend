@@ -7,6 +7,7 @@ import {
   UpdateUnit,
   UnitType,
   Unit,
+  Unit,
 } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
@@ -74,32 +75,23 @@ export class EditModalComponent {
       number: this.editForm.get('number')?.value,
       surface: this.editForm.get('surface')?.value,
       buildingId: this.editForm.get('building')?.value,
-      unitTypeId: this.editForm.get('unitType')?.value,
+      unitTypeId: this.editForm.get('unitTypeId')?.value,
     };
-    console.log(unit);
     this.unitService
       .updateUnit(unit)
       .pipe(
         tap(() => {
           this.isSuccess = true;
           this.isAdding = false;
+          this.editForm.disable();
           setTimeout(() => {
             this.isSuccess = false;
-            console.log('paso timeout');
+            this.editForm.reset();
+            this.editForm.enable();
+            this.floors = [];
+            this.errors = null;
+            this.isOpen = false;
           }, 2000);
-
-          this.editForm.reset({
-            floor: '',
-            number: '',
-            surface: '',
-            user: '',
-            building: '',
-            unitType: '',
-          });
-
-          this.floors = [];
-          this.errors = null;
-
           this.editUnitEvent.emit(true);
         }),
         catchError((error) => {
@@ -112,19 +104,28 @@ export class EditModalComponent {
       .subscribe();
   }
 
-  onClickOpenModal() {
-    this.isOpen = true;
-  }
-
   onClickCloseModal() {
     this.isOpen = false;
     this.errors = null;
     this.editForm.reset();
   }
 
+  onClick() {
+    this.unitService.getTypes().subscribe((types) => {
+      this.types = types.data;
+    });
+    const communityId = localStorage.getItem('communityId')!;
+    this.buildingService
+      .getbyCommunityId(+communityId)
+      .subscribe((buildings) => {
+        this.buildings = buildings.data;
+        this.getUnits(+this.unitId);
+      });
+  }
+
   onChangeBuilding() {
     const building = this.buildings.find(
-      (x) => x.id == this.editForm.get('building')?.value
+      (x) => x.id == this.editForm.controls['building'].value
     )!;
     console.log(this.editForm.get('building')?.value);
     this.floors = Array.from(
