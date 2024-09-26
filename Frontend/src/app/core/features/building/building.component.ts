@@ -16,11 +16,12 @@ import {
 } from '../../../states/community/community.selectors';
 import { Community } from '../../../shared/models/community.model';
 import { tap } from 'rxjs';
+import { UnitComponent } from '../unit/unit.component';
 
 @Component({
   selector: 'app-building',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, UnitComponent],
   templateUrl: './building.component.html',
   styleUrl: './building.component.css',
 })
@@ -49,6 +50,8 @@ export class BuildingComponent implements OnInit {
   createdMessage: string = 'Edificio creado.';
   updatedMessage: string = 'Edificio actualizado.';
   community!: Community | null;
+  errors: any;
+  canSend: boolean = true;
 
   constructor(
     private service: BuildingService,
@@ -229,7 +232,9 @@ export class BuildingComponent implements OnInit {
         },
         error: (error) => {
           this.loading = false;
-          console.log('Error:', error);
+          this.errors = error.error;
+          this.canSend = false;
+          console.log('Error:', error.error);
         },
       });
     }
@@ -281,6 +286,8 @@ export class BuildingComponent implements OnInit {
   }
 
   onInputChange(controlName: string): void {
+    this.canSend = true;
+    this.errors = null;
     const control = this.buildingForm.get(controlName);
     if (control) {
       control.markAsUntouched();

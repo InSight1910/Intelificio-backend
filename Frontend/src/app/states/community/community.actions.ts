@@ -1,5 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Community } from '../../shared/models/community.model';
+import {
+  Community,
+  CreateCommunity,
+} from '../../shared/models/community.model';
 
 export const CommunityActions = createActionGroup({
   source: '[Community]',
@@ -12,7 +15,7 @@ export const CommunityActions = createActionGroup({
     getCommunitySuccess: props<{ community: Community }>(),
     getCommunityFailed: props<{ error: string[] }>(),
 
-    createCommunity: props<{ community: Community }>(),
+    createCommunity: props<{ community: CreateCommunity }>(),
     createCommunitySuccess: props<{ community: Community }>(),
     createCommunityFailed: props<{ error: string[] }>(),
   },

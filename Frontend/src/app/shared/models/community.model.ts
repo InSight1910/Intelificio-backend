@@ -3,6 +3,7 @@ export interface Community {
   address?: string;
   name?: string;
   adminName?: string;
+  rut?: string;
   buildingCount?: number;
   unitCount?: number;
   municipalityId?: number;
@@ -40,4 +41,11 @@ export interface UserAdmin {
   phoneNumber: string;
   email: string;
   rut: string;
+}
+
+export interface CreateCommunity {
+  name: string;
+  rut: string;
+  address: string;
+  municipalityId: number;
 }

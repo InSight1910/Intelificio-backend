@@ -6,10 +6,13 @@ import { catchError, of, tap } from 'rxjs';
 import {
   UpdateUnit,
   UnitType,
-  Unit
+  Unit,
 } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../states/intelificio.state';
+import { selectCommunity } from '../../../../states/community/community.selectors';
 
 @Component({
   selector: 'app-edit-modal',
@@ -35,7 +38,8 @@ export class EditModalComponent {
   constructor(
     private unitService: UnitService,
     private fb: FormBuilder,
-    private buildingService: BuildingService
+    private buildingService: BuildingService,
+    private store: Store<AppState>
   ) {
     this.editForm = this.fb.group({
       id: [''],
@@ -52,14 +56,15 @@ export class EditModalComponent {
     this.unitService.getTypes().subscribe((types) => {
       this.types = types.data;
     });
-    const communityId = localStorage.getItem('communityId')!;
-    this.buildingService
-      .getbyCommunityId(+communityId)
-      .subscribe((buildings) => {
-        this.buildings = buildings.data;
-        this.getUnits(+this.unitId);
-      });
-    }
+    this.store.select(selectCommunity).subscribe((community) => {
+      this.buildingService
+        .getbyCommunityId(community?.id!)
+        .subscribe((buildings) => {
+          this.buildings = buildings.data;
+          this.getUnits(+this.unitId);
+        });
+    });
+  }
 
   onClickUpdateUnit() {
     this.isAdding = true;
@@ -122,7 +127,6 @@ export class EditModalComponent {
       (x) => x.id == this.editForm.get('building')?.value
     )!;
     console.log(this.editForm.get('building')?.value);
-    console.log(this.buildings)
     this.floors = Array.from(
       { length: building.floors },
       (_, index) => index + 1
@@ -132,8 +136,8 @@ export class EditModalComponent {
   getUnits(id: number) {
     this.unitService.getById(id).subscribe((response) => {
       this.unit = response.data;
-      console.log(response.data);
-      console.log(this.unit);
+      console.log(id);
+
       this.editForm.patchValue({
         id: this.unit.id,
         floor: this.unit.floor,
@@ -143,8 +147,7 @@ export class EditModalComponent {
         building: this.unit.buildingId,
         unitType: this.unit.unitTypeId,
       });
-      this.onChangeBuilding()
-    }  );  
-}
-
+      this.onChangeBuilding();
+    });
+  }
 }
