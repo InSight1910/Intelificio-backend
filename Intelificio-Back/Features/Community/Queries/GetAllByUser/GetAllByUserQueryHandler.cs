@@ -29,29 +29,30 @@ namespace Backend.Features.Community.Queries.GetAllByUser
             if (!checkUser) return Result.Failure(CommunityErrors.UserNotFound);
             try
             {
-                var adminUsers = await _userManager.GetUsersInRoleAsync("Administrador");
-                var adminUserIds = adminUsers.Select(u => u.Id).ToList();
-                var adminUsersWithCommunities = await _context.Users
-                                                    .Where(u => adminUserIds.Contains(u.Id))
-                                                    .Include(u => u.Communities)             // Include their communities
-                                                    .ToListAsync();
-
-                var communities = _context.Community
-                                                .Where(x => x.Users.Any(u => u.Id == request.UserId))
-                                                .AsEnumerable()
+                var adminRoleId = await _context.Roles
+                    .Where(r => r.Name == "Administrador")
+                    .Select(r => r.Id)
+                    .FirstOrDefaultAsync();
+                var communities = await _context.Users
+                                                .Where(x => x.Id == request.UserId)
+                                                .Include(x => x.Communities)
+                                                .ThenInclude(x => x.Buildings)
+                                                .ThenInclude(x => x.Units)
+                                                .SelectMany(x => x.Communities)
                                                 .Select(x => new GetAllByUserResponse
                                                 {
                                                     Id = x.ID,
                                                     Name = x.Name,
                                                     Address = x.Address,
-                                                    BuildingCount = x.Buildings.Count(),
-                                                    UnitCount = x.Buildings.SelectMany(b => b.Units).Count(),
-                                                    AdminName = adminUsersWithCommunities
-                                                                    .Where(u => u.Communities.Any(c => c.ID == x.ID))
-                                                                    .Select(u => $"{u.FirstName} {u.LastName}")
-                                                                    .FirstOrDefault() ?? "Sin Administrador"
-                                                })
-                                                .ToList();
+                                                    BuildingCount = x.Buildings.Count,
+                                                    UnitCount = x.Buildings.SelectMany(x => x.Units).Count(),
+                                                    AdminName = x.Users
+                                                                         .Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == adminRoleId))
+                                                                         .Select(u => u.ToString())
+                                                                         .FirstOrDefault() ?? "Sin Administrador"
+                                                }).ToListAsync();
+
+
                 return Result.WithResponse(new ResponseData()
                 {
                     Data = communities

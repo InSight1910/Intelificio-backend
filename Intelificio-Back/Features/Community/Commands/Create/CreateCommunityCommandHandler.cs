@@ -35,10 +35,11 @@ namespace Backend.Features.Community.Commands.Create
             var community = _mapper.Map<Models.Community>(request);
             community.Municipality = municipality;
 
-            _ = await _context.Community.AddAsync(community);
-            _ = await _context.SaveChangesAsync();
+            var result = await _context.Community.AddAsync(community, cancellationToken);
+            var id = await _context.SaveChangesAsync();
+            var response = _mapper.Map<CreateCommunityCommandResponse>(result.Entity);
 
-            return Result.Success();
+            return Result.WithResponse(new ResponseData { Data = response });
         }
     }
 }

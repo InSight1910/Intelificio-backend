@@ -41,6 +41,9 @@ namespace Backend.Models.Extensions
                 }
                 if (!await context.Users.AnyAsync())
                 {
+                    var adminRole = await roleManager.FindByNameAsync("Administrador");
+                    var userRole = await roleManager.FindByNameAsync("Propietario");
+
                     var admin = new User
                     {
                         Email = "admin@outlook.com",
@@ -48,7 +51,8 @@ namespace Backend.Models.Extensions
                         FirstName = "Admin",
                         LastName = "Admin",
                         PhoneNumber = "1234567890",
-                        Rut = "123456789"
+                        Rut = "123456789",
+                        //Role = adminRole
                     };
                     var user = new User
                     {
@@ -57,7 +61,8 @@ namespace Backend.Models.Extensions
                         FirstName = "User",
                         LastName = "User",
                         PhoneNumber = "1234567890",
-                        Rut = "123456789"
+                        Rut = "123456789",
+                        //Role = userRole
                     };
                     _ = await userManager.CreateAsync(user, "User.1234");
                     _ = await userManager.CreateAsync(admin, "Admin.123");

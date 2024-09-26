@@ -19,34 +19,22 @@ namespace Backend.Features.Community.Queries.GetUsersByCommunity
 
         public async Task<Result> Handle(GetUsersByCommunityQuery request, CancellationToken cancellationToken)
         {
-            var community = await _context.Community.Include(x => x.Users).FirstOrDefaultAsync(x => x.ID == request.CommunityId);
-            if (community == null)
-            {
-                return Result.Failure(null);
-            }
-
-            var usersTasks = new List<GetUsersByCommunityQueryResponse>();
-
-            foreach (var u in community.Users)
-            {
-                var unitCount = await _context.Units.CountAsync(x => x.ID == u.Id);
-                var roles = await _userManager.GetRolesAsync(u);
-
-                // Add the processed user response to the list
-                usersTasks.Add(new GetUsersByCommunityQueryResponse
+            var users = await _context.Community
+                .Where(c => c.ID == request.CommunityId)
+                .SelectMany(c => c.Users)
+                .Select(user => new GetUsersByCommunityQueryResponse
                 {
-                    Id = u.Id,
-                    Name = string.Format("{0} {1}", u.FirstName, u.LastName),
-                    Email = u.Email!,
-                    PhoneNumber = u.PhoneNumber,
-                    Role = roles.FirstOrDefault() ?? "Sin Rol",
-                    UnitCount = unitCount
-                });
-            }
+                    Id = user.Id,
+                    Name = string.Format("{0} {1}", user.FirstName, user.LastName),
+                    Email = user.Email!,
+                    PhoneNumber = user.PhoneNumber!,
+                    Role = _context.Roles.Where(r => r.Id == _context.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId).FirstOrDefault()).Select(r => r.Name).FirstOrDefault()!,
+                    UnitCount = user.Units.Where(u => u.Building.Community.ID == request.CommunityId).Count()
+                }).ToListAsync();
 
             return Result.WithResponse(new ResponseData
             {
-                Data = usersTasks
+                Data = users
             });
         }
     }

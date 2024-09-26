@@ -17,6 +17,8 @@ namespace Backend.Common.Profiles
             _ = CreateMap<CreateCommunityCommand, Community>();
             CreateMap<UpdateCommunityCommand, Community>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+            _ = CreateMap<Community, CreateCommunityCommandResponse>();
+            _ = CreateMap<Community, UpdateCommunityCommandResponse>();
         }
     }
 }

@@ -22,12 +22,10 @@ namespace Backend.Features.Community.Queries.GetById
 
         public async Task<Result> Handle(GetByIdCommunityQuery request, CancellationToken cancellationToken)
         {
-            var adminUsers = await _userManager.GetUsersInRoleAsync("Administrador");
-            var adminUserIds = adminUsers.Select(u => u.Id).ToList();
-            var adminUsersWithCommunities = await _context.Users
-                                                .Include(u => u.Communities)             // Include their communities
-                                                .Where(u => adminUserIds.Contains(u.Id) && u.Communities.Any(x => x.ID == request.Id))
-                                                .ToListAsync();
+            var adminRoleId = await _context.Roles
+                    .Where(r => r.Name == "Administrador")
+                    .Select(r => r.Id)
+                    .FirstOrDefaultAsync();
 
 
             var community = _context.Community
@@ -35,7 +33,6 @@ namespace Backend.Features.Community.Queries.GetById
                                             .ThenInclude(x => x.City)
                                             .ThenInclude(x => x.Region)
                                             .Where(x => x.ID == request.Id)
-                                            .AsEnumerable()
                                             .Select(x => new GetByIdCommunityResponse
                                             {
                                                 Id = x.ID,
@@ -44,10 +41,10 @@ namespace Backend.Features.Community.Queries.GetById
                                                 MunicipalityId = x.Municipality.ID,
                                                 CityId = x.Municipality.City.ID,
                                                 RegionId = x.Municipality.City.Region.ID,
-                                                AdminName = adminUsersWithCommunities.Count > 0 ? adminUsersWithCommunities
-                                                                .Where(u => u.Communities.Any(c => c.ID == x.ID))
-                                                                .Select(u => $"{u.FirstName} {u.LastName}")
-                                                                .FirstOrDefault() ?? "Sin Administrador" : "Sin Administrador"
+                                                AdminName = x.Users
+                                                                .Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == adminRoleId))
+                                                                .Select(u => u.ToString())
+                                                                .FirstOrDefault() ?? "Sin Administrador"
                                             })
                                             .FirstOrDefault();
 
