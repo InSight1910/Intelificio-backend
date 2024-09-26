@@ -25,9 +25,9 @@
     </thead>
 
     <tbody>
-      @for (user of users; track user.id) {
+      @for (user of users; track user.id; let idx = $index , e = $even) {
       <tr>
-        <td>{{ user.id }}</td>
+        <td>{{ idx + 1 }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.phoneNumber }}</td>

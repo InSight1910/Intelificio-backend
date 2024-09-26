@@ -29,7 +29,7 @@ export class SingupComponent implements OnInit {
   notificationMessage = '';
   IsSuccess = false;
   IsError = false;
-  loading = false;
+  waiting = false;
   notificationSuccess = 'Usuario creado exitosamente';
   selectedFile: File | null = null;
   selectedFileName = '';
@@ -46,7 +46,7 @@ export class SingupComponent implements OnInit {
     },
   ];
 
-  singupForm = new FormGroup(
+  signupForm = new FormGroup(
     {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -79,17 +79,15 @@ export class SingupComponent implements OnInit {
 
   onSubmit() {
     if (this.selectedFile) {
-      console.log(this.selectedFile);
       const formData: FormData = new FormData();
       formData.append('file', this.selectedFile!);
       formData.append('test', 'test');
-      console.log(formData);
 
       this.service
         .signupMassive(formData)
         .pipe(
           tap((response) => {
-            if (response.status === 202) {
+            if (response.status === 204) {
               this.notification = true;
               setTimeout(() => {
                 this.notification = false;
@@ -104,36 +102,57 @@ export class SingupComponent implements OnInit {
         )
         .subscribe();
     } else {
-      if (this.singupForm.valid) {
+      if (this.signupForm.valid) {
         const signupDTO: SignupDTO = {
           User: {
-            firstName: this.singupForm.controls['firstName'].value ?? '',
-            lastName: this.singupForm.controls['lastName'].value ?? '',
-            email: this.singupForm.controls['email'].value ?? '',
-            phoneNumber: this.singupForm.controls['phoneNumber'].value ?? '',
-            password: this.singupForm.controls['password'].value ?? '',
-            rut: this.singupForm.controls['rut'].value ?? '',
-            role: this.singupForm.controls['rol'].value ?? '',
-            birthDate: this.singupForm.controls['birthDate'].value ?? '',
+            firstName: this.signupForm.controls['firstName'].value ?? '',
+            lastName: this.signupForm.controls['lastName'].value ?? '',
+            email: this.signupForm.controls['email'].value ?? '',
+            phoneNumber: this.signupForm.controls['phoneNumber'].value ?? '',
+            password: this.signupForm.controls['password'].value ?? '',
+            rut: this.signupForm.controls['rut'].value ?? '',
+            role: this.signupForm.controls['rol'].value ?? '',
+            birthDate: this.signupForm.controls['birthDate'].value ?? '',
           },
           Users: [],
         };
-
-        console.log('Imprime Mierda');
-        console.log(signupDTO);
-
+        this.waiting = true;
+        this.signupForm.disable();
         this.service.signup(signupDTO).subscribe({
           next: (response) => {
-            if (response.status === 500) {
+            if (response.status === 204) {
+              this.notificationMessage = this.notificationSuccess;
+              this.IsSuccess = true;
               this.notification = true;
+              this.waiting = false;
               setTimeout(() => {
                 this.notification = false;
+                this.IsSuccess = false;
                 this.clean();
-              }, 3000);
+                this.signupForm.enable();
+              }, 5000);
             }
           },
           error: (error) => {
-            console.log('Error:', error);
+            this.waiting = false;
+            if (error.status === 400) {
+              const errorData = error.error?.[0];
+              if (errorData?.code === 'Authentication.SignUp.AlreadyCreated') {
+                this.notificationMessage = errorData.message;
+                this.IsError = true;
+                this.notification = true;
+                setTimeout(() => {
+                  this.notification = false;
+                  this.IsError = false;
+                  this.signupForm.controls['email'].setValue('');
+                  this.signupForm.enable();
+                }, 5000);
+              } else {
+                console.log('Error 400 no controlado:', error);
+              }
+            } else {
+              console.log('Error no controlado:', error);
+            }
           },
         });
       }
@@ -141,7 +160,7 @@ export class SingupComponent implements OnInit {
   }
 
   clean() {
-    this.singupForm.reset(
+    this.signupForm.reset(
       {
         firstName: '',
         lastName: '',
@@ -155,7 +174,7 @@ export class SingupComponent implements OnInit {
       },
       { emitEvent: false }
     );
-    this.singupForm.enable();
+    this.signupForm.enable();
     this.selectedFile = null;
     this.selectedFileName = '';
     this.isFileUploaded = false;
@@ -177,7 +196,7 @@ export class SingupComponent implements OnInit {
   }
 
   onInputChange(controlName: string): void {
-    const control = this.singupForm.get(controlName);
+    const control = this.signupForm.get(controlName);
     if (control) {
       control.markAsUntouched();
     }
@@ -304,21 +323,17 @@ export class SingupComponent implements OnInit {
       return remainder.toString();
     }
   }
+
   onChangeFile(event: Event) {
     const input = event.target as HTMLInputElement;
-    console.log(input.files);
 
     if (input.files?.length) {
-      this.singupForm.disable();
-      this.singupForm.reset();
+      this.signupForm.disable();
+      this.signupForm.reset();
 
       this.selectedFile = input.files![0];
-      console.log(this.selectedFile);
       this.selectedFileName = input.files![0].name;
       this.isFileUploaded = true;
     }
   }
 }
-
-//"Passwords must be at least 8 characters.",
-// "Passwords must have at least one non alphanumeric character."

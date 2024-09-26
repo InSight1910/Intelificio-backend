@@ -1,0 +1,119 @@
+<div>
+  <div
+    class="button is-warning is-small is-responsive is-fullwidth"
+    (click)="onClick()"
+  >
+    Editar
+  </div>
+
+  <div class="modal" [ngClass]="{ 'is-active': isOpen }">
+    <div class="modal-background" (click)="onClickCloseModal()"></div>
+    <div class="modal-content columns is-centered">
+      <div class="box py-5 px-6 is-rounded">
+        <h4 class="title is-4 has-text-centered">Editar Unidad</h4>
+
+        <form [formGroup]="editForm">
+          <div class="field has-text-centered">
+            <label class="label">Número</label>
+            <div class="has-addons field">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Número"
+                  formControlName="number"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="field has-text-centered">
+            <label class="label">Superficie</label>
+            <div class="has-addons field">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Superficie"
+                  formControlName="surface"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="field has-text-centered">
+            <div class="select">
+              <select formControlName="unitTypeId">
+                <option value="|">Seleccione Tipo de Unidad</option>
+                @for (type of types; track $index) {
+                <option value="{{ type.id }}">
+                  {{ type.name }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="field has-text-centered">
+            <div class="select is-fullwidth">
+              <select formControlName="building" (change)="onChangeBuilding()">
+                <option value="">Seleccione Edificio</option>
+                @for (building of buildings; track $index) {
+                <option value="{{ building.id }}">
+                  {{ building.name }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="field has-text-centered">
+            <div class="select is-fullwidth">
+              <select formControlName="floor">
+                <option value="">Seleccione Piso</option>
+                @for (floor of floors; track $index) {
+                <option value="{{ floor }}">
+                  {{ floor }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          @if (errors) {
+          <div class="message is-danger">
+            <div class="message-body">
+              @for(error of errors; track $index){
+              {{ error.message }}
+
+              }
+            </div>
+          </div>
+          } @if (isSuccess) {
+          <div class="message is-success">
+            <div class="message-body">Unidad editada correctamente</div>
+          </div>
+          }
+
+          <input type="hidden" name="id" formControlName="id" />
+          <div class="field mt-6 mb-3">
+            <div class="buttons is-centered">
+              <button
+                class="button is-primary"
+                (click)="onClickUpdateUnit()"
+                [ngClass]="{ 'is-loading': isAdding }"
+                [disabled]="isSuccess"
+                form
+              >
+                Editar
+              </button>
+              <button class="button is-warning" (click)="onClickCloseModal()">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
