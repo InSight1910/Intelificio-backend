@@ -34,13 +34,16 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             //Arrange
             var command = new SignUpCommand
             {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "LastTest",
-                Password = "Test",
-                PhoneNumber = "123",
-                Rut = "123",
-
+                User = new UserObject
+                {
+                    Email = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "LastTest",
+                    Password = "Test",
+                    PhoneNumber = "123",
+                    Rut = "123",
+                    Role = "User"
+                }
             };
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                         .ReturnsAsync(UserFixture.GetUserTest());
@@ -60,13 +63,16 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             //Arrange
             var command = new SignUpCommand
             {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "LastTest",
-                Password = "Test",
-                PhoneNumber = "123",
-                Rut = "123",
-
+                User = new UserObject
+                {
+                    Email = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "LastTest",
+                    Password = "Test",
+                    PhoneNumber = "123",
+                    Rut = "123",
+                    Role = "User"
+                }
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
@@ -89,12 +95,16 @@ namespace IntelificioBackTest.Features.Authentication.Commands
             //Arrange
             var command = new SignUpCommand
             {
-                Email = "test@test.com",
-                FirstName = "Test",
-                LastName = "LastTest",
-                Password = "Test",
-                PhoneNumber = "123",
-                Rut = "123"
+                User = new UserObject
+                {
+                    Email = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "LastTest",
+                    Password = "Test",
+                    PhoneNumber = "123",
+                    Rut = "123",
+                    Role = "User"
+                }
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))

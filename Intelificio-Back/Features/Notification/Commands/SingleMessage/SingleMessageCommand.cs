@@ -12,5 +12,7 @@ namespace Backend.Features.Notification.Commands.SingleMessage
         public required int CommunityID { get; set; }
         public required int RecipientId { get; set; }
 
+        //public List<EmailAddress> Recipients { get; set; } = new List<EmailAddress>();
+
     }
 }

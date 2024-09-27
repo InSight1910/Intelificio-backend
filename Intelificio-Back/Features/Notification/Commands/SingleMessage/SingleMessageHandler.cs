@@ -4,8 +4,9 @@ using Backend.Common.Response;
 using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SendGrid.Helpers.Mail;
+
 
 namespace Backend.Features.Notification.Commands.SingleMessage
 {
@@ -37,6 +38,12 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                                                 })
                                                 .FirstOrDefaultAsync();
 
+            var recipients = new List<EmailAddress>();
+
+            recipients.Add(new EmailAddress(
+                user.User.Email,
+                $"{user.User.FirstName} {user.User.LastName}"
+            ));
 
             var template = new SingleMessageTemplate
             {
@@ -53,8 +60,7 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                                                             template,
                                                             TemplatesEnum.SingleMessageIntelificioId,
                                                             user.CommunityName,
-                                                            user.User.Email ?? "intelificio@duocuc.cl",
-                                                            $"{user.User.FirstName} {user.User.LastName}"
+                                                            recipients
                                                         );
 
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);

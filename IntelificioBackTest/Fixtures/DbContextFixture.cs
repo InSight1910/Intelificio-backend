@@ -42,7 +42,6 @@ namespace IntelificioBackTest.Fixtures
                     UserName = "admin@outlook.com",
                     FirstName = "Admin",
                     LastName = "Admin",
-                    Password = "Admin.123",
                     PhoneNumber = "1234567890",
                     Role = await context.Roles.FirstOrDefaultAsync(x => x.Name == "Administrador"),
                     Rut = "123456789"
@@ -53,7 +52,6 @@ namespace IntelificioBackTest.Fixtures
                     UserName = "user@outlook.com",
                     FirstName = "User",
                     LastName = "User",
-                    Password = "User.123",
                     PhoneNumber = "1234567890",
                     Role = await context.Roles.FirstOrDefaultAsync(x => x.Name == "Usuario"),
                     Rut = "123456789"
@@ -212,9 +210,7 @@ namespace IntelificioBackTest.Fixtures
                             UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
                             Number = "101",
                             Floor = 1,
-                            Surface = 50.1F,
-                            Users = users.Where(x => x.FirstName == "Juan").FirstOrDefault()!
-                        },
+                            Surface = 50.1F                        },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,

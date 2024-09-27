@@ -8,7 +8,10 @@
         public required string CommunityName { get; set; }
         public required string Message { get; set; }
         public required string SenderName { get; set; }
+        public required string CommunityFooter { get; set; }
         public required string SenderAddress { get; set; }
+
+        public required string Contact { get; set; }
 
 
     }

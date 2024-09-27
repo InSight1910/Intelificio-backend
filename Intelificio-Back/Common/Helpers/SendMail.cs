@@ -1,4 +1,5 @@
 ﻿
+using Backend.Features.Notification.Common;
 using MySqlX.XDevAPI;
 using Newtonsoft.Json;
 using SendGrid;
@@ -25,12 +26,12 @@ namespace Backend.Common.Helpers
             return result;
         }
 
-        public async Task<SendGrid.Response> SendEmailDinamycAsync(object template, string templateID, string communityName, string email, string fullname)
+        public async Task<SendGrid.Response> SendEmailDinamycAsync(object template, string templateID, string communityName, List<EmailAddress> recipients)
         {   
 
             var msg = new SendGridMessage();
             msg.SetFrom(new EmailAddress("intelificio@duocuc.cl", communityName + " a través de Intelificio"));
-            msg.AddTo(new EmailAddress(email, fullname));
+            msg.AddTos(recipients);
             msg.SetTemplateId(templateID);
 
             msg.SetTemplateData(template);
