@@ -1,4 +1,75 @@
-/* You can add global styles to this file, and also import other style files */
+/* Custom color scheme for Bulma */
 :root {
-  --bulma-navbar-height: 5rem!important;
+  --primary: #3273dc;
+  --link: #485fc7;
+  --info: #3e8ed0;
+  --success: #48c78e;
+  --warning: #ffe08a;
+  --danger: #f14668;
+
+  /* Derived colors */
+  --primary-light: #4a89dc;
+  --primary-dark: #2a5cba;
+
+  /* Text colors */
+  --text: #4a4a4a;
+  --text-light: #7a7a7a;
+  --text-strong: #363636;
+
+  /* Background colors */
+  --background: #ffffff;
+  --background-light: #f5f5f5;
+
+  /* Border colors */
+  --border: #dbdbdb;
+  --border-hover: #b5b5b5;
+}
+
+/* Override Bulma's default colors */
+.button.is-primary {
+  background-color: var(--primary);
+  
+}
+
+.button.is-link {
+  background-color: var(--link);
+}
+
+.button.is-info {
+  background-color: var(--info);
+}
+
+.button.is-success {
+  background-color: var(--success);
+}
+
+.button.is-warning {
+  background-color: var(--warning);
+}
+
+.button.is-danger {
+  background-color: var(--danger);
+  color: white;
+}
+.button.is-danger:hover {
+  background-color: #ff2b50; /* Hover color */
+  color: white; /* Keep text color consistent */
+}
+
+.has-text-primary {
+  color: var(--primary) !important;
+}
+
+.has-background-primary {
+  background-color: var(--primary) !important;
+}
+
+/* Repeat for other colors (link, info, success, warning, danger) */
+
+.has-text-grey {
+  color: var(--text-light) !important;
+}
+
+.has-background-grey-lighter {
+  background-color: var(--background-light) !important;
 }
