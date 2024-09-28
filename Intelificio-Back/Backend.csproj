@@ -42,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\CommonSpaces\Common\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>
 

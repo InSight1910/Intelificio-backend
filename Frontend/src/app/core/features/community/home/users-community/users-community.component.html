@@ -42,11 +42,7 @@
           </span>
         </td>
         <td>
-          <button
-            class="button is-danger"
-            (click)="onClickDeleting(user.id)"
-            [ngClass]="{ 'is-loading': isDeleting[user.id] }"
-          >
+          <button class="button is-danger" (click)="openmodal(user)">
             Eliminar
           </button>
         </td>
@@ -56,3 +52,35 @@
   </table>
 </div>
 }
+
+<div class="modal" [ngClass]="{ 'is-active': activateModal }">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        Eliminando el usuario {{ userToBeDeleted?.given_name }}
+      </p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>
+        Eliminará el usuario
+        <span class="has-text-warning">{{ userToBeDeleted?.given_name }}</span>
+        de {{ community?.name }}, esta acción no se puede revertir, por favar
+        confirme la acción:
+      </p>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-danger"
+          (click)="onClickDeleting()"
+          [ngClass]="{ 'is-loading': isDeleting[userToBeDeleted?.sub!] }"
+        >
+          Confirmar
+        </button>
+        <button class="button" (click)="closeModal()">Salir</button>
+      </div>
+    </footer>
+  </div>
+</div>

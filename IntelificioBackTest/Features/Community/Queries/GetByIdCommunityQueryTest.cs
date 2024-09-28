@@ -1,6 +1,8 @@
 ﻿using Backend.Features.Community.Queries.GetById;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
+using IntelificioBackTest.Mocks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -11,12 +13,16 @@ namespace IntelificioBackTest.Features.Community.Queries
         private readonly IntelificioDbContext _context;
         private readonly Mock<ILogger<GetByIdCommunityQueryHandler>> _logger;
         private readonly GetByIdCommunityQueryHandler _handler;
+        private readonly Mock<UserManager<User>> _userManager;
+        private readonly Mock<RoleManager<Role>> _roleManager;
 
         public GetByIdCommunityQueryTest()
         {
             _context = DbContextFixture.GetDbContext();
             _logger = new Mock<ILogger<GetByIdCommunityQueryHandler>>();
-            _handler = new GetByIdCommunityQueryHandler(_context, _logger.Object);
+            _userManager = UserManagerMock.CreateUserManager();
+            _roleManager = new Mock<RoleManager<Role>>();
+            _handler = new GetByIdCommunityQueryHandler(_context, _userManager.Object, _logger.Object);
         }
 
         [Fact]

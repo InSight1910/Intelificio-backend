@@ -22,13 +22,28 @@ namespace Backend.Models.Extensions
                     });
                     _ = await roleManager.CreateAsync(new Role
                     {
-                        Name = "Usuario",
+                        Name = "Propietario",
+                    });
+                    _ = await roleManager.CreateAsync(new Role
+                    {
+                        Name = "Residente",
+                    });
+                    _ = await roleManager.CreateAsync(new Role
+                    {
+                        Name = "Arrendatario",
+                    });
+                    _ = await roleManager.CreateAsync(new Role
+                    {
+                        Name = "Conserje",
                     });
                     _ = await context.SaveChangesAsync();
 
                 }
                 if (!await context.Users.AnyAsync())
                 {
+                    var adminRole = await roleManager.FindByNameAsync("Administrador");
+                    var userRole = await roleManager.FindByNameAsync("Propietario");
+
                     var admin = new User
                     {
                         Email = "admin@outlook.com",
@@ -36,8 +51,8 @@ namespace Backend.Models.Extensions
                         FirstName = "Admin",
                         LastName = "Admin",
                         PhoneNumber = "1234567890",
-                        Role = (await roleManager.FindByNameAsync("Administrador"))!,
-                        Rut = "123456789"
+                        Rut = "123456789",
+                        //Role = adminRole
                     };
                     var user = new User
                     {
@@ -46,11 +61,13 @@ namespace Backend.Models.Extensions
                         FirstName = "User",
                         LastName = "User",
                         PhoneNumber = "1234567890",
-                        Role = (await roleManager.FindByNameAsync("Usuario"))!,
-                        Rut = "123456789"
+                        Rut = "123456789",
+                        //Role = userRole
                     };
                     _ = await userManager.CreateAsync(user, "User.1234");
                     _ = await userManager.CreateAsync(admin, "Admin.123");
+                    _ = await userManager.AddToRoleAsync(admin, "Administrador");
+                    _ = await userManager.AddToRoleAsync(user, "Propietario");
                     _ = await context.SaveChangesAsync();
 
                 }
@@ -66,13 +83,15 @@ namespace Backend.Models.Extensions
                         {
                             Address = "Calle 123",
                             Municipality = municipality,
-                            Name = "Comunidad 1"
+                            Name = "Comunidad 1",
+                            Rut = "123123"
                         },
                         new Community
                         {
                             Address = "Calle 123",
                             Municipality = municipality,
-                            Name = "Comunidad 2"
+                            Name = "Comunidad 2",
+                            Rut = "123123"
                         }
                 };
 
@@ -124,7 +143,7 @@ namespace Backend.Models.Extensions
                     {
                         new UnitType
                         {
-                            Description = "Unidad",
+                            Description = "Departamento",
                         },
                         new UnitType
                         {
@@ -152,7 +171,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -160,7 +179,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -168,7 +187,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -185,7 +204,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Unidad"))!,
+                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -193,7 +212,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Unidad"))!,
+                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -201,7 +220,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -222,7 +241,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -230,7 +249,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -238,7 +257,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -255,7 +274,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -263,7 +282,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -271,7 +290,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
+                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F

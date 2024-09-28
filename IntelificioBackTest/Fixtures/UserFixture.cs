@@ -13,10 +13,6 @@ namespace IntelificioBackTest.Fixtures
                 LastName = "LastTest",
                 PhoneNumber = "123",
                 Rut = "123",
-                Role = new Role
-                {
-                    Name = "Role"
-                },
                 UserName = "test@test.com",
                 EmailConfirmed = true,
             };

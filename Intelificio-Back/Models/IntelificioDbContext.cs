@@ -138,6 +138,9 @@ namespace Backend.Models
 
                 _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
+                entity.HasMany(p => p.Spaces)
+                    .WithOne(p => p.Community)
+                    .HasForeignKey(p => p.CommunityId);
 
             });
 

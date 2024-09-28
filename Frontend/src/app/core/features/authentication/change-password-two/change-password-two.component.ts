@@ -44,7 +44,7 @@ export class ChangePasswordTwoComponent {
         ],
         confirmPassword: ['', Validators.required],
       },
-      { validators: this.passwordMatchValidator }
+      { validators: [this.passwordMatchValidator, Validators.required] }
     );
     router.queryParams.subscribe((params) => {
       this.email = params['email'];

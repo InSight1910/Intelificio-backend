@@ -24,8 +24,8 @@ export class CommunityService {
     return result;
   }
 
-  updateCommunity(action: Community): Observable<HttpResponse<any>> {
-    return this.http.put<any>(
+  updateCommunity(action: Community) {
+    return this.http.put<{ data: Community }>(
       `${this.baseUrl}/community/${action.id}`,
       action,
       { observe: 'response' }
@@ -66,6 +66,13 @@ export class CommunityService {
     return this.http.put(
       `${this.baseUrl}/community/remove/${communityId}/${userId}`,
       {}
+    );
+  }
+
+  createCommunity(community: Community) {
+    return this.http.post<{ data: Community }>(
+      `${this.baseUrl}/community`,
+      community
     );
   }
 }

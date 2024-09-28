@@ -13,21 +13,50 @@
           </h1>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="field mt-5">
-              <label for="username" class="label">Email</label>
+              <label for="email" class="label">Email</label>
               <div class="control has-icons-left">
                 <input
-                  type="text"
                   class="input"
+                  type="text"
                   autocomplete="email"
-                  formControlName="username"
+                  formControlName="email"
                   placeholder="example@email.com"
-                  id="username"
+                  (input)="onInputChange('email')"
+                  [ngClass]="{
+                    'is-danger':
+                      loginForm.get('email')?.invalid &&
+                      loginForm.get('email')?.touched,
+                    'is-success':
+                      loginForm.get('email')?.valid &&
+                      loginForm.get('email')?.touched
+                  }"
                 />
                 <span class="icon is-small is-left">
                   <i class="fa-regular fa-envelope"></i>
                 </span>
               </div>
             </div>
+
+            @if (loginForm.get('email')?.touched &&
+            loginForm.get('email')?.errors?.['required']) {
+            <span *ngIf="loginForm.get('email')?.errors as emailErrors">
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                @if (emailErrors['required']) { El correo electronico es
+                requerido. }
+              </p>
+            </span>
+            } @if (loginForm.get('email')?.touched &&
+            loginForm.get('email')?.errors?.['email']) {
+            <span *ngIf="loginForm.get('email')?.errors as emailErrors">
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                @if (emailErrors['email']) { El correo electronico no es valido.
+                }
+              </p>
+            </span>
+            }
+
             <div class="field">
               <label for="password" class="label">Contraseña</label>
               <div class="control has-icons-left">
@@ -36,13 +65,66 @@
                   class="input"
                   placeholder="*******"
                   formControlName="password"
+                  (input)="onInputChange('password')"
+                  [ngClass]="{
+                    'is-danger':
+                      loginForm.get('password')?.invalid &&
+                      loginForm.get('password')?.touched,
+                    'is-success':
+                      loginForm.get('password')?.valid &&
+                      loginForm.get('password')?.touched
+                  }"
                 />
                 <span class="icon is-small is-left"
                   ><i class="fa-solid fa-lock"></i
                 ></span>
               </div>
             </div>
-            <a href="#">¿Problemas para ingresar?</a>
+
+            @if (loginForm.get('password')?.touched &&
+            loginForm.get('password')?.errors?.['required']) {
+            <span *ngIf="loginForm.get('password')?.errors as passwordErrors">
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                @if (passwordErrors['required']) { La contraseña es requerida. }
+              </p>
+            </span>
+            } @if (loginForm.get('password')?.touched &&
+            loginForm.get('password')?.errors?.['minlength']) {
+            <span *ngIf="loginForm.get('password')?.errors as passwordErrors">
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                @if (passwordErrors['minlength']) { Tu contraseña es demasiado
+                corta. Solo tiene
+                {{
+                    passwordErrors['minlength']?.['actualLength'] || 0
+                }}
+                caracteres, pero necesita al menos
+                {{
+                    passwordErrors['minlength']?.['requiredLength'] || 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }}. }
+              </p>
+            </span>
+            }
+            <a [routerLink]="['/forgot-password']" routerLinkActive="active"
+              >¿Problemas para ingresar?</a
+            >
             @if (errors$ | async) {
             <article class="message is-danger">
               <div class="message-body">

@@ -1,3 +1,24 @@
+@if (loadingLocation) {
+<div class="skeleton-block">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta laborum
+  mollitia perferendis, id molestias dolor eaque architecto maxime. Repudiandae
+  repellat, voluptates quo totam natus iusto molestias soluta. Nihil, aspernatur
+  praesentium! Repellendus nihil, culpa quam a quae distinctio facilis sint
+  corporis incidunt aspernatur quos et sed amet placeat vel atque, autem
+  pariatur asperiores nobis, iusto laborum magni illo beatae! Placeat, minus.
+  Optio saepe eius repellendus tempore vel adipisci et corporis illo expedita
+  veniam, cupiditate blanditiis accusamus libero ut minima ratione eligendi
+  neque. Enim, autem sit repudiandae vel saepe natus ipsum impedit! In soluta
+  facere ad deleniti sit hic rem fugit modi ut dicta. Nam error delectus
+  molestias eius quisquam ullam at in dolorem ratione ducimus repudiandae quis
+  consectetur neque, eos eaque? Officiis ea quis aliquam asperiores placeat.
+  Maxime eligendi obcaecati facere nisi ipsum. Nesciunt accusamus ex laboriosam
+  esse! Sapiente, eos odio eius unde provident dicta praesentium accusamus,
+  dolore doloremque deleniti consectetur? Velit necessitatibus, aliquid ut
+  cumque hic doloribus illo rem eius autem magnam vel non, consectetur molestias
+</div>
+} @else {
+
 <div class="card mt-6">
   <div class="card-header">
     @if(isModifying) {
@@ -101,11 +122,7 @@
             </div>
           </div>
         </div>
-        <!-- <div class="field"></div>
-        <div class="field"></div>
-        <div class="field"></div> -->
-
-        @if (errors | async) {
+        <!-- @if (errors | async) {
         <article class="message is-danger">
           <div class="message-body">
             @for (error of (errors | async); track $index){
@@ -113,42 +130,45 @@
             }
           </div>
         </article>
-        }
-        <div class="field">
-          <div class="control">
-            @if(!isModifying) {
-            <button
-              (click)="onClickEdit()"
-              class="button is-warning is-fullwidth"
-            >
-              Modificar
-            </button>
-            } @else {
-            <div class="columns">
-              <div class="column is-half">
+        } -->
+        @if (!isModifying){
+        <div class="columns is-centered">
+          <div class="column is-5">
+            <div class="field">
+              <div class="control">
                 <button
-                  class="button is-danger is-fullwidth"
-                  (click)="onClickCancel()"
-                >
-                  Salir
-                </button>
-              </div>
-              <div class="column is-half">
-                <button
+                  (click)="onClickEdit()"
                   class="button is-warning is-fullwidth"
-                  [ngClass]="{ 'is-loading': isLoading | async }"
-                  (click)="onClickSave()"
                 >
                   Modificar
                 </button>
               </div>
             </div>
-            }
           </div>
         </div>
-        <input type="hidden" formControlName="id" />
+        } @else {
+        <div class="columns">
+          <div class="column is-half">
+            <button
+              class="button is-danger is-fullwidth"
+              (click)="onClickCancel()"
+            >
+              Salir
+            </button>
+          </div>
+          <div class="column is-half">
+            <button
+              class="button is-warning is-fullwidth"
+              (click)="updateUnit()"
+            >
+              Modificar
+            </button>
+          </div>
+        </div>
+        }
       </form>
     </div>
   </div>
 </div>
 <app-users-community communityId="{{ this.form.value.id }}" />
+}

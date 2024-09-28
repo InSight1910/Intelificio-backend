@@ -33,7 +33,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                User = new AddUserObject { CommunityId = 0, UserId = 1 }
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 1,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
@@ -52,7 +56,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                User = new AddUserObject { CommunityId = 0, UserId = 1 }
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 0,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
@@ -73,7 +81,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                User = new AddUserObject { CommunityId = 1, UserId = 0 }
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 0,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 
@@ -93,7 +105,11 @@ namespace IntelificioBackTest.Features.Community.Commands
             // Arrange
             var command = new AddUserCommunityCommand
             {
-                User = new AddUserObject { CommunityId = 1, UserId = 1 }
+                User = new Backend.Features.Community.Commands.AddUser.AddUserObject
+                {
+                    CommunityId = 0,
+                    UserId = 1
+                }
             };
             await DbContextFixture.SeedData(_context);
 

@@ -14,12 +14,16 @@ namespace Backend.Features.Community.Common
             Code = "Community.GetAllByUser.UserNotFound",
             Message = "El usuario no se encuentra en nuestros registros."
         };
-        public static Error CommunityAlreadyExist = new Error
+        public static Error CommunityNameAlreadyExist = new Error
         {
             Code = "Community.Create.CommunityAlreadyExist",
-            Message = "La comunidad ingresada ya se encuentra registrada.",
+            Message = "El nombre de la comunidad ya existe.",
         };
-
+        public static Error CommunityRutAlreadyExist = new Error
+        {
+            Code = "Community.Create.CommunityAlreadyExist",
+            Message = "El RUT de la comunidad ya existe.",
+        };
         public static Error CommunityNotFoundGetByID = new Error
         {
             Code = "Community.GetByID.CommunityNotFoundGetByID",
@@ -79,6 +83,15 @@ namespace Backend.Features.Community.Common
         {
             Code = "Community.AddUser.UserAlreadyInCommunity",
             Message = "El usuario ya se encuentra asignado a la comunidad indicada."
+        };
+        internal static Error AdminNotAdminRole;
+
+        public static Error AdminNotFoundUpdate { get; internal set; }
+
+        public static Error HasAssignedBuildingsOnDelete(int buildingNumber) => new Error
+        {
+            Code = "Community.Delete.HasAssignedBuildingsOnDelete",
+            Message = buildingNumber == 1 ? "La comunidad tiene un edificio asignado." : string.Format("La comunidad tiene {0} edificios asignados.", buildingNumber)
         };
 
         public static List<Error> AddUserMassive(List<Error> errors) => errors;

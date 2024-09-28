@@ -42,8 +42,9 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                     Password = "Test",
                     PhoneNumber = "123",
                     Rut = "123",
-                    Role = "User"
+                    Role = "Propietario"
                 }
+
             };
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                         .ReturnsAsync(UserFixture.GetUserTest());
@@ -71,14 +72,14 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                     Password = "Test",
                     PhoneNumber = "123",
                     Rut = "123",
-                    Role = "User"
+                    Role = "Administrador"
                 }
             };
 
             _ = _userManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
-                            .ReturnsAsync((User)null);
+                        .ReturnsAsync((User)null);
             _ = _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-                            .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Password too weak" }));
+                        .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Password too weak" }));
 
             //Act
             var result = await _handler.Handle(command, default);
@@ -103,7 +104,7 @@ namespace IntelificioBackTest.Features.Authentication.Commands
                     Password = "Test",
                     PhoneNumber = "123",
                     Rut = "123",
-                    Role = "User"
+                    Role = "Administrador"
                 }
             };
 

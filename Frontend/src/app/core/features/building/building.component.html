@@ -160,6 +160,15 @@
     <button class="delete" (click)="closeNotification()"></button>
     Edificio eliminado exitosamente.
   </div>
+  } @if (errors) {
+  <div class="message is-danger">
+    <div class="message-body">
+      @for(error of errors; track $index){
+      {{ error.message }}
+
+      }
+    </div>
+  </div>
   }
 
   <div class="buttons">
@@ -182,7 +191,7 @@
       class="button is-primary"
       (click)="saveCreate()"
       [ngClass]="{ 'is-loading': loading }"
-      [disabled]="!buildingForm.valid"
+      [disabled]="buildingForm.invalid || !canSend"
     >
       Guardar
     </button>
@@ -200,6 +209,11 @@
     }
   </div>
 </form>
+
+<app-unit
+  buildingId="{{ selectedBuildingId }}"
+  buildingName="{{ Edificio.name }}"
+/>
 
 <div class="modal" [ngClass]="{ 'is-active': ActivateModal }">
   <div class="modal-background"></div>

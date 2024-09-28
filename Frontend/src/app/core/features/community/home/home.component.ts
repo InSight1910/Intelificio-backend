@@ -1,29 +1,22 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../states/intelificio.state';
-import { NavBarActions } from '../../../../states/navbar/navbar.actions';
-import { Community } from '../../../../shared/models/community.model';
-import { Observable, tap } from 'rxjs';
-import {
-  selectCommunity,
-  isLoading,
-  selectError,
-} from '../../../../states/community/community.selectors';
 import { CommonModule } from '@angular/common';
-import {
-  Form,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { CommunityActions } from '../../../../states/community/community.actions';
-import { LocationService } from '../../../services/location/location.service';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UsersCommunityComponent } from './users-community/users-community.component';
 import {
   City,
   Municipality,
   Region,
 } from '../../../../shared/models/location.model';
-import { UsersCommunityComponent } from './users-community/users-community.component';
+import { AppState } from '../../../../states/intelificio.state';
+import { Store } from '@ngrx/store';
+import { LocationService } from '../../../services/location/location.service';
+import { CommunityService } from '../../../services/community/community.service';
+import { NavBarActions } from '../../../../states/navbar/navbar.actions';
+import { tap } from 'rxjs';
+import { selectCommunity } from '../../../../states/community/community.selectors';
+import { CommunityActions } from '../../../../states/community/community.actions';
+import { Community } from '../../../../shared/models/community.model';
+import { selectLoading } from '../../../../states/auth/auth.selectors';
 
 @Component({
   selector: 'app-home',
@@ -34,8 +27,6 @@ import { UsersCommunityComponent } from './users-community/users-community.compo
 })
 export class HomeCommunityComponent {
   form: FormGroup;
-  isLoading!: Observable<boolean>;
-  errors!: Observable<string[] | null>;
 
   cities: City[] = [];
   regions: Region[] = [];
@@ -47,7 +38,8 @@ export class HomeCommunityComponent {
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private communityService: CommunityService
   ) {
     this.form = this.fb.group({
       name: [''],
@@ -62,58 +54,66 @@ export class HomeCommunityComponent {
 
   ngOnInit() {
     this.store.dispatch(NavBarActions.select({ title: 'Comunidad' }));
-    var id = localStorage.getItem('communityId')!;
-    console.log(id);
-    this.loadingLocation = true;
-    this.store.select(selectCommunity).subscribe((community) => {
-      this.form.patchValue(community!);
-      this.form.disable();
-      if (community != null) {
-        this.locationService.getRegions().subscribe((regions) => {
-          this.regions = regions.data;
-        });
-
-        this.locationService
-          .getCitiesByRegion(this.form.value.regionId)
-          .subscribe((cities) => (this.cities = cities.data));
-
-        this.locationService
-          .getMunicipalitiesByCity(this.form.value.cityId)
-          .subscribe((municipalities) => {
-            this.municipalities = municipalities.data;
-            this.loadingLocation = false;
-          });
-      }
-    });
+    this.loadCommunity();
   }
 
-  onClickSave() {
-    const updateCommunity: Community = {
-      id: this.form.value.id as number,
-      name: this.form.value.name,
-      address: this.form.value.address,
-      municipalityId: this.form.value.municipalityId,
-      cityId: this.form.value.cityId,
-      regionId: this.form.value.regionId,
-    };
-
-    this.store.dispatch(
-      CommunityActions.updateCommunity({ community: updateCommunity })
-    );
-    this.isLoading = this.store.select(isLoading).pipe(
-      tap((loading) => {
-        if (!loading) {
+  loadCommunity() {
+    this.store
+      .select(selectCommunity)
+      .pipe(
+        tap((community) => {
+          this.form.patchValue(community!);
           this.form.disable();
-          this.isModifying = false;
-        }
-      })
-    );
-    this.errors = this.store.select(selectError);
+          this.loadLocation();
+        })
+      )
+      .subscribe();
   }
+
+  loadLocation() {
+    this.loadingLocation = true;
+    this.locationService.getRegions().subscribe((regions) => {
+      this.regions = regions.data;
+    });
+
+    this.locationService
+      .getCitiesByRegion(this.form.value.regionId)
+      .subscribe((cities) => (this.cities = cities.data));
+
+    this.locationService
+      .getMunicipalitiesByCity(this.form.value.cityId)
+      .subscribe((municipalities) => {
+        this.municipalities = municipalities.data;
+        this.loadingLocation = false;
+      });
+  }
+
   onClickEdit() {
     this.isModifying = true;
     this.form.enable();
     this.form.get('adminName')?.disable();
+  }
+
+  updateUnit() {
+    const { name, address, municipalityId } = this.form.value;
+    this.store.dispatch(
+      CommunityActions.updateCommunity({
+        community: {
+          name,
+          address,
+          municipalityId,
+          id: this.form.value.id,
+        },
+      })
+    );
+
+    this.store.select(selectLoading).subscribe((loading) => {
+      if (!loading) {
+        this.isModifying = false;
+        this.form.disable();
+        this.loadCommunity();
+      }
+    });
   }
 
   onChangeRegion(e: any) {

@@ -22,6 +22,8 @@ namespace Backend.Features.Buildings.Commands.Create
 
         public async Task<Result> Handle(CreateBuildingCommand request, CancellationToken cancellationToken)
         {
+            var checkName = await _context.Buildings.AnyAsync(x => x.Name == request.Name && x.Community.ID == request.CommunityId);
+            if (checkName) return Result.Failure(BuildingErrors.BuildingNameAlreadyExist);
 
             if (request.Floors <= 0) return Result.Failure(BuildingErrors.BuildingWithoutFloorsOnCreate);
 
@@ -32,8 +34,8 @@ namespace Backend.Features.Buildings.Commands.Create
             var building = _mapper.Map<Models.Building>(request);
             building.Community = community;
 
-            await _context.Buildings.AddAsync(building);
-            await _context.SaveChangesAsync();
+            _ = await _context.Buildings.AddAsync(building);
+            _ = await _context.SaveChangesAsync();
 
             return Result.Success();
 

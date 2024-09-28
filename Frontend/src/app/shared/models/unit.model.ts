@@ -6,8 +6,8 @@ export interface Unit {
   user: string;
   building: string;
   unitType: string;
-  buildingId: number;
-  unitTypeId: number;
+  buildingId?: number;
+  unitTypeId?: number;
 }
 
 export interface CreateUnit {

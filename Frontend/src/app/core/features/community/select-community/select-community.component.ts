@@ -82,10 +82,6 @@ export class SelectCommunityComponent {
   }
 
   onClick() {
-    localStorage.setItem(
-      'communityId',
-      JSON.stringify(this.communitySelected.id)
-    );
     this.store.dispatch(
       CommunityActions.getCommunity({ id: this.communitySelected.id! })
     );

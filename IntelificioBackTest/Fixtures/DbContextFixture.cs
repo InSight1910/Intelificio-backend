@@ -43,7 +43,6 @@ namespace IntelificioBackTest.Fixtures
                     FirstName = "Admin",
                     LastName = "Admin",
                     PhoneNumber = "1234567890",
-                    Role = await context.Roles.FirstOrDefaultAsync(x => x.Name == "Administrador"),
                     Rut = "123456789"
                 };
                 var user = new User
@@ -53,7 +52,6 @@ namespace IntelificioBackTest.Fixtures
                     FirstName = "User",
                     LastName = "User",
                     PhoneNumber = "1234567890",
-                    Role = await context.Roles.FirstOrDefaultAsync(x => x.Name == "Usuario"),
                     Rut = "123456789"
                 };
                 await context.Users.AddRangeAsync(new List<User>
@@ -114,13 +112,15 @@ namespace IntelificioBackTest.Fixtures
                         {
                             Address = "Calle 123",
                             Municipality = municipality,
-                            Name = "Comunidad 1"
+                            Name = "Comunidad 1",
+                            Rut = "123231"
                         },
                         new Community
                         {
                             Address = "Calle 123",
                             Municipality = municipality,
-                            Name = "Comunidad 2"
+                            Name = "Comunidad 2",
+                            Rut = "123232"
                         }
                 };
 
@@ -210,7 +210,8 @@ namespace IntelificioBackTest.Fixtures
                             UnitType = unitTypes.Where(x => x.Description == "Unidad").FirstOrDefault()!,
                             Number = "101",
                             Floor = 1,
-                            Surface = 50.1F                        },
+                            Surface = 50.1F
+                        },
                         new Unit
                         {
                             Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
