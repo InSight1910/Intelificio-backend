@@ -5,6 +5,7 @@ using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Tls;
 using SendGrid.Helpers.Mail;
 
 
@@ -15,14 +16,12 @@ namespace Backend.Features.Notification.Commands.SingleMessage
         private readonly SendMail _sendMail;
         private readonly IntelificioDbContext _context;
         private readonly ILogger<SingleMessageHandler> _logger;
-        private readonly IMapper _mapper;
 
-        public SingleMessageHandler(IntelificioDbContext context, ILogger<SingleMessageHandler> logger, IMapper mapper, SendMail sendMail)
+        public SingleMessageHandler(IntelificioDbContext context, ILogger<SingleMessageHandler> logger, SendMail sendMail)
         {
             _sendMail = sendMail;
             _context = context;
             _logger = logger;
-            _mapper = mapper;
         }
 
         public async Task<Result> Handle(SingleMessageCommand request, CancellationToken cancellationToken)
@@ -34,14 +33,15 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                                                 {
                                                     CommunityName = c.Name ?? "",
                                                     SenderAddress = c.Address,
-                                                    User = c.Users.FirstOrDefault(u => u.Id == request.RecipientId)
+                                                    User = c.Users.FirstOrDefault(u => u.Id == request.RecipientId),
                                                 })
                                                 .FirstOrDefaultAsync();
+
 
             var recipients = new List<EmailAddress>();
 
             recipients.Add(new EmailAddress(
-                user.User.Email,
+                user.User.Email ?? "intelificio@duocuc.cl",
                 $"{user.User.FirstName} {user.User.LastName}"
             ));
 
@@ -52,14 +52,15 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                 Title = request.Title,
                 CommunityName = user.CommunityName,
                 Message = request.Message,
-                SenderAddress = user.SenderAddress,
-                SenderName = user.CommunityName + " a través de Intelificio"
+                SenderAddress = user.SenderAddress
             };
+            
+            var from = new EmailAddress("intelificio@duocuc.cl", user.CommunityName + " a través de Intelificio");
 
-            var result = await _sendMail.SendEmailDinamycAsync(
+            var result = await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(
                                                             template,
                                                             TemplatesEnum.SingleMessageIntelificioId,
-                                                            user.CommunityName,
+                                                            from,
                                                             recipients
                                                         );
 

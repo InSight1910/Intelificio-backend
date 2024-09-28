@@ -42,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Notification\Commands\SingleEmailToSingleRecipient\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

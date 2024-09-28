@@ -1,6 +1,7 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Notification.Commands.SingleEmailToMultipleRecipients;
+using Backend.Features.Notification.Commands.Package;
 using Backend.Features.Notification.Commands.SingleMessage;
+using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,9 +21,10 @@ namespace Backend.Features.Notification.Common
                 );
         }
 
-        [HttpPost("SingleToMultiple")]
-        public async Task<IActionResult> SingleEmailToMultipleRecipients([FromBody] SingleEmailToMultipleRecipientsCommand command)
+        [HttpPost("Package/{ID}")]
+        public async Task<IActionResult> SendPackageNotification(int ID, [FromRoute] PackageCommand command)
         {
+            command.PackageID = ID;
             var result = await mediator.Send(command);
             return result.Match<IActionResult>(
                 onSuccess: _ => Created(),
