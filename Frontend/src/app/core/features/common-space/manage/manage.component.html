@@ -1,0 +1,58 @@
+<div class="level">
+  <div class="level-left">
+    <h2 class="title">Administrar espacios comunes</h2>
+  </div>
+  <div class="level-right">
+    <button class="button">
+      <span class="icon mr-1">
+        <i class="fa-solid fa-plus"></i>
+      </span>
+      Agregar espacio
+    </button>
+  </div>
+</div>
+
+<div class="grid is-col-min-12">
+  @for (item of items; track $index){
+  <div class="cell">
+    <div class="box">
+      <h4 class="title is-4 has-text-weight-bold mb-6">Main Hall</h4>
+      <div>
+        <span class="icon">
+          <i class="fa-solid fa-user-group"></i>
+        </span>
+        Capacity: 100
+      </div>
+      <div class="mt-4">
+        <span class="icon">
+          <i class="fa-solid fa-location-dot"></i>
+        </span>
+        Ground Floor
+      </div>
+      <div class="level is-mobile mt-5">
+        <div class="level-left">
+          <div class="field">
+            <p class="control">
+              <button type="button" class="button">
+                <span class="icon mr-1"
+                  ><i class="fa-regular fa-pen-to-square"></i></span
+                >Editar
+              </button>
+            </p>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="field">
+            <p class="control has-text-left-tablet">
+              <button type="button" class="button is-danger">
+                <span class="icon mr-1"><i class="fa-solid fa-trash"></i> </span
+                >Eliminar
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
