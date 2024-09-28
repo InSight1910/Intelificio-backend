@@ -34,7 +34,7 @@ namespace Backend.Features.Authentication.Commands.ChangePasswordOne
             var template = new ChangePasswordTemplate
             {
                 ResetLink = $"http://localhost:4200/change-password?email={user.Email}&token={WebUtility.UrlEncode(token)}",
-                UserName = user.UserName ?? ""
+                UserName = user.FirstName ?? ""
             };
 
             var templateSendGrid = await _context.TemplateNotifications.FirstAsync(t => t.ID == 2);
