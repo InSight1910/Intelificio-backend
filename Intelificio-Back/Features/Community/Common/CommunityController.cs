@@ -1,7 +1,6 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Community.Commands.AddUser;
 using Backend.Features.Community.Commands.AddUserMassive;
-using Backend.Features.Community.Commands.Assign;
 using Backend.Features.Community.Commands.Create;
 using Backend.Features.Community.Commands.Delete;
 using Backend.Features.Community.Commands.RemoveUser;
