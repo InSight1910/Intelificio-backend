@@ -1,8 +1,7 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Community.Commands.AddUser;
 using MediatR;
 
-namespace Backend.Features.Community.Commands.Assign
+namespace Backend.Features.Community.Commands.AddUser
 {
     public class AddUserCommunityCommand : IRequest<Result>
     {

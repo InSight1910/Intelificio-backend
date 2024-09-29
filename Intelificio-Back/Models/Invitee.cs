@@ -1,7 +1,6 @@
-﻿using Backend.Models;
-using Backend.Models.Base;
+﻿using Backend.Models.Base;
 
-namespace Intelificio_Back.Models
+namespace Backend.Models
 {
     public class Invitee : BaseEntity
     {

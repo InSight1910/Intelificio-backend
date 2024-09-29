@@ -1,7 +1,6 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Authentication.Common;
 using Backend.Features.Community.Commands.AddUser;
-using Backend.Features.Community.Commands.Assign;
 using MediatR;
 using OfficeOpenXml;
 
