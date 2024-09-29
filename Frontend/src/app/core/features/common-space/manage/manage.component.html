@@ -13,27 +13,31 @@
 </div>
 
 <div class="grid is-col-min-12">
-  @for (item of items; track $index){
+  @for (space of (commonSpaces$ | async)?.data; track $index){
   <div class="cell">
     <div class="box">
-      <h4 class="title is-4 has-text-weight-bold mb-6">Main Hall</h4>
+      <h4 class="title is-4 has-text-weight-bold mb-6">{{ space.name }}</h4>
       <div>
         <span class="icon">
           <i class="fa-solid fa-user-group"></i>
         </span>
-        Capacity: 100
+        Capacity: {{ space.capacity }}
       </div>
       <div class="mt-4">
         <span class="icon">
           <i class="fa-solid fa-location-dot"></i>
         </span>
-        Ground Floor
+        Location: {{ space.location }}
       </div>
       <div class="level is-mobile mt-5">
         <div class="level-left">
           <div class="field">
             <p class="control">
-              <button type="button" class="button">
+              <button
+                type="button"
+                class="button"
+                (click)="onClickEdit(space.id)"
+              >
                 <span class="icon mr-1"
                   ><i class="fa-regular fa-pen-to-square"></i></span
                 >Editar
@@ -56,3 +60,49 @@
   </div>
   }
 </div>
+@if (isModalOpen) {
+<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()">
+  <form [formGroup]="form">
+    <div class="field">
+      <label class="label">Nombre</label>
+      <p class="control is-expanded">
+        <input
+          class="input"
+          type="text"
+          placeholder="Name"
+          formControlName="name"
+        />
+      </p>
+    </div>
+
+    <div class="field">
+      <label class="label">Capacidad</label>
+      <p class="control is-expanded">
+        <input
+          class="input"
+          type="number"
+          placeholder="Capacidad"
+          formControlName="capacity"
+        />
+      </p>
+    </div>
+
+    <div class="field">
+      <label class="label">Ubicacion</label>
+      <p class="control is-expanded">
+        <input
+          class="input"
+          type="text"
+          placeholder="Ubicacion"
+          formControlName="location"
+        />
+      </p>
+    </div>
+
+    <label class="checkbox">
+      <input type="checkbox" formControlName="isInMaintenance" />
+      En mantenimiento?
+    </label>
+  </form>
+</app-modal-space>
+}
