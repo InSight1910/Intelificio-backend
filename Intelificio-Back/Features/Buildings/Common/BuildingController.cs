@@ -19,7 +19,7 @@ namespace Backend.Features.Buildings.Common
         public async Task<IActionResult> Create([FromBody] CreateBuildingCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Created(),
                 onFailure: BadRequest);
         }
@@ -29,7 +29,7 @@ namespace Backend.Features.Buildings.Common
         {
             command.Id = iD;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Ok(),
                 onFailure: BadRequest);
         }
@@ -39,7 +39,7 @@ namespace Backend.Features.Buildings.Common
         {
             command.Id = ID;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Ok(),
                 onFailure: BadRequest);
         }
@@ -48,7 +48,7 @@ namespace Backend.Features.Buildings.Common
         public async Task<IActionResult> GetByID(int ID)
         {
             var building = await mediator.Send(new GetByIDQuery { BuildingId = ID });
-            return building.Match<IActionResult>(
+            return building.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
         }
@@ -58,7 +58,7 @@ namespace Backend.Features.Buildings.Common
         {
             var query = new GetAllByCommunityQuery { CommunityId = ID };
             var buildings = await mediator.Send(query);
-            return buildings.Match<IActionResult>(
+            return buildings.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
         }

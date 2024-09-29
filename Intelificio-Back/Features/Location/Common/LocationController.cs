@@ -22,7 +22,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetMunicipalityByIdQuery { MunicipalityId = id };
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -33,7 +33,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetMunicipalitiesQuery();
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -44,7 +44,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetRegionsQuery();
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -55,7 +55,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetRegionByIdQuery { MunicipalityId = id };
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -66,7 +66,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetCitiesQuery();
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -77,7 +77,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetCityByIdQuery { CityId = id };
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -88,7 +88,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetCitiesByRegionQuery { RegionId = regionId };
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;
@@ -99,7 +99,7 @@ namespace Backend.Features.Location.Common
         {
             var query = new GetMunicipalityByCityQuery { CityId = cityId };
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (result) => Ok(result),
                 onFailure: NotFound)
                 ;

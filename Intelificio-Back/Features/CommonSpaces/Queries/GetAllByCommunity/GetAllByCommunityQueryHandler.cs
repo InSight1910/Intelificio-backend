@@ -1,4 +1,5 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.CommonSpaces.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace Backend.Features.CommonSpaces.Queries.GetAllByCommunity
         public async Task<Result> Handle(GetAllByCommunityQuery request, CancellationToken cancellationToken)
         {
             var existCommunity = await _context.Community.AnyAsync(x => x.ID == request.CommunityId);
-            if (!existCommunity) return Result.Failure("Community not found");
+            if (!existCommunity) return Result.Failure(CommonSpacesErrors.CommunityNotFoundOnQuery);
 
             var commonSpaces = await _context.CommonSpaces
                 .Where(x => x.CommunityId == request.CommunityId)

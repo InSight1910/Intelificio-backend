@@ -24,7 +24,7 @@ namespace Backend.Features.Community.Common
             var query = new GetAllByUserQuery { UserId = userId };
 
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
         }
@@ -35,7 +35,7 @@ namespace Backend.Features.Community.Common
             var query = new GetUsersByCommunityQuery { CommunityId = communityId };
 
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
         }
@@ -51,7 +51,7 @@ namespace Backend.Features.Community.Common
         public async Task<IActionResult> GetById(int id)
         {
             var result = await mediator.Send(new GetByIdCommunityQuery { Id = id });
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: response => Ok(response),
                 onFailure: NotFound
                 );
@@ -68,7 +68,7 @@ namespace Backend.Features.Community.Common
                     UserId = userId
                 }
             });
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: response => Ok(response),
                 onFailure: error => NotFound(error)
                 );
@@ -78,7 +78,7 @@ namespace Backend.Features.Community.Common
         public async Task<IActionResult> RemoveUserToCommunity(int id, int userId)
         {
             var result = await mediator.Send(new RemoveUserCommunityCommand { CommunityId = id, UserId = userId });
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: response => Ok(response),
                 onFailure: NotFound
                 );
@@ -89,7 +89,7 @@ namespace Backend.Features.Community.Common
         public async Task<IActionResult> Create([FromBody] CreateCommunityCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: result => Ok(result),
                 onFailure: (result) => BadRequest(result)
                 );
@@ -98,7 +98,7 @@ namespace Backend.Features.Community.Common
         public async Task<IActionResult> Delete(int id)
         {
             var result = await mediator.Send(new DeleteCommunityCommand { Id = id });
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: _ => Ok(),
                 onFailure: BadRequest
                 );
@@ -108,7 +108,7 @@ namespace Backend.Features.Community.Common
         {
             command.Id = id;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: response => Ok(response),
                 onFailure: BadRequest
                 );

@@ -1,6 +1,9 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.CommonSpaces.Common;
 using Backend.Models;
+using Backend.Models.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.CommonSpaces.Commands.Delete
 {
@@ -13,10 +16,15 @@ namespace Backend.Features.CommonSpaces.Commands.Delete
             _context = context;
         }
 
-        public Task<Result> Handle(DeleteCommonSpaceCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DeleteCommonSpaceCommand request, CancellationToken cancellationToken)
         {
-            // TODO: Validar que no existan reservas para el espacio común.
-            throw new NotImplementedException();
+            var space = await _context.CommonSpaces.Where(x => x.ID == request.Id).FirstOrDefaultAsync(cancellationToken);
+            if (space == null) return Result.Failure(CommonSpacesErrors.CommonSpaceNotFoundOnDelete);
+            if (space.Reservations.Any(x => x.Status == ReservationStatus.CONFIRMED || x.Status == ReservationStatus.PENDING)) return Result.Failure(CommonSpacesErrors.HasPendingReservationsOnDelete);
+
+            _context.CommonSpaces.Remove(space);
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
         }
     }
 }

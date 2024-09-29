@@ -20,7 +20,7 @@ namespace Backend.Features.Unit.Common
         public async Task<IActionResult> Create([FromBody] CreateUnitCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Created(),
                 onFailure: BadRequest);
         }
@@ -30,7 +30,7 @@ namespace Backend.Features.Unit.Common
         {
             command.Id = iD;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Ok(),
                 onFailure: BadRequest);
         }
@@ -40,7 +40,7 @@ namespace Backend.Features.Unit.Common
         {
             command.Id = iD;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Ok(),
                 onFailure: BadRequest);
         }
@@ -49,28 +49,28 @@ namespace Backend.Features.Unit.Common
         public async Task<IActionResult> GetByID(int id)
         {
             var result = await mediator.Send(new GetByIDQuery { UnitId = id });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
         [HttpGet("GetByUser/{id}")]
         public async Task<IActionResult> GetByUser(int id)
         {
             var result = await mediator.Send(new GetByUserQuery { UserId = id });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
         [HttpGet("GetAllByBuilding/{id}")]
         public async Task<IActionResult> GetAllByBuilding(int id)
         {
             var result = await mediator.Send(new GetAllByBuildingQuery { BuildingId = id });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
         [HttpGet("Types")]
         public async Task<IActionResult> GetAllTypes()
         {
             var result = await mediator.Send(new GetAllTypesQuery());
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
     }
 }

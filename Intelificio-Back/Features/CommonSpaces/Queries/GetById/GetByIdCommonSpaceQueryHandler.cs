@@ -1,4 +1,5 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.CommonSpaces.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace Backend.Features.CommonSpaces.Queries.GetById
         public async Task<Result> Handle(GetByIdCommonSpaceQuery request, CancellationToken cancellationToken)
         {
             var space = await _context.CommonSpaces
-                .Where(x => x.ID == request.CommonSpaceId)
+                .Where(x => x.ID == request.Id)
                 .Select(x => new GetByIdCommonSpaceQueryResponse
                 {
                     ID = x.ID,
@@ -27,7 +28,7 @@ namespace Backend.Features.CommonSpaces.Queries.GetById
                     IsInMaintenance = x.IsInMaintenance
                 })
                 .FirstOrDefaultAsync();
-            if (space == null) return Result.Failure("Common space not found");
+            if (space == null) return Result.Failure(CommonSpacesErrors.CommonSpaceNotFoundOnQuery);
 
             return Result.WithResponse(new ResponseData { Data = space });
         }
