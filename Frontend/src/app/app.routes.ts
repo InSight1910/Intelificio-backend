@@ -13,7 +13,7 @@ import { SingupComponent } from './core/features/authentication/signup/signup.co
 import { ChangePasswordOneComponent } from './core/features/authentication/change-password-one/change-password-one.component';
 import { ChangePasswordTwoComponent } from './core/features/authentication/change-password-two/change-password-two.component';
 import { AdminCommunityComponent } from './core/features/community/adminCommunity/admin-community.component';
-import { HomeComponent } from './core/features/common-space/home/home.component';
+import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 
 export const routes: Routes = [
@@ -59,6 +59,10 @@ export const routes: Routes = [
   },
   {
     path: 'manage',
-    component: ManageComponent
-  }
+    component: ManageComponent,
+  },
+  {
+    path: 'home-space',
+    component: HomeSpaceComponent,
+  },
 ];

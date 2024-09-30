@@ -21,7 +21,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Created(),
                 onFailure: (errors) =>
                 {
@@ -66,7 +66,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> LogIn([FromBody] LoginCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: (errors) =>
                 {
@@ -79,7 +79,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> Refresh([FromBody] RefreshCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
         }
@@ -88,7 +88,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> GetUserByEmail([FromBody] GetUserByEmailQuery query)
         {
             var result = await mediator.Send(query);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
         }
@@ -97,7 +97,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> GetAllRoles()
         {
             var result = await mediator.Send(new GetAllRolesQuery());
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
 
@@ -107,7 +107,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> GetAllUserAdmin()
         {
             var result = await mediator.Send(new GetAllUserAdminQuery());
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: NotFound);
 
@@ -117,7 +117,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> ChangePasswordStepOne([FromBody] ChangePasswordOneCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
         }
@@ -126,7 +126,7 @@ namespace Backend.Features.Authentication.Common
         public async Task<IActionResult> ChangePasswordStepTwo([FromBody] ChangePasswordTwoCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
         }
