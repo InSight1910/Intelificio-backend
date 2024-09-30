@@ -5,6 +5,6 @@ namespace Backend.Features.Notification.Commands.CommonExpenses
 {
     public class CommonExpenseCommand: IRequest<Result>
     {
-        public required int UnitId { get; set; }
+        public required int CommunityID { get; set; }
     }
 }

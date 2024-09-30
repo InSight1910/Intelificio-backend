@@ -40,35 +40,29 @@ namespace Backend.Common.Helpers
 
         }
 
-        //public Task<SendGrid.Response> SendMultipleDynamicEmailToMultipleRecipients
-        //                                                                       (EmailAddress from,
-        //                                                                       List<EmailAddress> tos,
-        //                                                                       string templateId,
-        //                                                                       List<object> dynamicTemplateData)
-        //{
-        //    if (string.IsNullOrWhiteSpace(templateId))
-        //    {
-        //        throw new ArgumentException($"{nameof(templateId)} is required when creating a dynamic template email.", nameof(templateId));
-        //    }
+        public async Task<SendGrid.Response> SendMultipleDynamicEmailToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId,List<object> templates)
+        {
 
-        //    var msg = new SendGridMessage();
-        //    msg.SetFrom(from);
-        //    msg.TemplateId = templateId;
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
 
-        //    var setDynamicTemplateDataValues = dynamicTemplateData != null;
+            var setDynamicTemplateDataValues = templates != null;
 
-        //    for (var i = 0; i < tos.Count; i++)
-        //    {
-        //        msg.AddTo(tos[i], i);
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
 
-        //        if (setDynamicTemplateDataValues)
-        //        {
-        //            msg.SetTemplateData(dynamicTemplateData[i], i);
-        //        }
-        //    }
+                if (setDynamicTemplateDataValues)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
 
-        //    return msg;
-        //}
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
 
 
 

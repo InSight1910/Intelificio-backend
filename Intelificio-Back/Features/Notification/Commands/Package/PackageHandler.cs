@@ -57,7 +57,7 @@ namespace Backend.Features.Notification.Commands.Package
             };
 
             var result = await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template, templateNotification.TemplateId, from, recipients);
-            if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);
+            if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackage);
             return Result.Success();
         }    
     }
