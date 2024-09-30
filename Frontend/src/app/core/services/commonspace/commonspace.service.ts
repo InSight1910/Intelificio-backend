@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   CommonSpace,
   CreateCommonSpace,
+  UpdateCommonSpace,
 } from '../../../shared/models/commonspace.model';
 import { Response } from '../../../shared/models/response.model';
 
@@ -25,11 +26,11 @@ export class CommonSpaceService {
   }
 
   createCommonSpace(data: CreateCommonSpace) {
-    return this.http.post(`${this.baseUrl}`, data);
+    return this.http.post<Response<CommonSpace>>(`${this.baseUrl}`, data);
   }
 
-  updateCommonSpace(id: number, data: CreateCommonSpace) {
-    return this.http.put(`${this.baseUrl}/${id}`, data);
+  updateCommonSpace(id: number, data: UpdateCommonSpace) {
+    return this.http.put<Response<CommonSpace>>(`${this.baseUrl}/${id}`, data);
   }
 
   deleteCommonSpace(id: number) {

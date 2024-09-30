@@ -28,8 +28,18 @@
 /* Override Bulma's default colors */
 .button.is-primary {
   background-color: var(--primary);
-  
+  color: white;
 }
+
+.button.is-primary:hover {
+  background-color: #1d4ed8
+}
+
+.button.is-primary:disabled {
+  background-color: #224691;
+  color: white;
+}
+
 
 .button.is-link {
   background-color: var(--link);
@@ -52,8 +62,8 @@
   color: white;
 }
 .button.is-danger:hover {
-  background-color: #ff2b50; /* Hover color */
-  color: white; /* Keep text color consistent */
+  background-color: #ff2b50;
+  color: white;
 }
 
 .has-text-primary {

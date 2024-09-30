@@ -13,7 +13,7 @@
 </div>
 
 <div class="grid is-col-min-12">
-  @for (space of (commonSpaces$ | async)?.data; track $index){
+  @for (space of (commonSpaces$ | async); track $index){
   <div class="cell">
     <div class="box">
       <h4 class="title is-4 has-text-weight-bold mb-6">{{ space.name }}</h4>
@@ -61,7 +61,11 @@
   }
 </div>
 @if (isModalOpen) {
-<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()">
+<app-modal-space
+  [title]="modalTitle"
+  (close)="onClickCloseEdit()"
+  [onClick]="isModalOpen ? onClickSaveEdit : onClickSaveEdit"
+>
   <form [formGroup]="form">
     <div class="field">
       <label class="label">Nombre</label>

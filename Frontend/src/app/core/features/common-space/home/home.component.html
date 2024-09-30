@@ -1,1 +1,117 @@
-<p>home works!</p>
+<div class="box mt-6 is-shadowless">
+  <div class="level">
+    <div class="level-left">
+      <h3 class="title is-4">Reservar espacios comunes</h3>
+    </div>
+    <div class="level-right">
+      <div class="select">
+        <select #spaceId (change)="onChange($event)">
+          <option value="">Seleccionar espacio</option>
+          @for(space of (commonSpaces$ | async); track $index) {
+          <option value="{{ space.id }}">{{ space.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="level mt-6 mb-4">
+    <div class="level-left">
+      <div class="level-item">
+        <div class="">
+          <span class="icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </span>
+          Location: Lugar
+        </div>
+      </div>
+    </div>
+    <div class="level-item">
+      <div>
+        <span class="icon">
+          <i class="fa-solid fa-user-group"></i>
+        </span>
+        Capacity: 100
+      </div>
+    </div>
+    <div class="level-right">
+      <button
+        class="button is-primary"
+        (click)="onClickCreateReservation(+spaceId.value)"
+        [disabled]="!canMakeReservation"
+      >
+        Hacer reservacion
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="box is-shadowless">
+  <div class="level">
+    <h4 class="title is-4">Reservar espacios comunes</h4>
+
+    <div class="level-right">
+      <div class="field is-grouped">
+        <p class="control">
+          <button
+            class="button"
+            [disabled]="indexMonth == 0"
+            (click)="prevMonth()"
+          >
+            <span class="icon is-small">
+              <i class="fa-solid fa-less-than"></i>
+            </span>
+          </button>
+        </p>
+
+        <p class="subtitle is-capitalized my-auto">
+          {{ months.at(indexMonth)?.month }}
+        </p>
+
+        <p class="control">
+          <button
+            class="button"
+            [disabled]="indexMonth == 2"
+            (click)="nextMonth()"
+          >
+            <span class="icon is-small">
+              <i class="fa-solid fa-greater-than"></i>
+            </span>
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="grid">
+    @for(day of days; track $index) {
+    <div class="cell">
+      <p
+        class="subtitle is-6 has-text-centered {{
+          $index == 6 ? 'is-col-from-end-1' : ''
+        }}"
+      >
+        {{ day }}
+      </p>
+    </div>
+    } @for (day of daysInMonth; track $index) { @if ($index ==
+    daysInMonth.length - 1) {
+    <div
+      class="cell box is-shadowless mb-auto"
+      [ngClass]="{ 'is-col-from-end-2': $index % 6 == 0 }"
+    >
+      {{ day }}
+    </div>
+    } @else {
+    <div class="cell box is-shadowless">
+      {{ day }}
+    </div>
+    } }
+  </div>
+</div>
+
+@if(isModalOpen) {
+<app-modal-space
+  [title]="modalTitle"
+  (close)="onClickCloseEdit()"
+/><!-- (close)="onClickCloseEdit()" -->
+<!-- [onClick]="isModalOpen ? onClickSaveEdit : onClickSaveEdit" -->
+> }
