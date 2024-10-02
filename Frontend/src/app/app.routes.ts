@@ -15,6 +15,7 @@ import { ChangePasswordTwoComponent } from './core/features/authentication/chang
 import { AdminCommunityComponent } from './core/features/community/adminCommunity/admin-community.component';
 import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
+import { NotificationComponent } from './core/features/notification/notification.component';
 
 export const routes: Routes = [
   {
@@ -64,5 +65,9 @@ export const routes: Routes = [
   {
     path: 'home-space',
     component: HomeSpaceComponent,
+  },
+  {
+    path: 'Comunicado',
+    component: NotificationComponent,
   },
 ];

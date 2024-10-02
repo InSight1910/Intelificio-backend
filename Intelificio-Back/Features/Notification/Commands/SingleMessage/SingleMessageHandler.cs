@@ -26,42 +26,96 @@ namespace Backend.Features.Notification.Commands.SingleMessage
 
         public async Task<Result> Handle(SingleMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Community
-                                                .Include(c => c.Users)
-                                                .Where(c => c.ID == request.CommunityID)
-                                                .Select(c => new
-                                                {
-                                                    CommunityName = c.Name ?? "",
-                                                    SenderAddress = c.Address,
-                                                    User = c.Users.FirstOrDefault(u => u.Id == request.RecipientId),
-                                                })
-                                                .FirstOrDefaultAsync();
+            var communityData = new
+            {
+                CommunityName = string.Empty,
+                SenderAddress = string.Empty,
+                Recipients = new List<EmailAddress>()
+            };
 
+            // Caso 1: Filtrar por piso
+            if (request.Floor > 0 && request.BuildingID > 0)
+            {
+                communityData = await _context.Community
+                    .Include(c => c.Buildings)
+                    .ThenInclude(b => b.Units)
+                    .ThenInclude(u => u.Users)
+                    .Where(c => c.ID == request.CommunityID)
+                    .Select(c => new
+                    {
+                        CommunityName = c.Name,
+                        SenderAddress = $"{c.Address} {c.Municipality.Name}",
+                        Recipients = c.Buildings
+                            .Where(b => b.ID == request.BuildingID)
+                            .SelectMany(b => b.Units)
+                            .Where(u => u.Floor == request.Floor)
+                            .SelectMany(u => u.Users)
+                            .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))
+                            .ToList()
+                    })
+                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            }
+            // Caso 2: Filtrar por edificio
+            else if (request.BuildingID > 0)
+            {
 
-            var recipients = new List<EmailAddress>();
+                communityData = await _context.Community
+                    .Include(c => c.Buildings)
+                    .ThenInclude(b => b.Units)
+                    .ThenInclude(u => u.Users)
+                    .Where(c => c.ID == request.CommunityID)
+                    .Select(c => new
+                    {
+                        CommunityName = c.Name,
+                        SenderAddress = c.Address,
+                        Recipients = c.Buildings
+                            .Where(b => b.ID == request.BuildingID)
+                            .SelectMany(b => b.Units)
+                            .SelectMany(u => u.Users)
+                            .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))
+                            .ToList()
+                    })
+                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            }
+            // Caso 3: Filtrar por comunidad completa
+            else
+            {
 
-            recipients.Add(new EmailAddress(
-                user.User.Email ?? "intelificio@duocuc.cl",
-                $"{user.User.FirstName} {user.User.LastName}"
-            ));
+                communityData = await _context.Community
+                    .Include(c => c.Users)
+                    .Where(c => c.ID == request.CommunityID)
+                    .Select(c => new
+                    {
+                        CommunityName = c.Name,
+                        SenderAddress = c.Address,
+                        Recipients = c.Users
+                            .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))
+                            .ToList()
+                    })
+                    .FirstOrDefaultAsync();
+            }
+
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.ID == 7).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnSimpleMessage);
+            if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnSimpleMessage);
 
             var template = new SingleMessageTemplate
             {
                 Subject = request.Subject, 
-                PreHeader = request.PreHeader,
                 Title = request.Title,
-                CommunityName = user.CommunityName,
+                CommunityName = communityData.CommunityName ?? " ",
                 Message = request.Message,
-                SenderAddress = user.SenderAddress
+                SenderName = request.SenderName,
+                SenderAddress = communityData.SenderAddress
             };
             
-            var from = new EmailAddress("intelificio@duocuc.cl", user.CommunityName + " a través de Intelificio");
+            var from = new EmailAddress("intelificio@duocuc.cl", communityData.CommunityName + " a través de Intelificio");
 
             var result = await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(
                                                             template,
-                                                            TemplatesEnum.SingleMessageIntelificioId,
+                                                            templateNotification.TemplateId,
                                                             from,
-                                                            recipients
+                                                            communityData.Recipients
                                                         );
 
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);

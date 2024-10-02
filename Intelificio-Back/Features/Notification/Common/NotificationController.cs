@@ -1,7 +1,7 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Notification.Commands.Package;
 using Backend.Features.Notification.Commands.SingleMessage;
-using Backend.Models;
+
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +15,9 @@ namespace Backend.Features.Notification.Common
         public async Task<IActionResult> SendSingleEmail([FromBody] SingleMessageCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
-                onSuccess: _ => Created(),
-                onFailure: (result) => BadRequest(result)
-                );
+            return result.Match(
+                onSuccess: (_) => Created(),
+                onFailure: BadRequest);
         }
 
         [HttpPost("Package/{ID}")]
@@ -26,10 +25,9 @@ namespace Backend.Features.Notification.Common
         {
             command.PackageID = ID;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
-                onSuccess: _ => Created(),
-                onFailure: (result) => BadRequest(result)
-                );
+            return result.Match(
+                onSuccess: (_) => Created(),
+                onFailure: BadRequest);
         }
     }
 }

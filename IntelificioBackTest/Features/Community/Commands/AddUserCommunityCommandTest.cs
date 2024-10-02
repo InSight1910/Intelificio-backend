@@ -1,5 +1,4 @@
 ﻿using Backend.Features.Community.Commands.AddUser;
-using Backend.Features.Community.Commands.Assign;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
 using Microsoft.EntityFrameworkCore;

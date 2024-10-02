@@ -4,6 +4,7 @@ using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
 using SendGrid.Helpers.Mail;
+using System.Collections.Generic;
 
 namespace Backend.Features.Notification.Commands.CommonExpenses
 {
@@ -40,11 +41,22 @@ namespace Backend.Features.Notification.Commands.CommonExpenses
 
             var templates = new List<CommonExpensesTemplate>();
 
+            var tem = new CommonExpensesTemplate
+            {
+                CommunityName = "",
+                Name = "",
+                MesAno = "",
+                UniteName = "",
+                Total = "",
+                EndDate = "",
+            };
+            templates.Add(tem);
+
             //ToDo:  generar el template por cada unidad
 
+            if (templates == null) return Result.Failure(NotificationErrors.TemplateNotCreated);
 
-
-            var result = await _sendMail.SendMultipleDynamicEmailToMultipleRecipients(
+            var result = await _sendMail.SendCommondExpenses(
                                                             from,
                                                             recipients,
                                                             TemplatesEnum.SingleMessageIntelificioId,

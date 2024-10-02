@@ -93,5 +93,25 @@ namespace Backend.Features.Notification.Common
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
 
+        //Errores de SimpleMessage
+
+        public static Error TemplateNotFoundOnSimpleMessage = new()
+        {
+            Code = "Notification.SimpleMessage.TemplateNotFoundOnSimpleMessage",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnSimpleMessage = new()
+        {
+            Code = "Notification.SimpleMessage.TemplateIdIsNullOnSimpleMessage",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+
+        //Errores de CommonExpenses
+        public static Error TemplateNotCreated = new()
+        {
+            Code = "Notification.CommonExpenses.TemplateNotCreated",
+            Message = "El templates no puede ser null para enviar las notificaciones de Gastos común"
+        };
+
     }
 }

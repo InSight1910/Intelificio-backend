@@ -10,6 +10,7 @@ namespace IntelificioBackTest.Fixtures
             {
                 Address = "Calle 123",
                 MunicipalityId = 1,
+                RUT = "",
                 Name = "Comunidad Test"
             };
         }

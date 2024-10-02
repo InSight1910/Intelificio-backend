@@ -1,4 +1,5 @@
 ﻿
+using Backend.Features.Notification.Commands.CommonExpenses;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -53,7 +54,31 @@ namespace Backend.Common.Helpers
             {
                 msg.AddTo(recipients[i], i);
 
-                if (setDynamicTemplateDataValues)
+                if (setDynamicTemplateDataValues  && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendCommondExpenses(EmailAddress from, List<EmailAddress> recipients, string templateId, List<CommonExpensesTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
                 {
                     msg.SetTemplateData(templates[i], i);
                 }

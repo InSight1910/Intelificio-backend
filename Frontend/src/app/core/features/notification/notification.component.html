@@ -1,0 +1,154 @@
+<div class="card-content">
+  <div class="column is-12">
+    <h1 class="title is-4 mb-5">Comunicado Interno</h1>
+    <form class="box" [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+      <div class="columns">
+        <div class="column field is-4">
+          <label class="label" for="recipient-level"
+            >Seleccione destinatarios</label
+          >
+          <div class="control">
+            <div class="select">
+              <select
+                id="recipient-level"
+                (change)="onRecipientLevelChange($event)"
+              >
+                <option value="community">Enviar a toda la comunidad</option>
+                <option value="building">Edificio Especifico</option>
+                <option value="floor">Piso Especifico</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="recipientLevel === 'building' || recipientLevel === 'floor'"
+          class="column field is-4"
+        >
+          <label class="label" for="building">Seleccione Edificio</label>
+          <div class="control">
+            <div class="select">
+              <select
+                id="building"
+                formControlName="BuildingID"
+                (change)="onChangeBuilding()"
+              >
+                <option value="">Selecciona un Edificio</option>
+                <ng-container *ngIf="buildings.length >= 0; else noBuildings">
+                  <option
+                    *ngFor="let building of buildings"
+                    [value]="building.id"
+                  >
+                    {{ building.name }}
+                  </option>
+                </ng-container>
+                <ng-template #noBuildings>
+                  <option value="">Edificio no disponibles</option>
+                </ng-template>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="
+            recipientLevel === 'floor' && emailForm.get('BuildingID')?.value
+          "
+          class="column field is-4"
+        >
+          <label class="label" for="floor">Seleccione Piso</label>
+          <div class="control">
+            <div class="select">
+              <select id="floor" formControlName="Floor">
+                <option value="">Seleccione un Piso</option>
+                <ng-container *ngIf="floors.length > 0; else noFloors">
+                  <option *ngFor="let floor of floors" [value]="floor">
+                    {{ floor }}
+                  </option>
+                </ng-container>
+                <ng-template #noFloors>
+                  <option value="">No hay psisos disponibles</option>
+                </ng-template>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="Subject">Asunto*</label>
+        <div class="control">
+          <input
+            id="Subject"
+            formControlName="Subject"
+            class="input"
+            type="text"
+            placeholder="Ingrese asunto del correo"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="Title">Titulo</label>
+        <div class="control">
+          <input
+            id="Title"
+            formControlName="Title"
+            class="input"
+            type="text"
+            placeholder="Ingrese titulo del correo"
+          />
+        </div>
+      </div>
+
+      <div class="field mb-5">
+        <label class="label" for="Message">Mensaje</label>
+        <div class="control">
+          <textarea
+            id="Message"
+            formControlName="Message"
+            class="textarea"
+            placeholder="Ingrese el mensaje del correo aquí"
+            rows="5"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="SenderName">Enviado por</label>
+        <div class="control">
+          <input
+            id="SenderName"
+            formControlName="SenderName"
+            class="input"
+            type="text"
+            placeholder="Ingrese su nombre u organización"
+          />
+        </div>
+      </div>
+
+      @if (notification) { @if (IsSuccess){
+      <div class="notification is-success">
+        <button class="delete" (click)="closeNotification()"></button>
+        {{ this.notificationMessage }}
+      </div>
+      } @else if (IsError){
+      <div class="notification is-danger">
+        <button class="delete" (click)="closeNotification()"></button>
+        {{ this.notificationMessage }}
+      </div>
+      } }
+
+      <div class="buttons">
+        <button
+          type="submit"
+          class="button is-primary"
+          [ngClass]="{ 'is-loading': isLoading }"
+          [disabled]="!emailForm.valid || notification"
+        >
+          Enviar correo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

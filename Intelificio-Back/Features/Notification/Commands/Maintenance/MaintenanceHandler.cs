@@ -5,13 +5,12 @@ using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Cms;
 using SendGrid.Helpers.Mail;
-using System.Security.AccessControl;
+
 
 namespace Backend.Features.Notification.Commands.Maintenance
 {
-    public class MaintenanceHandler : IRequest<MaintenanceCommand, Result>
+    public class MaintenanceHandler : IRequestHandler<MaintenanceCommand, Result>
     {
         private readonly SendMail _sendMail;
         private readonly IntelificioDbContext _context;

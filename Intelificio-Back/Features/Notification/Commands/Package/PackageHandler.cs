@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SendGrid.Helpers.Mail;
 using System.Globalization;
-using System.Xml.Linq;
 
 namespace Backend.Features.Notification.Commands.Package
 {
