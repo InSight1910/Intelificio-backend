@@ -24,8 +24,8 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css", "src/bulma-calendar.min.css"],
-            "scripts": ["src/bulma-calendar.min.js"]
+            "styles": ["src/styles.css"],
+            "scripts": []
           },
           "configurations": {
             "production": {

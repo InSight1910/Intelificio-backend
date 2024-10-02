@@ -10,6 +10,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ModalComponent {
   @Input() title: string = '';
+  @Input() isValid: boolean = false;
   @Input() buttonTitle: string = '';
   @Input() onClick: Function = () => {};
   @Input() isLoading: boolean = false;
