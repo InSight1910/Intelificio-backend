@@ -1,17 +1,37 @@
 import { Component } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
-import { from, Observable, of } from 'rxjs';
+import { from, map, Observable, of, tap } from 'rxjs';
 import { CommonSpace } from '../../../../shared/models/commonspace.model';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import bulmaCalendar from 'bulma-calendar';
+import { AppState } from '../../../../states/intelificio.state';
+import { Store } from '@ngrx/store';
+import { selectCommunity } from '../../../../states/community/community.selectors';
+import { CommonSpaceService } from '../../../services/commonspace/commonspace.service';
 
 @Component({
   selector: 'app-home-space',
   standalone: true,
-  imports: [ModalComponent, CommonModule],
+  imports: [ModalComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeSpaceComponent {
+  constructor(
+    private fb: FormBuilder,
+    private commonSpaceService: CommonSpaceService,
+    private store: Store<AppState>
+  ) {
+    this.form = this.fb.group({
+      date: [''],
+      startTime: [''],
+      endTime: [''],
+    });
+  }
+
+  form: FormGroup;
+  selectedSpace: CommonSpace = {} as CommonSpace;
   isCreatingReservation: boolean = false;
   modalTitle: string = 'Create Reservation';
   isModalOpen: boolean = false;
@@ -26,28 +46,32 @@ export class HomeSpaceComponent {
     'Viernes',
     'Sábado',
   ];
-  commonSpaces$: Observable<CommonSpace[]> = of([
-    {
-      id: 1,
-      name: 'Meeting Room',
-      capacity: 100,
-      location: '1st floor',
-      communityId: 1,
-      isInMaintenance: true,
-    },
-    {
-      id: 2,
-      name: 'Conference Room',
-      capacity: 200,
-      location: '2nd floor',
-      communityId: 1,
-      isInMaintenance: false,
-    },
-  ] as CommonSpace[]);
+
+  commonSpaces$!: Observable<CommonSpace[]>;
 
   ngOnInit() {
     this.getMonths();
     this.generateCalendar();
+    this.loadCommonSpace();
+  }
+
+  loadCommonSpace() {
+    this.store.select(selectCommunity).subscribe((community) => {
+      this.commonSpaces$ = this.commonSpaceService
+        .getCommonSpacesByCommunity(community?.id!)
+        .pipe(
+          (tap(({ data }) => {
+            this.selectedSpace = data[0];
+            console.log(data);
+          }),
+          map(({ data }) => data))
+        );
+      // this.commonSpaces$.subscribe();
+    });
+  }
+
+  onChangeInput() {
+    console.log(this.form.value);
   }
 
   onClickCloseEdit() {
@@ -55,18 +79,20 @@ export class HomeSpaceComponent {
   }
 
   onClickCreateReservation(id: number) {
-    console.log(id);
     this.isModalOpen = true;
     this.commonSpaces$.subscribe((commonSpaces) => {
       const commonSpace = commonSpaces.find((space) => space.id === id);
-
       this.modalTitle = `Reservar ${commonSpace?.name}`;
     });
   }
 
   onChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
-    console.log(value);
+    this.commonSpaces$.subscribe((commonSpaces) => {
+      this.selectedSpace = commonSpaces.find(
+        (space) => space.id === parseInt(value)
+      )!;
+    });
     if (value == '') {
       this.canMakeReservation = false;
       return;

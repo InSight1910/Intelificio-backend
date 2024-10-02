@@ -20,6 +20,7 @@
     "@angular/router": "^18.2.0",
     "@ngrx/effects": "^18.0.2",
     "@ngrx/store": "^18.0.2",
+    "bulma-calendar": "^7.1.1",
     "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
