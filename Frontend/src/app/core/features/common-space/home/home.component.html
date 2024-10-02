@@ -6,7 +6,6 @@
     <div class="level-right">
       <div class="select">
         <select #spaceId (change)="onChange($event)">
-          <option value="">Seleccionar espacio</option>
           @for(space of (commonSpaces$ | async); track $index) {
           <option value="{{ space.id }}">{{ space.name }}</option>
           }
@@ -21,7 +20,8 @@
           <span class="icon">
             <i class="fa-solid fa-location-dot"></i>
           </span>
-          Location: Lugar
+          Location:
+          {{ selectedSpace.location }}
         </div>
       </div>
     </div>
@@ -30,14 +30,13 @@
         <span class="icon">
           <i class="fa-solid fa-user-group"></i>
         </span>
-        Capacity: 100
+        Capacity: {{ selectedSpace.capacity }}
       </div>
     </div>
     <div class="level-right">
       <button
         class="button is-primary"
         (click)="onClickCreateReservation(+spaceId.value)"
-        [disabled]="!canMakeReservation"
       >
         Hacer reservacion
       </button>
@@ -81,37 +80,47 @@
       </div>
     </div>
   </div>
-  <div class="grid">
-    @for(day of days; track $index) {
-    <div class="cell">
-      <p
-        class="subtitle is-6 has-text-centered {{
-          $index == 6 ? 'is-col-from-end-1' : ''
-        }}"
-      >
+
+  <div class="fixed-grid has-7-cols is-scrollable">
+    <div class="grid">
+      @for(day of days; track $index) {
+      <div class="cell">
+        <p class="subtitle is-6 has-text-centered">
+          {{ day }}
+        </p>
+      </div>
+      } @for (day of daysInMonth; track $index) { @if (day != null) {
+      <div class="cell box is-shadowless my-auto py-auto">
         {{ day }}
-      </p>
+      </div>
+      } @else {
+      <div class="cell"></div>
+      } }
     </div>
-    } @for (day of daysInMonth; track $index) { @if ($index ==
-    daysInMonth.length - 1) {
-    <div
-      class="cell box is-shadowless mb-auto"
-      [ngClass]="{ 'is-col-from-end-2': $index % 6 == 0 }"
-    >
-      {{ day }}
-    </div>
-    } @else {
-    <div class="cell box is-shadowless">
-      {{ day }}
-    </div>
-    } }
   </div>
 </div>
 
 @if(isModalOpen) {
-<app-modal-space
-  [title]="modalTitle"
-  (close)="onClickCloseEdit()"
-/><!-- (close)="onClickCloseEdit()" -->
-<!-- [onClick]="isModalOpen ? onClickSaveEdit : onClickSaveEdit" -->
-> }
+<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()">
+  <form [formGroup]="form">
+    <div class="field">
+      <label class="label">Fecha</label>
+      <div class="control">
+        <input type="date" class="input" formControlName="date" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Hora de inicio</label>
+      <div class="control">
+        <input type="time" class="input" formControlName="startTime" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Hora de inicio</label>
+      <div class="control">
+        <input type="time" class="input" formControlName="endTime" />
+      </div>
+    </div>
+  </form>
+</app-modal-space>
+}
