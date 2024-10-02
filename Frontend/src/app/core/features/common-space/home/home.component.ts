@@ -3,7 +3,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { from, map, Observable, of, tap } from 'rxjs';
 import { CommonSpace } from '../../../../shared/models/commonspace.model';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { AppState } from '../../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectCommunity } from '../../../../states/community/community.selectors';
@@ -23,7 +23,7 @@ export class HomeSpaceComponent {
     private store: Store<AppState>
   ) {
     this.form = this.fb.group({
-      date: [''],
+      date: ['', Validators.required],
       startTime: [''],
       endTime: [''],
     });
@@ -46,7 +46,7 @@ export class HomeSpaceComponent {
     'Sábado',
   ];
 
-  commonSpaces$!: Observable<CommonSpace[]>;
+  commonSpaces$!: CommonSpace[];
 
   ngOnInit() {
     this.getMonths();
@@ -56,16 +56,24 @@ export class HomeSpaceComponent {
 
   loadCommonSpace() {
     this.store.select(selectCommunity).subscribe((community) => {
-      this.commonSpaces$ = this.commonSpaceService
+      this.commonSpaceService
         .getCommonSpacesByCommunity(community?.id!)
         .pipe(
-          (tap(({ data }) => {
+          (
+            tap(({ data }) => {
+             console.log(data)
             this.selectedSpace = data[0];
             console.log(data);
           }),
           map(({ data }) => data))
+        ).subscribe(
+          {
+            next: (data) => {
+              this.selectedSpace = data[0];
+              this.commonSpaces$ = data;
+            }
+          }
         );
-      // this.commonSpaces$.subscribe();
     });
   }
 
@@ -79,19 +87,19 @@ export class HomeSpaceComponent {
 
   onClickCreateReservation(id: number) {
     this.isModalOpen = true;
-    this.commonSpaces$.subscribe((commonSpaces) => {
-      const commonSpace = commonSpaces.find((space) => space.id === id);
-      this.modalTitle = `Reservar ${commonSpace?.name}`;
-    });
+    console.log(this.form.valid)
+//    this.commonSpaces$.subscribe((commonSpaces) => {
+//      const commonSpace = commonSpaces.find((space) => space.id === id);
+//      this.modalTitle = `Reservar ${commonSpace?.name}`;
+//    });
   }
 
   onChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
-    this.commonSpaces$.subscribe((commonSpaces) => {
-      this.selectedSpace = commonSpaces.find(
+
+      this.selectedSpace = this.commonSpaces$.find(
         (space) => space.id === parseInt(value)
       )!;
-    });
     if (value == '') {
       this.canMakeReservation = false;
       return;
@@ -116,7 +124,6 @@ export class HomeSpaceComponent {
     this.months = months;
   }
 
-  currentMonth: string = '';
   indexMonth: number = 0;
   daysInMonth!: number[];
   prevMonth() {
@@ -144,7 +151,5 @@ export class HomeSpaceComponent {
     for (let day = 1; day <= lastDateOfMonth; day++) {
       this.daysInMonth.push(day);
     }
-
-    console.log(this.daysInMonth);
   }
 }

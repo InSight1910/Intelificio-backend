@@ -6,7 +6,7 @@
     <div class="level-right">
       <div class="select">
         <select #spaceId (change)="onChange($event)">
-          @for(space of (commonSpaces$ | async); track $index) {
+          @for(space of (commonSpaces$); track $index) {
           <option value="{{ space.id }}">{{ space.name }}</option>
           }
         </select>
@@ -101,7 +101,7 @@
 </div>
 
 @if(isModalOpen) {
-<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()">
+<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()" buttonTitle="Guardar" [isValid]="form.valid">
   <form [formGroup]="form">
     <div class="field">
       <label class="label">Fecha</label>

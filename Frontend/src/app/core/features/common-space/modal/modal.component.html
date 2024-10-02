@@ -17,11 +17,12 @@
       <div class="buttons">
         <button
           class="button is-success"
-          [disabled]="isLoading"
+          [disabled]="isLoading || !isValid"
           [ngClass]="{ 'is-loading': isLoading }"
           (click)="onClick()"
+
         >
-          Guardar
+          {{ buttonTitle }}
         </button>
         <button
           class="button"
