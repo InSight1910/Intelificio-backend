@@ -32,6 +32,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('community');
+    localStorage.removeItem('communityId');
   }
 
   getUserByEmail(email: string) {

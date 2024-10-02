@@ -4,7 +4,6 @@ import { from, map, Observable, of, tap } from 'rxjs';
 import { CommonSpace } from '../../../../shared/models/commonspace.model';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import bulmaCalendar from 'bulma-calendar';
 import { AppState } from '../../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectCommunity } from '../../../../states/community/community.selectors';

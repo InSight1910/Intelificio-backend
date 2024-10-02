@@ -8,6 +8,7 @@ import { User } from '../../models/user.model';
 import { selectUser } from '../../../states/auth/auth.selectors';
 import { Community } from '../../models/community.model';
 import { selectCommunity } from '../../../states/community/community.selectors';
+import { AuthActions } from '../../../states/auth/auth.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -42,5 +43,10 @@ export class NavbarComponent {
   togleNavbar() {
     this.navbarDisplay = !this.navbarDisplay;
     this.openNavbar.emit(this.navbarDisplay);
+  }
+
+  openProfileModal() {}
+  logout() {
+    this.store.dispatch(AuthActions.logout());
   }
 }

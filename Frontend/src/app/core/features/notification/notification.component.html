@@ -33,7 +33,7 @@
                 formControlName="BuildingID"
                 (change)="onChangeBuilding()"
               >
-                <option value="">Selecciona un Edificio</option>
+                <option value="0">Selecciona un Edificio</option>
                 <ng-container *ngIf="buildings.length >= 0; else noBuildings">
                   <option
                     *ngFor="let building of buildings"
@@ -50,17 +50,12 @@
           </div>
         </div>
 
-        <div
-          *ngIf="
-            recipientLevel === 'floor' && emailForm.get('BuildingID')?.value
-          "
-          class="column field is-4"
-        >
+        <div *ngIf="recipientLevel === 'floor'" class="column field is-4">
           <label class="label" for="floor">Seleccione Piso</label>
           <div class="control">
             <div class="select">
               <select id="floor" formControlName="Floor">
-                <option value="">Seleccione un Piso</option>
+                <option value="0">Seleccione un Piso</option>
                 <ng-container *ngIf="floors.length > 0; else noFloors">
                   <option *ngFor="let floor of floors" [value]="floor">
                     {{ floor }}

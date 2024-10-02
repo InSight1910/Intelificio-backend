@@ -33,7 +33,7 @@ export class NotificationComponent implements OnInit {
   floors: number[] = [];
   community!: Community | null;
   isLoading = false;
-  selectedBuildingId: number = 1;
+
   recipientLevel: RecipientLevel = 'community';
   notification = false;
   IsSuccess = false;
@@ -77,7 +77,6 @@ export class NotificationComponent implements OnInit {
             (response: { data: Building[] }) => {
               this.buildings = response.data;
               if (this.buildings.length > 0) {
-                this.selectedBuildingId = this.buildings[0].id;
                 this.emailForm.patchValue({ ComunityID: this.community?.id });
                 this.isLoading = false;
               }
@@ -96,6 +95,7 @@ export class NotificationComponent implements OnInit {
     const building = this.buildings.find(
       (x) => x.id == this.emailForm.get('BuildingID')?.value
     )!;
+
     this.floors = Array.from(
       { length: building.floors },
       (_, index) => index + 1
@@ -169,6 +169,7 @@ export class NotificationComponent implements OnInit {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.recipientLevel = selectedValue as RecipientLevel;
     this.getNumberOfBuilding();
+    this.floors = [];
 
     if (this.recipientLevel === 'community') {
       this.emailForm.patchValue({

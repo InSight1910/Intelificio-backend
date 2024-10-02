@@ -25,10 +25,33 @@
     </div>
 
     <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="is-flex-direction-row">
-          <p>{{ (user | async)?.given_name }}</p>
-          <p>{{ communityName }}</p>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          <div class="is-flex is-flex-direction-column is-align-items-start">
+            <div class="is-flex is-align-items-center">
+              <span class="icon mr-2">
+                <i class="fas fa-user-circle"></i>
+              </span>
+              <span>{{ (user | async)?.given_name }}</span>
+            </div>
+            <p class="is-size-7 has-text-grey">{{ communityName }}</p>
+          </div>
+        </a>
+
+        <div class="navbar-dropdown is-right">
+          <a class="navbar-item" (click)="openProfileModal()">
+            <span class="icon">
+              <i class="fas fa-user-edit"></i>
+            </span>
+            <span>Edit Profile</span>
+          </a>
+          <hr class="navbar-divider" />
+          <a class="navbar-item" (click)="logout()">
+            <span class="icon">
+              <i class="fas fa-sign-out-alt"></i>
+            </span>
+            <span>Logout</span>
+          </a>
         </div>
       </div>
     </div>
