@@ -3,6 +3,8 @@ using Backend.Common.Profiles;
 using Backend.Features.Community.Commands.Update;
 using Backend.Models;
 using IntelificioBackTest.Fixtures;
+using IntelificioBackTest.Mocks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -12,6 +14,7 @@ namespace IntelificioBackTest.Features.Community.Commands
     public class UpdateCommunityCommandTest
     {
         private readonly Mock<ILogger<UpdateCommunityCommandHandler>> _logger;
+        private readonly Mock<UserManager<User>> _userManager;
         private readonly IMapper _mapper;
         private readonly IntelificioDbContext _context;
         private readonly UpdateCommunityCommandHandler _handler;
@@ -27,8 +30,9 @@ namespace IntelificioBackTest.Features.Community.Commands
             _mapper = new Mapper(mapperConfig);
 
             _context = DbContextFixture.GetDbContext();
+            _userManager = UserManagerMock.CreateUserManager();
 
-            _handler = new UpdateCommunityCommandHandler(_context, _logger.Object, _mapper);
+            _handler = new UpdateCommunityCommandHandler(_context, _userManager.Object, _logger.Object, _mapper);
         }
 
         

@@ -101,24 +101,24 @@
 </div>
 
 @if(isModalOpen) {
-<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()" buttonTitle="Guardar" [isValid]="form.valid">
-  <form [formGroup]="form">
+<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()" buttonTitle="Guardar" [isValid]="form.valid" (onModalSubmit)="onSubmit()">
+  <form [formGroup]="form" (submit)="onSubmit($event)">
     <div class="field">
       <label class="label">Fecha</label>
       <div class="control">
-        <input type="date" class="input" formControlName="date" />
+        <input type="date" class="input" formControlName="date"/>
       </div>
     </div>
     <div class="field">
       <label class="label">Hora de inicio</label>
       <div class="control">
-        <input type="time" class="input" formControlName="startTime" />
+        <input type="time" step="900" class="input" formControlName="startTime"/>
       </div>
     </div>
     <div class="field">
       <label class="label">Hora de inicio</label>
       <div class="control">
-        <input type="time" class="input" formControlName="endTime" />
+        <input type="time" step="900" class="input" formControlName="endTime"/>
       </div>
     </div>
   </form>

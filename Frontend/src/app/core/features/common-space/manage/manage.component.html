@@ -39,7 +39,7 @@
                 (click)="onClickEdit(space.id)"
               >
                 <span class="icon mr-1"
-                  ><i class="fa-regular fa-pen-to-square"></i></span
+                ><i class="fa-regular fa-pen-to-square"></i></span
                 >Editar
               </button>
             </p>
@@ -64,7 +64,7 @@
 <app-modal-space
   [title]="modalTitle"
   (close)="onClickCloseEdit()"
-  [onClick]="isModalOpen ? onClickSaveEdit : onClickSaveEdit"
+  (click)="isModalOpen ? onClickSaveEdit : onClickSaveEdit"
 >
   <form [formGroup]="form">
     <div class="field">
@@ -104,7 +104,7 @@
     </div>
 
     <label class="checkbox">
-      <input type="checkbox" formControlName="isInMaintenance" />
+      <input type="checkbox" formControlName="isInMaintenance"/>
       En mantenimiento?
     </label>
   </form>

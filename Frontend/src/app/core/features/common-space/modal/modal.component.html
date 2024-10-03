@@ -19,8 +19,8 @@
           class="button is-success"
           [disabled]="isLoading || !isValid"
           [ngClass]="{ 'is-loading': isLoading }"
-          (click)="onClick()"
-
+          (click)="onSubmit($event)"
+          type="submit"
         >
           {{ buttonTitle }}
         </button>
