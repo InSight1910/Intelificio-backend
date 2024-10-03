@@ -10,5 +10,6 @@ namespace Backend.Models
         public required Building Building { get; set; }
         public required UnitType UnitType { get; set; }
         public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<Guest> Guests { get; set; } = new List<Guest>();
     }
 }

@@ -60,7 +60,15 @@ namespace Backend.Models
         {
             base.OnModelCreating(builder);
             _ = builder.ApplySoftDeleteQueryFilter();
-            _ = builder.Entity<Guest>().HasKey(p => p.ID);
+
+            _ = builder.Entity<Guest>(entity => 
+            {
+                _ = entity.HasKey(p => p.ID);
+
+                _ = entity.HasOne(p => p.Unit)
+                      .WithMany(p => p.Guests)
+                      .HasForeignKey(p => p.UnitId);
+            });
 
             _ = builder.Entity<Charge>(entity =>
             {
@@ -169,6 +177,9 @@ namespace Backend.Models
 
                 _ = entity.HasOne(p => p.UnitType)
                       .WithMany(p => p.Units);
+                
+                _ = entity.HasMany(p => p.Guests)
+                      .WithOne(p => p.Unit);
             });
 
             _ = builder.Entity<User>(entity =>
@@ -176,7 +187,7 @@ namespace Backend.Models
 
                 _ = entity.HasMany(p => p.Attendances)
                       .WithOne(p => p.User);
-
+                
                 _ = entity.HasMany(p => p.Reservations)
                       .WithOne(p => p.User);
 
