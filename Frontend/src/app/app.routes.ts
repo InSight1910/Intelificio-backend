@@ -13,6 +13,7 @@ import { SingupComponent } from './core/features/authentication/signup/signup.co
 import { ChangePasswordOneComponent } from './core/features/authentication/change-password-one/change-password-one.component';
 import { ChangePasswordTwoComponent } from './core/features/authentication/change-password-two/change-password-two.component';
 import { AdminCommunityComponent } from './core/features/community/adminCommunity/admin-community.component';
+import { GuestComponent } from './core/features/guest/guest.component';
 
 export const routes: Routes = [
   {
@@ -54,5 +55,9 @@ export const routes: Routes = [
   {
     path: 'adminCommunity',
     component: AdminCommunityComponent,
+  },
+  {
+    path: 'guest',
+    component: GuestComponent,
   },
 ];

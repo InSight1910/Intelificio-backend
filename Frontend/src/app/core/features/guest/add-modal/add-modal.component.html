@@ -1,0 +1,103 @@
+<div
+  class="button is-primary is-normal is-responsive is-fullwidth"
+  (click)="onClickOpenModal()"
+>
+  Agregar Visita
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': isOpen }">
+  <div class="modal-background"></div>
+  <div class="modal-content columns is-centered">
+    <div class="box py-5 px-6 is-rounded">
+        <p class="title is-4 has-text-centered">Agregar Visita</p>
+        <button class="delete" aria-label="close" (click)="onClickCloseModal()"></button>
+      <section>
+        <form [formGroup]="guestForm">
+          <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control">
+              <input 
+                class="input" 
+                type="text"
+                placeholder="Nombre"
+                formControlName="firstName" 
+              />
+            </div>
+          </div>
+          
+          <div class="field">
+            <label class="label">Apellido</label>
+            <div class="control">
+              <input 
+                class="input" 
+                type="text"
+                placeholder="Apellido"
+                formControlName="lastName" 
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">RUT</label>
+            <div class="control">
+              <input 
+                class="input"
+                type="text"
+                placeholder="RUT"
+                formControlName="rut" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Patente</label>
+            <div class="control">
+              <input 
+                class="input" 
+                type="text"
+                placeholder="Patente"
+                formControlName="plate" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Edificio</label>
+            <div class="select is-fullwidth">
+              <select formControlName="building" (change)="onChangeBuilding()">
+                <option value="">Seleccione Edificio</option>
+                @for (building of buildings; track $index) {
+                <option value="{{ building.id }}">
+                  {{ building.name }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Unidad</label>
+            <div class="select is-fullwidth">
+              <select formControlName="unidad">
+                <option value="">Seleccione Unidad</option>
+                @for (unit of units; track $index) {
+                <option value="{{ unit.id }}">
+                  {{ unit.number }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+
+        </form>
+      </section>
+
+      <footer class="modal-card-foot">
+        <button 
+        class="button is-success" 
+        (click)="onClickAddGuest()"               
+        [ngClass]="{ 'is-loading': isAdding }"form
+        >Agregar</button>
+        <button class="button" (click)="onClickCloseModal()">Cancelar</button>
+      </footer>
+    </div>
+  </div>
+</div>

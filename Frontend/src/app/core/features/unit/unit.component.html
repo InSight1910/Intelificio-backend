@@ -17,16 +17,19 @@
 } @else {
 <div style="margin-top: 1em">
   <div class="level">
+    
     <div class="level-left">
       <h3 class="title level-item">Unidades</h3>
       <h6 class="subtitle level-item">{{ buildingName }}</h6>
     </div>
+    
     <div class="level-right">
       <app-add-modal (addUnitEvent)="updateList($event)"></app-add-modal>
     </div>
+
   </div>
 
-  <div class="box table-container">
+  <div class="box ">
     <table class="table is-hoverable is-fullwidth">
       <thead>
         <tr>
@@ -50,7 +53,7 @@
           <td>{{ unit.user }}</td>
           <td>
             <app-edit-modal
-              (editUnitEvent)="editList($event)"
+              (editUnitEvent)="editUnit($event)"
               unitId="{{ unit.id }}"
             ></app-edit-modal>
           </td>

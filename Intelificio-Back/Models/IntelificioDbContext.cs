@@ -71,8 +71,6 @@ namespace Backend.Models
 
                 _ = entity.HasMany(p => p.Payments)
                       .WithOne(p => p.Charge);
-
-
             });
 
             _ = builder.Entity<Package>(entity =>
@@ -177,9 +175,6 @@ namespace Backend.Models
             {
 
                 _ = entity.HasMany(p => p.Attendances)
-                      .WithOne(p => p.User);
-
-                _ = entity.HasMany(p => p.Guests)
                       .WithOne(p => p.User);
 
                 _ = entity.HasMany(p => p.Reservations)
