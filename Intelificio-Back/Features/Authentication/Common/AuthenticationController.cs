@@ -5,6 +5,7 @@ using Backend.Features.Authentication.Commands.Login;
 using Backend.Features.Authentication.Commands.Refresh;
 using Backend.Features.Authentication.Commands.Signup;
 using Backend.Features.Authentication.Commands.SignupMassive;
+using Backend.Features.Authentication.Commands.UpdateUser;
 using Backend.Features.Authentication.Queries.GetAllRoles;
 using Backend.Features.Authentication.Queries.GetAllUserAdmin;
 using Backend.Features.Authentication.Queries.GetUserByEmail;
@@ -77,6 +78,15 @@ namespace Backend.Features.Authentication.Common
 
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshCommand command)
+        {
+            var result = await mediator.Send(command);
+            return result.Match(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
+        }
+
+        [HttpPut("user/update")]
+        public async Task<IActionResult> Refresh([FromBody] UpdateUserCommand command)
         {
             var result = await mediator.Send(command);
             return result.Match(

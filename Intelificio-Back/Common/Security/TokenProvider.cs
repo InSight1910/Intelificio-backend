@@ -23,7 +23,10 @@ namespace Backend.Common.Security
                 Subject = new ClaimsIdentity([
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                    new Claim(JwtRegisteredClaimNames.GivenName, string.Format("{0} {1}", user.FirstName, user.LastName)),
+                    new Claim(JwtRegisteredClaimNames.GivenName, user.ToString()),
+                    new Claim("firstName", user.FirstName),
+                    new Claim("lastName", user.LastName),
+                    new Claim("phoneNumber", user.PhoneNumber ?? ""),
                     new Claim("role", role)
                 ]),
                 Expires = DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Jwt:TokenExpirationInMinutes")),

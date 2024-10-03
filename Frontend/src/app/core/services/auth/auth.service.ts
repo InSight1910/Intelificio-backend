@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import { Login, UserEmail } from '../../../shared/models/auth.model';
+import {Login, UpdateUser, UserEmail} from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
 import { singUp } from '../../../shared/models/singup.model';
 import { Role } from '../../../shared/models/role.model';
@@ -44,6 +44,12 @@ export class AuthService {
 
   signup(signupDTO: SignupDTO): Observable<HttpResponse<any>> {
     return this.http.post<any>(`${this.apiUrl}/auth/signup`, signupDTO, {
+      observe: 'response',
+    });
+  }
+
+  updateUser(updateUser: UpdateUser): Observable<HttpResponse<any>> {
+    return this.http.put<any>(`${this.apiUrl}/auth/user/update`, updateUser, {
       observe: 'response',
     });
   }

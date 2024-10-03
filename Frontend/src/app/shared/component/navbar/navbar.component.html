@@ -43,17 +43,22 @@
             <span class="icon">
               <i class="fas fa-user-edit"></i>
             </span>
-            <span>Edit Profile</span>
+            <span (click)="openProfileModal()">Editar Perfil</span>
           </a>
           <hr class="navbar-divider" />
           <a class="navbar-item" (click)="logout()">
             <span class="icon">
               <i class="fas fa-sign-out-alt"></i>
             </span>
-            <span>Logout</span>
+            <span>Salir</span>
           </a>
         </div>
       </div>
     </div>
   </div>
 </nav>
+
+@if(isModalOpen){
+  <app-profile (close)="onClickCloseEdit()">
+  </app-profile>
+}

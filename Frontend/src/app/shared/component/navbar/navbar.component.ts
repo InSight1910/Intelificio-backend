@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { AppState } from '../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectTitle } from '../../../states/navbar/navbar.selectors';
@@ -9,15 +9,28 @@ import { selectUser } from '../../../states/auth/auth.selectors';
 import { Community } from '../../models/community.model';
 import { selectCommunity } from '../../../states/community/community.selectors';
 import { AuthActions } from '../../../states/auth/auth.actions';
+import { ProfileComponent } from '../../../core/features/profile/profile.component';
+import { ModalComponent } from '../../../core/features/common-space/modal/modal.component';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ProfileComponent,
+    ModalComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
   @Output() openNavbar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private store: Store<AppState>) {}
@@ -25,6 +38,7 @@ export class NavbarComponent {
   user!: Observable<User | null>;
   communityName!: string;
   navbarDisplay: boolean = false;
+  isModalOpen: boolean = false;
 
   ngOnInit() {
     this.store.select(selectTitle).subscribe((title) => {
@@ -45,7 +59,14 @@ export class NavbarComponent {
     this.openNavbar.emit(this.navbarDisplay);
   }
 
-  openProfileModal() {}
+  openProfileModal() {
+    this.isModalOpen = true;
+  }
+
+  onClickCloseEdit() {
+    this.isModalOpen = false;
+  }
+
   logout() {
     this.store.dispatch(AuthActions.logout());
   }

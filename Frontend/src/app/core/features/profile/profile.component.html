@@ -1,0 +1,83 @@
+<div class="modal is-active">
+  <div class="modal-background" (click)="onClose()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-shadowless">
+      <p class="modal-card-title">Editar Perfil</p>
+      <button
+        class="delete is-medium"
+        style="background: none"
+        aria-label="close"
+        (click)="onClose()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form [formGroup]="form">
+        <div class="columns">
+          <div class="column">
+
+            <div class="field">
+              <label class="label">Nombre</label>
+              <div class="control">
+                <input type="text" class="input"
+                       formControlName="firstName"
+                       placeholder="Ingrese nombre"/>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Correo</label>
+              <div class="control">
+                <input type="email" class="input" formControlName="email"
+                       placeholder="Ingrese correo"/>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="column">
+
+            <div class="field">
+              <label class="label">Apellido</label>
+              <div class="control">
+                <input type="text" class="input"
+                       formControlName="lastName"
+                       placeholder="Ingrese apellido"/>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Teléfono</label>
+              <div class="control">
+                <input type="tel" class="input" formControlName="phoneNumber"
+                       placeholder="Ingrese teléfono +56xxxxxxxxx"
+                maxlength="12"/>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          [disabled]="isLoading || !form.valid"
+          [ngClass]="{ 'is-loading': isLoading }"
+          (click)="OnSubmit()"
+
+        >
+          Guardar
+        </button>
+        <button
+          class="button"
+          [ngClass]="{ 'is-loading': isLoading }"
+          [disabled]="isLoading"
+          (click)="onClose()"
+        >
+          Salir
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

@@ -49,7 +49,6 @@ export class SelectCommunityComponent {
         take(1),
         tap((user) => {
           if (user) {
-            console.log(user);
             this.communityService.getCommunitiesOfUser(user.sub!).subscribe(
               (data) => {
                 this.communities = data;

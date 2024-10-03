@@ -23,11 +23,12 @@ namespace Backend.Features.Authentication.Queries.GetUserByEmail
             var response = new GetUserByEmailQueryResponse
             {
                 Id = user.Id,
-                Name = string.Format("{0} {1}", user.FirstName, user.LastName),
-                PhoneNumber = user.PhoneNumber,
+                FullName = user.ToString(),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber ?? "",
                 Role = role.FirstOrDefault("Sin Rol"),
             };
-
 
 
             return Result.WithResponse(new ResponseData
