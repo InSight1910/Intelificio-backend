@@ -15,6 +15,7 @@
     </section>
     <footer class="modal-card-foot">
       <div class="buttons">
+        @if(showActionButton) {
         <button
           class="button is-success"
           [disabled]="isLoading || !isValid"
@@ -24,13 +25,14 @@
         >
           {{ buttonTitle }}
         </button>
+        }
         <button
           class="button"
           [ngClass]="{ 'is-loading': isLoading }"
           [disabled]="isLoading"
           (click)="onClose()"
         >
-          Cancel
+          {{ showActionButton ? "Cancelar" : "Cerrar" }}
         </button>
       </div>
     </footer>
