@@ -12,7 +12,8 @@ public class CreateReservationCommand : IRequest<Result>
     [JsonConverter(typeof(JsonDateTimeConverter))]
     public DateTime Date { get; set; }
 
-    public TimeSpan StartTime { get; set; }
-    public TimeSpan EndTime { get; set; }
+    public string StartTime { get; set; } = string.Empty;
+    public string EndTime { get; set; } = string.Empty;
+
     public int CommonSpaceId { get; set; }
 }

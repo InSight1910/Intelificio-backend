@@ -26,12 +26,7 @@
           {{ buttonTitle }}
         </button>
         }
-        <button
-          class="button"
-          [ngClass]="{ 'is-loading': isLoading }"
-          [disabled]="isLoading"
-          (click)="onClose()"
-        >
+        <button class="button" [disabled]="isLoading" (click)="onClose()">
           {{ showActionButton ? "Cancelar" : "Cerrar" }}
         </button>
       </div>

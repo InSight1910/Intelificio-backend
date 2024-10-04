@@ -108,8 +108,9 @@ export class HomeSpaceComponent {
     this.loadCommonSpace();
     this.loadCountReservations();
   }
-
+  isLoadingCommonSpace: boolean = false;
   loadCommonSpace() {
+    this.isLoadingCommonSpace = true;
     this.store.select(selectCommunity).subscribe((community) => {
       this.commonSpaceService
         .getCommonSpacesByCommunity(community?.id!)
@@ -121,8 +122,9 @@ export class HomeSpaceComponent {
         )
         .subscribe({
           next: (data) => {
-            this.selectedSpace = data[0];
-            this.commonSpaces$ = data;
+            // this.selectedSpace = data[0];
+            // this.commonSpaces$ = data;
+            this.isLoadingCommonSpace = false;
           },
         });
     });
@@ -172,12 +174,13 @@ export class HomeSpaceComponent {
     this.buttonTitle = 'Reservar';
     this.modalTitle = `Reservar ${this.selectedSpace?.name}`;
   }
-
+  isCreating: boolean = false;
   onSubmit(event: Event | void) {
     if (event) event.preventDefault();
     if (this.form.invalid) {
       return;
     }
+    this.isCreating = true;
     const reservation: CreateReservation = {
       userId: this.loguedUser?.sub!,
       commonSpaceId: this.selectedSpace?.id!,
@@ -189,12 +192,41 @@ export class HomeSpaceComponent {
     this.reservationService.create(reservation).subscribe({
       next: ({ data }) => {
         this.onSuccess = 'Reserva creada con éxito';
+        const dateCreated = new Date(data.date);
+        console.log(dateCreated.getDate());
+        const count = this.reservationsCounts.filter(
+          (x) => x.day === dateCreated.getDate()
+        )[0];
+        console.log(count);
+        if (count) {
+          const status = count.countReservations.filter(
+            (x) => x.status === data.status
+          )[0];
+
+          status.count += 1;
+        } else {
+          this.reservationsCounts[dateCreated.getDate()] = {
+            day: dateCreated.getDate(),
+            countReservations: [
+              {
+                status: data.status,
+                count: 1,
+              },
+            ],
+          };
+        }
+        this.isCreating = false;
+        setTimeout(() => {
+          this.onSuccess = '';
+        }, 3000);
+        this.form.reset();
       },
       error: ({ error }) => {
         this.errors = error;
         setTimeout(() => {
           this.errors = [];
         }, 3000);
+        this.isCreating = false;
         this.form.reset();
       },
     });
@@ -203,6 +235,7 @@ export class HomeSpaceComponent {
   loadCountReservations() {
     this.store.select(selectCommunity).subscribe((community) => {
       const selectedMonth = this.months.at(this.indexMonth)!;
+      console.log(selectedMonth);
       this.reservationService
         .getCountReservationsByCommunityAndMonth(
           community?.id!,
@@ -238,7 +271,7 @@ export class HomeSpaceComponent {
       const nextMonth = new Date(today.getFullYear(), today.getMonth() + i, 1);
       const value = {
         month: nextMonth.toLocaleString('es-CL', { month: 'long' }),
-        monthNumber: nextMonth.getMonth(),
+        monthNumber: nextMonth.getMonth() + 1,
         year: nextMonth.getFullYear(),
       };
 

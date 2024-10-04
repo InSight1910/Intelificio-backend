@@ -6,8 +6,8 @@ namespace Backend.Models;
 public class Reservation : BaseEntity
 {
     public required DateTime Date { get; set; }
-    public required TimeSpan StartTime { get; set; }
-    public required TimeSpan EndTime { get; set; }
+    public required TimeOnly StartTime { get; set; }
+    public required TimeOnly EndTime { get; set; }
     public required ReservationStatus Status { get; set; }
 
     public int UserId { get; set; }
