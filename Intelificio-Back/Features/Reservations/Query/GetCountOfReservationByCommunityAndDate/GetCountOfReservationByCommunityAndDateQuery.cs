@@ -5,6 +5,7 @@ namespace Backend.Features.Reservations.Query;
 
 public class GetCountOfReservationByCommunityAndDateQuery : IRequest<Result>
 {
-    public int communityId { get; set; }
-    public DateTime date { get; set; }
+    public int CommunityId { get; set; }
+    public int Month { get; set; }
+    public int Year { get; set; }
 }

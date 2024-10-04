@@ -7,5 +7,5 @@ public class CreateReservationCommandResponse
     public DateTime Date { get; set; }
     public TimeOnly StartDate { get; set; }
     public TimeOnly EndDate { get; set; }
-    public int SpaceId { get; set; }
+    public int SpaceName { get; set; }
 }

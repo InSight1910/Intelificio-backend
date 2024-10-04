@@ -21,4 +21,10 @@ public class ReservationErrors
         Code = "Reservation.ReservationAlreadyExist",
         Message = "Ya existe una reserva para este espacio en el rango seleccionado."
     };
+
+    public static Error CommunityNotFoundOnGetByCommunityAndMonth = new()
+    {
+        Code = "Reservation.GetReservationsByCommunityAndMonth.CommunityNotFound",
+        Message = "La comunidad enviada no existe."
+    };
 }

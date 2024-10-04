@@ -20,8 +20,13 @@ public class CreateReservationCommandHandler(IntelificioDbContext context, IMapp
         if (!spaceExist) return Result.Failure(ReservationErrors.CommonSpaceNotFoundOnCreate);
 
         var checkReservationExist = await context.Reservations.AnyAsync(
-            x => x.UserId == request.UserId && x.Date.Date == request.Date.Date && x.SpaceId == request.CommonSpaceId &&
-                 x.StartTime >= request.StartTime && x.EndTime >= request.EndTime, cancellationToken);
+            x =>
+                x.UserId == request.UserId &&
+                x.Date.Date == request.Date.Date &&
+                x.SpaceId == request.CommonSpaceId &&
+                x.StartTime >= request.StartTime &&
+                x.EndTime <= request.EndTime
+            , cancellationToken);
         if (checkReservationExist) return Result.Failure(ReservationErrors.AlreadyExistOnCreate);
         var reservation = new Reservation
         {
