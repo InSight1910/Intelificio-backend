@@ -59,6 +59,16 @@ export class AddModalComponent {
     });
   }
 
+  onChangeBuilding() {
+    const building = this.buildings.find(
+      (x) => x.id == this.unitForm.get('building')?.value
+    )!;
+    this.floors = Array.from(
+      { length: building.floors },
+      (_, index) => index + 1
+    );
+  }
+
   onClickAddUnit() {
     this.isAdding = true;
     const unit: CreateUnit = {
@@ -119,15 +129,5 @@ export class AddModalComponent {
       unitType: '',
       id: '',
     });
-  }
-
-  onChangeBuilding() {
-    const building = this.buildings.find(
-      (x) => x.id == this.unitForm.get('building')?.value
-    )!;
-    this.floors = Array.from(
-      { length: building.floors },
-      (_, index) => index + 1
-    );
   }
 }
