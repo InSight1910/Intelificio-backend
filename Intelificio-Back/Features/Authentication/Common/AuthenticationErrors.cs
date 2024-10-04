@@ -57,6 +57,13 @@ namespace Backend.Features.Authentication.Common
             Errors = errors
         };
 
+        public static Error UpdateUserError(IEnumerable<string> errors) => new Error
+        {
+            Code = "Authentication.UpdateUser.UpdateUserError",
+            Message = "Error is an error with the Refresh Token",
+            Errors = errors
+        };
+
         public static Error UserNotFoundGetByEmail = new Error
         {
             Code = "Authentication.GetUserByEmail.UserNotFound",

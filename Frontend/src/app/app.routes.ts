@@ -15,6 +15,7 @@ import { ChangePasswordTwoComponent } from './core/features/authentication/chang
 import { AdminCommunityComponent } from './core/features/community/adminCommunity/admin-community.component';
 import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
+import { NotificationComponent } from './core/features/notification/notification.component';
 
 export const routes: Routes = [
   {
@@ -22,11 +23,11 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'building',
+    path: 'Edificios',
     component: BuildingComponent,
   },
   {
-    path: 'signup',
+    path: 'RegistroUsuario',
     component: SingupComponent,
   },
   {
@@ -46,7 +47,7 @@ export const routes: Routes = [
     component: SelectCommunityComponent,
   },
   {
-    path: 'community',
+    path: 'Comunidad',
     component: HomeCommunityComponent,
   },
   {
@@ -54,15 +55,19 @@ export const routes: Routes = [
     component: UnitComponent,
   },
   {
-    path: 'adminCommunity',
+    path: 'AdminComunidades',
     component: AdminCommunityComponent,
   },
   {
-    path: 'manage',
+    path: 'AdminEspaciosComunes',
     component: ManageComponent,
   },
   {
-    path: 'home-space',
+    path: 'EspacioComun',
     component: HomeSpaceComponent,
+  },
+  {
+    path: 'Comunicado',
+    component: NotificationComponent,
   },
 ];

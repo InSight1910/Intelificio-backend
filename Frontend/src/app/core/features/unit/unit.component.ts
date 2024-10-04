@@ -48,7 +48,6 @@ export class UnitComponent {
     this.isLoading = true;
 
     this.unitService.getUnitsByBuilding(buildingId).subscribe((data) => {
-      console.log(data);
       this.isLoading = false;
       this.units = data.data;
     });

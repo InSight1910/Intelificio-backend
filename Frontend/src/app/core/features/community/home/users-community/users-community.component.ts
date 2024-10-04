@@ -75,13 +75,17 @@ export class UsersCommunityComponent {
       });
   }
 
-  openmodal({ email, id, name, role }: UsersCommunity) {
+  openmodal({ email, id, name, role,firstName,lastName,phoneNumber }: UsersCommunity) {
     console.log('paso');
     this.userToBeDeleted = {
       role,
       given_name: name,
       sub: id,
       email,
+      firstName: '',
+      lastName: '',
+      phoneNumber
+
     };
     this.activateModal = true;
   }

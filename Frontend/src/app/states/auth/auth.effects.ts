@@ -50,7 +50,6 @@ export class AuthEffects {
       },
       { dispatch: false }
     );
-
     this.login$ = createEffect(() => {
       return this.actions$.pipe(
         ofType(AuthActions.login),

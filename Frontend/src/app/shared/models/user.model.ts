@@ -3,6 +3,9 @@ export interface User {
   email: string;
   given_name: string;
   role: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
 
 export interface AuthState {

@@ -49,7 +49,6 @@ export class SelectCommunityComponent {
         take(1),
         tap((user) => {
           if (user) {
-            console.log(user);
             this.communityService.getCommunitiesOfUser(user.sub!).subscribe(
               (data) => {
                 this.communities = data;
@@ -85,6 +84,6 @@ export class SelectCommunityComponent {
     this.store.dispatch(
       CommunityActions.getCommunity({ id: this.communitySelected.id! })
     );
-    this.router.navigate(['/community']);
+    this.router.navigate(['/Comunidad']);
   }
 }

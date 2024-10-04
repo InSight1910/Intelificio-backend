@@ -58,6 +58,8 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<Maintenance> Maintenances { get; set; }
 
+        public DbSet<TemplateNotification> TemplateNotifications { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

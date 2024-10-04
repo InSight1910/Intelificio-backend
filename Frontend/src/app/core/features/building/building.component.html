@@ -18,6 +18,11 @@
   cumque hic doloribus illo rem eius autem magnam vel non, consectetur molestias
 </div>
 } @else {
+<div class="level">
+  <div class="level-left">
+    <h3 class="title level-item">Edificios</h3>
+  </div>
+</div>
 <div class="tabs">
   <ul>
     @for (building of Edificios; track building.id) {
@@ -203,9 +208,9 @@
       Cancelar
     </button>
     } @else {
-    <button class="button is-primary" (click)="create()">Agregar</button>
-    <button class="button is-warning" (click)="edit()">Editar</button>
-    <button class="button is-danger" (click)="openmodal()">Eliminar</button>
+    <button class="button is-primary" (click)="create()"><span class="icon mr-2"><i class="fa-solid fa-building-circle-arrow-right"></i></span>Agregar</button>
+    <button class="button is-warning" (click)="edit()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>Editar</button>
+    <button class="button is-danger" (click)="openmodal()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-trash"></i></span>Eliminar</button>
     }
   </div>
 </form>
@@ -218,11 +223,11 @@
 <div class="modal" [ngClass]="{ 'is-active': ActivateModal }">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head is-shadowless">
       <p class="modal-card-title">
         Eliminando edificio {{ this.Edificio.name }}
       </p>
-      <button class="delete" aria-label="close" (click)="closemodal()"></button>
+      <button class="delete" style="background: none" aria-label="close" (click)="closemodal()"></button>
     </header>
     <section class="modal-card-body">
       <p>

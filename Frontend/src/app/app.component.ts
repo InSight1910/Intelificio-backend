@@ -27,6 +27,7 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
+
     this.router.events.subscribe(() => {
       this.isLogin = this.router.url === '/login';
       this.isSelectCommunity = this.router.url === '/select-community';

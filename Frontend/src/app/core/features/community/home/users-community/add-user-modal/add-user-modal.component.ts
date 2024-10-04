@@ -64,7 +64,7 @@ export class AddUserModalComponent {
       .pipe(
         tap((response) => {
           this.form.patchValue({
-            name: response.data.name,
+            name: response.data.fullName,
             phoneNumber: response.data.phoneNumber,
             role: response.data.role,
             id: response.data.id,
