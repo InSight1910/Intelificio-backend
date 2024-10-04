@@ -84,6 +84,6 @@ export class SelectCommunityComponent {
     this.store.dispatch(
       CommunityActions.getCommunity({ id: this.communitySelected.id! })
     );
-    this.router.navigate(['/community']);
+    this.router.navigate(['/Comunidad']);
   }
 }

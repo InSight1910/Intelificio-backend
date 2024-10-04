@@ -13,9 +13,8 @@
     <section class="modal-card-body">
       <form [formGroup]="form">
         <div class="columns">
-          <div class="column">
 
-            <div class="field">
+            <div class="column field">
               <label class="label">Nombre</label>
               <div class="control">
                 <input type="text" class="input"
@@ -24,28 +23,28 @@
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Correo</label>
-              <div class="control">
-                <input type="email" class="input" formControlName="email"
-                       placeholder="Ingrese correo"/>
-              </div>
+          <div class="column field">
+            <label class="label">Apellido</label>
+            <div class="control">
+              <input type="text" class="input"
+                     formControlName="lastName"
+                     placeholder="Ingrese apellido"/>
             </div>
-
           </div>
 
-          <div class="column">
+        </div>
 
-            <div class="field">
-              <label class="label">Apellido</label>
-              <div class="control">
-                <input type="text" class="input"
-                       formControlName="lastName"
-                       placeholder="Ingrese apellido"/>
-              </div>
+        <div class="columns">
+
+          <div class=" column field">
+            <label class="label">Correo</label>
+            <div class="control">
+              <input type="email" class="input" formControlName="email"
+                     placeholder="Ingrese correo"/>
             </div>
+          </div>
 
-            <div class="field">
+            <div class="column field">
               <label class="label">Teléfono</label>
               <div class="control">
                 <input type="tel" class="input" formControlName="phoneNumber"
@@ -54,9 +53,22 @@
               </div>
             </div>
 
-          </div>
         </div>
+
       </form>
+
+      @if (notification) { @if (IsSuccess){
+        <div class="notification is-success mt-3" >
+          <button class="delete" (click)="closeNotification()"></button>
+          {{ this.notificationMessage }}
+        </div>
+      } @else if (IsError){
+        <div class="notification is-danger mt-3">
+          <button class="delete" (click)="closeNotification()"></button>
+          {{ this.notificationMessage }}
+        </div>
+      } }
+
     </section>
     <footer class="modal-card-foot">
       <div class="buttons">
@@ -71,7 +83,6 @@
         </button>
         <button
           class="button"
-          [ngClass]="{ 'is-loading': isLoading }"
           [disabled]="isLoading"
           (click)="onClose()"
         >

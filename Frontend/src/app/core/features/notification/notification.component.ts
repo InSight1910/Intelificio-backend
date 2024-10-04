@@ -141,8 +141,8 @@ export class NotificationComponent implements OnInit {
           } else {
             this.isLoading = false;
             this.notificationMessage = 'No fue posible enviar el Comunicado.';
-            this.notification = true;
             this.IsError = true;
+            this.notification = true;
             setTimeout(() => {
               this.notification = false;
               this.IsError = false;

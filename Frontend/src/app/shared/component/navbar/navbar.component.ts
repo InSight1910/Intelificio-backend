@@ -35,17 +35,26 @@ export class NavbarComponent implements OnInit{
 
   constructor(private store: Store<AppState>) {}
   title!: string;
-  user!: Observable<User | null>;
+  user!: User | null;
   communityName!: string;
   navbarDisplay: boolean = false;
   isModalOpen: boolean = false;
+  currentTheme: string = '';
+  isDarkTheme: boolean = false;
 
   ngOnInit() {
+
+    const savedTheme = sessionStorage.getItem('theme') || 'system';
+    this.isDarkTheme = savedTheme === 'dark';
+    this.applyTheme(this.isDarkTheme);
+
     this.store.select(selectTitle).subscribe((title) => {
       this.title = title;
     });
 
-    this.user = this.store.select(selectUser);
+    this.store.select(selectUser).subscribe(user =>{
+      this.user = user;
+    });
 
     this.store.select(selectCommunity).subscribe((community) => {
       if (community) {
@@ -70,4 +79,20 @@ export class NavbarComponent implements OnInit{
   logout() {
     this.store.dispatch(AuthActions.logout());
   }
+
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.applyTheme(this.isDarkTheme);
+  }
+
+  applyTheme(isDarkTheme: boolean) {
+    if (isDarkTheme) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      sessionStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      sessionStorage.setItem('theme', 'light');
+    }
+  }
+
 }

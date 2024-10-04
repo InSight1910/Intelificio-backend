@@ -32,9 +32,9 @@
               <span class="icon mr-2">
                 <i class="fas fa-user-circle"></i>
               </span>
-              <span>{{ (user | async)?.given_name }}</span>
+              <span>{{ user?.given_name }}</span>
             </div>
-            <p class="is-size-7 has-text-grey">{{ communityName }}</p>
+            <p class="is-size-9 has-text-grey">{{ communityName }}</p>
           </div>
         </a>
 
@@ -44,6 +44,15 @@
               <i class="fas fa-user-edit"></i>
             </span>
             <span (click)="openProfileModal()">Editar Perfil</span>
+          </a>
+          <hr class="navbar-divider" />
+          <a class="navbar-item" (click)="toggleTheme()">
+            <span class="icon">
+              <i class="fas" [ngClass]="{'fa-sun': !isDarkTheme, 'fa-moon': isDarkTheme}"></i>
+            </span>
+                      <span>
+              {{ isDarkTheme ? 'Modo Claro' : 'Modo Oscuro' }}
+            </span>
           </a>
           <hr class="navbar-divider" />
           <a class="navbar-item" (click)="logout()">

@@ -16,6 +16,7 @@ import {selectUser} from "../../../states/auth/auth.selectors";
 import {AuthService} from "../../services/auth/auth.service";
 import {UpdateUser} from "../../../shared/models/auth.model";
 import {NavbarComponent} from "../../../shared/component/navbar/navbar.component";
+import {AuthActions} from "../../../states/auth/auth.actions";
 
 
 
@@ -31,6 +32,10 @@ import {NavbarComponent} from "../../../shared/component/navbar/navbar.component
 })
 export class ProfileComponent implements OnInit{
   isLoading: boolean = false;
+  notification: boolean = false;
+  IsSuccess: boolean = false;
+  IsError: boolean = false;
+  notificationMessage: string = "";
   @Output() close = new EventEmitter<void>();
 
 
@@ -65,6 +70,12 @@ export class ProfileComponent implements OnInit{
 
   onClose() {
     this.close.emit();
+  }
+
+  closeNotification(){
+    this.notification = false;
+    this.IsSuccess = false;
+    this.IsError = false;
   }
 
   phoneValidator(): ValidatorFn {
@@ -102,8 +113,8 @@ export class ProfileComponent implements OnInit{
   }
 
   OnSubmit(){
+    this.isLoading = true;
     if(this.form.valid){
-
       const updateUser: UpdateUser = {
         firstName: this.form.controls['firstName'].value,
         lastName: this.form.controls['lastName'].value,
@@ -116,15 +127,36 @@ export class ProfileComponent implements OnInit{
       this.service.updateUser(updateUser).subscribe({
         next:(response) =>{
           if(response.status === 200){
+            this.isLoading = true;
+            var token = response.body.data.token;
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
-            localStorage.setItem('token',response.body.data.token);
+            localStorage.setItem('token',token);
             localStorage.setItem('refreshToken',response.body.data.refreshToken);
-            this.navbar.ngOnInit();
+            this.store.dispatch(AuthActions.updateToken({token}));
+            this.notificationMessage =
+              'Datos actualizados correctamente';
+            this.IsSuccess = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.IsSuccess = false;
+              this.isLoading = false;
+              this.close.emit();
+
+            }, 5000);
           }
         },
         error: (error) =>{
-          console.log(error);
+          this.isLoading = false;
+          this.notificationMessage = 'No fue posible actualizar sus datos';
+          this.IsError = true;
+          this.notification = true;
+          setTimeout(() => {
+            this.notification = false;
+            this.IsError = false;
+            this.store.dispatch(AuthActions.logout());
+          }, 5000);
         }
       });
 

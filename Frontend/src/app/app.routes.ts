@@ -23,11 +23,11 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'building',
+    path: 'Edificios',
     component: BuildingComponent,
   },
   {
-    path: 'signup',
+    path: 'RegistroUsuario',
     component: SingupComponent,
   },
   {
@@ -47,7 +47,7 @@ export const routes: Routes = [
     component: SelectCommunityComponent,
   },
   {
-    path: 'community',
+    path: 'Comunidad',
     component: HomeCommunityComponent,
   },
   {
@@ -55,15 +55,15 @@ export const routes: Routes = [
     component: UnitComponent,
   },
   {
-    path: 'adminCommunity',
+    path: 'AdminComunidades',
     component: AdminCommunityComponent,
   },
   {
-    path: 'manage',
+    path: 'AdminEspaciosComunes',
     component: ManageComponent,
   },
   {
-    path: 'home-space',
+    path: 'EspacioComun',
     component: HomeSpaceComponent,
   },
   {
