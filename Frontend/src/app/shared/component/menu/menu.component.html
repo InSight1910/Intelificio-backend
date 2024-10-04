@@ -1,17 +1,16 @@
 <aside class="menu mt-6 ml-6" [ngClass]="{ 'is-hidden-mobile': !openNavbar }">
   <p class="menu-label">General</p>
   <ul class="menu-list">
-    <li><a>Dashboards</a></li>
-    <li><a>Usuarios</a></li>
+    <li><a><span class="icon mr-2"><i class="fa-solid fa-chart-simple"></i></span>Dashboards</a></li>
   </ul>
   <p class="menu-label">Administración</p>
   <ul class="menu-list">
-    <li><a [routerLink]="['Comunidad']">Comunidad</a></li>
-    <li><a [routerLink]="['AdminComunidades']">Comunidades</a></li>
-    <li><a [routerLink]="['AdminEspaciosComunes']">Administrar Espacios Comunes</a></li>
-    <li><a [routerLink]="['EspacioComun']">Espacio Común</a></li>
-    <li><a [routerLink]="['Edificios']" >Edificios</a></li>
-    <li><a [routerLink]="['Comunicado']">Comunicado</a></li>
-    <li><a [routerLink]="['RegistroUsuario']">Registros de usuarios</a></li>
+    <li><a [routerLink]="['Comunidad']"><span class="icon mr-2"><i class="fa-solid fa-tree-city"></i></span>Comunidad</a></li>
+    <li><a [routerLink]="['AdminComunidades']"><span class="icon mr-2"><i class="fa-solid fa-tree-city"></i></span>Comunidades</a></li>
+    <li><a [routerLink]="['AdminEspaciosComunes']"><span class="icon mr-2"><i class="mr-2 fa-solid fa-people-roof"></i></span>Administrar Espacios Comunes</a></li>
+    <li><a [routerLink]="['EspacioComun']"><span class="icon mr-2"><i class="mr-2 fa-solid fa-people-roof"></i></span>Espacio Común</a></li>
+    <li><a [routerLink]="['Edificios']" ><span class="icon mr-2"><i class="mr-2 fa-solid fa-building"></i></span>Edificios</a></li>
+    <li><a [routerLink]="['Comunicado']"><span class="icon mr-2"><i class="mr-2 fa-solid fa-paper-plane"></i></span>Comunicado</a></li>
+    <li><a [routerLink]="['RegistroUsuario']"><span class="icon mr-2"><i class="mr-2 fa-solid fa-user-plus"></i></span>Registros de usuarios</a></li>
   </ul>
 </aside>
