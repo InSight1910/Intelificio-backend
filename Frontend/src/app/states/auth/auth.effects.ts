@@ -18,6 +18,8 @@ export class AuthEffects {
   loginSuccess$;
   loginFailure$;
   logout$;
+  updateToken$;
+  updateTokenSuccess$;
 
   private decodeToken(token: string): any {
     try {
@@ -33,6 +35,21 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService
   ) {
+    this.updateToken$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(AuthActions.updateToken),
+        map((action) => {
+          const user: User = this.decodeToken(action.token);
+          return AuthActions.updateTokenSuccess({ user });
+        })
+      );
+    });
+    this.updateTokenSuccess$ = createEffect(
+      () => {
+        return this.actions$.pipe(ofType(AuthActions.updateTokenSuccess));
+      },
+      { dispatch: false }
+    );
     this.login$ = createEffect(() => {
       return this.actions$.pipe(
         ofType(AuthActions.login),

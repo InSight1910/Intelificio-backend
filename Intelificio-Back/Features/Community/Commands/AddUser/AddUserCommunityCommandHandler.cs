@@ -1,11 +1,10 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Community.Commands.AddUser;
 using Backend.Features.Community.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Community.Commands.Assign
+namespace Backend.Features.Community.Commands.AddUser
 {
     public class AddUserCommunityCommandHandler : IRequestHandler<AddUserCommunityCommand, Result>
     {

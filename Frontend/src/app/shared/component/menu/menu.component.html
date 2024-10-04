@@ -1,14 +1,17 @@
-<aside class="menu mt-5 ml-6" [ngClass]="{ 'is-hidden-mobile': openNavbar }">
+<aside class="menu mt-6 ml-6" [ngClass]="{ 'is-hidden-mobile': !openNavbar }">
   <p class="menu-label">General</p>
   <ul class="menu-list">
     <li><a>Dashboards</a></li>
     <li><a>Usuarios</a></li>
   </ul>
-  <p class="menu-label">Administracion</p>
+  <p class="menu-label">Administración</p>
   <ul class="menu-list">
-    <li><a>Comunidades</a></li>
-    <li><a>Edificios</a></li>
-    <li><a>Unidades</a></li>
-    <li><a>Registros de usuarios</a></li>
+    <li><a [routerLink]="['Comunidad']">Comunidad</a></li>
+    <li><a [routerLink]="['AdminComunidades']">Comunidades</a></li>
+    <li><a [routerLink]="['AdminEspaciosComunes']">Administrar Espacios Comunes</a></li>
+    <li><a [routerLink]="['EspacioComun']">Espacio Común</a></li>
+    <li><a [routerLink]="['Edificios']" >Edificios</a></li>
+    <li><a [routerLink]="['Comunicado']">Comunicado</a></li>
+    <li><a [routerLink]="['RegistroUsuario']">Registros de usuarios</a></li>
   </ul>
 </aside>

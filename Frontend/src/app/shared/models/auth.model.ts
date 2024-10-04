@@ -12,7 +12,20 @@ export interface LoginRequest {
 
 export interface UserEmail {
   id: number;
-  name: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
   role: string;
   phoneNumber: string;
 }
+
+export interface UpdateUser {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  token: string;
+  refreshToken: string;
+}
+
+

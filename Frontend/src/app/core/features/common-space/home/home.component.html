@@ -1,0 +1,126 @@
+<div class="box mt-6 is-shadowless">
+  <div class="level">
+    <div class="level-left">
+      <h3 class="title is-4">Reservar espacios comunes</h3>
+    </div>
+    <div class="level-right">
+      <div class="select">
+        <select #spaceId (change)="onChange($event)">
+          @for(space of (commonSpaces$); track $index) {
+          <option value="{{ space.id }}">{{ space.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="level mt-6 mb-4">
+    <div class="level-left">
+      <div class="level-item">
+        <div class="">
+          <span class="icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </span>
+          Location:
+          {{ selectedSpace.location }}
+        </div>
+      </div>
+    </div>
+    <div class="level-item">
+      <div>
+        <span class="icon">
+          <i class="fa-solid fa-user-group"></i>
+        </span>
+        Capacity: {{ selectedSpace.capacity }}
+      </div>
+    </div>
+    <div class="level-right">
+      <button
+        class="button is-primary"
+        (click)="onClickCreateReservation(+spaceId.value)"
+      >
+        Hacer reservacion
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="box is-shadowless">
+  <div class="level">
+    <h4 class="title is-4">Reservar espacios comunes</h4>
+
+    <div class="level-right">
+      <div class="field is-grouped">
+        <p class="control">
+          <button
+            class="button"
+            [disabled]="indexMonth == 0"
+            (click)="prevMonth()"
+          >
+            <span class="icon is-small">
+              <i class="fa-solid fa-less-than"></i>
+            </span>
+          </button>
+        </p>
+
+        <p class="subtitle is-capitalized my-auto">
+          {{ months.at(indexMonth)?.month }}
+        </p>
+
+        <p class="control">
+          <button
+            class="button"
+            [disabled]="indexMonth == 2"
+            (click)="nextMonth()"
+          >
+            <span class="icon is-small">
+              <i class="fa-solid fa-greater-than"></i>
+            </span>
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed-grid has-7-cols is-scrollable">
+    <div class="grid">
+      @for(day of days; track $index) {
+      <div class="cell">
+        <p class="subtitle is-6 has-text-centered">
+          {{ day }}
+        </p>
+      </div>
+      } @for (day of daysInMonth; track $index) { @if (day != null) {
+      <div class="cell box is-shadowless my-auto py-auto">
+        {{ day }}
+      </div>
+      } @else {
+      <div class="cell"></div>
+      } }
+    </div>
+  </div>
+</div>
+
+@if(isModalOpen) {
+<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()" buttonTitle="Guardar" [isValid]="form.valid">
+  <form [formGroup]="form">
+    <div class="field">
+      <label class="label">Fecha</label>
+      <div class="control">
+        <input type="date" class="input" formControlName="date" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Hora de inicio</label>
+      <div class="control">
+        <input type="time" class="input" formControlName="startTime" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Hora de inicio</label>
+      <div class="control">
+        <input type="time" class="input" formControlName="endTime" />
+      </div>
+    </div>
+  </form>
+</app-modal-space>
+}

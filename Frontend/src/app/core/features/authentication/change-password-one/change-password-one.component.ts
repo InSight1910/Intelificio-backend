@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -16,10 +16,12 @@ import { catchError, of, tap } from 'rxjs';
   templateUrl: './change-password-one.component.html',
   styleUrl: './change-password-one.component.css',
 })
-export class ChangePasswordOneComponent {
+export class ChangePasswordOneComponent implements OnInit {
   form: FormGroup;
   message: string | null = null;
   errors: string[] | null = null;
+  send = false;
+  waiting = false;
 
   constructor(private authService: AuthService, private fb: FormBuilder) {
     this.form = this.fb.group(
@@ -30,7 +32,12 @@ export class ChangePasswordOneComponent {
     );
   }
 
+  ngOnInit(): void {
+    this.send = false;
+  }
+
   onSubmit(event: Event) {
+    this.waiting = true;
     event.preventDefault();
     if (this.form.valid) {
       this.authService
@@ -41,12 +48,15 @@ export class ChangePasswordOneComponent {
             if (response.status === 204) {
               this.message =
                 'Se ha enviando un correo con las instrucciones para cambiar la contraseña';
+              this.send = true;
+              this.waiting = false;
             }
           }),
           catchError((error) => {
             console.error(error);
             if (error.status === 0) {
               this.errors = ['Hubo un error de nuestra parte.'];
+              this.waiting = false;
             }
             return of(error);
           })

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { AppState } from '../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectTitle } from '../../../states/navbar/navbar.selectors';
@@ -8,29 +8,53 @@ import { User } from '../../models/user.model';
 import { selectUser } from '../../../states/auth/auth.selectors';
 import { Community } from '../../models/community.model';
 import { selectCommunity } from '../../../states/community/community.selectors';
+import { AuthActions } from '../../../states/auth/auth.actions';
+import { ProfileComponent } from '../../../core/features/profile/profile.component';
+import { ModalComponent } from '../../../core/features/common-space/modal/modal.component';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ProfileComponent,
+    ModalComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
   @Output() openNavbar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private store: Store<AppState>) {}
   title!: string;
-  user!: Observable<User | null>;
+  user!: User | null;
   communityName!: string;
   navbarDisplay: boolean = false;
+  isModalOpen: boolean = false;
+  currentTheme: string = '';
+  isDarkTheme: boolean = false;
 
   ngOnInit() {
+
+    const savedTheme = sessionStorage.getItem('theme') || 'system';
+    this.isDarkTheme = savedTheme === 'dark';
+    this.applyTheme(this.isDarkTheme);
+
     this.store.select(selectTitle).subscribe((title) => {
       this.title = title;
     });
 
-    this.user = this.store.select(selectUser);
+    this.store.select(selectUser).subscribe(user =>{
+      this.user = user;
+    });
 
     this.store.select(selectCommunity).subscribe((community) => {
       if (community) {
@@ -43,4 +67,32 @@ export class NavbarComponent {
     this.navbarDisplay = !this.navbarDisplay;
     this.openNavbar.emit(this.navbarDisplay);
   }
+
+  openProfileModal() {
+    this.isModalOpen = true;
+  }
+
+  onClickCloseEdit() {
+    this.isModalOpen = false;
+  }
+
+  logout() {
+    this.store.dispatch(AuthActions.logout());
+  }
+
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.applyTheme(this.isDarkTheme);
+  }
+
+  applyTheme(isDarkTheme: boolean) {
+    if (isDarkTheme) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      sessionStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      sessionStorage.setItem('theme', 'light');
+    }
+  }
+
 }

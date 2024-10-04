@@ -4,6 +4,7 @@
     {
         CONFIRMED,
         CANCELLED,
-        AVAILABLE
+        FINISHED,
+        PENDING
     }
 }

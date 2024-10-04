@@ -56,6 +56,8 @@ namespace Backend.Models
 
         public DbSet<Maintenance> Maintenances { get; set; }
 
+        public DbSet<TemplateNotification> TemplateNotifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -142,6 +144,9 @@ namespace Backend.Models
 
                 _ = entity.HasMany(p => p.Fines)
                       .WithOne(p => p.Community);
+                entity.HasMany(p => p.Spaces)
+                    .WithOne(p => p.Community)
+                    .HasForeignKey(p => p.CommunityId);
 
             });
 

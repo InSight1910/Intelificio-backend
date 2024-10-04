@@ -37,6 +37,7 @@ namespace Backend.Features.Buildings.Commands.Create
             _ = await _context.Buildings.AddAsync(building);
             _ = await _context.SaveChangesAsync();
 
+
             return Result.Success();
 
         }

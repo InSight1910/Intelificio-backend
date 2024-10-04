@@ -7,8 +7,6 @@ using Backend.Features.Guest.Queries.GetAllByUnit;
 using Backend.Features.Guest.Queries.GetAllByEntryTime;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Quartz.Xml.JobSchedulingData20;
-using System;
 
 namespace Backend.Features.Guest.Common
 {

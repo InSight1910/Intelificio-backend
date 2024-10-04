@@ -19,6 +19,8 @@ export interface UsersCommunity {
   role: string;
   phoneNumber: string;
   unitCount: number;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface AllCommunity {

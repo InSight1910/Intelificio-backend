@@ -65,6 +65,7 @@
                   class="input"
                   placeholder="*******"
                   formControlName="password"
+                  autocomplete="current-password"
                   (input)="onInputChange('password')"
                   [ngClass]="{
                     'is-danger':
@@ -102,6 +103,7 @@
                 caracteres, pero necesita al menos
                 {{
                     passwordErrors['minlength']?.['requiredLength'] || 0
+
 
 
 

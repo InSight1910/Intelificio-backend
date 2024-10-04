@@ -58,11 +58,11 @@ namespace Backend.Common.Response
     }
     public static class ResultExtension
     {
-        public static T Match<T>(
+        public static IActionResult Match(
                 this Result result,
-                Func<ResponseData?, T> onSuccess,
-                Func<ICollection<Error>, T> onFailure)
-            where T : IActionResult
+                Func<ResponseData?, IActionResult> onSuccess,
+                Func<ICollection<Error>, IActionResult> onFailure)
+           
         {
             if (result.IsSuccess) return onSuccess(result.Response);
 
@@ -70,11 +70,10 @@ namespace Backend.Common.Response
 
             return onFailure(new List<Error> { result.Error });
         }
-        public static T Match<T>(
+        public static IActionResult Match(
                 this Result result,
-                Func<T> onSuccess,
-                Func<ICollection<Error>, T> onFailure)
-            where T : IActionResult
+                Func<IActionResult> onSuccess,
+                Func<ICollection<Error>, IActionResult> onFailure)
         {
             if (result.IsSuccess) return onSuccess();
 
