@@ -1,4 +1,4 @@
-﻿using Backend.Common.Response;
+using Backend.Common.Response;
 using Backend.Features.Unit.Commands.Create;
 using Backend.Features.Unit.Commands.Delete;
 using Backend.Features.Unit.Commands.Update;
@@ -49,7 +49,7 @@ namespace Backend.Features.Unit.Common
         public async Task<IActionResult> GetByID(int id)
         {
             var result = await mediator.Send(new GetByIdUnitQuery { UnitId = id });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
         [HttpGet("GetByUser/{id}")]
@@ -77,7 +77,7 @@ namespace Backend.Features.Unit.Common
         public async Task<IActionResult> GetDeptosByBuilding(int id)
         {
             var result = await mediator.Send(new GetDeptosByBuildingQuery { BuildingId = id });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
     }

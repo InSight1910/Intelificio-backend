@@ -1,4 +1,4 @@
-﻿using Backend.Common.Response;
+using Backend.Common.Response;
 using Backend.Features.Guest.Commands.Create;
 using Backend.Features.Guest.Commands.Delete;
 using Backend.Features.Guest.Commands.Update;
@@ -18,7 +18,7 @@ namespace Backend.Features.Guest.Common
         public async Task<IActionResult> Create([FromBody] CreateGuestCommand command)
         {
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Created(),
                 onFailure: BadRequest);
         }
@@ -28,7 +28,7 @@ namespace Backend.Features.Guest.Common
         {
             command.GuestId = iD;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Ok(),
                 onFailure: BadRequest);
         }
@@ -38,7 +38,7 @@ namespace Backend.Features.Guest.Common
         {
             command.GuestId = iD;
             var result = await mediator.Send(command);
-            return result.Match<IActionResult>(
+            return result.Match(
                 onSuccess: (_) => Ok(),
                 onFailure: BadRequest);
         }
@@ -47,21 +47,21 @@ namespace Backend.Features.Guest.Common
         public async Task<IActionResult> GetByID(int id)
         {
             var result = await mediator.Send(new GetByIdGuestQuery { GuestId = id });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
         [HttpGet("GetAllByUnit/{unitId}")]
         public async Task<IActionResult> GetAllByUnit(int unitId)
         {
             var result = await mediator.Send(new GetAllByUnitGuestQuery { UnitId = unitId });
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
         [HttpGet("GetAllByEntryTime")]
         public async Task<IActionResult> GetAllByEntryTime([FromQuery] DateTime entryTime)
         {
             var result = await mediator.Send(new GetAllByEntryTimeGuestQuery { EntryTime = entryTime});
-            return result.Match<IActionResult>(resultado => Ok(resultado), resultado => NotFound(resultado));
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
     }
 }

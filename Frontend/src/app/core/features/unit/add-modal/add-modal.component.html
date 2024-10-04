@@ -1,5 +1,8 @@
-<div class="button is-primary is-normal is-responsive is-fullwidth" (click)="onClickOpenModal()">
-  Agregar Unidad
+<div
+  class="button is-primary is-normal is-responsive is-fullwidth"
+  (click)="onClickOpenModal()"
+>
+  <span class="icon mr-2"><i class="fa-solid fa-plus"></i></span>Agregar Unidad
 </div>
 
 <div class="modal" [ngClass]="{ 'is-active': isOpen }">
