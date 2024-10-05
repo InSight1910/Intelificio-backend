@@ -70,6 +70,18 @@ namespace Backend.Features.Authentication.Common
             Message = "El usuario indicado no existe en nuestros registros."
         };
 
+        public static Error TemplateNotFoundOnChangePasswordOne = new()
+        {
+            Code = "Authentication.ChangePasswordOne.TemplateNotFoundOnChangePasswordOne",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnChangePasswordOne = new()
+        {
+            Code = "Authentication.ChangePasswordOne.TemplateIdIsNullOnChangePasswordOne",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+
+
         public static Error RoleNotFound { get; internal set; }
         public static Error EmailNotSent { get; internal set; }
 

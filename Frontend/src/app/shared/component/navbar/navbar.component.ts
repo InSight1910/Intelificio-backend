@@ -39,7 +39,6 @@ export class NavbarComponent implements OnInit{
   communityName!: string;
   navbarDisplay: boolean = false;
   isModalOpen: boolean = false;
-  currentTheme: string = '';
   isDarkTheme: boolean = false;
 
   ngOnInit() {

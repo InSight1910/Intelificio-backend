@@ -37,11 +37,14 @@ namespace Backend.Features.Authentication.Commands.ChangePasswordOne
                 UserName = user.FirstName ?? ""
             };
 
-            var templateSendGrid = await _context.TemplateNotifications.FirstAsync(t => t.ID == 2);
-   
-            var result = await _sendMail.SendSingleDynamicEmailToSingleRecipientAsync(user.Email!, template, templateSendGrid.TemplateId);
+            
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "ChangePassword").FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            if (templateNotification == null) return Result.Failure(AuthenticationErrors.TemplateNotFoundOnChangePasswordOne);
+            if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(AuthenticationErrors.TemplateIdIsNullOnChangePasswordOne);
 
-            if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);
+            var result = await _sendMail.SendSingleDynamicEmailToSingleRecipientAsync(user.Email!, template, templateNotification.TemplateId);
+
+            if (!result.IsSuccessStatusCode) return Result.Failure(AuthenticationErrors.EmailNotSent);
             return Result.Success();
         }
     }

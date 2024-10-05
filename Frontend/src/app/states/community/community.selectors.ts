@@ -11,12 +11,12 @@ export const selectCommunity = createSelector(
   (state) => state.community
 );
 
-export const isLoading = createSelector(
+export const isLoadingCommunity = createSelector(
   selectCommunityState,
   (state) => state.isLoading
 );
 
-export const selectError = createSelector(
+export const selectCommunityError = createSelector(
   selectCommunityState,
   (state) => state.error
 );

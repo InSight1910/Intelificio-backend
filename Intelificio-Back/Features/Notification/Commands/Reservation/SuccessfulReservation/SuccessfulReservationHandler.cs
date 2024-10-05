@@ -29,11 +29,11 @@ namespace Backend.Features.Notification.Commands.Reservation.SuccessfulReservati
 
             var recipients = new List<EmailAddress>();
             recipients.Add(new EmailAddress(
-            //package.Owner.Email ?? "intelificio@duocuc.cl",
+           // package.Owner.Email ?? "intelificio@duocuc.cl",
             //$"{package.Owner.FirstName} {package.Owner.LastName}"
             ));
 
-            var templateNotification = await _context.TemplateNotifications.Where(t => t.ID == 4).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "SuccessfulReservation").FirstOrDefaultAsync(cancellationToken: cancellationToken);
             if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnSuccessfulReservation);
             if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnSuccessfulReservation);
 

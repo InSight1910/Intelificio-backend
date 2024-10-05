@@ -112,6 +112,43 @@ namespace Backend.Features.Notification.Common
             Code = "Notification.CommonExpenses.TemplateNotCreated",
             Message = "El templates no puede ser null para enviar las notificaciones de Gastos común"
         };
+        public static Error TemplateNotFoundOnCommonExpenses = new()
+        {
+            Code = "Notification.CommonExpenses.TemplateNotFoundOnCommonExpenses",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnCommonExpenses = new()
+        {
+            Code = "Notification.CommonExpenses.TemplateIdIsNullOnCommonExpenses",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+
+        // Errores de ReservationConfirmation
+        public static Error ReservationNotFound = new()
+        {
+            Code = "Notification.ReservationConfirmation.ReservationNotFound",
+            Message = "No se logró ubicar la reserva consultada."
+        };
+        public static Error TemplateNotFoundOnReservationConfirmation = new()
+        {
+            Code = "Notification.ReservationConfirmation.TemplateNotFoundOnCommonExpenses",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnReservationConfirmation = new()
+        {
+            Code = "Notification.ReservationConfirmation.TemplateIdIsNullOnCommonExpenses",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+        public static Error TemplateNotCreatedOnReservationConfirmation = new()
+        {
+            Code = "Notification.ReservationConfirmation.TemplateNotCreatedOnReservationConfirmation",
+            Message = "El templates no puede ser null para enviar confirmación de reserva."
+        };
+        public static Error EmailNotSentOnReservationConfirmation = new()
+        {
+            Code = "Notification.ReservationConfirmation.EmailNotSentOnReservationConfirmation",
+            Message = "No se pudo enviar el correo de confirmación de reserva"
+        };
 
     }
 }

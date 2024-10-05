@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../states/intelificio.state';
 import {
   selectCommunity,
-  isLoading,
+  isLoadingCommunity,
 } from '../../../states/community/community.selectors';
 import { Community } from '../../../shared/models/community.model';
 import { tap } from 'rxjs';
