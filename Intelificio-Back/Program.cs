@@ -44,6 +44,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<UserProfile>();
     cfg.AddProfile<LocationProfile>();
     cfg.AddProfile<UnitProfile>();
+    cfg.AddProfile<ContactProfile>();
     cfg.AddProfile<CommonSpaceProfile>();
     cfg.AddProfile<ReservationProfile>();
 });
