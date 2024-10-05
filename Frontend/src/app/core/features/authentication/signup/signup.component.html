@@ -1,445 +1,448 @@
-<div class="card-content">
-  <div class="column is-12">
-    <h1 class="title is-4 mb-5">Crear Usuario</h1>
-    <form class="box" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-      <div class="columns">
-        <div class="column field is-4">
-          <label class="label">Nombre</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              formControlName="firstName"
-              (input)="onInputChange('firstName')"
-              placeholder="Nombre"
-              [ngClass]="{
+<div class="container">
+  <div class="card-content">
+    <div class="column is-12">
+      <h1 class="title is-4 mb-5">Crear Usuario</h1>
+      <form class="box" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div class="columns">
+          <div class="column field is-4">
+            <label class="label">Nombre</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="firstName"
+                (input)="onInputChange('firstName')"
+                placeholder="Nombre"
+                [ngClass]="{
                 'is-danger':
                   signupForm.get('firstName')?.invalid &&
                   signupForm.get('firstName')?.touched
               }"
-              [ngClass]="{
+                [ngClass]="{
                 'is-success':
                   signupForm.get('firstName')?.valid &&
                   signupForm.get('firstName')?.touched
               }"
-            />
+              />
 
-            @if(signupForm.get('firstName')?.invalid &&
-            signupForm.get('firstName')?.touched){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Debe ingresar el nombre del usuario.
-            </p>
-            } @else if (signupForm.get('firstName')?.valid &&
-            signupForm.get('firstName')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Validado
-            </p>
-            }
+              @if(signupForm.get('firstName')?.invalid &&
+              signupForm.get('firstName')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar el nombre del usuario.
+                </p>
+              } @else if (signupForm.get('firstName')?.valid &&
+              signupForm.get('firstName')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
           </div>
-        </div>
 
-        <div class="column field is-4">
-          <label class="label">Apellido</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              (input)="onInputChange('lastName')"
-              formControlName="lastName"
-              placeholder="Apellido"
-              [ngClass]="{
+          <div class="column field is-4">
+            <label class="label">Apellido</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                (input)="onInputChange('lastName')"
+                formControlName="lastName"
+                placeholder="Apellido"
+                [ngClass]="{
                 'is-danger':
                   signupForm.get('lastName')?.invalid &&
                   signupForm.get('lastName')?.touched
               }"
-              [ngClass]="{
+                [ngClass]="{
                 'is-success':
                   signupForm.get('lastName')?.valid &&
                   signupForm.get('lastName')?.touched
               }"
-            />
+              />
 
-            @if(signupForm.get('lastName')?.invalid &&
-            signupForm.get('lastName')?.touched){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Debe ingresar el Apellido del usuario.
-            </p>
-            } @else if (signupForm.get('lastName')?.valid &&
-            signupForm.get('lastName')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Validado
-            </p>
-            }
+              @if(signupForm.get('lastName')?.invalid &&
+              signupForm.get('lastName')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar el Apellido del usuario.
+                </p>
+              } @else if (signupForm.get('lastName')?.valid &&
+              signupForm.get('lastName')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
           </div>
-        </div>
 
-        <div class="column field is-4">
-          <label class="label"> N° de RUT </label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              (input)="onInputChange('rut')"
-              formControlName="rut"
-              placeholder="xxxxxxxx-x"
-              [ngClass]="{
+          <div class="column field is-4">
+            <label class="label"> N° de RUT </label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                (input)="onInputChange('rut')"
+                formControlName="rut"
+                placeholder="xxxxxxxx-x"
+                [ngClass]="{
                 'is-danger':
                   signupForm.get('rut')?.invalid &&
                   signupForm.get('rut')?.touched
               }"
-              [ngClass]="{
+                [ngClass]="{
                 'is-success':
                   signupForm.get('rut')?.valid && signupForm.get('rut')?.touched
               }"
-            />
+              />
 
-            @if (signupForm.get('rut')?.invalid &&
-            signupForm.get('rut')?.touched){ @if
-            (signupForm.get('rut')?.errors?.['invalidRut']){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              El RUT ingresado no es válido.
-            </p>
-            } @else {
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Debe ingresar el RUT del usuario.
-            </p>
-            } } @else if (signupForm.get('rut')?.valid &&
-            signupForm.get('rut')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Validado
-            </p>
-            }
-          </div>
-        </div>
-      </div>
-
-      <div class="columns">
-        <div class="column field is-4">
-          <label class="label">Fecha Nacimiento</label>
-          <div class="control">
-            <input
-              class="input"
-              type="date"
-              (input)="onInputChange('birthDate')"
-              formControlName="birthDate"
-              [ngClass]="{
-                'is-danger':
-                  signupForm.get('birthDate')?.invalid &&
-                  signupForm.get('birthDate')?.touched
-              }"
-              [ngClass]="{
-                'is-success':
-                  signupForm.get('birthDate')?.valid &&
-                  signupForm.get('birthDate')?.touched
-              }"
-            />
-
-            @if (signupForm.get('birthDate')?.invalid &&
-            signupForm.get('birthDate')?.touched) {
-            @if(signupForm.get('birthDate')?.errors?.['tooRecent']){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              El usuario debe ser mayor de 2 años
-            </p>
-            } @else {
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Debe ingresar el fecha de nacimiento del usuario.
-            </p>
-            } } @else if (signupForm.get('birthDate')?.valid &&
-            signupForm.get('birthDate')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Validado
-            </p>
-            }
-          </div>
-        </div>
-
-        <div class="column field is-4">
-          <label class="label">N° teléfono</label>
-          <div class="control">
-            <input
-              class="input"
-              type="tel"
-              formControlName="phoneNumber"
-              (input)="onInputChange('phoneNumber')"
-              placeholder="+56xxxxxxxxx"
-              [ngClass]="{
-                'is-danger':
-                  signupForm.get('phoneNumber')?.invalid &&
-                  signupForm.get('phoneNumber')?.touched
-              }"
-              [ngClass]="{
-                'is-success':
-                  signupForm.get('phoneNumber')?.valid &&
-                  signupForm.get('phoneNumber')?.touched
-              }"
-            />
-
-            @if(signupForm.get('phoneNumber')?.invalid &&
-            signupForm.get('phoneNumber')?.touched){ @if
-            (signupForm.get('phoneNumber')?.errors &&
-            signupForm.get('phoneNumber')?.errors?.['minlength'] &&
-            signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              El N° debe ser mayor de 12 digitos en formato +56xxxxxxxxx
-            </p>
-            } @else if (signupForm.get('phoneNumber')?.errors &&
-            signupForm.get('phoneNumber')?.errors?.['maxlength']) {
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              El N° debe ser menor de 15 digitos en formato +56xxxxxxxxx
-            </p>
-            } @else if (signupForm.get('phoneNumber')?.errors &&
-            signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Formato incorrecto, debe ser +56xxxxxxxxx
-            </p>
-            } @else {
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Debe ingresar un número teléfonico.
-            </p>
-            } } @else if (signupForm.get('phoneNumber')?.valid &&
-            signupForm.get('phoneNumber')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Validado
-            </p>
-            }
-          </div>
-        </div>
-
-        <div class="column field is-4">
-          <label class="label">Rol</label>
-          <div class="control">
-            <div
-              class="select"
-              [ngClass]="{
-                'is-danger':
-                  signupForm.get('rol')?.invalid &&
-                  signupForm.get('rol')?.touched
-              }"
-              [ngClass]="{
-                'is-success':
-                  signupForm.get('rol')?.valid && signupForm.get('rol')?.touched
-              }"
-            >
-              <select formControlName="rol" (input)="onInputChange('rol')">
-                <option value="" selected>Seleccione un rol</option>
-
-                <option *ngFor="let rol of listaRol" [value]="rol.name">
-                  {{ rol.name }}
-                </option>
-              </select>
-
-              @if(signupForm.get('rol')?.invalid &&
-              signupForm.get('rol')?.touched){
-              <p
-                class="help is-danger"
-                *ngIf="signupForm.get('rol')?.errors?.['required']"
-              >
-                <i class="fas fa-exclamation-triangle"></i>
-                ¿Qué rol tendrá el usuario?
-              </p>
-              } @else if (signupForm.get('rol')?.valid &&
-              signupForm.get('rol')?.touched) {
-              <p class="help is-right">
-                <i class="fas fa-check"></i>
-                Validado
-              </p>
+              @if (signupForm.get('rut')?.invalid &&
+              signupForm.get('rut')?.touched){ @if
+              (signupForm.get('rut')?.errors?.['invalidRut']){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  El RUT ingresado no es válido.
+                </p>
+              } @else {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar el RUT del usuario.
+                </p>
+              } } @else if (signupForm.get('rut')?.valid &&
+              signupForm.get('rut')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
               }
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="columns">
-        <div class="column field is-4">
-          <label class="label">Correo</label>
-          <div class="control">
-            <input
-              class="input"
-              type="email"
-              autocomplete="email"
-              (input)="onInputChange('email')"
-              formControlName="email"
-              placeholder="Correo para iniciar sesión"
-              [ngClass]="{
+        <div class="columns">
+          <div class="column field is-4">
+            <label class="label">Fecha Nacimiento</label>
+            <div class="control">
+              <input
+                class="input"
+                type="date"
+                (input)="onInputChange('birthDate')"
+                formControlName="birthDate"
+                [ngClass]="{
+                'is-danger':
+                  signupForm.get('birthDate')?.invalid &&
+                  signupForm.get('birthDate')?.touched
+              }"
+                [ngClass]="{
+                'is-success':
+                  signupForm.get('birthDate')?.valid &&
+                  signupForm.get('birthDate')?.touched
+              }"
+              />
+
+              @if (signupForm.get('birthDate')?.invalid &&
+              signupForm.get('birthDate')?.touched) {
+                @if(signupForm.get('birthDate')?.errors?.['tooRecent']){
+                  <p class="help is-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    El usuario debe ser mayor de 2 años
+                  </p>
+                } @else {
+                  <p class="help is-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Debe ingresar el fecha de nacimiento del usuario.
+                  </p>
+                } } @else if (signupForm.get('birthDate')?.valid &&
+              signupForm.get('birthDate')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+
+          <div class="column field is-4">
+            <label class="label">N° teléfono</label>
+            <div class="control">
+              <input
+                class="input"
+                type="tel"
+                formControlName="phoneNumber"
+                (input)="onInputChange('phoneNumber')"
+                placeholder="+56xxxxxxxxx"
+                [ngClass]="{
+                'is-danger':
+                  signupForm.get('phoneNumber')?.invalid &&
+                  signupForm.get('phoneNumber')?.touched
+              }"
+                [ngClass]="{
+                'is-success':
+                  signupForm.get('phoneNumber')?.valid &&
+                  signupForm.get('phoneNumber')?.touched
+              }"
+              />
+
+              @if(signupForm.get('phoneNumber')?.invalid &&
+              signupForm.get('phoneNumber')?.touched){ @if
+              (signupForm.get('phoneNumber')?.errors &&
+              signupForm.get('phoneNumber')?.errors?.['minlength'] &&
+              signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  El N° debe ser mayor de 12 digitos en formato +56xxxxxxxxx
+                </p>
+              } @else if (signupForm.get('phoneNumber')?.errors &&
+              signupForm.get('phoneNumber')?.errors?.['maxlength']) {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  El N° debe ser menor de 15 digitos en formato +56xxxxxxxxx
+                </p>
+              } @else if (signupForm.get('phoneNumber')?.errors &&
+              signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Formato incorrecto, debe ser +56xxxxxxxxx
+                </p>
+              } @else {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar un número teléfonico.
+                </p>
+              } } @else if (signupForm.get('phoneNumber')?.valid &&
+              signupForm.get('phoneNumber')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+
+          <div class="column field is-4">
+            <label class="label">Rol</label>
+            <div class="control">
+              <div
+                class="select"
+                [ngClass]="{
+                'is-danger':
+                  signupForm.get('rol')?.invalid &&
+                  signupForm.get('rol')?.touched
+              }"
+                [ngClass]="{
+                'is-success':
+                  signupForm.get('rol')?.valid && signupForm.get('rol')?.touched
+              }"
+              >
+                <select formControlName="rol" (input)="onInputChange('rol')">
+                  <option value="" selected>Seleccione un rol</option>
+
+                  <option *ngFor="let rol of listaRol" [value]="rol.name">
+                    {{ rol.name }}
+                  </option>
+                </select>
+
+                @if(signupForm.get('rol')?.invalid &&
+                signupForm.get('rol')?.touched){
+                  <p
+                    class="help is-danger"
+                    *ngIf="signupForm.get('rol')?.errors?.['required']"
+                  >
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ¿Qué rol tendrá el usuario?
+                  </p>
+                } @else if (signupForm.get('rol')?.valid &&
+                signupForm.get('rol')?.touched) {
+                  <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column field is-4">
+            <label class="label">Correo</label>
+            <div class="control">
+              <input
+                class="input"
+                type="email"
+                autocomplete="email"
+                (input)="onInputChange('email')"
+                formControlName="email"
+                placeholder="Correo para iniciar sesión"
+                [ngClass]="{
                 'is-danger':
                   signupForm.get('email')?.invalid &&
                   signupForm.get('email')?.touched
               }"
-              [ngClass]="{
+                [ngClass]="{
                 'is-success':
                   signupForm.get('email')?.valid &&
                   signupForm.get('email')?.touched
               }"
-            />
+              />
 
-            @if (signupForm.get('email')?.invalid &&
-            signupForm.get('email')?.touched){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Debe ingresar el correo del usuario.
-            </p>
-            } @else if (signupForm.get('email')?.valid &&
-            signupForm.get('email')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Validado
-            </p>
-            }
+              @if (signupForm.get('email')?.invalid &&
+              signupForm.get('email')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar el correo del usuario.
+                </p>
+              } @else if (signupForm.get('email')?.valid &&
+              signupForm.get('email')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
           </div>
-        </div>
 
-        <div class="column field is-4">
-          <label class="label">Contraseña</label>
-          <div class="control">
-            <input
-              class="input"
-              type="password"
-              (input)="onInputChange('password')"
-              formControlName="password"
-              autocomplete="new-password"
-              placeholder="Al menos 8 caracteres alfanumericos, incluyendo una mayúscula y un símbolo."
-              [ngClass]="{
+          <div class="column field is-4">
+            <label class="label">Contraseña</label>
+            <div class="control">
+              <input
+                class="input"
+                type="password"
+                (input)="onInputChange('password')"
+                formControlName="password"
+                autocomplete="new-password"
+                placeholder="Al menos 8 caracteres alfanumericos, incluyendo una mayúscula y un símbolo."
+                [ngClass]="{
                 'is-danger':
                   signupForm.get('password')?.invalid &&
                   signupForm.get('password')?.touched
               }"
-              [ngClass]="{
+                [ngClass]="{
                 'is-success':
                   signupForm.get('password')?.valid &&
                   signupForm.get('password')?.touched
               }"
-            />
+              />
 
-            @if (signupForm.get('password')?.invalid &&
-            signupForm.get('password')?.touched){ @if
-            (signupForm.get('password')?.errors?.['minlength']){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              La contraseña debe tener al menos 8 caracteres.
-            </p>
-            } @else if (signupForm.get('password')?.errors?.['invalidPassword'])
-            {
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              La contraseña debe contener al menos 8 caracteres, una letra
-              mayúscula, un número y un símbolo.
-            </p>
-            } @else {
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Se debe crear una contraseña para el usuario.
-            </p>
-            } } @else if (signupForm.get('password')?.valid &&
-            signupForm.get('password')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Contraseña Valida
-            </p>
-            }
+              @if (signupForm.get('password')?.invalid &&
+              signupForm.get('password')?.touched){ @if
+              (signupForm.get('password')?.errors?.['minlength']){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  La contraseña debe tener al menos 8 caracteres.
+                </p>
+              } @else if (signupForm.get('password')?.errors?.['invalidPassword'])
+              {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  La contraseña debe contener al menos 8 caracteres, una letra
+                  mayúscula, un número y un símbolo.
+                </p>
+              } @else {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Se debe crear una contraseña para el usuario.
+                </p>
+              } } @else if (signupForm.get('password')?.valid &&
+              signupForm.get('password')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Contraseña Valida
+                </p>
+              }
+            </div>
           </div>
-        </div>
 
-        <div class="column field is-4">
-          <label class="label">Confirmar Contraseña</label>
-          <div class="control">
-            <input
-              class="input"
-              type="password"
-              autocomplete="new-password"
-              (input)="onInputChange('confirmPassword')"
-              formControlName="confirmPassword"
-              placeholder="Ejemplo: Int3lif1ci@"
-              [ngClass]="{
+          <div class="column field is-4">
+            <label class="label">Confirmar Contraseña</label>
+            <div class="control">
+              <input
+                class="input"
+                type="password"
+                autocomplete="new-password"
+                (input)="onInputChange('confirmPassword')"
+                formControlName="confirmPassword"
+                placeholder="Ejemplo: Int3lif1ci@"
+                [ngClass]="{
                 'is-danger':
                   signupForm.hasError('passwordsDoNotMatch') &&
                   signupForm.get('confirmPassword')?.touched
               }"
-              [ngClass]="{
+                [ngClass]="{
                 'is-success':
                   !signupForm.hasError('passwordsDoNotMatch') &&
                   signupForm.get('confirmPassword')?.touched
               }"
-            />
+              />
 
-            @if (signupForm.hasError('passwordsDoNotMatch') &&
-            signupForm.get('confirmPassword')?.touched){
-            <p class="help is-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Las contraseñas no coinciden
-            </p>
-            } @else if (!signupForm.hasError('passwordsDoNotMatch') &&
-            signupForm.get('confirmPassword')?.touched) {
-            <p class="help is-right">
-              <i class="fas fa-check"></i>
-              Las contraseñas coinciden
-            </p>
-            }
+              @if (signupForm.hasError('passwordsDoNotMatch') &&
+              signupForm.get('confirmPassword')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Las contraseñas no coinciden
+                </p>
+              } @else if (!signupForm.hasError('passwordsDoNotMatch') &&
+              signupForm.get('confirmPassword')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Las contraseñas coinciden
+                </p>
+              }
+            </div>
           </div>
         </div>
-      </div>
-      <p class="subtitle is-6">
-        O bien, realiza una carga masiva adjuntando un archivo
-      </p>
-      <div class="file" [ngClass]="{ 'has-name': isFileUploaded }">
-        <label class="file-label">
-          <input
-            class="file-input"
-            type="file"
-            name="resume"
-            (change)="onChangeFile($event)"
-          />
-          <span class="file-cta">
+        <p class="subtitle is-6">
+          O bien, realiza una carga masiva adjuntando un archivo
+        </p>
+        <div class="file" [ngClass]="{ 'has-name': isFileUploaded }">
+          <label class="file-label">
+            <input
+              class="file-input"
+              type="file"
+              name="resume"
+              (change)="onChangeFile($event)"
+            />
+            <span class="file-cta">
             <span class="file-icon">
               <i class="fas fa-upload"></i>
             </span>
             <span class="file-label"> Elige un archivo </span>
           </span>
-          @if (isFileUploaded) {
-          <span class="file-name">{{ selectedFileName }}</span>
-          }
-        </label>
-      </div>
+            @if (isFileUploaded) {
+              <span class="file-name">{{ selectedFileName }}</span>
+            }
+          </label>
+        </div>
 
-      @if (notification) { @if (IsSuccess){
-      <div class="notification is-success">
-        <button class="delete" (click)="closeNotification()"></button>
-        {{ this.notificationMessage }}
-      </div>
-      } @else if (IsError){
-      <div class="notification is-danger">
-        <button class="delete" (click)="closeNotification()"></button>
-        {{ this.notificationMessage }}
-      </div>
-      } }
+        @if (notification) { @if (IsSuccess){
+          <div class="notification is-success">
+            <button class="delete" (click)="closeNotification()"></button>
+            {{ this.notificationMessage }}
+          </div>
+        } @else if (IsError){
+          <div class="notification is-danger">
+            <button class="delete" (click)="closeNotification()"></button>
+            {{ this.notificationMessage }}
+          </div>
+        } }
 
-      <div class="buttons">
-        <button
-          type="submit"
-          class="button is-primary"
-          [ngClass]="{ 'is-loading': waiting }"
-          [disabled]="!signupForm.valid && !isFileUploaded"
-        >
-          Guardar
-        </button>
-        <button class="button is-link" (click)="clean()" [disabled]="waiting">
-          Limpiar
-        </button>
-      </div>
-    </form>
+        <div class="buttons">
+          <button
+            type="submit"
+            class="button is-primary"
+            [ngClass]="{ 'is-loading': waiting }"
+            [disabled]="!signupForm.valid && !isFileUploaded"
+          >
+            Guardar
+          </button>
+          <button class="button is-link" (click)="clean()" [disabled]="waiting">
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
+
