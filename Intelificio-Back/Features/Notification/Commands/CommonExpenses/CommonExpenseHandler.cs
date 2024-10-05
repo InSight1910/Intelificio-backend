@@ -3,6 +3,7 @@ using Backend.Common.Response;
 using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SendGrid.Helpers.Mail;
 using System.Collections.Generic;
 
@@ -56,10 +57,14 @@ namespace Backend.Features.Notification.Commands.CommonExpenses
 
             if (templates == null) return Result.Failure(NotificationErrors.TemplateNotCreated);
 
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "GGCC").FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnCommonExpenses);
+            if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnCommonExpenses);
+
             var result = await _sendMail.SendCommondExpenses(
                                                             from,
                                                             recipients,
-                                                            TemplatesEnum.SingleMessageIntelificioId,
+                                                            templateNotification.TemplateId,
                                                             templates
             );
 

@@ -5,7 +5,6 @@ using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Tls;
 using SendGrid.Helpers.Mail;
 
 
@@ -95,7 +94,7 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                     .FirstOrDefaultAsync();
             }
 
-            var templateNotification = await _context.TemplateNotifications.Where(t => t.ID == 7).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "ComposeEmail").FirstOrDefaultAsync(cancellationToken: cancellationToken);
             if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnSimpleMessage);
             if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnSimpleMessage);
 

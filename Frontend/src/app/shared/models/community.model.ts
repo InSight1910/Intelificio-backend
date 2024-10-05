@@ -26,6 +26,7 @@ export interface UsersCommunity {
 export interface AllCommunity {
   id: number;
   name: string;
+  rut?: string;
   address: string;
   adminName: string;
   adminId: number;

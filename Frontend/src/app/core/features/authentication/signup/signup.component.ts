@@ -105,14 +105,14 @@ export class SingupComponent implements OnInit {
       if (this.signupForm.valid) {
         const signupDTO: SignupDTO = {
           User: {
-            firstName: this.signupForm.controls['firstName'].value ?? '',
-            lastName: this.signupForm.controls['lastName'].value ?? '',
-            email: this.signupForm.controls['email'].value ?? '',
-            phoneNumber: this.signupForm.controls['phoneNumber'].value ?? '',
-            password: this.signupForm.controls['password'].value ?? '',
-            rut: this.signupForm.controls['rut'].value ?? '',
-            role: this.signupForm.controls['rol'].value ?? '',
-            birthDate: this.signupForm.controls['birthDate'].value ?? '',
+            firstName: this.signupForm.value.firstName ?? '',
+            lastName: this.signupForm.value.lastName ?? '',
+            email: this.signupForm.value.email ?? '',
+            phoneNumber: this.signupForm.value.phoneNumber ?? '',
+            password: this.signupForm.value.password ?? '',
+            rut: this.signupForm.value.rut?.replace(/[.\-]/g, '').toUpperCase() ?? '',
+            role: this.signupForm.value.rol ?? '',
+            birthDate: this.signupForm.value.birthDate ?? '',
           },
           Users: [],
         };

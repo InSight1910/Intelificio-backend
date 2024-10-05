@@ -9,5 +9,6 @@ namespace Backend.Features.Community.Commands.Create
         public required string Address { get; set; }
         public int MunicipalityId { get; set; }
         public required string RUT { get; set; }
+
     }
 }

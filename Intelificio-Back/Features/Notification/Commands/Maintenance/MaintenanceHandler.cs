@@ -107,7 +107,7 @@ namespace Backend.Features.Notification.Commands.Maintenance
                     .FirstOrDefaultAsync();
             }
 
-            var templateNotification = await _context.TemplateNotifications.Where(t => t.ID == 1).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "Maintenance").FirstOrDefaultAsync(cancellationToken: cancellationToken);
             if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnMaintenance);
             if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnMaintenance);
 

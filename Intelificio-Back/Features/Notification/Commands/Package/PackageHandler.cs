@@ -40,7 +40,7 @@ namespace Backend.Features.Notification.Commands.Package
                 $"{package.Owner.FirstName} {package.Owner.LastName}"
             ));
 
-            var templateNotification = await _context.TemplateNotifications.Where(t => t.ID == 3).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "Package").FirstOrDefaultAsync(cancellationToken: cancellationToken);
             if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnPackage);
             if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnPackage);
 
