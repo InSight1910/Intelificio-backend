@@ -64,7 +64,7 @@
 <app-modal-space
   [title]="modalTitle"
   (close)="onClickCloseEdit()"
-  [onClick]="isModalOpen ? onClickSaveEdit : onClickSaveEdit"
+  (click)="onClickSaveEdit()"
 >
   <form [formGroup]="form">
     <div class="field">

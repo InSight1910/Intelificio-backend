@@ -4,7 +4,7 @@
       <h3 class="title is-4">Reservar espacios comunes</h3>
     </div>
     <div class="level-right">
-      <div class="select">
+      <div class="select" [ngClass]="{ 'is-skeleton': isLoadingCommonSpace }">
         <select #spaceId (change)="onChange($event)">
           @for(space of (commonSpaces$); track $index) {
           <option value="{{ space.id }}">{{ space.name }}</option>
@@ -38,7 +38,9 @@
         class="button is-primary"
         (click)="onClickCreateReservation(+spaceId.value)"
       >
-        <span class="icon mr-2"><i class="fa-regular fa-calendar-plus"></i></span>Reservar
+        <span class="icon mr-2"
+          ><i class="fa-regular fa-calendar-plus"></i></span
+        >Reservar
       </button>
     </div>
   </div>
@@ -46,7 +48,7 @@
 
 <div class="box is-shadowless">
   <div class="level">
-    <h4 class="title is-4">Reservar espacios comunes</h4>
+    <h4 class="title is-4">Calendario de Reservas</h4>
 
     <div class="level-right">
       <div class="field is-grouped">
@@ -90,19 +92,115 @@
         </p>
       </div>
       } @for (day of daysInMonth; track $index) { @if (day != null) {
-      <div class="cell box is-shadowless my-auto py-auto">
+      <div
+        class="cell box is-shadowless my-auto py-auto is-flex is-flex-direction-column"
+        style="min-height: 10rem; min-width: 10rem"
+        (click)="onClickShowReservations(day)"
+      >
         {{ day }}
+        @for(reservation of reservationsCounts; track $index) {
+        @if(reservation.day === day) { @for(tag of
+        reservation.countReservations; track $index) {
+        <span
+          class="tag"
+          [ngClass]="{
+            'mt-2': !$first,
+            'mt-1': $first,
+            'is-primary': tag.status === ReservationStatus.CONFIRMADO,
+            'is-warning': tag.status === ReservationStatus.PENDIENTE,
+            'is-danger': tag.status === ReservationStatus.CANCELADO
+          }"
+        >
+          {{ tag.count }} {{ ReservationStatus[tag.status] }}
+        </span>
+        }}}
       </div>
       } @else {
       <div class="cell"></div>
+      } @if (isModalOpenReservations().get(day) ) {
+      <app-modal-space
+        [title]="titleDetail"
+        [showActionButton]="false"
+        (close)="onClickCloseReservations(day)"
+      >
+        <div class="table table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Area</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Hora de inicio</th>
+                <th>Hora de fin</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (reservations.length > 0) { @for( reservation of reservations;
+              track $index) {
+              <tr>
+                <td>{{ reservation.userName }}</td>
+                <td>{{ reservation.spaceName }}</td>
+                <td>
+                  <span
+                    class="tag"
+                    [ngClass]="{
+                      'mt-2': !$first,
+                      'mt-1': $first,
+                      'is-primary':
+                        reservation.status === ReservationStatus.CONFIRMADO,
+                      'is-warning':
+                        reservation.status === ReservationStatus.PENDIENTE,
+                      'is-danger':
+                        reservation.status === ReservationStatus.CANCELADO
+                    }"
+                  >
+                    {{ ReservationStatus[reservation.status] }}
+                  </span>
+                </td>
+                <td>{{ reservation.date | date : "fullDate" }}</td>
+                <td>
+                  {{ reservation.startTime }}
+                </td>
+                <td>
+                  {{ reservation.endTime }}
+                </td>
+              </tr>
+              }} @else if(isLoadingReservation) {
+              <tr>
+                <td colspan="6">
+                  <div class="skeleton-lines">
+                    <div></div>
+                    <div></div>
+                  </div>
+                </td>
+              </tr>
+              } @else {
+              <tr>
+                <td colspan="6" class="has-text-centered">
+                  No hay reservaciones
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </app-modal-space>
       } }
     </div>
   </div>
 </div>
 
 @if(isModalOpen) {
-<app-modal-space [title]="modalTitle" (close)="onClickCloseEdit()" buttonTitle="Guardar" [isValid]="form.valid">
-  <form [formGroup]="form">
+<app-modal-space
+  [title]="modalTitle"
+  (close)="onClickCloseEdit()"
+  buttonTitle="Guardar"
+  [isValid]="form.valid"
+  (onModalSubmit)="onSubmit()"
+  [isLoading]="isCreating"
+>
+  <form [formGroup]="form" (submit)="onSubmit($event)">
     <div class="field">
       <label class="label">Fecha</label>
       <div class="control">
@@ -112,15 +210,29 @@
     <div class="field">
       <label class="label">Hora de inicio</label>
       <div class="control">
-        <input type="time" class="input" formControlName="startTime" />
+        <input
+          type="time"
+          step="900"
+          class="input"
+          formControlName="startTime"
+        />
       </div>
     </div>
     <div class="field">
       <label class="label">Hora de inicio</label>
       <div class="control">
-        <input type="time" class="input" formControlName="endTime" />
+        <input type="time" step="900" class="input" formControlName="endTime" />
       </div>
     </div>
+    <div class="field">
+      <label class="label">Invitados</label>
+      <div class="control">
+        <button class="button is-primary">Registrar invitados</button>
+      </div>
+    </div>
+    @if (errors.length > 0 || onSuccess != '') {
+    <app-message [errors]="errors" [success]="onSuccess" />
+    }
   </form>
 </app-modal-space>
 }

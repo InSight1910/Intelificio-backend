@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { isEarlyEventType } from '@angular/core/primitives/event-dispatch';
+import { FormGroupDirective } from '@angular/forms';
 
 @Component({
   selector: 'app-modal-space',
@@ -9,13 +17,21 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './modal.component.css',
 })
 export class ModalComponent {
+  @ContentChild(FormGroupDirective) formDirective!: FormGroupDirective;
+  @Output() onModalSubmit = new EventEmitter<void>();
   @Input() title: string = '';
   @Input() isValid: boolean = false;
   @Input() buttonTitle: string = '';
-  @Input() onClick: Function = () => {};
   @Input() isLoading: boolean = false;
-
+  @Input() showActionButton: boolean = true;
   @Output() close = new EventEmitter<void>();
+
+  onSubmit(event: Event) {
+    if (!this.isLoading || this.isValid) {
+      this.formDirective.onSubmit(event); // Programmatically trigger the form submission
+      this.onModalSubmit.emit();
+    }
+  }
 
   onClose() {
     this.close.emit();

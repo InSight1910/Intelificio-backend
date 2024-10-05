@@ -1,3 +1,14 @@
+using Backend.Models.Enums;
+
 namespace Backend.Features.Reservations.Commands.Create;
 
-public record CreateReservationCommandResponse();
+public class CreateReservationCommandResponse
+{
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public DateTime Date { get; set; }
+    public TimeOnly StartDate { get; set; }
+    public TimeOnly EndDate { get; set; }
+    public ReservationStatus Status { get; set; }
+    public int SpaceName { get; set; }
+}

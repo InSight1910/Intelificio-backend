@@ -1,19 +1,19 @@
 ﻿using Backend.Models.Base;
 using Backend.Models.Enums;
 
-namespace Backend.Models
+namespace Backend.Models;
+
+public class Reservation : BaseEntity
 {
-    public class Reservation : BaseEntity
-    {
-        public int CommonAreaId { get; set; }
-        public int UserId { get; set; }
-        public required DateTime ReservationDate { get; set; }
-        public required ReservationStatus Status { get; set; }
+    public required DateTime Date { get; set; }
+    public required TimeSpan StartTime { get; set; }
+    public required TimeSpan EndTime { get; set; }
+    public required ReservationStatus Status { get; set; }
 
-        public required User User { get; set; }
+    public int UserId { get; set; }
+    public virtual User User { get; set; }
+    public int SpaceId { get; set; }
+    public virtual CommonSpace Spaces { get; set; }
 
-        public required CommonSpace Spaces { get; set; }
-
-        public ICollection<Invitee> Invites { get; set; } = new List<Invitee>();
-    }
+    public ICollection<Invitee> Invites { get; set; } = new List<Invitee>();
 }
