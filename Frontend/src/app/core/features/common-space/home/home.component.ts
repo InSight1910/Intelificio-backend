@@ -122,8 +122,8 @@ export class HomeSpaceComponent {
         )
         .subscribe({
           next: (data) => {
-            // this.selectedSpace = data[0];
-            // this.commonSpaces$ = data;
+            this.selectedSpace = data[0];
+            this.commonSpaces$ = data;
             this.isLoadingCommonSpace = false;
           },
         });
@@ -163,7 +163,6 @@ export class HomeSpaceComponent {
   }
 
   onClickCloseReservations(day: number) {
-    console.log(day);
     const opensModal = this.isModalOpenReservations();
     opensModal.set(day, false);
     this.reservations = [];
@@ -192,6 +191,7 @@ export class HomeSpaceComponent {
     this.reservationService.create(reservation).subscribe({
       next: ({ data }) => {
         this.onSuccess = 'Reserva creada con éxito';
+        console.log(data);
         const dateCreated = new Date(data.date);
         console.log(dateCreated.getDate());
         const count = this.reservationsCounts.filter(
@@ -235,7 +235,7 @@ export class HomeSpaceComponent {
   loadCountReservations() {
     this.store.select(selectCommunity).subscribe((community) => {
       const selectedMonth = this.months.at(this.indexMonth)!;
-      console.log(selectedMonth);
+
       this.reservationService
         .getCountReservationsByCommunityAndMonth(
           community?.id!,
@@ -306,6 +306,7 @@ export class HomeSpaceComponent {
   }
 
   generateCalendar(): void {
+    2;
     const { monthNumber, year } = this.months.at(this.indexMonth)!;
 
     const firstDayOfMonth = new Date(year, monthNumber, 1).getDay() + (6 % 7);
@@ -315,12 +316,5 @@ export class HomeSpaceComponent {
     for (let day = 1; day <= lastDateOfMonth; day++) {
       this.daysInMonth.push(day);
     }
-  }
-  getTimeAsDate(time: Date): Date {
-    const currentDate = new Date();
-    console.log(time);
-    const [hours, minutes, seconds] = time.toString().split(':').map(Number);
-    currentDate.setHours(hours, minutes, seconds);
-    return currentDate;
   }
 }

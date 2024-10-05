@@ -4,7 +4,7 @@
       <h3 class="title is-4">Reservar espacios comunes</h3>
     </div>
     <div class="level-right">
-      <div class="select" [ngClass]="{'is-skeleton' : isLoadingCommonSpace}">
+      <div class="select" [ngClass]="{ 'is-skeleton': isLoadingCommonSpace }">
         <select #spaceId (change)="onChange($event)">
           @for(space of (commonSpaces$); track $index) {
           <option value="{{ space.id }}">{{ space.name }}</option>
@@ -94,6 +94,7 @@
       } @for (day of daysInMonth; track $index) { @if (day != null) {
       <div
         class="cell box is-shadowless my-auto py-auto is-flex is-flex-direction-column"
+        style="min-height: 10rem; min-width: 10rem"
         (click)="onClickShowReservations(day)"
       >
         {{ day }}
@@ -159,12 +160,10 @@
                 </td>
                 <td>{{ reservation.date | date : "fullDate" }}</td>
                 <td>
-                  {{
-                    getTimeAsDate(reservation.startTime) | date : "shortTime"
-                  }}
+                  {{ reservation.startTime }}
                 </td>
                 <td>
-                  {{ getTimeAsDate(reservation.endTime) | date : "shortTime" }}
+                  {{ reservation.endTime }}
                 </td>
               </tr>
               }} @else if(isLoadingReservation) {
@@ -223,6 +222,12 @@
       <label class="label">Hora de inicio</label>
       <div class="control">
         <input type="time" step="900" class="input" formControlName="endTime" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Invitados</label>
+      <div class="control">
+        <button class="button is-primary">Registrar invitados</button>
       </div>
     </div>
     @if (errors.length > 0 || onSuccess != '') {

@@ -15,7 +15,6 @@ public class GetReservationsByCommunityAndMonthQueryHandler(IntelificioDbContext
         var checkCommunity = await context.Community.AnyAsync(x => x.ID == request.CommunityId, cancellationToken);
         if (!checkCommunity) return Result.Failure(ReservationErrors.CommunityNotFoundOnGetByCommunityAndMonth);
 
-        TimeOnly time;
         var result = await context.Reservations
             .Include(x => x.User)
             .Include(x => x.Spaces)
@@ -27,8 +26,8 @@ public class GetReservationsByCommunityAndMonthQueryHandler(IntelificioDbContext
                 SpaceName = x.Spaces.Name,
                 Status = (int)x.Status,
                 Date = x.Date.ToString(@"yyyy-MM-dd"),
-                StartTime = x.StartTime.ToString(@"hh\:mm\:ss"),
-                EndTime = x.EndTime.ToString(@"hh\:mm\:ss")
+                StartTime = TimeOnly.FromTimeSpan(x.StartTime).ToString(@"hh\:mm tt"),
+                EndTime = TimeOnly.FromTimeSpan(x.EndTime).ToString(@"hh\:mm tt")
             })
             .ToListAsync(cancellationToken);
         return Result.WithResponse(new ResponseData { Data = result });
