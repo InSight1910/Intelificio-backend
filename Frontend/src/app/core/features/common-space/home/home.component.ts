@@ -29,6 +29,7 @@ import { User } from '../../../../shared/models/user.model';
 import { selectUser } from '../../../../states/auth/auth.selectors';
 import { ReservationService } from '../../../services/reservation/reservation.service';
 import { MessageComponent } from '../../../../shared/component/error/message.component';
+import { AttendeesComponent } from "../attendees/attendees.component";
 
 @Pipe({
   standalone: true,
@@ -50,7 +51,8 @@ export class IsSelectedPipe implements PipeTransform {
     ReactiveFormsModule,
     MessageComponent,
     IsSelectedPipe,
-  ],
+    AttendeesComponent
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
