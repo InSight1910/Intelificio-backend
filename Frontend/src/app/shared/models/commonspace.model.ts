@@ -18,5 +18,5 @@ export interface UpdateCommonSpace {
   name?: string;
   capacity?: number;
   location?: string;
-  isInMaintenance?: boolean;
+  IsInMaintenance?: boolean;
 }

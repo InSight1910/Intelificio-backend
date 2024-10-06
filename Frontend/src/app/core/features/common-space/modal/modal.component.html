@@ -19,7 +19,7 @@
         <button
           class="button is-success"
           [disabled]="isLoading || !isValid"
-          [ngClass]="{ 'is-loading': isLoading }"
+          [ngClass]="{ 'is-loading': isLoading, 'is-danger': isDeleting }"
           (click)="onSubmit($event)"
           type="submit"
         >
