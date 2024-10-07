@@ -1,0 +1,249 @@
+<div class="modal is-active">
+  <div class="modal-background" (click)="onClose()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-shadowless">
+      <p class="modal-card-title is-3">Editar contacto</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="onClose()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form [formGroup]="form" [hidden]="notification">
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Nombre</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="firstName"
+                placeholder="Nombre de contacto"
+                (input)="onInputChange('firstName')"
+                [ngClass]="{
+                  'is-danger': form.get('firstName')?.invalid && form.get('firstName')?.touched,
+                  'is-success': form.get('firstName')?.valid && form.get('firstName')?.touched
+                }"
+              />
+              @if(form.get('firstName')?.invalid &&
+              form.get('firstName')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar nombre de contacto.
+                </p>
+              } @else if (form.get('firstName')?.valid &&
+              form.get('firstName')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+
+          <div class="column field">
+            <label class="label">Apellido</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="lastName"
+                placeholder="Apellido de contacto"
+                (input)="onInputChange('lastName')"
+                [ngClass]="{
+                  'is-danger': form.get('lastName')?.invalid && form.get('lastName')?.touched,
+                  'is-success': form.get('lastName')?.valid && form.get('lastName')?.touched
+                }"
+              />
+              @if(form.get('lastName')?.invalid &&
+              form.get('lastName')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar apellido de contacto.
+                </p>
+              } @else if (form.get('lastName')?.valid &&
+              form.get('lastName')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Correo</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="email"
+                placeholder="Correo@electronico.cl"
+                (input)="onInputChange('email')"
+                [ngClass]="{
+                'is-danger':
+                  form.get('email')?.invalid &&
+                  form.get('email')?.touched,
+                                  'is-success':
+                  form.get('email')?.valid &&
+                  form.get('email')?.touched
+              }"
+              />
+
+              @if (form.get('email')?.invalid &&
+              form.get('email')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar el correo del contacto.
+                </p>
+              } @else if (form.get('email')?.valid &&
+              form.get('email')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+
+          <div class="column field">
+            <label class="label">Teléfono</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="phoneNumber"
+                placeholder="Ingrese N° telefónico +56xxxxxxxxx"
+                (input)="onInputChange('phoneNumber')"
+                [ngClass]="{
+                'is-danger':
+                  form.get('phoneNumber')?.invalid &&
+                  form.get('phoneNumber')?.touched,
+                  'is-success':
+                  form.get('phoneNumber')?.valid &&
+                  form.get('phoneNumber')?.touched
+              }"
+              />
+              @if(form.get('phoneNumber')?.invalid &&
+              form.get('phoneNumber')?.touched){ @if
+              (form.get('phoneNumber')?.errors &&
+              form.get('phoneNumber')?.errors?.['minlength'] &&
+              form.get('phoneNumber')?.errors?.['prohoneprefix']){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  El N° debe ser mayor de 12 dígitos en formato +56xxxxxxxxx
+                </p>
+              } @else if (form.get('phoneNumber')?.errors &&
+              form.get('phoneNumber')?.errors?.['maxlength']) {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  El N° debe ser menor de 15 dígitos en formato +56xxxxxxxxx
+                </p>
+              } @else if (form.get('phoneNumber')?.errors &&
+              form.get('phoneNumber')?.errors?.['prohoneprefix']){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Formato incorrecto, debe ser +56xxxxxxxxx
+                </p>
+              } @else {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar un número telefónico.
+                </p>
+              } } @else if (form.get('phoneNumber')?.valid &&
+              form.get('phoneNumber')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <label class="label">Servicio</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="service"
+                placeholder="¿Qué servicio presta?"
+                (input)="onInputChange('service')"
+                [ngClass]="{
+                'is-danger':
+                  form.get('service')?.invalid &&
+                  form.get('service')?.touched,
+                                  'is-success':
+                  form.get('service')?.valid &&
+                  form.get('service')?.touched
+              }"
+              />
+
+              @if (form.get('service')?.invalid &&
+              form.get('service')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar el servicio ofrecido.
+                </p>
+              } @else if (form.get('service')?.valid &&
+              form.get('service')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+
+      @if (notification) { @if (IsSuccess){
+        <div class="notification is-success mt-3" >
+          {{ this.notificationMessage }}
+        </div>
+      } @else if (IsError){
+        <div class="notification is-danger mt-3">
+          {{ this.notificationMessage }}
+        </div>
+      } }
+
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button"
+          [disabled]="IsSuccess || !form.valid"
+          [ngClass]="{ 'is-loading': IsLoading }"
+          (click)="OnSubmit()"
+
+        >
+          Guardar cambios
+        </button>
+        <button
+          class="button"
+          [disabled]="IsLoading"
+          (click)="onClose()"
+        >
+          Salir
+        </button>
+        <button
+          class="button is-danger"
+          [disabled]="IsSuccess || IsLoading"
+          (click)="delete(this.form.value.id)"
+        >
+          Eliminar
+        </button>
+
+      </div>
+    </footer>
+  </div>
+</div>
+
+

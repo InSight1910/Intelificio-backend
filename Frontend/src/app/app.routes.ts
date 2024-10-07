@@ -16,6 +16,7 @@ import { AdminCommunityComponent } from './core/features/community/adminCommunit
 import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 import { NotificationComponent } from './core/features/notification/notification.component';
+import {ContactListComponent} from "./core/features/contact-list/contact-list.component";
 
 export const routes: Routes = [
   {
@@ -53,6 +54,10 @@ export const routes: Routes = [
   {
     path: 'unit',
     component: UnitComponent,
+  },
+  {
+    path: 'Contactos',
+    component: ContactListComponent,
   },
   {
     path: 'AdminComunidades',

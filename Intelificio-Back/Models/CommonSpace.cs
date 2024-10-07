@@ -11,7 +11,10 @@ public class CommonSpace : BaseEntity
     public bool IsInMaintenance { get; set; }
     public required int CommunityId { get; set; }
 
-    public virtual Community Community { get; set; }
+    public required virtual Community Community { get; set; }
 
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+    public ICollection<Maintenance> Maintenances { get; set; } = new List<Maintenance>();
+
 }

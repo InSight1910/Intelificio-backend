@@ -10,7 +10,6 @@ import {
   Validators
 } from "@angular/forms";
 import {AppState} from "../../../../../states/intelificio.state";
-import {AuthService} from "../../../../services/auth/auth.service";
 import {City, Municipality, Region} from "../../../../../shared/models/location.model";
 import {LocationService} from "../../../../services/location/location.service";
 import {CommunityService} from "../../../../services/community/community.service";

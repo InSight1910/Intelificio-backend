@@ -1,6 +1,6 @@
 import {
   Component,
-  DEFAULT_CURRENCY_CODE,
+  DEFAULT_CURRENCY_CODE, EventEmitter, Output,
   Pipe,
   PipeTransform,
   signal,
@@ -193,13 +193,10 @@ export class HomeSpaceComponent {
     this.reservationService.create(reservation).subscribe({
       next: ({ data }) => {
         this.onSuccess = 'Reserva creada con éxito';
-        console.log(data);
         const dateCreated = new Date(data.date);
-        console.log(dateCreated.getDate());
         const count = this.reservationsCounts.filter(
           (x) => x.day === dateCreated.getDate()
         )[0];
-        console.log(count);
         if (count) {
           const status = count.countReservations.filter(
             (x) => x.status === data.status

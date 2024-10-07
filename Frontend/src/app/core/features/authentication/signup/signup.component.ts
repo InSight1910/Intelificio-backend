@@ -108,7 +108,7 @@ export class SingupComponent implements OnInit {
             firstName: this.signupForm.value.firstName ?? '',
             lastName: this.signupForm.value.lastName ?? '',
             email: this.signupForm.value.email ?? '',
-            phoneNumber: this.signupForm.value.phoneNumber ?? '',
+            phoneNumber: this.signupForm.value.phoneNumber?.replace(/\s+/g, '') ?? '',
             password: this.signupForm.value.password ?? '',
             rut: this.signupForm.value.rut?.replace(/[.\-]/g, '').toUpperCase() ?? '',
             role: this.signupForm.value.rol ?? '',

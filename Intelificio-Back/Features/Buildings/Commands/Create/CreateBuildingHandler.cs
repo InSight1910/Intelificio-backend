@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Buildings.Commands.Create
 {
-    public class CreateBuildingCommandHandler : IRequestHandler<CreateBuildingCommand, Result>
+    public class CreateBuildingHandler : IRequestHandler<CreateBuildingCommand, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<CreateBuildingCommandHandler> _logger;
+        private readonly ILogger<CreateBuildingHandler> _logger;
         private readonly IMapper _mapper;
 
-        public CreateBuildingCommandHandler(IntelificioDbContext context, ILogger<CreateBuildingCommandHandler> logger, IMapper mapper)
+        public CreateBuildingHandler(IntelificioDbContext context, ILogger<CreateBuildingHandler> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;

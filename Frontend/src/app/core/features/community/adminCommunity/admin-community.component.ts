@@ -13,7 +13,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
-  FormBuilder, ValidatorFn, AbstractControl, ValidationErrors,
+  FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule,
 } from '@angular/forms';
 import { LocationService } from '../../../services/location/location.service';
 import { CommunityActions } from '../../../../states/community/community.actions';
@@ -26,11 +26,12 @@ import { Observable, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
 import {ProfileComponent} from "../../profile/profile.component";
 import {AddCommunityComponent} from "./add-community/add-community.component";
+import {Contact} from "../../../../shared/models/contact.model";
 
 @Component({
   selector: 'app-admin-community',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProfileComponent, AddCommunityComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProfileComponent, AddCommunityComponent, FormsModule],
   templateUrl: './admin-community.component.html',
   styleUrl: './admin-community.component.css',
 })
@@ -46,6 +47,8 @@ export class AdminCommunityComponent implements OnInit {
   success = false;
   adminUsers!: UserAdmin[];
   isModalOpen: boolean = false;
+  filteredCommunities: AllCommunity[] = [];
+  searchTerm: string = '';
 
   ActivateModal = false;
   loadingLocation: boolean = false;
@@ -81,6 +84,7 @@ export class AdminCommunityComponent implements OnInit {
     this.service.getAllCommunity().subscribe(
       (response: { data: AllCommunity[] }) => {
         this.communities = response.data;
+        this.filteredCommunities = this.communities;
         this.isLoading = false;
       },
       (error) => {
@@ -260,6 +264,21 @@ export class AdminCommunityComponent implements OnInit {
     } else {
       return remainder.toString();
     }
+  }
+
+  filterCommunity() {
+    if (!this.searchTerm) {
+      this.filteredCommunities = this.communities;
+      return;
+    }
+
+    const searchTermLower = this.searchTerm.toLowerCase();
+    this.filteredCommunities = this.communities.filter(AllCommunity =>
+      AllCommunity.name.toLowerCase().includes(searchTermLower) ||
+      AllCommunity.adminName.toLowerCase().includes(searchTermLower) ||
+      AllCommunity.address.includes(this.searchTerm) ||
+      AllCommunity.municipality.toLowerCase().includes(searchTermLower)
+    );
   }
 
 }

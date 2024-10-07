@@ -29,5 +29,6 @@ namespace Backend.Features.Notification.Common
                 onSuccess: (_) => Created(),
                 onFailure: BadRequest);
         }
+
     }
 }
