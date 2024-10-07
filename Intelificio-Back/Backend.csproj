@@ -42,7 +42,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Attendees\Commands\Delete\"/>
         <Folder Include="Features\Attendees\Queries\"/>
         <Folder Include="Features\CommonSpaces\Common\"/>
         <Folder Include="Migrations\"/>

@@ -7,98 +7,93 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace IntelificioBackTest.Features.Community.Commands
+namespace IntelificioBackTest.Features.Community.Commands;
+
+public class CreateCommunityCommandTest
 {
-    public class CreateCommunityCommandTest
+    private readonly CreateCommunityCommandHandler _handler;
+    private readonly Mock<ILogger<CreateCommunityCommandHandler>> _logger;
+    private readonly IMapper _mapper;
+    private readonly IntelificioDbContext _context;
+
+    public CreateCommunityCommandTest()
     {
-        private readonly CreateCommunityCommandHandler _handler;
-        private readonly Mock<ILogger<CreateCommunityCommandHandler>> _logger;
-        private readonly IMapper _mapper;
-        private readonly IntelificioDbContext _context;
+        var mapperConfig = new MapperConfiguration(config => { config.AddProfile<CommunityProfile>(); });
+        _mapper = new Mapper(mapperConfig);
 
-        public CreateCommunityCommandTest()
-        {
-            var mapperConfig = new MapperConfiguration(config =>
-            {
-                config.AddProfile<CommunityProfile>();
-            });
-            _mapper = new Mapper(mapperConfig);
+        _context = DbContextFixture.GetDbContext();
+        _logger = new Mock<ILogger<CreateCommunityCommandHandler>>();
 
-            _context = DbContextFixture.GetDbContext();
-            _logger = new Mock<ILogger<CreateCommunityCommandHandler>>();
-
-            _handler = new CreateCommunityCommandHandler(_context, _logger.Object, _mapper);
-        }
-
-        
-        public void Dispose()
-        {
-            _ = _context.Database.EnsureDeleted();
-            _context.Dispose();
-        }
-
-        [Fact]
-        public async Task Handle_Success()
-        {
-            // Arrange
-            var command = CommunityFixture.GetCommunityCommandTest();
-            await DbContextFixture.SeedData(_context);
-
-            // Act
-            var result = await _handler.Handle(command, default);
+        _handler = new CreateCommunityCommandHandler(_context, _logger.Object, _mapper);
+    }
 
 
-            // Assert
-            Assert.True(result.IsSuccess);
-            Assert.Null(result.Response);
-            Assert.Null(result.Errors);
+    public void Dispose()
+    {
+        _ = _context.Database.EnsureDeleted();
+        _context.Dispose();
+    }
 
-        }
+    [Fact]
+    public async Task Handle_Success()
+    {
+        // Arrange
+        var command = CommunityFixture.GetCommunityCommandTest();
+        await DbContextFixture.SeedData(_context);
+
+        // Act
+        var result = await _handler.Handle(command, default);
 
 
-        [Fact]
-        public async Task Failure_Handle_Community_Already_Exists()
-        {
-            // Arrange
-            var command = CommunityFixture.GetCommunityCommandTest();
-            await DbContextFixture.SeedData(_context);
+        // Assert
+        Assert.True(result.IsSuccess);
 
-            command.Name = await _context.Community.Select(x => x.Name).FirstOrDefaultAsync();
+        Assert.Null(result.Errors);
+    }
 
-            // Act
-            var result = await _handler.Handle(command, default);
 
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.True(result.IsFailure);
+    [Fact]
+    public async Task Failure_Handle_Community_Already_Exists()
+    {
+        // Arrange
+        var command = CommunityFixture.GetCommunityCommandTest();
+        await DbContextFixture.SeedData(_context);
 
-            Assert.Null(result.Response);
+        command.RUT = await _context.Community.Select(x => x.Rut).FirstOrDefaultAsync();
 
-            Assert.Null(result.Errors);
+        // Act
+        var result = await _handler.Handle(command, default);
 
-            Assert.Equal("La comunidad ingresada ya se encuentra registrada.", result.Error.Message);
-        }
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
 
-        [Fact]
-        public async Task Failure_Handle_Municipality_Not_Found()
-        {
-            // Arrange
-            var command = CommunityFixture.GetCommunityCommandTest();
-            await DbContextFixture.SeedData(_context);
+        Assert.Null(result.Response);
 
-            command.MunicipalityId = 0;
+        Assert.Null(result.Errors);
 
-            // Act
-            var result = await _handler.Handle(command, default);
+        Assert.Equal("El RUT de la comunidad ya existe.", result.Error.Message);
+    }
 
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.True(result.IsFailure);
+    [Fact]
+    public async Task Failure_Handle_Municipality_Not_Found()
+    {
+        // Arrange
+        var command = CommunityFixture.GetCommunityCommandTest();
+        await DbContextFixture.SeedData(_context);
 
-            Assert.Null(result.Response);
-            Assert.Null(result.Errors);
+        command.MunicipalityId = 0;
 
-            Assert.Equal("La comuna ingresa no es valida.", result.Error.Message);
-        }
+        // Act
+        var result = await _handler.Handle(command, default);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.True(result.IsFailure);
+
+        Assert.Null(result.Response);
+        Assert.Null(result.Errors);
+
+        Assert.Equal("La comuna ingresa no es valida.", result.Error.Message);
     }
 }
