@@ -15,5 +15,5 @@ public class Reservation : BaseEntity
     public int SpaceId { get; set; }
     public virtual CommonSpace Spaces { get; set; }
 
-    public ICollection<Invitee> Invites { get; set; } = new List<Invitee>();
+    public ICollection<Attendee> Attendees { get; set; } = new List<Attendee>();
 }

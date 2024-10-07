@@ -1,8 +1,10 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">ERROR</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=44be0979_002D53d8_002D49d9_002D9e1c_002D5e0338ef4e10/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UpdateCommonSpaceCommandTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3::net8.0::IntelificioBackTest.Features.CommonSpace.Commands.UpdateCommonSpaceCommandTest&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3::net8.0::IntelificioBackTest.Features.CommonSpace.Commands.DeleteCommonSpaceCommandTest&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/vicente/Library/Caches/JetBrains/Rider2024.2/resharper-host/temp/Rider/vAny/CoverageData/_Intelificio.-579155472/Snapshot/snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=89173eba_002D50bd_002D4b53_002Da1bc_002D08e470eaa3df/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;And&gt;
+    &lt;Namespace&gt;IntelificioBackTest.Features.CommonSpace.Queries&lt;/Namespace&gt;
+    &lt;Project Location="/Users/vicente/Apps/Intelificio-backend/IntelificioBackTest" Presentation="&amp;lt;IntelificioBackTest&amp;gt;" /&gt;
+  &lt;/And&gt;
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>

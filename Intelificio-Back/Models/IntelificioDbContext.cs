@@ -23,7 +23,7 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Shift> Shifts { get; set; }
 
     public DbSet<Reservation> Reservations { get; set; }
-
+    public DbSet<Attendee> Attendees { get; set; }
     public DbSet<Region> Regions { get; set; }
 
     public DbSet<City> City { get; set; }
@@ -57,8 +57,7 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Payment> Payment { get; set; }
 
     public DbSet<Maintenance> Maintenances { get; set; }
-
-        public DbSet<TemplateNotification> TemplateNotifications { get; set; }
+    public DbSet<TemplateNotification> TemplateNotifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -227,8 +226,14 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasOne(p => p.Spaces)
                 .WithMany(p => p.Reservations)
                 .HasForeignKey(f => f.SpaceId);
-            _ = entity.HasMany(p => p.Invites)
-                .WithMany(p => p.Reservations);
+        });
+
+        _ = builder.Entity<Attendee>(entity =>
+        {
+            _ = entity.HasKey(p => p.ID);
+            _ = entity.HasOne(p => p.Reservation)
+                .WithMany(p => p.Attendees)
+                .HasForeignKey(f => f.ReservationId);
         });
     }
 }
