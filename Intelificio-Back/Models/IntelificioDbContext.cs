@@ -58,13 +58,20 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<Maintenance> Maintenances { get; set; }
 
-        public DbSet<TemplateNotification> TemplateNotifications { get; set; }
+    public DbSet<TemplateNotification> TemplateNotifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         _ = builder.ApplySoftDeleteQueryFilter();
-        _ = builder.Entity<Guest>().HasKey(p => p.ID);
+
+        _ = builder.Entity<Guest>(entity =>
+           {
+            _ = entity.HasKey(p => p.ID);
+            _ = entity.HasOne(p => p.Unit)
+               .WithMany(p => p.Guests)
+               .HasForeignKey(p => p.UnitId);
+           });
 
         _ = builder.Entity<Charge>(entity =>
         {
@@ -164,9 +171,6 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
             _ = entity.HasMany(p => p.Units)
                 .WithOne(p => p.Building);
-
-            _ = entity.HasMany(p => p.Maintenances)
-                .WithOne(p => p.Building);
         });
 
         _ = builder.Entity<Unit>(entity =>
@@ -175,14 +179,14 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
             _ = entity.HasOne(p => p.UnitType)
                 .WithMany(p => p.Units);
+
+            _ = entity.HasMany(p => p.Guests)
+                        .WithOne(p => p.Unit);
         });
 
         _ = builder.Entity<User>(entity =>
         {
             _ = entity.HasMany(p => p.Attendances)
-                .WithOne(p => p.User);
-
-            _ = entity.HasMany(p => p.Guests)
                 .WithOne(p => p.User);
 
             _ = entity.HasMany(p => p.Units)
@@ -227,8 +231,18 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasOne(p => p.Spaces)
                 .WithMany(p => p.Reservations)
                 .HasForeignKey(f => f.SpaceId);
+
             _ = entity.HasMany(p => p.Invites)
                 .WithMany(p => p.Reservations);
+        });
+
+        _ = builder.Entity<CommonSpace>(entity =>
+        {
+            _ = entity.HasKey(p => p.ID);
+
+            _ = entity.HasMany(p => p.Maintenances)
+                       .WithOne(p => p.CommonSpace);
+
         });
     }
 }

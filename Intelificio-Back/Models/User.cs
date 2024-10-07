@@ -18,8 +18,6 @@ namespace Backend.Models
 
         public ICollection<AssignedShift> AssignedShifts { get; set; } = new List<AssignedShift>();
 
-        public ICollection<Guest> Guests { get; set; } = new List<Guest>();
-
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
         public ICollection<Unit> Units { get; set; } = new List<Unit>();

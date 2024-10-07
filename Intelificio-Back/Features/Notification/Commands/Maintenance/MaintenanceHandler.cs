@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Backend.Common.Helpers;
 using Backend.Common.Response;
+using Backend.Features.Notification.Commands.CommonExpenses;
 using Backend.Features.Notification.Common;
 using Backend.Models;
+using K4os.Compression.LZ4.Internal;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SendGrid.Helpers.Mail;
+using System.Globalization;
 
 
 namespace Backend.Features.Notification.Commands.Maintenance
@@ -113,17 +116,37 @@ namespace Backend.Features.Notification.Commands.Maintenance
 
             var from = new EmailAddress("intelificio@duocuc.cl", $"{communityData.CommunityName} {" a través de Intelificio"}");
 
-            var template = new MaintenanceTemplate
-            {
-                CommunityName = communityData.CommunityName,
-                ShortDate = "",
-                AreaUnderMaintenance = "",
-                StartDate = "",
-                EndDate = "",
-                SenderAddress = "",
-            };
+            var templates = new List<MaintenanceTemplate>();
 
-            var result = await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template, templateNotification.TemplateId, from, communityData.Recipients);
+            string startDateString = request.StartDate;
+            DateTime startDate = DateTime.ParseExact(startDateString, "yyyy-MM-dd", null);
+            string endDateString = request.EndDate;
+            DateTime endDate = DateTime.ParseExact(endDateString, "yyyy-MM-dd", null);
+
+            string[] diasSemana = { "domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado" };
+            string[] meses = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre" };
+
+            string dayOfWeekSpanish = diasSemana[(int)startDate.DayOfWeek];
+            string monthSpanish = meses[startDate.Month - 1];
+
+            foreach (var recipient in communityData.Recipients)
+            {
+                var template = new MaintenanceTemplate
+                {
+                    CommunityName = communityData.CommunityName,
+                    ShortDate = $"{dayOfWeekSpanish} {startDate.Day} de {monthSpanish}",
+                    AreaUnderMaintenance = communityData.CommonSpaceName,
+                    StartDate = startDate.ToString("dd-MM-yyyy"),
+                    EndDate = endDate.ToString("dd-MM-yyyy"),
+                    SenderAddress = communityData.SenderAddress,
+                };
+                templates.Add(template);
+            }
+
+            if (templates == null) return Result.Failure(NotificationErrors.TemplateNotCreated);
+
+            //var result = await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template, templateNotification.TemplateId, from, communityData.Recipients);
+            var result = await _sendMail.SendMaintenanceNotificationToMultipleRecipients(from, communityData.Recipients, templateNotification.TemplateId, templates);
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackage);
             return Result.Success();
 

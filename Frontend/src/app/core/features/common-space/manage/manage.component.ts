@@ -43,6 +43,8 @@ export class ManageComponent {
       capacity: [0, Validators.required],
       isInMaintenance: [false],
       id: [''],
+      startDate: [null],
+      endDate: [null],
     });
   }
   form: FormGroup;
@@ -63,6 +65,20 @@ export class ManageComponent {
 
   ngOnInit() {
     this.loadCommonSpaces();
+
+    this.form.get('isInMaintenance')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.form.get('startDate')?.setValidators(Validators.required);
+        this.form.get('endDate')?.setValidators(Validators.required);
+      } else {
+        this.form.get('startDate')?.clearValidators();
+        this.form.get('endDate')?.clearValidators();
+        this.form.get('startDate')?.reset();
+        this.form.get('endDate')?.reset();
+      }
+      this.form.get('startDate')?.updateValueAndValidity();
+      this.form.get('endDate')?.updateValueAndValidity();
+    });
   }
 
   loadCommonSpaces() {
@@ -101,11 +117,14 @@ export class ManageComponent {
 
   onClickSaveEdit() {
     const commonSpaceId = this.form.get('id')?.value;
+    const today = new Date().toISOString().split('T')[0];
     const commonSpace: UpdateCommonSpace = {
       capacity: this.form.get('capacity')?.value,
       location: this.form.get('location')?.value,
       name: this.form.get('name')?.value,
       IsInMaintenance: this.form.get('isInMaintenance')?.value,
+      startDate: this.form.get('isInMaintenance')?.value ? this.form.get('startDate')?.value : today,  // Usar la fecha de hoy si no está en mantenimiento
+      endDate: this.form.get('isInMaintenance')?.value ? this.form.get('endDate')?.value : today,      // Usar la fecha de hoy si no está en mantenimiento
     };
     this.successMessage = '';
     this.errors = [];

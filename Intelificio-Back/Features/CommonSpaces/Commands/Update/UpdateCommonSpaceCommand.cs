@@ -12,6 +12,8 @@ namespace Backend.Features.CommonSpaces.Commands.Update
         public string Location { get; set; } = string.Empty;
         public int Capacity { get; set; }
         public bool IsInMaintenance { get; set; }
+        public string StartDate { get; set; } = string.Empty;
+        public string EndDate { get; set; } = string.Empty;
 
     }
 }
