@@ -188,6 +188,7 @@ export class ManageComponent {
     this.commonSpaceService.createCommonSpace(commonSpace).subscribe({
       next: ({ data }) => {
         this.isLoading = false;
+        this.isCreating = false;
         const commonSpacesList: CommonSpace[] =
           this.commonSpacesSubject.getValue();
         commonSpacesList.push(data);
