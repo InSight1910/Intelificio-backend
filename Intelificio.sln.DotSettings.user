@@ -3,12 +3,20 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AProxyGenerator_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2024_002E2_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003F34e54cf52b4a4c2b82645ccc3a46837e5e000_003F6c_003F35779936_003FProxyGenerator_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">ERROR</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/vicente/Library/Caches/JetBrains/Rider2024.2/resharper-host/temp/Rider/vAny/CoverageData/_Intelificio.-579155472/Snapshot/snapshot.utdcvr</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b8e22cff_002D4e1c_002D424f_002D86b4_002Dc049205bab7c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DeleteAttendee_ReturnsError_WhenAttendeeNotFound" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3::net8.0::IntelificioBackTest.Features.Attendees.Commands.DeleteAttendeeCommnadTest.DeleteAttendee_ReturnsError_WhenAttendeeNotFound&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::5F1306C0-33C8-4994-BBAF-BD53D4A7DAF3::net8.0::IntelificioBackTest.Features.Attendees.Commands.DeleteAttendeeCommnadTest.DeleteAttendee_ReturnsSuccess_WhenAttendeeFound&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8da474db_002D5293_002D41f1_002D8c76_002Dc5b7384ccaab/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;And&gt;
+    &lt;Namespace&gt;IntelificioBackTest.Features&lt;/Namespace&gt;
+    &lt;Project Location="/Users/vicente/Apps/Intelificio-backend/IntelificioBackTest" Presentation="&amp;lt;IntelificioBackTest&amp;gt;" /&gt;
+  &lt;/And&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=effc63aa_002D0d74_002D4f21_002D838e_002D2d5c133d21f2/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;And&gt;
+    &lt;Namespace&gt;IntelificioBackTest.Features&lt;/Namespace&gt;
+    &lt;Project Location="/Users/vicente/Apps/Intelificio-backend/IntelificioBackTest" Presentation="&amp;lt;IntelificioBackTest&amp;gt;" /&gt;
+  &lt;/And&gt;
+&lt;/SessionState&gt;</s:String>
+	
+	
 	
 	
 	

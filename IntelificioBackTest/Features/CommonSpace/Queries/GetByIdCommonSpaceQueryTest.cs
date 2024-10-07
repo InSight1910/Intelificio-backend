@@ -46,7 +46,6 @@ public class GetByIdCommonSpaceQueryTest
             Location = "Roof",
             Name = "Roof",
             CommunityId = 1,
-            IsInMaintenance = false,
             Capacity = 10
         });
         await _context.SaveChangesAsync();

@@ -15,11 +15,10 @@ public class UpdateCommonSpaceCommandHandler : IRequestHandler<UpdateCommonSpace
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public UpdateCommonSpaceCommandHandler(IntelificioDbContext context, IMapper mapper, IMediator mediator)
+    public UpdateCommonSpaceCommandHandler(IntelificioDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        _mediator = mediator;
     }
 
     public async Task<Result> Handle(UpdateCommonSpaceCommand request, CancellationToken cancellationToken)
@@ -31,26 +30,9 @@ public class UpdateCommonSpaceCommandHandler : IRequestHandler<UpdateCommonSpace
         if (nameExist) return Result.Failure(CommonSpacesErrors.CommonSpaceNameAlreadyExistOnUpdate);
 
         commonSpace = _mapper.Map(request, commonSpace);
+        request.CommunityId = commonSpace.CommunityId;
 
         await _context.SaveChangesAsync();
-
-        if (request.IsInMaintenance)
-        {
-            var maintenanceCommand = new MaintenanceCommand
-            {
-                CommunityID = commonSpace.CommunityId,
-                CommonSpaceID = commonSpace.ID,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate
-            };
-
-            var maintenanceResult = await _mediator.Send(maintenanceCommand);
-            if (!maintenanceResult.IsSuccess)
-            {
-                return Result.Failure("Error al enviar la notificación de mantenimiento.");
-            }
-        }
-
         return Result.WithResponse(new ResponseData { Data = request });
     }
 }
