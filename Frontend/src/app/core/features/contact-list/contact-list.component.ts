@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Contact} from "../../../shared/models/contact.model";
 import {FormsModule} from "@angular/forms";
 import {AddContactComponent} from "./add-contact/add-contact.component";
@@ -7,6 +7,8 @@ import {AppState} from "../../../states/intelificio.state";
 import {ContactService} from "../../services/contact/contact.service";
 import {selectCommunity} from "../../../states/community/community.selectors";
 import {tap} from "rxjs";
+import {EditContactComponent} from "./edit-contact/edit-contact.component";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-contact-list',
@@ -14,17 +16,30 @@ import {tap} from "rxjs";
   imports: [
     FormsModule,
     AddContactComponent,
+    EditContactComponent,
+    NgClass,
   ],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css'
 })
 export class ContactListComponent implements OnInit {
   isModalOpen: boolean = false;
+  isEditModalOpen: boolean = false;
+  isDropdownOpen: { [key: number]: boolean } = {};
   isLoading: boolean = false;
   contactos: Contact[] = []
   filteredContacts: Contact[] = [];
   CommunityID: number = 0;
   searchTerm: string = '';
+  contactToEdit:  Contact = {
+    communityID: 0,
+    email: "",
+    firstName: "",
+    id: 0,
+    lastName: "",
+    phoneNumber: "",
+    service: ""
+  };
 
   constructor(
     private service: ContactService,
@@ -39,8 +54,17 @@ export class ContactListComponent implements OnInit {
     this.isModalOpen = false;
   }
 
+  onClickCloseEdit(){
+    this.isEditModalOpen = false;
+  }
+
   openAddModal() {
     this.isModalOpen = true;
+  }
+
+  openEditModal(contact: Contact) {
+    this.contactToEdit = contact;
+    this.isEditModalOpen = true;
   }
 
   filterContacts() {
@@ -51,7 +75,7 @@ export class ContactListComponent implements OnInit {
 
     const searchTermLower = this.searchTerm.toLowerCase();
     this.filteredContacts = this.contactos.filter(contact =>
-      contact.name.toLowerCase().includes(searchTermLower) ||
+      contact.firstName.toLowerCase().includes(searchTermLower) ||
       contact.lastName.toLowerCase().includes(searchTermLower) ||
       contact.phoneNumber.includes(this.searchTerm) ||
       contact.service.toLowerCase().includes(searchTermLower)
@@ -69,7 +93,7 @@ export class ContactListComponent implements OnInit {
             {
               next: (response: { data: Contact[] }) => {
                 this.contactos = response.data;
-                console.log('Contactos:', this.contactos); // Aquí revisas si los datos son correctos
+                this.filteredContacts = this.contactos;
                 this.isLoading = false;
               },
               error: (error) => {
@@ -81,6 +105,16 @@ export class ContactListComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.dropdown')) {
+      Object.keys(this.isDropdownOpen).forEach((id) => {
+        this.isDropdownOpen[+id] = false;
+      });
+    }
   }
 
 

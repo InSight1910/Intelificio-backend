@@ -22,6 +22,8 @@ namespace Backend.Features.Contact.Commands.Create
 
         public async Task<Result> Handle(CreateContactCommand request, CancellationToken cancellationToken)
         {
+            var checkPhone = await _context.Contacts.AnyAsync(x => x.PhoneNumber == request.PhoneNumber);
+            if (checkPhone) return Result.Failure(ContactErrors.PhoneNumberAlreadyExistOnCreate);
 
             var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId);
             if (community is null) return Result.Failure(ContactErrors.CommunityNotFoundOnCreate);
@@ -32,7 +34,6 @@ namespace Backend.Features.Contact.Commands.Create
 
             _ = await _context.Contacts.AddAsync(contact);
             _ = await _context.SaveChangesAsync();
-
 
             return Result.Success();
 

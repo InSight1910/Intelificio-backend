@@ -11,9 +11,9 @@ namespace IntelificioBackTest.Features.Building.Commands
 {
     public class UpdateBuildingCommandTest
     {
-        private readonly UpdateBuildigCommandHandler _handler;
+        private readonly UpdateBuildigHandler _handler;
         private readonly IntelificioDbContext _context;
-        private readonly Mock<ILogger<UpdateBuildigCommandHandler>> _logger;
+        private readonly Mock<ILogger<UpdateBuildigHandler>> _logger;
         private readonly IMapper _mapper;
 
         public UpdateBuildingCommandTest()
@@ -24,9 +24,9 @@ namespace IntelificioBackTest.Features.Building.Commands
             });
 
             _mapper = new Mapper(mapperConfig);
-            _logger = new Mock<ILogger<UpdateBuildigCommandHandler>>();
+            _logger = new Mock<ILogger<UpdateBuildigHandler>>();
             _context = DbContextFixture.GetDbContext();
-            _handler = new UpdateBuildigCommandHandler(_context, _logger.Object, _mapper);
+            _handler = new UpdateBuildigHandler(_context, _logger.Object, _mapper);
         }
 
 

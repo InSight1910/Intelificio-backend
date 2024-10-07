@@ -28,7 +28,7 @@ namespace Backend.Features.Contact.Queries.GetallByCommunity
                 .Select(c => new GetAllContactsByCommunityQueryResponse
                 {
                     Id = c.ID,
-                    Name = c.Name,
+                    FirstName = c.FirstName,
                     LastName = c.LastName,
                     Email = c.Email,
                     PhoneNumber = c.PhoneNumber,

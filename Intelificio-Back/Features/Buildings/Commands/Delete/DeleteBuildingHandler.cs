@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Buildings.Commands.Delete
 {
-    public class DeleteBuildingCommandHandler : IRequestHandler<DeleteBuildingCommand, Result>
+    public class DeleteBuildingHandler : IRequestHandler<DeleteBuildingCommand, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<DeleteBuildingCommandHandler> _logger;
+        private readonly ILogger<DeleteBuildingHandler> _logger;
 
-        public DeleteBuildingCommandHandler(IntelificioDbContext context, ILogger<DeleteBuildingCommandHandler> logger)
+        public DeleteBuildingHandler(IntelificioDbContext context, ILogger<DeleteBuildingHandler> logger)
         {
             _context = context;
             _logger = logger;

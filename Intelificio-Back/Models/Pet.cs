@@ -12,7 +12,6 @@ namespace Backend.Models
         public required string PhotoUrl { get; set; }
         public bool IsActive { get; set; }
         public required Community Community { get; set; }
-
         public required User User { get; set; }
 
     }

@@ -9,36 +9,38 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../../states/intelificio.state";
-import {CommunityService} from "../../../services/community/community.service";
-import {LocationService} from "../../../services/location/location.service";
-import {AdminCommunityComponent} from "../../community/adminCommunity/admin-community.component";
-import {NgClass} from "@angular/common";
-import {Contact} from "../../../../shared/models/contact.model";
 import {ContactService} from "../../../services/contact/contact.service";
-import {AuthActions} from "../../../../states/auth/auth.actions";
 import {ContactListComponent} from "../contact-list.component";
+import {Contact} from "../../../../shared/models/contact.model";
+import {NgClass} from "@angular/common";
 
 @Component({
-  selector: 'app-add-contact',
+  selector: 'app-edit-contact',
   standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
     NgClass
   ],
-  templateUrl: './add-contact.component.html',
-  styleUrl: './add-contact.component.css'
+  templateUrl: './edit-contact.component.html',
+  styleUrl: './edit-contact.component.css'
 })
-export class AddContactComponent {
+export class EditContactComponent implements OnInit{
   IsLoading: boolean = false;
   notification: boolean = false;
   IsSuccess: boolean = false;
   IsError: boolean = false;
   notificationMessage: string = "";
   @Output() close = new EventEmitter<void>();
-  @Input() CommunityID: number = 0;
+  @Input() ContactEdited: Contact = {
+    communityID: 0,
+    email: "s",
+    firstName: "",
+    id: 0,
+    lastName: "",
+    phoneNumber: "",
+    service: ""
+  };
 
   form: FormGroup;
 
@@ -46,18 +48,22 @@ export class AddContactComponent {
               private service: ContactService,
               private contactList: ContactListComponent) {
     this.form = this.fb.group({
-      FirstName: new FormControl('', Validators.required),
-      LastName: new FormControl('', Validators.required),
-      Email: new FormControl('', [Validators.email]),
-      PhoneNumber: new FormControl('', [Validators.required,
+      id: new FormControl(0),
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.email]),
+      phoneNumber: new FormControl('', [Validators.required,
         Validators.maxLength(15),
         Validators.minLength(12),
         this.phoneValidator(),]),
-      Service: new FormControl('', Validators.required),
-      CommunityID: new FormControl(0),
+      service: new FormControl('', Validators.required),
+      communityID: new FormControl(0),
     });
   }
 
+  ngOnInit() {
+    this.form.patchValue(this.ContactEdited);
+  }
 
   onClose() {
     this.close.emit();
@@ -66,22 +72,23 @@ export class AddContactComponent {
   OnSubmit(){
     this.IsLoading = true;
     if (this.form.valid){
-      const createContact  = {
-        FirstName: this.form.value.FirstName,
-        LastName:this.form.value.LastName,
-        Email: this.form.value.Email ? this.form.value.Email : 'Sin@correo.cl',
-        PhoneNumber: this.form.value.PhoneNumber.replace(/\s+/g, ''),
-        Service:  this.form.value.Service,
-        CommunityID: this.CommunityID,
+      const EditContact  = {
+        FirstName: this.form.value.firstName,
+        LastName:this.form.value.lastName,
+        Email: this.form.value.email ? this.form.value.email : 'Sin@correo.cl',
+        PhoneNumber: this.form.value.phoneNumber.replace(/\s+/g, ''),
+        Service:  this.form.value.service,
+        CommunityID: this.form.value.communityID,
       };
 
-      this.service.create(createContact).subscribe(
+
+      this.service.update(this.form.value.id,EditContact).subscribe(
         {
           next: (response) => {
-            if (response.status === 204) {
+            if (response.status === 200) {
               this.IsLoading = false;
               this.notificationMessage =
-                'Contacto agregado satisfactoriamente.';
+                'Contacto actualizado satisfactoriamente.';
               this.IsSuccess = true;
               this.notification = true;
               setTimeout(() => {
@@ -90,7 +97,7 @@ export class AddContactComponent {
                 this.IsLoading = false;
                 this.contactList.getContacts();
                 this.close.emit();
-              }, 3000);
+              }, 5000);
             }
           },
           error: (error) =>{
@@ -106,7 +113,7 @@ export class AddContactComponent {
                 this.IsError = false;
               }, 5000);
             } else {
-              this.notificationMessage = 'No fue posible guardar este contacto';
+              this.notificationMessage = 'No fue posible actualizar este contacto';
               this.IsError = true;
               this.notification = true;
               setTimeout(() => {
@@ -167,6 +174,52 @@ export class AddContactComponent {
     if (control) {
       control.markAsUntouched();
     }
+  }
+
+  delete(contactoID: number){
+    this.IsLoading = true;
+    this.service.delete(contactoID).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          this.IsLoading = false;
+          this.notificationMessage =
+            'Contacto eliminado satisfactoriamente.';
+          this.IsSuccess = true;
+          this.notification = true;
+          setTimeout(() => {
+            this.notification = false;
+            this.IsSuccess = false;
+            this.IsLoading = false;
+            this.contactList.getContacts();
+            this.close.emit();
+          }, 3000);
+        }
+      },
+      error: (error) =>{
+        this.IsLoading = false;
+        if (error.status === 400) {
+          const errorData = error.error?.[0];
+          this.notificationMessage = errorData.message;
+          this.IsError = true;
+          this.notification = true;
+          setTimeout(() => {
+            this.notification = false;
+            this.notificationMessage = '';
+            this.IsError = false;
+          }, 5000);
+        } else {
+          this.notificationMessage = 'No fue posible eliminar este contacto';
+          this.IsError = true;
+          this.notification = true;
+          setTimeout(() => {
+            this.notification = false;
+            this.notificationMessage = '';
+            this.IsError = false;
+          }, 5000);
+        }
+      }
+    });
+
   }
 
 }

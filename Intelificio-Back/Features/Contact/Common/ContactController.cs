@@ -1,6 +1,9 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Contact.Commands.Create;
+using Backend.Features.Contact.Commands.Delete;
+using Backend.Features.Contact.Commands.Update;
 using Backend.Features.Contact.Queries.GetallByCommunity;
+using Backend.Features.Contact.Queries.GetByID;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +14,7 @@ namespace Backend.Features.Contact.Common
     public class ContactController(IMediator mediator): ControllerBase
     {
 
-        [HttpPost()]
-        public async Task<IActionResult> Create([FromBody] CreateContactCommand command)
-        {
-            var result = await mediator.Send(command);
-            return result.Match(
-                onSuccess: (_) => Created(),
-                onFailure: BadRequest);
-        }
-
+      
         [HttpGet("GetAllByCommunity/{ID}")]
         public async Task<IActionResult> GetAllContactsByCommunityQuery(int ID)
         {
@@ -29,6 +24,46 @@ namespace Backend.Features.Contact.Common
                 onSuccess: (response) => Ok(response),
                 onFailure: BadRequest);
         }
+
+        [HttpGet("GetByID/{ID}")]
+        public async Task<IActionResult> GetByID(int ID)
+        {
+            var building = await mediator.Send(new GetContactByIdQuery { Id = ID });
+            return building.Match(
+                onSuccess: (response) => Ok(response),
+                onFailure: NotFound);
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> Create([FromBody] CreateContactCommand command)
+        {
+            var result = await mediator.Send(command);
+            return result.Match(
+                onSuccess: (_) => Created(),
+                onFailure: BadRequest);
+        }
+
+        [HttpPut("{ID}")]
+        public async Task<IActionResult> Update(int ID, [FromBody] UpdateContactCommand command)
+        {
+            command.Id = ID;
+            var result = await mediator.Send(command);
+            return result.Match(
+                onSuccess: (_) => Ok(),
+                onFailure: BadRequest);
+        }
+
+        [HttpDelete("{ID}")]
+        public async Task<IActionResult> Delete(int ID, [FromRoute] DeleteContactCommand command)
+        {
+            command.Id = ID;
+            var result = await mediator.Send(command);
+            return result.Match(
+                onSuccess: (_) => Ok(),
+                onFailure: BadRequest);
+        }
+
+       
 
     }
 }

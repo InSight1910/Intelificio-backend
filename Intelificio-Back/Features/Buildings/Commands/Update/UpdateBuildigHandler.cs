@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Buildings.Commands.Update
 {
-    public class UpdateBuildigCommandHandler : IRequestHandler<UpdateBuildingCommand, Result>
+    public class UpdateBuildigHandler : IRequestHandler<UpdateBuildingCommand, Result>
     {
 
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<UpdateBuildigCommandHandler> _logger;
+        private readonly ILogger<UpdateBuildigHandler> _logger;
         private readonly IMapper _mapper;
 
-        public UpdateBuildigCommandHandler(IntelificioDbContext context, ILogger<UpdateBuildigCommandHandler> logger, IMapper mapper)
+        public UpdateBuildigHandler(IntelificioDbContext context, ILogger<UpdateBuildigHandler> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
