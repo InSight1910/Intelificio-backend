@@ -1,6 +1,7 @@
-<div class="level">
+<div class="container">
+  <div class="level">
   <div class="level-left">
-    <h2 class="title">Administrar espacios comunes</h2>
+    <h2 class="title is-3 mb-5">Administrar espacios comunes</h2>
   </div>
   <div class="level-right">
     <button class="button" (click)="onClickAdd()">
@@ -11,8 +12,10 @@
     </button>
   </div>
 </div>
+</div>
 
-<div class="grid is-col-min-12">
+<div class="container mt-5">
+  <div class="grid is-col-min-12">
   @for (space of (commonSpaces$ | async); track $index){
   <div class="cell">
     <div
@@ -70,6 +73,8 @@
   </div>
   }
 </div>
+</div>
+
 @if (isModalOpen) {
 <app-modal-space
   [title]="modalTitle"
@@ -127,31 +132,54 @@
 
     @if(form.get('isInMaintenance')?.value){
 
-      <div class="columns mt-1">
-        <div class="column field">
-          <label class="label">Fecha Inicio Mantención</label>
-          <p class="control ">
-            <input
-              class="input"
-              [ngClass]="{ 'is-skeleton': isLoading && !isSaving }"
-              type="date"
-              formControlName="startDate"
-            />
-          </p>
-        </div>
-
-        <div class="column field">
-          <label class="label">Fecha Termino Mantención</label>
-          <p class="control ">
-            <input
-              class="input"
-              [ngClass]="{ 'is-skeleton': isLoading && !isSaving }"
-              type="date"
-              formControlName="endDate"
-            />
-          </p>
+      <div class="column">
+        <div class="notification is-warning">
+          Al crear o actualizar la mantención se notificará por correo a toda la comunidad.
         </div>
       </div>
+
+      <div class=" field">
+        <label class="label">Fecha Inicio Mantención</label>
+        <p class="control ">
+          <input
+            class="input"
+            [ngClass]="{ 'is-skeleton': isLoading && !isSaving}"
+            type="date"
+            formControlName="startDate"
+          />
+        </p>
+      </div>
+
+
+
+      <div class=" field">
+        <label class="label">Fecha Termino Mantención</label>
+        <p class="control ">
+          <input
+            class="input"
+            [ngClass]="{ 'is-skeleton': isLoading && !isSaving}"
+            type="date"
+            formControlName="endDate"
+          />
+        </p>
+      </div>
+
+
+      <div class=" field">
+        <label class="label">Comentarios</label>
+        <p class="control">
+          <input
+            class="input"
+            [ngClass]="{ 'is-skeleton': isLoading && !isSaving}"
+            type="text"
+            placeholder="Motivo de mantención"
+            formControlName="comment"
+          />
+        </p>
+      </div>
+
+
+
     }
 
 

@@ -11,9 +11,10 @@ import { selectCommunity } from '../../../../states/community/community.selector
 import { tap, Observable, of, from, BehaviorSubject } from 'rxjs';
 import { ModalComponent } from '../modal/modal.component';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
+  ReactiveFormsModule, ValidationErrors, ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -45,6 +46,7 @@ export class ManageComponent {
       id: [''],
       startDate: [null],
       endDate: [null],
+      comment: [''],
     });
   }
   form: FormGroup;
@@ -70,14 +72,21 @@ export class ManageComponent {
       if (value) {
         this.form.get('startDate')?.setValidators(Validators.required);
         this.form.get('endDate')?.setValidators(Validators.required);
+        this.form.get('comment')?.setValidators(Validators.required);
+        this.form.setValidators(this.dateRangeValidation());
       } else {
         this.form.get('startDate')?.clearValidators();
         this.form.get('endDate')?.clearValidators();
+        this.form.get('comment')?.clearValidators();
         this.form.get('startDate')?.reset();
         this.form.get('endDate')?.reset();
+        this.form.get('comment')?.reset();
+        this.form.clearValidators();
       }
       this.form.get('startDate')?.updateValueAndValidity();
       this.form.get('endDate')?.updateValueAndValidity();
+      this.form.get('comment')?.updateValueAndValidity();
+      this.form.updateValueAndValidity();
     });
   }
 
@@ -125,6 +134,7 @@ export class ManageComponent {
       IsInMaintenance: this.form.get('isInMaintenance')?.value,
       startDate: this.form.get('isInMaintenance')?.value ? this.form.get('startDate')?.value : today,  // Usar la fecha de hoy si no está en mantenimiento
       endDate: this.form.get('isInMaintenance')?.value ? this.form.get('endDate')?.value : today,      // Usar la fecha de hoy si no está en mantenimiento
+      comment : this.form.get('comment')?.value ? this.form.get('comment')?.value : "programada",
     };
     this.successMessage = '';
     this.errors = [];
@@ -278,4 +288,27 @@ export class ManageComponent {
         });
     }
   }
+
+  dateRangeValidation(): ValidatorFn {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const startDate = formGroup.get('startDate')?.value;
+      const endDate = formGroup.get('endDate')?.value;
+
+      if (!startDate || !endDate) {
+        return null;
+      }
+
+      // Convertir las fechas a objetos Date
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      // Verificar si startDate es posterior a endDate o si endDate es anterior a startDate
+      return start > end
+        ? { dateOrderInvalid: true } // Retornar un error si las fechas están mal ordenadas
+        : null;
+    };
+  }
+
+
+
 }

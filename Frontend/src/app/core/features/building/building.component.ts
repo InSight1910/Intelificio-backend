@@ -47,8 +47,6 @@ export class BuildingComponent implements OnInit {
   loading = false;
   selectedBuildingId: number = 1;
   ActivateModal = false;
-  createdMessage: string = 'Edificio creado.';
-  updatedMessage: string = 'Edificio actualizado.';
   community!: Community | null;
   errors: any;
   canSend: boolean = true;

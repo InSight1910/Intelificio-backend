@@ -18,7 +18,7 @@
   cumque hic doloribus illo rem eius autem magnam vel non, consectetur molestias
 </div>
 } @else {
-
+<div class="container">
 <div class="card">
   <div class="card-header">
     @if(isModifying) {
@@ -170,5 +170,7 @@
     </div>
   </div>
 </div>
+
 <app-users-community communityId="{{ this.form.value.id }}" />
+</div>
 }

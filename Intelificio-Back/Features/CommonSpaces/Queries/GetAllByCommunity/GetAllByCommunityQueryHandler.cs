@@ -21,14 +21,30 @@ namespace Backend.Features.CommonSpaces.Queries.GetAllByCommunity
             if (!existCommunity) return Result.Failure(CommonSpacesErrors.CommunityNotFoundOnQuery);
 
             var commonSpaces = await _context.CommonSpaces
-                .Where(x => x.CommunityId == request.CommunityId)
+                .Include(x => x.Maintenances) 
+                .Where(x => x.CommunityId == request.CommunityId) 
                 .Select(x => new GetAllByCommunityQueryResponse
                 {
                     ID = x.ID,
                     Name = x.Name,
                     Capacity = x.Capacity,
                     Location = x.Location,
-                    IsInMaintenance = x.IsInMaintenance
+                    IsInMaintenance = x.IsInMaintenance,
+                    
+                    StartDate = x.Maintenances
+                        .Where(m => m.IsActive) 
+                        .Select(m => m.StartDate.ToString("yyyy-MM-dd")) 
+                        .FirstOrDefault() ?? string.Empty, 
+
+                    EndDate = x.Maintenances
+                        .Where(m => m.IsActive)
+                        .Select(m => m.EndDate.ToString("yyyy-MM-dd"))
+                        .FirstOrDefault() ?? string.Empty,
+
+                    Comment = x.Maintenances
+                        .Where(m => m.IsActive)
+                        .Select(m => m.Comment)
+                        .FirstOrDefault() ?? string.Empty
                 })
                 .ToListAsync(cancellationToken);
 

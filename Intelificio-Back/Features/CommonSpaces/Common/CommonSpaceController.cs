@@ -38,7 +38,9 @@ public class CommonSpaceController(IMediator _mediator) : ControllerBase
                     CommunityID = command.CommunityId,
                     CommonSpaceID = command.Id,
                     StartDate = command.StartDate,
-                    EndDate = command.EndDate
+                    EndDate = command.EndDate,
+                    Comment = command.Comment,
+                    IsInMaintenance = command.IsInMaintenance
                 };
 
                 var maintenanceResult = await _mediator.Send(maintenanceCommand);

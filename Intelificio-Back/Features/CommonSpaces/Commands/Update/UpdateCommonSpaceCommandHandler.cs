@@ -13,7 +13,6 @@ public class UpdateCommonSpaceCommandHandler : IRequestHandler<UpdateCommonSpace
 {
     private readonly IntelificioDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IMediator _mediator;
 
     public UpdateCommonSpaceCommandHandler(IntelificioDbContext context, IMapper mapper)
     {
@@ -29,10 +28,19 @@ public class UpdateCommonSpaceCommandHandler : IRequestHandler<UpdateCommonSpace
         var nameExist = await _context.CommonSpaces.AnyAsync(x => x.Name == request.Name && x.ID != request.Id);
         if (nameExist) return Result.Failure(CommonSpacesErrors.CommonSpaceNameAlreadyExistOnUpdate);
 
+        if (!request.IsInMaintenance && commonSpace.IsInMaintenance)
+        {
+            var maitenance = await _context.Maintenances.Where(x => x.CommonSpaceID == request.Id && x.IsActive).FirstOrDefaultAsync();
+            if (maitenance is null) return Result.Failure(CommonSpacesErrors.MaintenanceNotFoundOnUpdate);
+            maitenance.IsActive = false;
+        }
+
         commonSpace = _mapper.Map(request, commonSpace);
         request.CommunityId = commonSpace.CommunityId;
 
-        await _context.SaveChangesAsync();
-        return Result.WithResponse(new ResponseData { Data = request });
+        var response = _mapper.Map<UpdateCommonSpaceCommandResponse>(commonSpace);
+       
+        await _context.SaveChangesAsync(cancellationToken);
+        return Result.WithResponse(new ResponseData { Data = response });
     }
 }

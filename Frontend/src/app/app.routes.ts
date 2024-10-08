@@ -17,6 +17,7 @@ import { HomeSpaceComponent } from './core/features/common-space/home/home.compo
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 import { NotificationComponent } from './core/features/notification/notification.component';
 import {ContactListComponent} from "./core/features/contact-list/contact-list.component";
+import {MaintenanceComponent} from "./core/features/maintenance/maintenance.component";
 
 export const routes: Routes = [
   {
@@ -74,5 +75,9 @@ export const routes: Routes = [
   {
     path: 'Comunicado',
     component: NotificationComponent,
+  },
+  {
+    path: 'Mantenciones',
+    component: MaintenanceComponent,
   },
 ];

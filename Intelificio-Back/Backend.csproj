@@ -42,7 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Attendees\Queries\"/>
+        <Folder Include="Features\Attendees\Queries\" />
         <Folder Include="Features\CommonSpaces\Common\" />
     </ItemGroup>
 

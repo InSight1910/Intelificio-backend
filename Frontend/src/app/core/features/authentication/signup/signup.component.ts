@@ -244,7 +244,7 @@ export class SingupComponent implements OnInit {
         return null;
       }
 
-      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+      const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
       const valid = passwordPattern.test(value);
 
