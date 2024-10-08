@@ -40,4 +40,8 @@ export class ReservationService {
       `${this.baseUrl}/count/${communityId}/${year}/${month}`
     );
   }
+
+  confirmReservation(reservationId: number, token: string) {
+    return this.http.post(`${this.baseUrl}/confirm`, { reservationId, token });
+  }
 }

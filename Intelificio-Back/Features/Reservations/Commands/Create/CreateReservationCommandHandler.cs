@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using AutoMapper;
 using Backend.Common.Response;
 using Backend.Features.Reservations.Common;
@@ -5,6 +6,7 @@ using Backend.Models;
 using Backend.Models.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using static System.Security.Cryptography.RandomNumberGenerator;
 
 namespace Backend.Features.Reservations.Commands.Create;
 
@@ -36,7 +38,9 @@ public class CreateReservationCommandHandler(IntelificioDbContext context, IMapp
             EndTime = endTime,
             Status = ReservationStatus.PENDING,
             UserId = request.UserId,
-            SpaceId = request.CommonSpaceId
+            SpaceId = request.CommonSpaceId,
+            ConfirmationToken = CreateRefreshToken(),
+            ExpirationDate = DateTime.UtcNow.AddMinutes(10)
         };
 
         var result = await context.Reservations.AddAsync(reservation, cancellationToken);
@@ -45,5 +49,17 @@ public class CreateReservationCommandHandler(IntelificioDbContext context, IMapp
         var response = _mapper.Map<CreateReservationCommandResponse>(reservation);
 
         return Result.WithResponse(new ResponseData { Data = response });
+    }
+
+    private string CreateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+
+        using (var numberGenerator = RandomNumberGenerator.Create())
+        {
+            numberGenerator.GetBytes(randomNumber);
+        }
+
+        return Convert.ToBase64String(randomNumber);
     }
 }

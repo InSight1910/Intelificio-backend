@@ -14,6 +14,7 @@ public class CommonSpaceProfile : Profile
     {
         CreateMap<CreateCommonSpaceCommand, CommonSpace>();
         CreateMap<CommonSpace, CreateCommonSpaceCommandResponse>();
-        CreateMap<UpdateCommonSpaceCommand, CommonSpace>();
+        CreateMap<UpdateCommonSpaceCommand, CommonSpace>()
+            .ForMember(opt => opt.CommunityId, dest => dest.Ignore());
     }
 }

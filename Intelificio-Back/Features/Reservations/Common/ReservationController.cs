@@ -1,4 +1,5 @@
 using Backend.Common.Response;
+using Backend.Features.Reservations.Commands;
 using Backend.Features.Reservations.Commands.Create;
 using Backend.Features.Reservations.Query;
 using Backend.Features.Reservations.Query.GetReservationsByCommunityAndMonth;
@@ -17,6 +18,16 @@ public class ReservationController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return result.Match(
             res => StatusCode(StatusCodes.Status201Created, res),
+            BadRequest
+        );
+    }
+
+    [HttpPost("confirm")]
+    public async Task<IActionResult> Confirm([FromBody] ConfirmReservationCommand command)
+    {
+        var result = await mediator.Send(command);
+        return result.Match(
+            _ => Accepted(),
             BadRequest
         );
     }

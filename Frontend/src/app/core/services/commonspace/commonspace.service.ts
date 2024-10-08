@@ -12,6 +12,7 @@ import { Response } from '../../../shared/models/response.model';
   providedIn: 'root',
 })
 export class CommonSpaceService {
+
   baseUrl: string = `${environment.apiUrl}/commonspace`;
   constructor(private http: HttpClient) {}
 
@@ -36,4 +37,5 @@ export class CommonSpaceService {
   deleteCommonSpace(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+  
 }

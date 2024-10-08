@@ -16,7 +16,8 @@ import { AdminCommunityComponent } from './core/features/community/adminCommunit
 import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 import { NotificationComponent } from './core/features/notification/notification.component';
-import {ContactListComponent} from "./core/features/contact-list/contact-list.component";
+import { ContactListComponent } from './core/features/contact-list/contact-list.component';
+import { ConfirmReservationComponent } from './core/features/common-space/confirm-reservation/confirm-reservation.component';
 
 export const routes: Routes = [
   {
@@ -74,5 +75,9 @@ export const routes: Routes = [
   {
     path: 'Comunicado',
     component: NotificationComponent,
+  },
+  {
+    path: 'ConfirmarReserva',
+    component: ConfirmReservationComponent,
   },
 ];
