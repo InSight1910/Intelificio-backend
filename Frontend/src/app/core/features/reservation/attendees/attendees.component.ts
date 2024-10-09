@@ -15,6 +15,8 @@ import {
 import { AttendeeService } from '../../../services/attendee/attendee.service';
 import { CommonModule } from '@angular/common';
 import { MessageComponent } from '../../../../shared/component/error/message.component';
+import { FormatRutDirective } from '../../../../shared/directives/format-rut.directive';
+import { FormatRutPipe } from '../../../../shared/pipes/format-rut.pipe';
 
 @Component({
   selector: 'app-attendees',
@@ -24,6 +26,8 @@ import { MessageComponent } from '../../../../shared/component/error/message.com
     ReactiveFormsModule,
     CommonModule,
     MessageComponent,
+    FormatRutDirective,
+    FormatRutPipe,
   ],
   templateUrl: './attendees.component.html',
   styleUrl: './attendees.component.css',
@@ -47,7 +51,14 @@ export class AttendeesComponent {
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      rut: ['', Validators.required],
+      rut: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(12),
+        ],
+      ],
     });
   }
 
@@ -76,11 +87,13 @@ export class AttendeesComponent {
 
   onSubmit(event: Event) {
     event.preventDefault();
+    console.log(this.form.get('rut')?.errors);
     if (this.form.valid) {
       this.isLoadingPost = true;
       this.form.disable();
       var attendee: AttendeeCreate = {
         ...this.form.value,
+        rut: this.form.value.rut.replace(/[.-]/g, ''),
         reservationId: this.reservationId,
       };
       this.attendeeService.createAttendee(attendee).subscribe({
