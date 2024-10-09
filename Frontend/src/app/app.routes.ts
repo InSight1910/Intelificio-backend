@@ -17,7 +17,8 @@ import { HomeSpaceComponent } from './core/features/common-space/home/home.compo
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 import { NotificationComponent } from './core/features/notification/notification.component';
 import { ContactListComponent } from './core/features/contact-list/contact-list.component';
-import { ConfirmReservationComponent } from './core/features/common-space/confirm-reservation/confirm-reservation.component';
+import { ConfirmReservationComponent } from './core/features/reservation/confirm-reservation/confirm-reservation.component';
+import { MyReservationsComponent } from './core/features/reservation/my-reservations/my-reservations.component';
 
 export const routes: Routes = [
   {
@@ -79,5 +80,9 @@ export const routes: Routes = [
   {
     path: 'ConfirmarReserva',
     component: ConfirmReservationComponent,
+  },
+  {
+    path: 'MisReservas',
+    component: MyReservationsComponent,
   },
 ];

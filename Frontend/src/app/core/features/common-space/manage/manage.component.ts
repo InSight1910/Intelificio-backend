@@ -66,7 +66,7 @@ export class ManageComponent {
   ngOnInit() {
     this.loadCommonSpaces();
 
-    this.form.get('isInMaintenance')?.valueChanges.subscribe(value => {
+    this.form.get('isInMaintenance')?.valueChanges.subscribe((value) => {
       if (value) {
         this.form.get('startDate')?.setValidators(Validators.required);
         this.form.get('endDate')?.setValidators(Validators.required);
@@ -123,8 +123,12 @@ export class ManageComponent {
       location: this.form.get('location')?.value,
       name: this.form.get('name')?.value,
       IsInMaintenance: this.form.get('isInMaintenance')?.value,
-      startDate: this.form.get('isInMaintenance')?.value ? this.form.get('startDate')?.value : today,  // Usar la fecha de hoy si no está en mantenimiento
-      endDate: this.form.get('isInMaintenance')?.value ? this.form.get('endDate')?.value : today,      // Usar la fecha de hoy si no está en mantenimiento
+      startDate: this.form.get('isInMaintenance')?.value
+        ? this.form.get('startDate')?.value
+        : today, // Usar la fecha de hoy si no está en mantenimiento
+      endDate: this.form.get('isInMaintenance')?.value
+        ? this.form.get('endDate')?.value
+        : today, // Usar la fecha de hoy si no está en mantenimiento
     };
     this.successMessage = '';
     this.errors = [];
@@ -197,6 +201,9 @@ export class ManageComponent {
         setTimeout(() => {
           this.successMessage = '';
           this.isModalOpen = false;
+          this.isCreating = false;
+          this.form.reset();
+          this.form.enable();
         }, 3000);
       },
       error: ({ error }) => {

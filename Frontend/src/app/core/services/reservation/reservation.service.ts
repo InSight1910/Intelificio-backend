@@ -5,9 +5,10 @@ import {
   CountReservation,
   CreateReservation,
   ListReservation,
+  MyReservation,
   Reservation,
 } from '../../../shared/models/reservation.model';
-import { Response } from '../../../shared/models/response.model';
+import { Responses } from '../../../shared/models/response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class ReservationService {
   constructor(private http: HttpClient) {}
 
   create(reservation: CreateReservation) {
-    return this.http.post<Response<Reservation>>(
+    return this.http.post<Responses<Reservation>>(
       `${this.baseUrl}`,
       reservation
     );
@@ -26,7 +27,7 @@ export class ReservationService {
 
   getReservationsByCommunityAndMonth(communityId: number, date: Date) {
     const dateToSeach = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    return this.http.get<Response<ListReservation[]>>(
+    return this.http.get<Responses<ListReservation[]>>(
       `${this.baseUrl}/community/${communityId}/${dateToSeach}`
     );
   }
@@ -36,12 +37,18 @@ export class ReservationService {
     year: number,
     month: number
   ) {
-    return this.http.get<Response<CountReservation[]>>(
+    return this.http.get<Responses<CountReservation[]>>(
       `${this.baseUrl}/count/${communityId}/${year}/${month}`
     );
   }
 
   confirmReservation(reservationId: number, token: string) {
     return this.http.post(`${this.baseUrl}/confirm`, { reservationId, token });
+  }
+
+  getReservationsByUser(userId: number) {
+    return this.http.get<Responses<MyReservation[]>>(
+      `${this.baseUrl}/user/${userId}`
+    );
   }
 }

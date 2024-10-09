@@ -1,4 +1,3 @@
-<app-attendees />
 <div class="box mt-6 is-shadowless">
   <div class="level">
     <div class="level-left">
@@ -220,15 +219,9 @@
       </div>
     </div>
     <div class="field">
-      <label class="label">Hora de inicio</label>
+      <label class="label">Hora de termino</label>
       <div class="control">
         <input type="time" step="900" class="input" formControlName="endTime" />
-      </div>
-    </div>
-    <div class="field">
-      <label class="label">Invitados</label>
-      <div class="control">
-        <button class="button is-primary">Registrar invitados</button>
       </div>
     </div>
     @if (errors.length > 0 || onSuccess != '') {

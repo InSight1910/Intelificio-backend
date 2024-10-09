@@ -1,10 +1,4 @@
-import {
-  Component,
-  DEFAULT_CURRENCY_CODE, EventEmitter, Output,
-  Pipe,
-  PipeTransform,
-  signal,
-} from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { map, tap } from 'rxjs';
 import { CommonSpace } from '../../../../shared/models/commonspace.model';
@@ -29,18 +23,6 @@ import { User } from '../../../../shared/models/user.model';
 import { selectUser } from '../../../../states/auth/auth.selectors';
 import { ReservationService } from '../../../services/reservation/reservation.service';
 import { MessageComponent } from '../../../../shared/component/error/message.component';
-import { AttendeesComponent } from "../attendees/attendees.component";
-
-@Pipe({
-  standalone: true,
-  name: 'isSelected',
-})
-export class IsSelectedPipe implements PipeTransform {
-  transform(map: Map<number, boolean>, key: number): boolean {
-    console.log(!!map.get(key));
-    return !!map.get(key);
-  }
-}
 
 @Component({
   selector: 'app-home-space',
@@ -50,9 +32,7 @@ export class IsSelectedPipe implements PipeTransform {
     CommonModule,
     ReactiveFormsModule,
     MessageComponent,
-    IsSelectedPipe,
-    AttendeesComponent
-],
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -67,7 +47,7 @@ export class HomeSpaceComponent {
     this.form = this.fb.group({
       date: ['', Validators.required],
       startTime: ['', Validators.required],
-      endTime: [''],
+      endTime: ['', Validators.required],
     });
     this.store.select(selectUser).subscribe((x) => (this.loguedUser = x));
   }
