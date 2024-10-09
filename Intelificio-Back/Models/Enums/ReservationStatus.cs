@@ -1,10 +1,9 @@
-﻿namespace Backend.Models.Enums
+﻿namespace Backend.Models.Enums;
+
+public enum ReservationStatus
 {
-    public enum ReservationStatus
-    {
-        CONFIRMED,
-        CANCELLED,
-        FINISHED,
-        PENDING
-    }
+    PENDING,
+    CONFIRMED,
+    CANCELLED,
+    FINISHED
 }

@@ -1,7 +1,12 @@
 <aside class="menu mt-6 ml-6" [ngClass]="{ 'is-hidden-mobile': !openNavbar }">
   <p class="menu-label">General</p>
   <ul class="menu-list">
-    <li><a><span class="icon mr-2"><i class="fa-solid fa-chart-simple"></i></span>Dashboards</a></li>
+    <li>
+      <a
+        ><span class="icon mr-2"><i class="fa-solid fa-chart-simple"></i></span
+        >Dashboards</a
+      >
+    </li>
   </ul>
   <p class="menu-label">Administración</p>
   <ul class="menu-list">
@@ -14,5 +19,6 @@
     <li><a [routerLink]="['Comunicado']"><span class="icon mr-2"><i class="fa-solid fa-paper-plane"></i></span>Comunicado</a></li>
     <li><a [routerLink]="['RegistroUsuario']"><span class="icon mr-2"><i class="fa-solid fa-user-plus"></i></span>Registros de usuarios</a></li>
     <li><a [routerLink]="['Contactos']"><span class="icon mr-2"><i class="fa-solid fa-address-book"></i></span>Contactos</a></li>
+    <li><a [routerLink]="['MisReservas']">Mis Reservas</a></li
   </ul>
 </aside>

@@ -1,0 +1,28 @@
+.icon {
+  position: relative;
+}
+
+.icon.is-loading i {
+  opacity: 0;
+
+}
+
+.icon.is-loading:after {
+  left: calc(50% - .5em);
+  position: absolute;
+  position: absolute!important;
+  top: calc(50% - .5em)
+}
+.icon.is-loading:after {
+  animation: spinAround .5s linear infinite;
+  border-bottom: 2px solid var(--bulma-loading-color);
+  border-left: 2px solid var(--bulma-loading-color);
+  border-radius: var(--bulma-radius-rounded);
+  border-right: 2px solid transparent;
+  border-top: 2px solid transparent;
+  content: "";
+  display: block;
+  height: 1em;
+  position: relative;
+  width: 1em
+}

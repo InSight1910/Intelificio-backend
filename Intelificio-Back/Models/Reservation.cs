@@ -9,6 +9,8 @@ public class Reservation : BaseEntity
     public required TimeSpan StartTime { get; set; }
     public required TimeSpan EndTime { get; set; }
     public required ReservationStatus Status { get; set; }
+    public string ConfirmationToken { get; set; } = string.Empty;
+    public DateTime ExpirationDate { get; set; }
 
     public int UserId { get; set; }
     public virtual User User { get; set; }

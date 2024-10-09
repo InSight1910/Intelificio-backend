@@ -1,7 +1,9 @@
 using Backend.Common.Response;
+using Backend.Features.Reservations.Commands;
 using Backend.Features.Reservations.Commands.Create;
 using Backend.Features.Reservations.Query;
 using Backend.Features.Reservations.Query.GetReservationsByCommunityAndMonth;
+using Backend.Features.Reservations.Query.GetReservationsByUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +19,16 @@ public class ReservationController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return result.Match(
             res => StatusCode(StatusCodes.Status201Created, res),
+            BadRequest
+        );
+    }
+
+    [HttpPost("confirm")]
+    public async Task<IActionResult> Confirm([FromBody] ConfirmReservationCommand command)
+    {
+        var result = await mediator.Send(command);
+        return result.Match(
+            _ => Accepted(),
             BadRequest
         );
     }
@@ -39,5 +51,18 @@ public class ReservationController(IMediator mediator) : ControllerBase
         return result.Match(
             res => Ok(res),
             BadRequest);
+    }
+
+    [HttpGet("user/{id}")]
+    public async Task<IActionResult> GetByUser(int id)
+    {
+        var result = await mediator.Send(new GetReservationsByUserQuery { UserId = id });
+        return result.Match(
+            res => Ok(res),
+            err =>
+            {
+                if (err.First().Code == ReservationErrors.ReservationsNotFoundOnQuery.Code) return NotFound(err);
+                return BadRequest(err);
+            });
     }
 }

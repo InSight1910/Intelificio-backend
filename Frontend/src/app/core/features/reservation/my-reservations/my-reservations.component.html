@@ -1,0 +1,47 @@
+<h3 class="title">Mis reservas - {{ (community | async)?.name }}</h3>
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Espacio</th>
+        <th>Fecha</th>
+        <th>Hora de inicio</th>
+        <th>Hora de fin</th>
+        <th>Estado</th>
+        <th>Invitados</th>
+        <th>Ubicacion</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(reservation of reservations; track $index) {
+      <tr>
+        <td>{{ reservation.spaceName }}</td>
+        <td>{{ reservation.date | date : "dd/MM/yyyy" }}</td>
+        <td>{{ reservation.startTime }}</td>
+        <td>{{ reservation.endTime }}</td>
+        <td>{{ ReservationStatus[reservation.status] | titlecase }}</td>
+        <td>{{ reservation.attendees }}</td>
+        <td>{{ reservation.location }}</td>
+        <td>
+          @if(reservation.status === ReservationStatus.PENDIENTE ||
+          reservation.status === ReservationStatus.CONFIRMADO) {
+          <button
+            class="button is-primary"
+            (click)="onOpenAddAttendees(reservation.id)"
+          >
+            Agregar invitados</button
+          >}
+        </td>
+      </tr>
+      @if (isOpenAddAttendees().get(reservation.id)) {
+
+      <app-attendees
+        [reservationId]="reservation.id"
+        (onClose)="onCloseAddAttendees($event)"
+      />
+
+      } }
+    </tbody>
+  </table>
+</div>

@@ -1,6 +1,4 @@
-@if (isLogin) {
-<router-outlet />
-} @else {
+@if (showMenu) {
 <div class="container is-fluid">
   <app-navbar (openNavbar)="openNavbar = $event" />
   <div class="columns">
@@ -12,4 +10,6 @@
     </div>
   </div>
 </div>
+} @else {
+<router-outlet />
 }

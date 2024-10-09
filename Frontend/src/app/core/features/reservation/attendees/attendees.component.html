@@ -1,0 +1,81 @@
+<app-modal-reservation
+  title="Invitados"
+  [showActionButton]="false"
+  [isValid]="true"
+  (close)="closeModal()"
+>
+  @if(isLoading) {
+  <div class="skeleton-lines">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  } @else {
+  <form (submit)="onSubmit($event)" [formGroup]="form">
+    <div class="columns">
+      <div class="column is-half">
+        <div class="field">
+          <label for="" class="label">Nombre</label>
+          <div class="control">
+            <input type="text" class="input" formControlName="name" />
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="field">
+          <label for="" class="label">RUT</label>
+          <div class="control">
+            <input type="text" class="input" formControlName="rut" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="" class="label">Correo Electronico</label>
+      <div class="control">
+        <input type="text" class="input" formControlName="email" />
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <button
+          type="submit"
+          class="button is-primary"
+          [disabled]="form.invalid"
+          [ngClass]="{ 'is-loading': isLoadingPost }"
+        >
+          Agregar invitado
+        </button>
+      </div>
+    </div>
+    @if(errors.length > 0) {
+    <app-message [errors]="errors"></app-message>
+    }
+  </form>
+  <div class="table-container">
+    <table class="table is-fullwidth mt-5">
+      <tbody>
+        @for (attendee of attendees; track $index) {
+        <tr>
+          <td>{{ attendee.name }} ({{ attendee.email }})</td>
+          <td>{{ attendee.rut }}</td>
+          <td class="has-text-centered">
+            <div
+              class="icon"
+              [ngClass]="{ 'is-loading': isLoadingDelete().get(attendee.id) }"
+              (click)="onDelete(attendee.id)"
+            >
+              <i class="fa-solid fa-trash has-text-danger"></i>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+      @if(errorsDelete.length > 0) {
+      <app-message [errors]="errorsDelete"></app-message>
+      }
+    </table>
+  </div>
+  }
+</app-modal-reservation>

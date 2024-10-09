@@ -68,7 +68,7 @@ export class ManageComponent {
   ngOnInit() {
     this.loadCommonSpaces();
 
-    this.form.get('isInMaintenance')?.valueChanges.subscribe(value => {
+    this.form.get('isInMaintenance')?.valueChanges.subscribe((value) => {
       if (value) {
         this.form.get('startDate')?.setValidators(Validators.required);
         this.form.get('endDate')?.setValidators(Validators.required);
@@ -207,6 +207,9 @@ export class ManageComponent {
         setTimeout(() => {
           this.successMessage = '';
           this.isModalOpen = false;
+          this.isCreating = false;
+          this.form.reset();
+          this.form.enable();
         }, 3000);
       },
       error: ({ error }) => {

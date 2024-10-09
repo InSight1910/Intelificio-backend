@@ -8,10 +8,10 @@ export interface Reservation {
 }
 
 export enum ReservationStatus {
+  PENDIENTE,
   CONFIRMADO,
   CANCELADO,
   FINALIZADA,
-  PENDIENTE,
 }
 export interface CountReservation {
   day: number;
@@ -21,7 +21,17 @@ export interface CountReservation {
   }[];
 }
 export type CreateReservation = Omit<Reservation, 'status'>;
+
 export type ListReservation = Omit<Reservation, 'userId' | 'commonSpaceId'> & {
   userName: string;
   spaceName: string;
+};
+export type MyReservation = Pick<
+  Reservation,
+  'date' | 'startTime' | 'endTime' | 'status'
+> & {
+  spaceName: string;
+  attendees: number;
+  id: number;
+  location: string;
 };
