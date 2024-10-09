@@ -20,13 +20,31 @@
           <div class="control">
             <input type="text" class="input" formControlName="name" />
           </div>
+          <div
+            *ngIf="
+              form.get('name')?.invalid &&
+              (form.get('name')?.touched || form.get('name')?.dirty)
+            "
+          >
+            <p
+              *ngIf="form.get('name')?.errors?.['required']"
+              class="help is-danger"
+            >
+              El nombre es requerido
+            </p>
+          </div>
         </div>
       </div>
       <div class="column is-half">
         <div class="field">
           <label for="" class="label">RUT</label>
           <div class="control">
-            <input type="text" class="input" formControlName="rut" />
+            <input
+              type="text"
+              class="input"
+              formControlName="rut"
+              appFormatRut
+            />
           </div>
         </div>
       </div>
@@ -59,7 +77,7 @@
         @for (attendee of attendees; track $index) {
         <tr>
           <td>{{ attendee.name }} ({{ attendee.email }})</td>
-          <td>{{ attendee.rut }}</td>
+          <td>{{ attendee.rut | formatRut }}</td>
           <td class="has-text-centered">
             <div
               class="icon"

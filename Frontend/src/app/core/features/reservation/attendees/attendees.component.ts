@@ -15,6 +15,8 @@ import {
 import { AttendeeService } from '../../../services/attendee/attendee.service';
 import { CommonModule } from '@angular/common';
 import { MessageComponent } from '../../../../shared/component/error/message.component';
+import { FormatRutDirective } from '../../../../shared/directives/format-rut.directive';
+import { FormatRutPipe } from '../../../../shared/pipes/format-rut.pipe';
 
 @Component({
   selector: 'app-attendees',
@@ -24,6 +26,8 @@ import { MessageComponent } from '../../../../shared/component/error/message.com
     ReactiveFormsModule,
     CommonModule,
     MessageComponent,
+    FormatRutDirective,
+    FormatRutPipe,
   ],
   templateUrl: './attendees.component.html',
   styleUrl: './attendees.component.css',
@@ -81,6 +85,7 @@ export class AttendeesComponent {
       this.form.disable();
       var attendee: AttendeeCreate = {
         ...this.form.value,
+        rut: this.form.value.rut.replace(/[.-]/g, ''),
         reservationId: this.reservationId,
       };
       this.attendeeService.createAttendee(attendee).subscribe({
