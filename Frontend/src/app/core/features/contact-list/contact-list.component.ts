@@ -1,14 +1,14 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {Contact} from "../../../shared/models/contact.model";
-import {FormsModule} from "@angular/forms";
-import {AddContactComponent} from "./add-contact/add-contact.component";
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../states/intelificio.state";
-import {ContactService} from "../../services/contact/contact.service";
-import {selectCommunity} from "../../../states/community/community.selectors";
-import {tap} from "rxjs";
-import {EditContactComponent} from "./edit-contact/edit-contact.component";
-import {NgClass} from "@angular/common";
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Contact } from '../../../shared/models/contact.model';
+import { FormsModule } from '@angular/forms';
+import { AddContactComponent } from './add-contact/add-contact.component';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../states/intelificio.state';
+import { ContactService } from '../../services/contact/contact.service';
+import { selectCommunity } from '../../../states/community/community.selectors';
+import { tap } from 'rxjs';
+import { EditContactComponent } from './edit-contact/edit-contact.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact-list',
@@ -17,28 +17,28 @@ import {NgClass} from "@angular/common";
     FormsModule,
     AddContactComponent,
     EditContactComponent,
-    NgClass,
+    CommonModule,
   ],
   templateUrl: './contact-list.component.html',
-  styleUrl: './contact-list.component.css'
+  styleUrl: './contact-list.component.css',
 })
 export class ContactListComponent implements OnInit {
   isModalOpen: boolean = false;
   isEditModalOpen: boolean = false;
   isDropdownOpen: { [key: number]: boolean } = {};
   isLoading: boolean = false;
-  contactos: Contact[] = []
+  contactos: Contact[] = [];
   filteredContacts: Contact[] = [];
   CommunityID: number = 0;
   searchTerm: string = '';
-  contactToEdit:  Contact = {
+  contactToEdit: Contact = {
     communityID: 0,
-    email: "",
-    firstName: "",
+    email: '',
+    firstName: '',
     id: 0,
-    lastName: "",
-    phoneNumber: "",
-    service: ""
+    lastName: '',
+    phoneNumber: '',
+    service: '',
   };
 
   constructor(
@@ -52,10 +52,12 @@ export class ContactListComponent implements OnInit {
 
   onClickCloseAdd() {
     this.isModalOpen = false;
+    this.getContacts();
   }
 
-  onClickCloseEdit(){
+  onClickCloseEdit() {
     this.isEditModalOpen = false;
+    this.getContacts();
   }
 
   openAddModal() {
@@ -74,48 +76,45 @@ export class ContactListComponent implements OnInit {
     }
 
     const searchTermLower = this.searchTerm.toLowerCase();
-    this.filteredContacts = this.contactos.filter(contact =>
-      contact.firstName.toLowerCase().includes(searchTermLower) ||
-      contact.lastName.toLowerCase().includes(searchTermLower) ||
-      contact.phoneNumber.includes(this.searchTerm) ||
-      contact.service.toLowerCase().includes(searchTermLower)
+    this.filteredContacts = this.contactos.filter(
+      (contact) =>
+        contact.firstName.toLowerCase().includes(searchTermLower) ||
+        contact.lastName.toLowerCase().includes(searchTermLower) ||
+        contact.phoneNumber.includes(this.searchTerm) ||
+        contact.service.toLowerCase().includes(searchTermLower)
     );
   }
 
-  getContacts(){
+  getContacts() {
     this.isLoading = true;
     this.store
       .select(selectCommunity)
       .pipe(
         tap((c) => {
           this.CommunityID = c?.id ?? 0;
-          this.service.getbyCommunityId(c?.id!).subscribe(
-            {
-              next: (response: { data: Contact[] }) => {
-                this.contactos = response.data;
-                this.filteredContacts = this.contactos;
-                this.isLoading = false;
-              },
-              error: (error) => {
-                this.isLoading = false;
-                console.error('Error al obtener contactos de comunidad', error);
-              }
-            }
-          );
+          this.service.getbyCommunityId(c?.id!).subscribe({
+            next: (response: { data: Contact[] }) => {
+              this.contactos = response.data;
+              this.filteredContacts = this.contactos;
+              this.isLoading = false;
+            },
+            error: (error) => {
+              this.isLoading = false;
+              console.error('Error al obtener contactos de comunidad', error);
+            },
+          });
         })
       )
       .subscribe();
   }
 
-  @HostListener('document:click', ['$event'])
-  handleClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.dropdown')) {
-      Object.keys(this.isDropdownOpen).forEach((id) => {
-        this.isDropdownOpen[+id] = false;
-      });
-    }
-  }
-
-
+  // @HostListener('document:click', ['$event'])
+  // handleClickOutside(event: MouseEvent) {
+  //   const target = event.target as HTMLElement;
+  //   if (!target.closest('.dropdown')) {
+  //     Object.keys(this.isDropdownOpen).forEach((id) => {
+  //       this.isDropdownOpen[+id] = false;
+  //     });
+  //   }
+  // }
 }
