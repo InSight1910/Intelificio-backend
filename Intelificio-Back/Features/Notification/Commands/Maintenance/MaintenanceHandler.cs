@@ -27,13 +27,7 @@ namespace Backend.Features.Notification.Commands.Maintenance
 
         public async Task<Result> Handle(MaintenanceCommand request, CancellationToken cancellationToken)
         {
-            var communityData = new
-            {
-                CommunityName = string.Empty,
-                SenderAddress = string.Empty,
-                CommonSpaceName = string.Empty,
-                Recipients = new List<EmailAddress>()
-            };
+
 
 
             DateTime startDate = DateTime.ParseExact(request.StartDate, "yyyy-MM-dd", null);
@@ -43,13 +37,13 @@ namespace Backend.Features.Notification.Commands.Maintenance
             var commonSpace = await _context.CommonSpaces.Where(c => c.CommunityId == request.CommunityID).FirstOrDefaultAsync(c => c.ID == request.CommonSpaceID);
             if (commonSpace == null) return Result.Failure(NotificationErrors.CommonSpaceNotFound);
 
-            communityData = await _context.Community
+            var communityData = await _context.Community
                 .Include(c => c.Users)
                 .Where(c => c.ID == request.CommunityID)
                 .Select(c => new
                 {
                     CommunityName = c.Name,
-                    SenderAddress = c.Address,
+                    SenderAddress = $"{c.Address}, {c.Municipality.Name}",
                     CommonSpaceName = commonSpace.Name,
                     Recipients = c.Users
                         .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))

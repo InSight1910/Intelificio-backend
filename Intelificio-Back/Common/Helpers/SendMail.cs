@@ -1,6 +1,8 @@
 ﻿
 using Backend.Features.Notification.Commands.CommonExpenses;
+using Backend.Features.Notification.Commands.ConfirmEmail;
 using Backend.Features.Notification.Commands.Maintenance;
+using Backend.Features.Notification.Commands.MaintenanceCancellation;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -91,6 +93,54 @@ namespace Backend.Common.Helpers
         }
 
         public async Task<SendGrid.Response> SendMaintenanceNotificationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<MaintenanceTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendEmailConfirmationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<ConfirmEmailTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendMaintenanceCancellationNotificationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<MaintenanceCancellationTemplate> templates)
         {
 
             var msg = new SendGridMessage();

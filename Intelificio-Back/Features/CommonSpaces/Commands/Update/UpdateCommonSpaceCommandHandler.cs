@@ -2,10 +2,12 @@
 using Backend.Common.Response;
 using Backend.Features.CommonSpaces.Common;
 using Backend.Features.Notification.Commands.Maintenance;
+using Backend.Features.Notification.Commands.MaintenanceCancellation;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Backend.Features.CommonSpaces.Commands.Update;
 
@@ -13,11 +15,13 @@ public class UpdateCommonSpaceCommandHandler : IRequestHandler<UpdateCommonSpace
 {
     private readonly IntelificioDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    public UpdateCommonSpaceCommandHandler(IntelificioDbContext context, IMapper mapper)
+    public UpdateCommonSpaceCommandHandler(IntelificioDbContext context, IMapper mapper, IMediator mediator)
     {
         _context = context;
         _mapper = mapper;
+        _mediator = mediator;
     }
 
     public async Task<Result> Handle(UpdateCommonSpaceCommand request, CancellationToken cancellationToken)
@@ -33,6 +37,15 @@ public class UpdateCommonSpaceCommandHandler : IRequestHandler<UpdateCommonSpace
             var maitenance = await _context.Maintenances.Where(x => x.CommonSpaceID == request.Id && x.IsActive).FirstOrDefaultAsync();
             if (maitenance is null) return Result.Failure(CommonSpacesErrors.MaintenanceNotFoundOnUpdate);
             maitenance.IsActive = false;
+
+            var maintenanceCancellationCommand = new MaintenanceCancellationCommand
+            {
+                CommunityID = maitenance.CommunityID,
+                CommonSpaceID = maitenance.CommonSpaceID,
+            };
+
+            var maintenanceResult = await _mediator.Send(maintenanceCancellationCommand, cancellationToken);
+
         }
 
         commonSpace = _mapper.Map(request, commonSpace);
