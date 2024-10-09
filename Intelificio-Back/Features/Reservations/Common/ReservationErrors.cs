@@ -45,4 +45,16 @@ public class ReservationErrors
         Code = "Reservation.ConfirmReservation.TokenExpiredOnConfirm",
         Message = "El token se encuentra expirado."
     };
+
+    public static Error UserNotFoundOnQuery = new()
+    {
+        Code = "Reservation.GetReservationsByUser.UserNotFound",
+        Message = "El usuario no se encuentra en nuestros registros."
+    };
+
+    public static Error ReservationsNotFoundOnQuery = new()
+    {
+        Code = "Reservation.GetReservationsByUser.ReservationsNotFound",
+        Message = "No se encontraron registros a su nombre."
+    };
 }

@@ -12,8 +12,20 @@ public class CreateAttendeeCommandHandler(IntelificioDbContext context, IMapper 
 {
     public async Task<Result> Handle(CreateAttendeeCommand request, CancellationToken cancellationToken)
     {
-        var reservationExist = await context.Reservations.AnyAsync(x => x.ID == request.ReservationId);
-        if (!reservationExist) return Result.Failure(AttendeesErrors.ReservationNotFoundOnCreate);
+        var reservation = await context.Reservations
+            .Include(x => x.Spaces)
+            .Include(x => x.Attendees)
+            .Where(x => x.ID == request.ReservationId)
+            .Select(x =>
+                new
+                {
+                    x.Spaces.Capacity,
+                    x.Attendees.Count
+                })
+            .FirstOrDefaultAsync();
+        if (reservation is null) return Result.Failure(AttendeesErrors.ReservationNotFoundOnCreate);
+
+        if (reservation.Count >= reservation.Capacity) return Result.Failure(AttendeesErrors.CapacityExceeded);
 
         var attendeeExist =
             await context.Attendees.AnyAsync(x => x.ReservationId == request.ReservationId && x.Rut == request.RUT);
@@ -22,11 +34,11 @@ public class CreateAttendeeCommandHandler(IntelificioDbContext context, IMapper 
         var attendee = mapper.Map<Attendee>(request);
         var result = await context.Attendees.AddAsync(attendee, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-
+        request.Id = result.Entity.ID;
 
         return Result.WithResponse(new ResponseData
         {
-            Data = result.Entity
+            Data = request
         });
     }
 }
