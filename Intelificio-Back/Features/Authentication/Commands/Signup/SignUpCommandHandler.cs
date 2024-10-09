@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
 using Backend.Features.Authentication.Common;
+using Backend.Features.Notification.Commands.ConfirmEmail;
+using Backend.Features.Notification.Commands.Maintenance;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Backend.Features.Authentication.Commands.Signup
 {
-    public class SignUpCommandHandler(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper) : IRequestHandler<SignUpCommand, Result>
+    public class SignUpCommandHandler(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper, IMediator mediator) : IRequestHandler<SignUpCommand, Result>
     {
         public async Task<Result> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
@@ -56,9 +59,20 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             _ = await userManager.AddToRoleAsync(user, roleExist.Name!);
 
+            var confirmEmailCommand = new ConfirmEmailOneCommand
+            {
+                Users = new List<User> { user } 
+            };
 
-            var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            _ = await userManager.ConfirmEmailAsync(user, confirmationToken);
+            var confirmEmailResult = await mediator.Send(confirmEmailCommand);
+
+            if (confirmEmailResult.IsFailure)
+            {
+                return Result.Failure(confirmEmailResult.Errors);
+            }
+
+            // var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            // _ = await userManager.ConfirmEmailAsync(user, confirmationToken);
             return Result.Success();
         }
     }

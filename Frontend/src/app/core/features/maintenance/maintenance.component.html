@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-3 mb-5">Mantenimientos de la Comunidad</h2>
+    </div>
+    <div class="level-right">
+      <button class="button">
+        <span class="icon mr-1">
+          <i class="fa-solid fa-plus"></i>
+        </span>
+        Agregar Contacto
+      </button>
+    </div>
+  </div>
+</div>
+
+@if (isLoading) {
+  <div class="container">
+    <div class="skeleton-lines">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+} @else {
+  <div class="container mt-4">
+
+
+    <div class="box">
+      <div class="field">
+        <label class="label">Filtrar mantención</label>
+        <div class="control">
+          <input class="input" type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Buscar por espacio común, locación o comentario">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="box">
+      <div class="table-container">
+        <table class="table is-fullwidth">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Estado</th>
+            <th>Espacio Común</th>
+            <th>Locación</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Comentario</th>
+          </tr>
+          </thead>
+          <tbody>
+            @if (!filteredMaintenances || filteredMaintenances.length === 0){
+              <td colspan="5">No hay mantenciones disponibles</td>
+            } @else {
+              @for (mantenimiento of filteredMaintenances; track mantenimiento.id; let idx = $index, e = $even){
+                <tr>
+                  <td>{{ idx + 1 }}</td>
+                  <td>
+                    @if (mantenimiento.isActive){
+                      <span class="tag is-primary is-medium"> Activa </span>
+                    } @else {
+                      <span class="tag is-dark is-medium">Finalizada </span>
+                    }
+                  </td>
+                  <td>{{ mantenimiento.commonSpaceName }}</td>
+                  <td>{{ mantenimiento.commonSpaceLocation }}</td>
+                  <td>{{ mantenimiento.startDate }}</td>
+                  <td>{{ mantenimiento.endDate  }}</td>
+                  <td>{{ mantenimiento.comment }}</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+}
+
+

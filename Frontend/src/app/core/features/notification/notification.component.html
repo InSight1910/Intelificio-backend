@@ -1,7 +1,7 @@
 <div CLASS="container">
   <div class="card-content">
     <div class="column is-12">
-      <h1 class="title is-4 mb-5">Comunicado Interno</h1>
+      <h1 class="title is-3 mb-5">Comunicado Interno</h1>
       <form class="box" [formGroup]="emailForm" (ngSubmit)="onSubmit()">
         <div class="columns">
           <div class="column field is-4">
@@ -15,8 +15,8 @@
                   (change)="onRecipientLevelChange($event)"
                 >
                   <option value="community">Enviar a toda la comunidad</option>
-                  <option value="building">Edificio Especifico</option>
-                  <option value="floor">Piso Especifico</option>
+                  <option value="building">Solo a un Edificio</option>
+                  <option value="floor">Solo a un piso</option>
                 </select>
               </div>
             </div>
@@ -26,7 +26,7 @@
             *ngIf="recipientLevel === 'building' || recipientLevel === 'floor'"
             class="column field is-4"
           >
-            <label class="label" for="building">Seleccione Edificio</label>
+            <label class="label" for="building">Selecciona Edificio</label>
             <div class="control">
               <div class="select">
                 <select
@@ -52,7 +52,7 @@
           </div>
 
           <div *ngIf="recipientLevel === 'floor'" class="column field is-4">
-            <label class="label" for="floor">Seleccione Piso</label>
+            <label class="label" for="floor">Selecciona Piso</label>
             <div class="control">
               <div class="select">
                 <select id="floor" formControlName="Floor">
@@ -63,7 +63,7 @@
                     </option>
                   </ng-container>
                   <ng-template #noFloors>
-                    <option value="">No hay psisos disponibles</option>
+                    <option value="">No hay pisos disponibles</option>
                   </ng-template>
                 </select>
               </div>

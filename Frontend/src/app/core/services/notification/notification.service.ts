@@ -19,4 +19,11 @@ export class NotificationService {
       }
     );
   }
+
+  confirmEmail(email: string, token: string): Observable<HttpResponse<any>>  {
+    return this.http.post<any>(`${this.apiUrl}/Notification/confirm`, { email, token },{
+      observe: 'response',
+    });
+  }
+
 }

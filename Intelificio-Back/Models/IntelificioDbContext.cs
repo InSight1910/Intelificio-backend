@@ -144,7 +144,8 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
             _ = entity.HasMany(p => p.Fines)
                 .WithOne(p => p.Community);
-            entity.HasMany(p => p.Spaces)
+
+            _ = entity.HasMany(p => p.Spaces)
                 .WithOne(p => p.Community)
                 .HasForeignKey(p => p.CommunityId);
         });
@@ -245,7 +246,8 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasKey(p => p.ID);
 
             _ = entity.HasMany(p => p.Maintenances)
-                       .WithOne(p => p.CommonSpace);
+                       .WithOne(p => p.CommonSpace)
+                    .HasForeignKey(p => p.CommonSpaceID);
 
         });
     }

@@ -1,13 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './core/features/authentication/login/login.component';
-import { provideEffects } from '@ngrx/effects';
-import { AuthEffects } from './states/auth/auth.effects';
-import { provideStore } from '@ngrx/store';
-import { authReducer } from './states/auth/auth.reducer';
 import { SelectCommunityComponent } from './core/features/community/select-community/select-community.component';
 import { HomeCommunityComponent } from './core/features/community/home/home.component';
 import { UnitComponent } from './core/features/unit/unit.component';
-
 import { BuildingComponent } from './core/features/building/building.component';
 import { SingupComponent } from './core/features/authentication/signup/signup.component';
 import { ChangePasswordOneComponent } from './core/features/authentication/change-password-one/change-password-one.component';
@@ -16,9 +11,11 @@ import { AdminCommunityComponent } from './core/features/community/adminCommunit
 import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 import { NotificationComponent } from './core/features/notification/notification.component';
-import { ContactListComponent } from './core/features/contact-list/contact-list.component';
+import { MaintenanceComponent } from "./core/features/maintenance/maintenance.component";
+import { ContactListComponent } from "./core/features/contact-list/contact-list.component";
 import { ConfirmReservationComponent } from './core/features/reservation/confirm-reservation/confirm-reservation.component';
 import { MyReservationsComponent } from './core/features/reservation/my-reservations/my-reservations.component';
+import { ConfirmEmailComponent} from "./core/features/authentication/confirm-email/confirm-email.component";
 
 export const routes: Routes = [
   {
@@ -58,10 +55,6 @@ export const routes: Routes = [
     component: UnitComponent,
   },
   {
-    path: 'Contactos',
-    component: ContactListComponent,
-  },
-  {
     path: 'AdminComunidades',
     component: AdminCommunityComponent,
   },
@@ -78,11 +71,23 @@ export const routes: Routes = [
     component: NotificationComponent,
   },
   {
+    path: 'Mantenciones',
+    component: MaintenanceComponent,
+  },
+  {
     path: 'ConfirmarReserva',
     component: ConfirmReservationComponent,
   },
   {
     path: 'MisReservas',
     component: MyReservationsComponent,
+  },
+  {
+    path: 'ConfirmarCorreo',
+    component: ConfirmEmailComponent,
+  },
+  {
+    path: 'Contactos',
+    component: ContactListComponent,
   },
 ];

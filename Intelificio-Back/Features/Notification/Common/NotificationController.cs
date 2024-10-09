@@ -1,4 +1,5 @@
 ﻿using Backend.Common.Response;
+using Backend.Features.Notification.Commands.ConfirmEmailTwo;
 using Backend.Features.Notification.Commands.Package;
 using Backend.Features.Notification.Commands.SingleMessage;
 
@@ -24,6 +25,15 @@ namespace Backend.Features.Notification.Common
         public async Task<IActionResult> SendPackageNotification(int ID, [FromRoute] PackageCommand command)
         {
             command.PackageID = ID;
+            var result = await mediator.Send(command);
+            return result.Match(
+                onSuccess: (_) => Created(),
+                onFailure: BadRequest);
+        }
+
+        [HttpPost("confirm")]
+        public async Task<IActionResult> Confirm([FromBody] ConfirmEmailTwoCommand command)
+        {
             var result = await mediator.Send(command);
             return result.Match(
                 onSuccess: (_) => Created(),

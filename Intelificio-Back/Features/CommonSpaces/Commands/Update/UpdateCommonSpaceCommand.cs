@@ -13,5 +13,6 @@ public class UpdateCommonSpaceCommand : IRequest<Result>
     public bool IsInMaintenance { get; set; }
     public string StartDate { get; set; } = string.Empty;
     public string EndDate { get; set; } = string.Empty;
+    public string Comment { get; set; } = string.Empty;
     [JsonIgnore] public int CommunityId { get; set; }
 }

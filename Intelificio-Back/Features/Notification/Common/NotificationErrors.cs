@@ -93,6 +93,79 @@ namespace Backend.Features.Notification.Common
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
 
+        // Errores en ConfirmEmailOne
+        public static Error TemplateNotFoundOnConfirmEmailOne = new()
+        {
+            Code = "Notification.ConfirmEmailOne.TemplateNotFoundOnConfirmEmailOne",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnConfirmEmailOne = new()
+        {
+            Code = "Notification.ConfirmEmailOne.TemplateIdIsNullOnConfirmEmailOne",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+        public static Error TemplateNotCreatedOnConfirmEmailOne = new()
+        {
+            Code = "Notification.ConfirmEmailOne.TemplateNotCreatedOnConfirmEmailOne",
+            Message = "No se logró armar el template para enviar la confirmación de correo."
+        };
+        public static Error RecipientsNotCreatedOnConfirmEmailOne = new()
+        {
+            Code = "Notification.ConfirmEmailOne.RecipientsNotCreatedOnConfirmEmailOne",
+            Message = "No se logró armar la lista de destinatarios para enviar la confirmación de correo."
+        };
+        public static Error EmailNotSentOnConfirmEmailOne = new()
+        {
+            Code = "Notification.ConfirmEmailOne.EmailNotSentOnConfirmEmailOne",
+            Message = "No se ha podido enviar el correo."
+        };
+
+        // Errores en ConfirmEmailTwo
+        public static Error EmailNotSentOnConfirmEmailTwo = new()
+        {
+            Code = "Notification.ConfirmEmailTwo.UserNotFoundOnConfirmEmailTwo",
+            Message = "No existe un usuario registrado bajo este correo."
+        };
+        public static Error UserAlreadyConfirmThisEmailOnConfirmEmailTwo = new()
+        {
+            Code = "Notification.ConfirmEmailTwo.UserAlreadyConfirmThisEmailOnConfirmEmailTwo",
+            Message = "El usuario ya ha confirmado este correo."
+        };
+
+
+        //Errores de MaintenanceCancellation
+        public static Error CommonSpaceNotFoundOnMaintenanceCancellation = new()
+        {
+            Code = "Notification.MaintenanceCancellation.CommonSpaceNotFoundOnMaintenanceCancellation",
+            Message = "No se ha podido encontrar el espacio común."
+        };
+        public static Error CommunityNotFoundOnMaintenanceCancellation = new()
+        {
+            Code = "Notification.MaintenanceCancellation.CommunityNotFoundOnMaintenanceCancellation",
+            Message = "No se ha podido completar el template para enviar correo."
+        };
+        public static Error TemplateNotFoundOnMaintenanceCancellation = new()
+        {
+            Code = "Notification.MaintenanceCancellation.TemplateNotFoundOnMaintenanceCancellation",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnMaintenanceCancellation = new()
+        {
+            Code = "Notification.MaintenanceCancellation.TemplateIdIsNullOnMaintenanceCancellation",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+        public static Error TemplateNotCreatedOnMaintenanceCancellation = new()
+        {
+            Code = "Notification.MaintenanceCancellation.TemplateNotCreatedOnMaintenanceCancellation",
+            Message = "El templates no puede ser null para enviar el termino de mantención."
+        };
+        public static Error EmailNotSentOnMaintenanceCancellation = new()
+        {
+            Code = "Notification.MaintenanceCancellation.EmailNotSentOnMaintenanceCancellation",
+            Message = "No se ha podido enviar el correo."
+        };
+
+
         //Errores de SimpleMessage
 
         public static Error TemplateNotFoundOnSimpleMessage = new()

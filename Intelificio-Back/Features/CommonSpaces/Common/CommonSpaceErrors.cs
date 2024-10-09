@@ -31,4 +31,7 @@ public class CommonSpacesErrors
 
     public static Error CommonSpaceNotFoundOnQuery = new("CommonSpace.GetbyId.CommonSpaceNotFoundOnQuery",
         "El espacio comun no fue encontrado.");
+
+    public static Error MaintenanceNotFoundOnUpdate = new("CommonSpace.Update.MaintenanceNotFoundOnUpdate",
+        "El espacio comun no cuenta con una mantención.");
 }

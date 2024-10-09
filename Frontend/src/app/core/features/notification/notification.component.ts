@@ -15,7 +15,6 @@ import { tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { Unit } from '../../../shared/models/unit.model';
-import { UnitService } from '../../services/unit/unit.service';
 type RecipientLevel = 'community' | 'building' | 'floor';
 
 @Component({
