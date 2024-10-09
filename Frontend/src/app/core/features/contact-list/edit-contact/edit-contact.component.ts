@@ -1,61 +1,58 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule, ValidationErrors,
+  ReactiveFormsModule,
+  ValidationErrors,
   ValidatorFn,
-  Validators
-} from "@angular/forms";
-import {ContactService} from "../../../services/contact/contact.service";
-import {ContactListComponent} from "../contact-list.component";
-import {Contact} from "../../../../shared/models/contact.model";
-import {NgClass} from "@angular/common";
+  Validators,
+} from '@angular/forms';
+import { ContactService } from '../../../services/contact/contact.service';
+
+import { Contact } from '../../../../shared/models/contact.model';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-edit-contact',
   standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    NgClass
-  ],
+  imports: [FormsModule, ReactiveFormsModule, NgClass],
   templateUrl: './edit-contact.component.html',
-  styleUrl: './edit-contact.component.css'
+  styleUrl: './edit-contact.component.css',
 })
-export class EditContactComponent implements OnInit{
+export class EditContactComponent implements OnInit {
   IsLoading: boolean = false;
   notification: boolean = false;
   IsSuccess: boolean = false;
   IsError: boolean = false;
-  notificationMessage: string = "";
+  notificationMessage: string = '';
   @Output() close = new EventEmitter<void>();
   @Input() ContactEdited: Contact = {
     communityID: 0,
-    email: "s",
-    firstName: "",
+    email: 's',
+    firstName: '',
     id: 0,
-    lastName: "",
-    phoneNumber: "",
-    service: ""
+    lastName: '',
+    phoneNumber: '',
+    service: '',
   };
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder,
-              private service: ContactService,
-              private contactList: ContactListComponent) {
+  constructor(private fb: FormBuilder, private service: ContactService) {
     this.form = this.fb.group({
       id: new FormControl(0),
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.email]),
-      phoneNumber: new FormControl('', [Validators.required,
+      phoneNumber: new FormControl('', [
+        Validators.required,
         Validators.maxLength(15),
         Validators.minLength(12),
-        this.phoneValidator(),]),
+        this.phoneValidator(),
+      ]),
       service: new FormControl('', Validators.required),
       communityID: new FormControl(0),
     });
@@ -69,67 +66,63 @@ export class EditContactComponent implements OnInit{
     this.close.emit();
   }
 
-  OnSubmit(){
+  OnSubmit() {
     this.IsLoading = true;
-    if (this.form.valid){
-      const EditContact  = {
+    if (this.form.valid) {
+      const EditContact = {
         FirstName: this.form.value.firstName,
-        LastName:this.form.value.lastName,
+        LastName: this.form.value.lastName,
         Email: this.form.value.email ? this.form.value.email : 'Sin@correo.cl',
         PhoneNumber: this.form.value.phoneNumber.replace(/\s+/g, ''),
-        Service:  this.form.value.service,
+        Service: this.form.value.service,
         CommunityID: this.form.value.communityID,
       };
 
-
-      this.service.update(this.form.value.id,EditContact).subscribe(
-        {
-          next: (response) => {
-            if (response.status === 200) {
-              this.IsLoading = false;
-              this.notificationMessage =
-                'Contacto actualizado satisfactoriamente.';
-              this.IsSuccess = true;
-              this.notification = true;
-              setTimeout(() => {
-                this.notification = false;
-                this.IsSuccess = false;
-                this.IsLoading = false;
-                this.contactList.getContacts();
-                this.close.emit();
-              }, 5000);
-            }
-          },
-          error: (error) =>{
+      this.service.update(this.form.value.id, EditContact).subscribe({
+        next: (response) => {
+          if (response.status === 200) {
             this.IsLoading = false;
-            if (error.status === 400) {
-              const errorData = error.error?.[0];
-              this.notificationMessage = errorData.message;
-              this.IsError = true;
-              this.notification = true;
-              setTimeout(() => {
-                this.notification = false;
-                this.notificationMessage = '';
-                this.IsError = false;
-              }, 5000);
-            } else {
-              this.notificationMessage = 'No fue posible actualizar este contacto';
-              this.IsError = true;
-              this.notification = true;
-              setTimeout(() => {
-                this.notification = false;
-                this.notificationMessage = '';
-                this.IsError = false;
-              }, 5000);
-            }
+            this.notificationMessage =
+              'Contacto actualizado satisfactoriamente.';
+            this.IsSuccess = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.IsSuccess = false;
+              this.IsLoading = false;
+              this.close.emit();
+            }, 5000);
           }
-        }
-      );
-
+        },
+        error: (error) => {
+          this.IsLoading = false;
+          if (error.status === 400) {
+            const errorData = error.error?.[0];
+            this.notificationMessage = errorData.message;
+            this.IsError = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.notificationMessage = '';
+              this.IsError = false;
+            }, 5000);
+          } else {
+            this.notificationMessage =
+              'No fue posible actualizar este contacto';
+            this.IsError = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.notificationMessage = '';
+              this.IsError = false;
+            }, 5000);
+          }
+        },
+      });
     }
   }
 
-  closeNotification(){
+  closeNotification() {
     this.notification = false;
     this.IsSuccess = false;
     this.IsError = false;
@@ -176,26 +169,25 @@ export class EditContactComponent implements OnInit{
     }
   }
 
-  delete(contactoID: number){
+  delete(contactoID: number) {
     this.IsLoading = true;
     this.service.delete(contactoID).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.IsLoading = false;
-          this.notificationMessage =
-            'Contacto eliminado satisfactoriamente.';
+          this.notificationMessage = 'Contacto eliminado satisfactoriamente.';
           this.IsSuccess = true;
           this.notification = true;
           setTimeout(() => {
             this.notification = false;
             this.IsSuccess = false;
             this.IsLoading = false;
-            this.contactList.getContacts();
+
             this.close.emit();
           }, 3000);
         }
       },
-      error: (error) =>{
+      error: (error) => {
         this.IsLoading = false;
         if (error.status === 400) {
           const errorData = error.error?.[0];
@@ -217,9 +209,7 @@ export class EditContactComponent implements OnInit{
             this.IsError = false;
           }, 5000);
         }
-      }
+      },
     });
-
   }
-
 }

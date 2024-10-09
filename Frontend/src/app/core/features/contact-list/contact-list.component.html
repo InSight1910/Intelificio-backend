@@ -25,13 +25,18 @@
   </div>
 } @else {
   <div class="container mt-4">
-
     <!-- Search Box -->
     <div class="box">
       <div class="field">
         <label class="label">Buscar contacto</label>
         <div class="control">
-          <input class="input" type="text" [(ngModel)]="searchTerm" (input)="filterContacts()" placeholder="Búsqueda por nombre, teléfono o servicio">
+          <input
+            class="input"
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="filterContacts()"
+            placeholder="Búsqueda por nombre, teléfono o servicio"
+          />
         </div>
       </div>
     </div>
@@ -51,43 +56,37 @@
           </tr>
           </thead>
           <tbody>
-          @if (!contactos || contactos.length === 0){
-            <td colspan="5">No hay contactos disponibles</td>
-          } @else {
-            @for (contacto of filteredContacts; track contacto.id; let idx = $index, e = $even){
+            @if (!contactos || contactos.length === 0){
+              <td colspan="5">No hay contactos disponibles</td>
+            } @else { @for (contacto of filteredContacts; track contacto.id; let
+                idx = $index, e = $even){
               <tr>
-                <td>{{ idx +1 }}</td>
-                <td>{{ contacto.firstName + ' ' + contacto.lastName }}</td>
+                <td>{{ idx + 1 }}</td>
+                <td>{{ contacto.firstName + " " + contacto.lastName }}</td>
                 <td>{{ contacto.email }}</td>
                 <td>{{ contacto.phoneNumber }}</td>
                 <td>{{ contacto.service }}</td>
                 <td>
                   <button class="button" (click)="openEditModal(contacto)">
-                    <span class="icon mr-1">
-                      <i class="fas fa-pencil-alt"></i>
-                    </span>
+                <span class="icon mr-1">
+                  <i class="fas fa-pencil-alt"></i>
+                </span>
                     Editar
                   </button>
                 </td>
               </tr>
-            }
-          }
+            } }
           </tbody>
         </table>
       </div>
     </div>
   </div>
-}
-
-@if(isModalOpen){
-  <app-add-contact
-    [CommunityID] = "this.CommunityID"
-    (close)="onClickCloseAdd()" >
+} @if(isModalOpen){
+  <app-add-contact [CommunityID]="this.CommunityID" (close)="onClickCloseAdd()">
   </app-add-contact>
-}
-
-@if(isEditModalOpen){
-  <app-edit-contact [ContactEdited]="this.contactToEdit"
+} @if(isEditModalOpen){
+  <app-edit-contact
+    [ContactEdited]="this.contactToEdit"
     (close)="onClickCloseEdit()"
   ></app-edit-contact>
 }

@@ -87,7 +87,7 @@ export class SingupComponent implements OnInit {
         .signupMassive(formData)
         .pipe(
           tap((response) => {
-            if (response.status === 204) {
+            if (response.status === 202) {
               this.notification = true;
               setTimeout(() => {
                 this.notification = false;

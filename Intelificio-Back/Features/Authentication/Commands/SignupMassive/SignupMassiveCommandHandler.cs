@@ -34,19 +34,18 @@ namespace Backend.Features.Authentication.Commands.SignupMassive
             }
             if (tasks.Any(r => r.Result.IsFailure)) return Result.WithErrors(AuthenticationErrors.SignUpMassiveError(tasks.SelectMany(r => r.Result.Errors).ToList()));
 
-            var confirmEmailCommand = new List<ConfirmEmailOneCommand>();
-
-            foreach (var userObject in users)
+            var usersList = users.Select(userObject => new User
             {
-                var user = new User
-                {
-                    FirstName = userObject.FirstName,
-                    LastName = userObject.LastName,
-                    Rut = userObject.Rut,
-                    Email = userObject.Email
-                };
-                confirmEmailCommand.Add(new ConfirmEmailOneCommand { Users = new List<User> { user } });
-            }
+                FirstName = userObject.FirstName,
+                LastName = userObject.LastName,
+                Rut = userObject.Rut,
+                Email = userObject.Email
+            }).ToList();
+
+            var confirmEmailCommand = new ConfirmEmailOneCommand
+            {
+                Users = usersList
+            };
 
             var confirmEmailResult = await _mediator.Send(confirmEmailCommand);
 

@@ -1,128 +1,118 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule, ValidationErrors,
+  ReactiveFormsModule,
+  ValidationErrors,
   ValidatorFn,
-  Validators
-} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../../states/intelificio.state";
-import {CommunityService} from "../../../services/community/community.service";
-import {LocationService} from "../../../services/location/location.service";
-import {AdminCommunityComponent} from "../../community/adminCommunity/admin-community.component";
-import {NgClass} from "@angular/common";
-import {Contact} from "../../../../shared/models/contact.model";
-import {ContactService} from "../../../services/contact/contact.service";
-import {AuthActions} from "../../../../states/auth/auth.actions";
-import {ContactListComponent} from "../contact-list.component";
+  Validators,
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../states/intelificio.state';
+import { CommunityService } from '../../../services/community/community.service';
+import { LocationService } from '../../../services/location/location.service';
+import { AdminCommunityComponent } from '../../community/adminCommunity/admin-community.component';
+import { NgClass } from '@angular/common';
+import { Contact } from '../../../../shared/models/contact.model';
+import { ContactService } from '../../../services/contact/contact.service';
+import { AuthActions } from '../../../../states/auth/auth.actions';
 
 @Component({
   selector: 'app-add-contact',
   standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    NgClass
-  ],
+  imports: [FormsModule, ReactiveFormsModule, NgClass],
   templateUrl: './add-contact.component.html',
-  styleUrl: './add-contact.component.css'
+  styleUrl: './add-contact.component.css',
 })
 export class AddContactComponent {
   IsLoading: boolean = false;
   notification: boolean = false;
   IsSuccess: boolean = false;
   IsError: boolean = false;
-  notificationMessage: string = "";
+  notificationMessage: string = '';
   @Output() close = new EventEmitter<void>();
   @Input() CommunityID: number = 0;
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder,
-              private service: ContactService,
-              private contactList: ContactListComponent) {
+  constructor(private fb: FormBuilder, private service: ContactService) {
     this.form = this.fb.group({
       FirstName: new FormControl('', Validators.required),
       LastName: new FormControl('', Validators.required),
       Email: new FormControl('', [Validators.email]),
-      PhoneNumber: new FormControl('', [Validators.required,
+      PhoneNumber: new FormControl('', [
+        Validators.required,
         Validators.maxLength(15),
         Validators.minLength(12),
-        this.phoneValidator(),]),
+        this.phoneValidator(),
+      ]),
       Service: new FormControl('', Validators.required),
       CommunityID: new FormControl(0),
     });
   }
 
-
   onClose() {
     this.close.emit();
   }
 
-  OnSubmit(){
+  OnSubmit() {
     this.IsLoading = true;
-    if (this.form.valid){
-      const createContact  = {
+    if (this.form.valid) {
+      const createContact = {
         FirstName: this.form.value.FirstName,
-        LastName:this.form.value.LastName,
+        LastName: this.form.value.LastName,
         Email: this.form.value.Email ? this.form.value.Email : 'Sin@correo.cl',
         PhoneNumber: this.form.value.PhoneNumber.replace(/\s+/g, ''),
-        Service:  this.form.value.Service,
+        Service: this.form.value.Service,
         CommunityID: this.CommunityID,
       };
 
-      this.service.create(createContact).subscribe(
-        {
-          next: (response) => {
-            if (response.status === 204) {
-              this.IsLoading = false;
-              this.notificationMessage =
-                'Contacto agregado satisfactoriamente.';
-              this.IsSuccess = true;
-              this.notification = true;
-              setTimeout(() => {
-                this.notification = false;
-                this.IsSuccess = false;
-                this.IsLoading = false;
-                this.contactList.getContacts();
-                this.close.emit();
-              }, 3000);
-            }
-          },
-          error: (error) =>{
+      this.service.create(createContact).subscribe({
+        next: (response) => {
+          if (response.status === 204) {
             this.IsLoading = false;
-            if (error.status === 400) {
-              const errorData = error.error?.[0];
-              this.notificationMessage = errorData.message;
-              this.IsError = true;
-              this.notification = true;
-              setTimeout(() => {
-                this.notification = false;
-                this.notificationMessage = '';
-                this.IsError = false;
-              }, 5000);
-            } else {
-              this.notificationMessage = 'No fue posible guardar este contacto';
-              this.IsError = true;
-              this.notification = true;
-              setTimeout(() => {
-                this.notification = false;
-                this.notificationMessage = '';
-                this.IsError = false;
-              }, 5000);
-            }
+            this.notificationMessage = 'Contacto agregado satisfactoriamente.';
+            this.IsSuccess = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.IsSuccess = false;
+              this.IsLoading = false;
+              this.close.emit();
+            }, 3000);
           }
-        }
-      );
-
+        },
+        error: (error) => {
+          this.IsLoading = false;
+          if (error.status === 400) {
+            const errorData = error.error?.[0];
+            this.notificationMessage = errorData.message;
+            this.IsError = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.notificationMessage = '';
+              this.IsError = false;
+            }, 5000);
+          } else {
+            this.notificationMessage = 'No fue posible guardar este contacto';
+            this.IsError = true;
+            this.notification = true;
+            setTimeout(() => {
+              this.notification = false;
+              this.notificationMessage = '';
+              this.IsError = false;
+            }, 5000);
+          }
+        },
+      });
     }
   }
 
-  closeNotification(){
+  closeNotification() {
     this.notification = false;
     this.IsSuccess = false;
     this.IsError = false;
@@ -168,5 +158,4 @@ export class AddContactComponent {
       control.markAsUntouched();
     }
   }
-
 }
