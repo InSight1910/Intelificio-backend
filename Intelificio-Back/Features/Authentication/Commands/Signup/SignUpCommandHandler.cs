@@ -59,7 +59,7 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             _ = await userManager.AddToRoleAsync(user, roleExist.Name!);
 
-            var confirmEmailCommand = new ConfirmEmailCommand
+            var confirmEmailCommand = new ConfirmEmailOneCommand
             {
                 Users = new List<User> { user } 
             };

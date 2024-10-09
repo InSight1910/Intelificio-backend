@@ -116,7 +116,7 @@ namespace Backend.Common.Helpers
 
         }
 
-        public async Task<SendGrid.Response> SendEmailConfirmationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<ConfirmEmailTemplate> templates)
+        public async Task<SendGrid.Response> SendEmailConfirmationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<ConfirmEmailOneTemplate> templates)
         {
 
             var msg = new SendGridMessage();

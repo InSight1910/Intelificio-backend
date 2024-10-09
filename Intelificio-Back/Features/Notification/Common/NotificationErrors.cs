@@ -93,32 +93,45 @@ namespace Backend.Features.Notification.Common
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
 
-        // Errores en ConfirmEmail
-        public static Error TemplateNotFoundOnConfirmEmail = new()
+        // Errores en ConfirmEmailOne
+        public static Error TemplateNotFoundOnConfirmEmailOne = new()
         {
-            Code = "Notification.ConfirmEmail.TemplateNotFoundOnConfirmEmail",
+            Code = "Notification.ConfirmEmailOne.TemplateNotFoundOnConfirmEmailOne",
             Message = "No se ha podido encontrar el Dynamic template."
         };
-        public static Error TemplateIdIsNullOnConfirmEmail = new()
+        public static Error TemplateIdIsNullOnConfirmEmailOne = new()
         {
-            Code = "Notification.ConfirmEmail.TemplateIdIsNullOnConfirmEmail",
+            Code = "Notification.ConfirmEmailOne.TemplateIdIsNullOnConfirmEmailOne",
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
-        public static Error TemplateNotCreatedOnConfirmEmail = new()
+        public static Error TemplateNotCreatedOnConfirmEmailOne = new()
         {
-            Code = "Notification.ConfirmEmail.TemplateNotCreatedOnConfirmEmail",
+            Code = "Notification.ConfirmEmailOne.TemplateNotCreatedOnConfirmEmailOne",
             Message = "No se logró armar el template para enviar la confirmación de correo."
         };
-        public static Error RecipientsNotCreatedOnConfirmEmail = new()
+        public static Error RecipientsNotCreatedOnConfirmEmailOne = new()
         {
-            Code = "Notification.ConfirmEmail.RecipientsNotCreatedOnConfirmEmail",
+            Code = "Notification.ConfirmEmailOne.RecipientsNotCreatedOnConfirmEmailOne",
             Message = "No se logró armar la lista de destinatarios para enviar la confirmación de correo."
         };
-        public static Error EmailNotSentOnConfirmEmail = new()
+        public static Error EmailNotSentOnConfirmEmailOne = new()
         {
-            Code = "Notification.ConfirmEmail.EmailNotSentOnConfirmEmail",
+            Code = "Notification.ConfirmEmailOne.EmailNotSentOnConfirmEmailOne",
             Message = "No se ha podido enviar el correo."
         };
+
+        // Errores en ConfirmEmailTwo
+        public static Error EmailNotSentOnConfirmEmailTwo = new()
+        {
+            Code = "Notification.ConfirmEmailTwo.UserNotFoundOnConfirmEmailTwo",
+            Message = "No existe un usuario registrado bajo este correo."
+        };
+        public static Error UserAlreadyConfirmThisEmailOnConfirmEmailTwo = new()
+        {
+            Code = "Notification.ConfirmEmailTwo.UserAlreadyConfirmThisEmailOnConfirmEmailTwo",
+            Message = "El usuario ya ha confirmado este correo."
+        };
+
 
         //Errores de MaintenanceCancellation
         public static Error CommonSpaceNotFoundOnMaintenanceCancellation = new()

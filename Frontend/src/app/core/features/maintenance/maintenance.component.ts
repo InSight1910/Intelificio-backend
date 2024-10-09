@@ -7,7 +7,6 @@ import {AppState} from "../../../states/intelificio.state";
 import {MaintenanceService} from "../../services/maintenance/maintenance.service";
 import {selectCommunity} from "../../../states/community/community.selectors";
 import {tap} from "rxjs";
-import {Building} from "../../../shared/models/building.model";
 import {Community} from "../../../shared/models/community.model";
 import {AddContactComponent} from "../contact-list/add-contact/add-contact.component";
 import {EditContactComponent} from "../contact-list/edit-contact/edit-contact.component";
@@ -31,8 +30,6 @@ export class MaintenanceComponent implements OnInit {
   searchTerm: string = '';
   startDate: Date | null = null;
   endDate: Date | null = null;
-  showStartDatePicker: boolean = false;
-  showEndDatePicker: boolean = false;
 
   maintenances!: Maintenance[];
   filteredMaintenances!: Maintenance[];

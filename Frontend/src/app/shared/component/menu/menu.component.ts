@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import {Store} from "@ngrx/store";
 import {Router, RouterLink} from "@angular/router";
 
 @Component({

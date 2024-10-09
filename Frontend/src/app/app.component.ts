@@ -32,6 +32,7 @@ export class AppComponent {
         case '/forgot-password':
         case '/change-password':
         case '/select-community':
+        case '/ConfirmarCorreo':
           this.showMenu = false;
           break;
         default:
