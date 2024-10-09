@@ -6,7 +6,7 @@ using Backend.Features.Notification.Commands.Maintenance;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 namespace Backend.Features.Authentication.Commands.Signup
 {
@@ -71,8 +71,6 @@ namespace Backend.Features.Authentication.Commands.Signup
                 return Result.Failure(confirmEmailResult.Errors);
             }
 
-            // var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            // _ = await userManager.ConfirmEmailAsync(user, confirmationToken);
             return Result.Success();
         }
     }

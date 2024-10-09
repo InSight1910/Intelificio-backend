@@ -51,7 +51,7 @@ namespace Backend.Features.Notification.Commands.ConfirmEmail
 
                 templates.Add(new ConfirmEmailOneTemplate
                 {
-                    UserName = $"{user.FirstName} {user.LastName}",
+                    UserName = user.ToString(),
                     ConfirmLink = $"http://localhost:4200/ConfirmarCorreo?email={user.Email}&token={WebUtility.UrlEncode(token)}"
                 });
 
