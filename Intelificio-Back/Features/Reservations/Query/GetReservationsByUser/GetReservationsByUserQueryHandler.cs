@@ -29,7 +29,7 @@ public class GetReservationsByUserQueryHandler(IntelificioDbContext context)
                 Attendees = x.Attendees.Count(),
                 Location = x.Spaces.Location
             })
-            .OrderByDescending(x => x.Status)
+            .OrderBy(x => x.Status)
             .ToListAsync();
 
         if (!result.Any()) return Result.Failure(ReservationErrors.ReservationsNotFoundOnQuery);

@@ -43,6 +43,7 @@
 
     <ItemGroup>
         <Folder Include="Features\CommonSpaces\Common\"/>
+        <Folder Include="Features\Reservations\Commands\ResendConfirmReservation\" />
     </ItemGroup>
 
     <ItemGroup>

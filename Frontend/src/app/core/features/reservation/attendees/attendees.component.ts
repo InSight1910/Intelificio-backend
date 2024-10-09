@@ -51,7 +51,14 @@ export class AttendeesComponent {
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      rut: ['', Validators.required],
+      rut: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(12),
+        ],
+      ],
     });
   }
 
@@ -80,6 +87,7 @@ export class AttendeesComponent {
 
   onSubmit(event: Event) {
     event.preventDefault();
+    console.log(this.form.get('rut')?.errors);
     if (this.form.valid) {
       this.isLoadingPost = true;
       this.form.disable();

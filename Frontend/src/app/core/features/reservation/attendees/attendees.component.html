@@ -46,6 +46,49 @@
               appFormatRut
             />
           </div>
+          <div
+            *ngIf="
+              form.get('rut')?.invalid &&
+              (form.get('rut')?.touched || form.get('rut')?.dirty)
+            "
+          >
+            <p
+              *ngIf="form.get('rut')?.errors?.['required']"
+              class="help is-danger"
+            >
+              El rut es requerido
+            </p>
+          </div>
+          <div
+            *ngIf="
+              form.get('rut')?.invalid &&
+              (form.get('rut')?.touched || form.get('rut')?.dirty)
+            "
+          >
+            <p
+              *ngIf="form.get('rut')?.errors?.['minlength']"
+              class="help is-danger"
+            >
+              El rut debe tener una longitud minima de 10 caracteres.Contiene
+              {{ form.get('rut')?.errors?.['minlength']['actualLength'] }}
+              caracteres.
+            </p>
+          </div>
+          <div
+            *ngIf="
+              form.get('rut')?.invalid &&
+              (form.get('rut')?.touched || form.get('rut')?.dirty)
+            "
+          >
+            <p
+              *ngIf="form.get('rut')?.errors?.['maxlength']"
+              class="help is-danger"
+            >
+              El rut debe tener una longitud maxima de 12 caracteres. Contiene
+              {{ form.get('rut')?.errors?.['maxlength'].actualLength }}
+              caracteres.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -53,6 +96,22 @@
       <label for="" class="label">Correo Electronico</label>
       <div class="control">
         <input type="text" class="input" formControlName="email" />
+      </div>
+      <div
+        *ngIf="
+          form.get('email')?.invalid &&
+          (form.get('email')?.touched || form.get('email')?.dirty)
+        "
+      >
+        <p
+          *ngIf="form.get('email')?.errors?.['required']"
+          class="help is-danger"
+        >
+          El correo electronico es requerido
+        </p>
+        <p *ngIf="form.get('email')?.errors?.['email']" class="help is-danger">
+          El correo es invalido
+        </p>
       </div>
     </div>
     <div class="field">
