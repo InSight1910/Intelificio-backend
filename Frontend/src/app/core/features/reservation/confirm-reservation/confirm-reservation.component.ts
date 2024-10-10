@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonSpaceService } from '../../../services/commonspace/commonspace.service';
 import { ReservationService } from '../../../services/reservation/reservation.service';
 
 @Component({
@@ -13,6 +12,8 @@ import { ReservationService } from '../../../services/reservation/reservation.se
 export class ConfirmReservationComponent {
   token!: string;
   reservationId!: number;
+  invalidToken: boolean = false;
+  errorInConfirmation: boolean = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -32,7 +33,15 @@ export class ConfirmReservationComponent {
           console.log('Reservation confirmed');
         },
         error: (error) => {
-          console.error(error);
+          console.log(error.error);
+          if (
+            error.status === 400 &&
+            error.error[0]?.code == 'Confirmation.ConfirmationTokenNotCorrect'
+          ) {
+            this.invalidToken = true;
+          } else {
+            this.errorInConfirmation = true;
+          }
         },
       });
   }

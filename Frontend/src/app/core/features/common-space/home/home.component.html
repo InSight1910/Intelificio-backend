@@ -20,7 +20,7 @@
           <span class="icon">
             <i class="fa-solid fa-location-dot"></i>
           </span>
-          Location:
+          Ubicacion:
           {{ selectedSpace.location }}
         </div>
       </div>
@@ -30,7 +30,7 @@
         <span class="icon">
           <i class="fa-solid fa-user-group"></i>
         </span>
-        Capacity: {{ selectedSpace.capacity }}
+        Capacidad: {{ selectedSpace.capacity }}
       </div>
     </div>
     <div class="level-right">
@@ -48,10 +48,10 @@
 
 <div class="box is-shadowless">
   <div class="level">
-    <h4 class="title is-4">Calendario de Reservas</h4>
+    <h4 class="title is-3">Calendario de Reservas</h4>
 
     <div class="level-right">
-      <div class="field is-grouped">
+      <div class="field is-grouped add-border">
         <p class="control">
           <button
             class="button"
@@ -86,7 +86,7 @@
   <div class="fixed-grid has-7-cols is-scrollable">
     <div class="grid">
       @for(day of days; track $index) {
-      <div class="cell">
+      <div class="cell border-bottom">
         <p class="subtitle is-6 has-text-centered">
           {{ day }}
         </p>

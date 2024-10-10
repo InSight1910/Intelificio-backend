@@ -15,8 +15,8 @@ import {
 import { AttendeeService } from '../../../services/attendee/attendee.service';
 import { CommonModule } from '@angular/common';
 import { MessageComponent } from '../../../../shared/component/error/message.component';
-import { FormatRutDirective } from '../../../../shared/directives/format-rut.directive';
-import { FormatRutPipe } from '../../../../shared/pipes/format-rut.pipe';
+import { FormatRutDirective } from '../../../../shared/directives/format-rut/format-rut.directive';
+import { FormatRutPipe } from '../../../../shared/pipes/format-rut/format-rut.pipe';
 
 @Component({
   selector: 'app-attendees',

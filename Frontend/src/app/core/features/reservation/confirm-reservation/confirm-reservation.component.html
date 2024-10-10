@@ -1,1 +1,58 @@
-<p>confirm-reservation works!</p>
+@if (invalidToken || errorInConfirmation) {
+<section
+  class="hero is-fullheight is-flex is-align-items-center is-justify-content-center"
+>
+  <div class="hero-body">
+    <div class="box p-6">
+      <div class="has-text-centered">
+        <h2 class="title is-1 mb-6">Confirmación de reserva</h2>
+      </div>
+      <div class="content has-text-centered">
+        <div class="is-flex is-flex-direction-column is-align-items-center">
+          <span class="icon is-large has-text-danger mb-5">
+            <i class="fas fa-times-circle fa-3x"></i>
+          </span>
+          <p>
+            Hubo un error al confirmar tu reserva. Al presionar Reenviar,
+            enviaremos una nueva confirmacion a tu correo.
+          </p>
+          <p class="has-text-weight-bold">
+            Recuerda: tienes 10 minutos para confirmar tu reserva.
+          </p>
+        </div>
+      </div>
+
+      <div class="has-text-centered">
+        <button class="button is-primary">Reenviar</button>
+      </div>
+    </div>
+  </div>
+</section>
+} @else {
+<section
+  class="hero is-fullheight is-flex is-align-items-center is-justify-content-center"
+>
+  <div class="hero-body">
+    <div class="box p-6">
+      <div class="has-text-centered">
+        <h2 class="title is-1 mb-6">Confirmación de reserva</h2>
+      </div>
+      <div class="content has-text-centered">
+        <div class="is-flex is-flex-direction-column is-align-items-center">
+          <span class="icon is-large has-text-success mb-5">
+            <i class="fas fa-check-circle fa-3x"></i>
+          </span>
+          <p>Su reserva fue confirmada exitosamente.</p>
+          <p class="has-text-weight-bold">
+            Recuerda dejar ordenado y limpio el espacio una vez sea desocupado.
+          </p>
+        </div>
+      </div>
+
+      <div class="has-text-centered">
+        <button class="button is-primary">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</section>
+}
