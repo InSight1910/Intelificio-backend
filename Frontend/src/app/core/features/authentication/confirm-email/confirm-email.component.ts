@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ConfirmEmailComponent implements OnInit {
 
-  status = signal<'loading' | 'success' | 'error'>('loading');
+  status = signal<'loading' | 'success' | 'error' | 'already-confirmed'>('loading');
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +31,14 @@ export class ConfirmEmailComponent implements OnInit {
     }
     this.service.confirmEmail(email, token).subscribe({
       next: () => this.status.set('success'),
-      error: () => this.status.set('error'),
+      error: (err) => {
+        if (err.status === 400 && err.error && err.error.some((e: any) =>
+          e.code === 'Notification.ConfirmEmailTwo.UserAlreadyConfirmThisEmailOnConfirmEmailTwo')) {
+          this.status.set('already-confirmed');
+        } else {
+          this.status.set('error');
+        }
+      }
     });
   }
 

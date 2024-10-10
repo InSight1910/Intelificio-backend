@@ -27,7 +27,8 @@ export class AppComponent {
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-      switch (this.router.url) {
+      const url = this.router.url.split('?')[0];
+      switch (url) {
         case '/login':
         case '/forgot-password':
         case '/change-password':

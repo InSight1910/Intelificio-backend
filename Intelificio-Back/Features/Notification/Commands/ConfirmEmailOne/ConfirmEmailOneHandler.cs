@@ -65,8 +65,6 @@ namespace Backend.Features.Notification.Commands.ConfirmEmail
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnConfirmEmailOne);
             return Result.Success();
 
-            // Pendiente userManager.ConfirmEmailAsync(user, token); // recibo el token
-
         }
     }
 }

@@ -179,6 +179,34 @@ namespace Backend.Features.Notification.Common
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
 
+        //Errores de SingleUserSignUpSummary
+        public static Error EmailNotSentOnSingleUserSignUpSummary = new()
+        {
+            Code = "Notification.SingleUserSignUpSummary.EmailNotSentOnSingleUserSignUpSummary",
+            Message = "No se ha podido enviar el correo."
+        };
+        public static Error AdminUserNotExistOnSingleUserSignUpSummary = new()
+        {
+            Code = "Notification.SingleUserSignUpSummary.AdminUserNotExistOnSingleUserSignUpSummary",
+            Message = "No se logró ubicar al administrador informado."
+        };
+        public static Error CommunityNotFoundOnSingleUserSignUpSummary = new()
+        {
+            Code = "Notification.SingleUserSignUpSummary.CommunityNotFoundOnSingleUserSignUpSummary",
+            Message = "No existe la comunidad consultada."
+        };
+        public static Error TemplateNotFoundOnSingleUserSignUpSummary = new()
+        {
+            Code = "Notification.SingleUserSignUpSummary.TemplateNotFoundOnSingleUserSignUpSummary",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnSingleUserSignUpSummary = new()
+        {
+            Code = "Notification.SingleUserSignUpSummary.TemplateIdIsNullOnSingleUserSignUpSummary",
+        };
+
+
+
         //Errores de CommonExpenses
         public static Error TemplateNotCreated = new()
         {

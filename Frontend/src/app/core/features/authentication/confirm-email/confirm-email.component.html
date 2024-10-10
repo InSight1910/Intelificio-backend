@@ -10,25 +10,37 @@
             <span class="icon is-large">
               <i class="fas fa-spinner fa-pulse fa-3x"></i>
             </span>
-            <p>Confirmando tu correo electrónico...</p>
+            <span>
+              <p>Confirmando tu correo electrónico...</p>
+            </span>
           } @else if (status() === 'success'){
             <span class="icon is-large has-text-success">
               <i class="fas fa-check-circle fa-3x"></i>
             </span>
             <p>¡Tu correo electrónico ha sido confirmado con éxito!</p>
-          } @else if (status() === 'error'){
+          } @else if (status() === 'already-confirmed'){
+            <span class="icon is-large has-text-info">
+              <i class="fas fa-check-circle fa-3x"></i>
+            </span>
+            <span>
+             <p>¡Tu correo ya se encuentra confirmado!</p>
+            </span>
+          }
+          @else if (status() === 'error'){
             <span class="icon is-large has-text-danger mb-5">
               <i class="fas fa-times-circle fa-3x"></i>
             </span>
-            <p>Hubo un error al confirmar tu correo electrónico. Por favor, intenta nuevamente.</p>
+            <span>
+              <p>Hubo un error al confirmar tu correo electrónico. Por favor, intenta nuevamente.</p>
+            </span>
           }
         </div>
 
       </div>
 
       <div class="has-text-centered">
-        @if (status() === 'success'){
-          <button class="button is-primary" (click)="handleLogin()">
+        @if (status() === 'success' || 'already-confirmed'){
+          <button class="button is-primary" (click)="handleLogin()" [hidden]="status() === 'loading'">
             Iniciar sesión
           </button>
         } @else if (status() === 'error'){

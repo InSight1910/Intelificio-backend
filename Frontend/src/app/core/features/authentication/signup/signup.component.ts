@@ -14,6 +14,12 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { RouterState } from '@angular/router';
 import { SignupDTO } from '../../../../shared/models/signUpCommand.model';
 import { catchError, of, tap } from 'rxjs';
+import {User} from "../../../../shared/models/user.model";
+import {selectUser} from "../../../../states/auth/auth.selectors";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../../states/intelificio.state";
+import {Community} from "../../../../shared/models/community.model";
+import {selectCommunity} from "../../../../states/community/community.selectors";
 
 @Component({
   selector: 'app-singup',
@@ -23,7 +29,7 @@ import { catchError, of, tap } from 'rxjs';
   styleUrl: './signup.component.css',
 })
 export class SingupComponent implements OnInit {
-  constructor(private service: AuthService) {}
+  constructor(private service: AuthService,private store: Store<AppState>) {}
 
   notification = false;
   notificationMessage = '';
@@ -34,6 +40,8 @@ export class SingupComponent implements OnInit {
   selectedFile: File | null = null;
   selectedFileName = '';
   isFileUploaded = false;
+  user!: User | null;
+  community!: Community | null;
 
   listaRol: Role[] = [
     {
@@ -75,22 +83,34 @@ export class SingupComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoles();
+    this.store.select(selectUser).subscribe(
+      (user: User | null) => {
+        this.user = user;
+      });
+
+    this.store.select(selectCommunity).subscribe(
+      (community: Community | null) => {
+        this.community = community;
+      });
   }
 
   onSubmit() {
     if (this.selectedFile) {
       const formData: FormData = new FormData();
       formData.append('file', this.selectedFile!);
-      formData.append('test', 'test');
-
+      formData.append('creatorID',`${this.user?.sub!}`);
+      this.waiting = true;
       this.service
         .signupMassive(formData)
         .pipe(
           tap((response) => {
             if (response.status === 202) {
+              this.IsSuccess = true;
               this.notification = true;
+              this.waiting = false;
               setTimeout(() => {
                 this.notification = false;
+                this.IsSuccess = false;
                 this.clean();
               }, 3000);
             }
@@ -115,6 +135,8 @@ export class SingupComponent implements OnInit {
             birthDate: this.signupForm.value.birthDate ?? '',
           },
           Users: [],
+          CreatorID: this.user?.sub ?? 0,
+          CommunityID : this.community?.id ?? 0
         };
         this.waiting = true;
         this.signupForm.disable();
@@ -130,7 +152,7 @@ export class SingupComponent implements OnInit {
                 this.IsSuccess = false;
                 this.clean();
                 this.signupForm.enable();
-              }, 5000);
+              }, 3000);
             }
           },
           error: (error) => {
