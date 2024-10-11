@@ -78,7 +78,8 @@
                 type="text"
                 (input)="onInputChange('rut')"
                 formControlName="rut"
-                placeholder="xxxxxxxx-x"
+                placeholder="rut"
+                appFormatRut
                 [ngClass]="{
                 'is-danger':
                   signupForm.get('rut')?.invalid &&
@@ -284,7 +285,7 @@
               }
             </div>
           </div>
-
+          <!--
           <div class="column field is-4">
             <label class="label">Contraseña</label>
             <div class="control">
@@ -368,7 +369,7 @@
                 </p>
               }
             </div>
-          </div>
+          </div>-->
         </div>
         <p class="subtitle is-6">
           O bien, realiza una carga masiva adjuntando un archivo

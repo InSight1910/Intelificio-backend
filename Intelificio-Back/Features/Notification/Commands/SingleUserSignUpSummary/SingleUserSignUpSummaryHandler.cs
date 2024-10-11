@@ -55,7 +55,7 @@ namespace Backend.Features.Notification.Commands.SingleUserSignUpSummary
                 UserName = $"{request.user.FirstName} {request.user.LastName}",
                 UserEmail = request.user.Email ?? "Sin_Email",
                 CreationDate = DateTime.Now.ToString("dd-MM-yyyy"),
-                AdminName = $"{creator.FirstName} {creator.LastName}",
+                AdminName = creator.ToString(),
                 SenderAddress = $"{community.Address}, {community.Municipality.Name}"
             };
 

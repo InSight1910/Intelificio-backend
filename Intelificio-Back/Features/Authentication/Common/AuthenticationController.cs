@@ -1,6 +1,7 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Authentication.Commands.ChangePasswordOne;
 using Backend.Features.Authentication.Commands.ChangePasswordTwo;
+using Backend.Features.Authentication.Commands.ConfirmEmail;
 using Backend.Features.Authentication.Commands.Login;
 using Backend.Features.Authentication.Commands.Refresh;
 using Backend.Features.Authentication.Commands.Signup;
@@ -9,6 +10,7 @@ using Backend.Features.Authentication.Commands.UpdateUser;
 using Backend.Features.Authentication.Queries.GetAllRoles;
 using Backend.Features.Authentication.Queries.GetAllUserAdmin;
 using Backend.Features.Authentication.Queries.GetUserByEmail;
+using Backend.Features.Notification.Commands.ConfirmEmailTwo;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +24,20 @@ public class CommunityController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
     {
         var result = await mediator.Send(command);
-        return result.Match(
-            (_) => Created(),
-            (errors) => { return BadRequest(errors); });
+
+        if (result.All(r => r.IsSuccess))
+        {
+            return Created();
+        }
+        else
+        {
+            var errors = result
+                .Where(r => r.IsFailure)
+                .SelectMany(r => r.Errors ?? new List<Error>())
+                .ToList();
+
+            return BadRequest(errors);
+        }
     }
 
     [HttpPost("signup/massive")]
@@ -131,5 +144,14 @@ public class CommunityController(IMediator mediator) : ControllerBase
         return result.Match(
             (response) => Ok(response),
             BadRequest);
+    }
+
+    [HttpPost("confirm")]
+    public async Task<IActionResult> Confirm([FromBody] ConfirmEmailUserCommand command)
+    {
+        var result = await mediator.Send(command);
+        return result.Match(
+            onSuccess: (response) => Ok(response),
+            onFailure: BadRequest);
     }
 }

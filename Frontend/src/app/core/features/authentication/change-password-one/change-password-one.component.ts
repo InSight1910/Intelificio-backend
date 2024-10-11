@@ -36,6 +36,14 @@ export class ChangePasswordOneComponent implements OnInit {
     this.send = false;
   }
 
+  onInputChange(controlName: string): void {
+    const control = this.form.get(controlName);
+    if (control) {
+      control.markAsUntouched();
+      this.errors = null;
+    }
+  }
+
   onSubmit(event: Event) {
     this.waiting = true;
     event.preventDefault();
@@ -54,9 +62,14 @@ export class ChangePasswordOneComponent implements OnInit {
           }),
           catchError((error) => {
             console.error(error);
-            if (error.status === 0) {
-              this.errors = ['Hubo un error de nuestra parte.'];
-              this.waiting = false;
+            if (error.status === 400) {
+              if(error.error?.[0].code === "Authentication.LogIn.UserNotFound"){
+                this.errors = [error.error?.[0].message];
+                this.waiting = false;
+              } else {
+                this.errors = ['Hubo un error de nuestra parte.'];
+                this.waiting = false;
+              }
             }
             return of(error);
           })

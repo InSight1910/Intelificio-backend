@@ -11,7 +11,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { Role } from '../../../../shared/models/role.model';
 import { AuthService } from '../../../services/auth/auth.service';
-import { RouterState } from '@angular/router';
 import { SignupDTO } from '../../../../shared/models/signUpCommand.model';
 import { catchError, of, tap } from 'rxjs';
 import {User} from "../../../../shared/models/user.model";
@@ -20,11 +19,13 @@ import {Store} from "@ngrx/store";
 import {AppState} from "../../../../states/intelificio.state";
 import {Community} from "../../../../shared/models/community.model";
 import {selectCommunity} from "../../../../states/community/community.selectors";
+import {FormatRutDirective} from "../../../../shared/directives/format-rut.directive";
+import { FormatRutPipe } from '../../../../shared/pipes/format-rut.pipe';
 
 @Component({
   selector: 'app-singup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule,FormatRutDirective,FormatRutPipe],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
@@ -65,12 +66,12 @@ export class SingupComponent implements OnInit {
         Validators.minLength(12),
         this.phoneValidator(),
       ]),
-      password: new FormControl('', [
+      /* password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
         this.passwordValidator(),
       ]),
-      confirmPassword: new FormControl('', Validators.required),
+      confirmPassword: new FormControl('', Validators.required), */
       rut: new FormControl('', [Validators.required, this.rutValidator()]),
       rol: new FormControl('', Validators.required),
       birthDate: new FormControl('', [
@@ -78,7 +79,7 @@ export class SingupComponent implements OnInit {
         this.birthDateValidator(),
       ]),
     },
-    { validators: this.passwordMatchValidator }
+    //{ validators: this.passwordMatchValidator }
   );
 
   ngOnInit(): void {
@@ -99,6 +100,7 @@ export class SingupComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('file', this.selectedFile!);
       formData.append('creatorID',`${this.user?.sub!}`);
+      formData.append('communityID',`${this.community?.id!}`);
       this.waiting = true;
       this.service
         .signupMassive(formData)
@@ -129,14 +131,14 @@ export class SingupComponent implements OnInit {
             lastName: this.signupForm.value.lastName ?? '',
             email: this.signupForm.value.email ?? '',
             phoneNumber: this.signupForm.value.phoneNumber?.replace(/\s+/g, '') ?? '',
-            password: this.signupForm.value.password ?? '',
+            password: "#3st@cl@v4Sol1S4dS8r@",
             rut: this.signupForm.value.rut?.replace(/[.\-]/g, '').toUpperCase() ?? '',
             role: this.signupForm.value.rol ?? '',
             birthDate: this.signupForm.value.birthDate ?? '',
           },
           Users: [],
           CreatorID: this.user?.sub ?? 0,
-          CommunityID : this.community?.id ?? 0
+          CommunityID : this.community?.id ?? 0,
         };
         this.waiting = true;
         this.signupForm.disable();
@@ -188,8 +190,8 @@ export class SingupComponent implements OnInit {
         lastName: '',
         email: '',
         phoneNumber: '',
-        password: '',
-        confirmPassword: '',
+        //password: '',
+        //confirmPassword: '',
         rut: '',
         rol: '',
         birthDate: '',

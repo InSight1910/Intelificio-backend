@@ -93,44 +93,72 @@ namespace Backend.Features.Notification.Common
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
 
-        // Errores en ConfirmEmailOne
-        public static Error TemplateNotFoundOnConfirmEmailOne = new()
+        // Errores en SingleUserConfirmationEmail
+        public static Error TemplateNotFoundOnSingleUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailOne.TemplateNotFoundOnConfirmEmailOne",
+            Code = "Notification.SingleUserConfirmationEmail.TemplateNotFoundOnSingleUserConfirmationEmail",
             Message = "No se ha podido encontrar el Dynamic template."
         };
-        public static Error TemplateIdIsNullOnConfirmEmailOne = new()
+        public static Error TemplateIdIsNullOnSingleUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailOne.TemplateIdIsNullOnConfirmEmailOne",
+            Code = "Notification.SingleUserConfirmationEmail.TemplateIdIsNullOnSingleUserConfirmationEmail",
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
-        public static Error TemplateNotCreatedOnConfirmEmailOne = new()
+        public static Error TemplateNotCreatedOnSingleUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailOne.TemplateNotCreatedOnConfirmEmailOne",
+            Code = "Notification.SingleUserConfirmationEmail.TemplateNotCreatedOnSingleUserConfirmationEmail",
             Message = "No se logró armar el template para enviar la confirmación de correo."
         };
-        public static Error RecipientsNotCreatedOnConfirmEmailOne = new()
+        public static Error RecipientsNotCreatedOnSingleUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailOne.RecipientsNotCreatedOnConfirmEmailOne",
+            Code = "Notification.SingleUserConfirmationEmail.RecipientsNotCreatedOnSingleUserConfirmationEmail",
             Message = "No se logró armar la lista de destinatarios para enviar la confirmación de correo."
         };
-        public static Error EmailNotSentOnConfirmEmailOne = new()
+        public static Error EmailNotSentOnSingleUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailOne.EmailNotSentOnConfirmEmailOne",
+            Code = "Notification.SingleUserConfirmationEmail.EmailNotSentOnSingleUserConfirmationEmail",
             Message = "No se ha podido enviar el correo."
         };
+        public static Error CommunityNotfoundOnSingleUserConfirmationEmail = new()
+        {
+            Code = "Notification.SingleUserConfirmationEmail.CommunityNotfoundOnSingleUserConfirmationEmail",
+            Message = "No se encontró la comunidad."
+        };
 
-        // Errores en ConfirmEmailTwo
-        public static Error EmailNotSentOnConfirmEmailTwo = new()
+
+        // Errores en SingleUserConfirmationEmail
+        public static Error TemplateNotFoundOnMassUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailTwo.UserNotFoundOnConfirmEmailTwo",
-            Message = "No existe un usuario registrado bajo este correo."
+            Code = "Notification.MassUserConfirmationEmail.TemplateNotFoundOnMassUserConfirmationEmail",
+            Message = "No se ha podido encontrar el Dynamic template."
         };
-        public static Error UserAlreadyConfirmThisEmailOnConfirmEmailTwo = new()
+        public static Error TemplateIdIsNullOnMassUserConfirmationEmail = new()
         {
-            Code = "Notification.ConfirmEmailTwo.UserAlreadyConfirmThisEmailOnConfirmEmailTwo",
-            Message = "El usuario ya ha confirmado este correo."
+            Code = "Notification.MassUserConfirmationEmail.TemplateIdIsNullOnMassUserConfirmationEmail",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
+        public static Error TemplateNotCreatedOnMassUserConfirmationEmail = new()
+        {
+            Code = "Notification.MassUserConfirmationEmail.TemplateNotCreatedOnMassUserConfirmationEmail",
+            Message = "No se logró armar el template para enviar la confirmación de correo."
+        };
+        public static Error RecipientsNotCreatedOnMassUserConfirmationEmail = new()
+        {
+            Code = "Notification.MassUserConfirmationEmail.RecipientsNotCreatedOnMassUserConfirmationEmail",
+            Message = "No se logró armar la lista de destinatarios para enviar la confirmación de correo."
+        };
+        public static Error EmailNotSentOnMassUserConfirmationEmail = new()
+        {
+            Code = "Notification.MassUserConfirmationEmail.EmailNotSentOnMassUserConfirmationEmail",
+            Message = "No se ha podido enviar el correo."
+        };
+        public static Error CommunityNotfoundOnMassUserConfirmationEmail = new()
+        {
+            Code = "Notification.MassUserConfirmationEmail.CommunityNotfoundOnMassUserConfirmationEmail",
+            Message = "No se encontró la comunidad."
+        };
+
+     
 
 
         //Errores de MaintenanceCancellation
@@ -203,6 +231,32 @@ namespace Backend.Features.Notification.Common
         public static Error TemplateIdIsNullOnSingleUserSignUpSummary = new()
         {
             Code = "Notification.SingleUserSignUpSummary.TemplateIdIsNullOnSingleUserSignUpSummary",
+        };
+
+        //Errores de MassUserSignUpSummary
+        public static Error EmailNotSentOnMassUserSignUpSummary = new()
+        {
+            Code = "Notification.MassUserSignUpSummary.EmailNotSentOnMassUserSignUpSummary",
+            Message = "No se ha podido enviar el correo."
+        };
+        public static Error AdminUserNotExistOnMassUserSignUpSummary = new()
+        {
+            Code = "Notification.MassUserSignUpSummary.AdminUserNotExistOnMassUserSignUpSummary",
+            Message = "No se logró ubicar al administrador informado."
+        };
+        public static Error CommunityNotFoundOnMassUserSignUpSummary = new()
+        {
+            Code = "Notification.MassUserSignUpSummary.CommunityNotFoundOnMassUserSignUpSummary",
+            Message = "No existe la comunidad consultada."
+        };
+        public static Error TemplateNotFoundOnMassUserSignUpSummary = new()
+        {
+            Code = "Notification.MassUserSignUpSummary.TemplateNotFoundOnMassUserSignUpSummary",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnMassUserSignUpSummary = new()
+        {
+            Code = "Notification.MassUserSignUpSummary.TemplateIdIsNullOnMassUserSignUpSummary",
         };
 
 

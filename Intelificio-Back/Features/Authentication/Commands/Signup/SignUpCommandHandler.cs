@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Backend.Common.Response;
+using Backend.Common.Security;
 using Backend.Features.Authentication.Common;
 using Backend.Features.Community.Commands.AddUser;
 using Backend.Features.Notification.Commands.ConfirmEmail;
-using Backend.Features.Notification.Commands.Maintenance;
-using Backend.Features.Notification.Commands.SingleUserSignUpSummary;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -12,33 +11,34 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Features.Authentication.Commands.Signup
 {
-    public class SignUpCommandHandler(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper, IMediator mediator) : IRequestHandler<SignUpCommand, Result>
+    public class SignUpCommandHandler(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper, IMediator mediator) : IRequestHandler<SignUpCommand, List<Result>>
     {
-        public async Task<Result> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public async Task<List<Result>> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
+
+            var results = new List<Result>();
+
             if (request.User != null)
             {
-                return await DoSignUp(request.User,request.CreatorID, request.CommunityID);
+                var result = await DoSignUp(request.User, request.CreatorID, request.CommunityID, request.IsMassive);
+                results.Add(result);
             }
             else if (request.Users != null)
             {
-                var results = new List<Result>();
                 foreach (var user in request.Users)
                 {
-                    results.Add(await DoSignUp(user,request.CreatorID,request.CommunityID));
+                    var result = await DoSignUp(user, request.CreatorID, request.CommunityID, request.IsMassive);
+                    results.Add(result);
                 }
-
-                if (results.Any(r => r.IsFailure)) return Result.WithErrors(AuthenticationErrors.SignUpMassiveError(results.Select(r => r.Error).ToList()));
-                return Result.Success();
             }
-            return Result.Failure(null);
+
+            return results;
         }
+    
 
-
-        private async Task<Result> DoSignUp(UserObject request,int creatorID, int CommunityID)
+        private async Task<Result> DoSignUp(UserObject request,int creatorID, int CommunityID, Boolean IsMassive)
         {
             var userExist = await userManager.FindByEmailAsync(request.Email);
-
 
             if (userExist != null) return Result.Failure(AuthenticationErrors.AlreadyCreatedEmail(request.Email));
 
@@ -47,20 +47,17 @@ namespace Backend.Features.Authentication.Commands.Signup
             var roleExist = await roleManager.FindByNameAsync(request.Role);
             if (roleExist == null) return Result.Failure(AuthenticationErrors.RoleNotFound);
 
-            var result = await userManager.CreateAsync(user, request.Password);
+            var result = await userManager.CreateAsync(user, PasswordGenerator.GenerateSecurePassword(14));
 
+           
             if (result.Errors.Any())
             {
-                var errors = new List<string>();
-                foreach (var error in result.Errors)
-                {
-                    errors.Add(error.Description);
-                }
-                return Result.Failure(AuthenticationErrors.InvalidParameters(errors));
+                return Result.Failure(AuthenticationErrors.InvalidParameters(result.Errors.Select(e => e.Description).ToList()));
             }
 
             _ = await userManager.AddToRoleAsync(user, roleExist.Name!);
 
+            // Agrega el usuario a la comunidad informada desde el front
             var addUserCommunityCommand = new AddUserCommunityCommand
             {
                 User = new AddUserObject
@@ -70,37 +67,33 @@ namespace Backend.Features.Authentication.Commands.Signup
                 }
             };
 
-            _ = await mediator.Send(addUserCommunityCommand);
+            var addUserCommunityCommandResult = await mediator.Send(addUserCommunityCommand);
+            if (addUserCommunityCommandResult.IsFailure) return Result.Failure(addUserCommunityCommandResult.Errors);
 
-
-            // Envia el correo al usuario llamando al ConfirmEmailOneCommand
-            var confirmEmailCommand = new ConfirmEmailOneCommand
+            if (!IsMassive)
             {
-                Users = new List<User> { user } 
-            };
+                // Envia el correo al usuario llamando al SingleUserConfirmationEmailCommand
+                var confirmEmailCommand = new SingleUserConfirmationEmailCommand
+                {
+                    Users = new List<User> { user },
+                    CommunityID = CommunityID
+                };
+                var confirmEmailResult = await mediator.Send(confirmEmailCommand);
+                if (confirmEmailResult.IsFailure) return Result.Failure(confirmEmailResult.Errors);
 
-            var confirmEmailResult = await mediator.Send(confirmEmailCommand);
-
-            if (confirmEmailResult.IsFailure)
-            {
-                return Result.Failure(confirmEmailResult.Errors);
-            }
-            // Envia confirmación cuenta creada al administrador llamando al SingleUserSignUpSummaryCommand 
-            var singleUserSignUpSummaryCommand = new SingleUserSignUpSummaryCommand
-            {
-                CreatorID = creatorID,
-                user = user,
-                CommunityID = CommunityID
-            };
-
-            var singleUserSignUpSummaryCommandResult = await mediator.Send(singleUserSignUpSummaryCommand);
-
-            if (singleUserSignUpSummaryCommandResult.IsFailure)
-            {
-                return Result.Failure(confirmEmailResult.Errors);
+                // Envia confirmación cuenta creada al administrador llamando al SingleUserSignUpSummaryCommand 
+                // var singleUserSignUpSummaryCommand = new SingleUserSignUpSummaryCommand
+                //{
+                //CreatorID = creatorID,
+                // user = user,
+                // CommunityID = CommunityID
+                // };
+                //  var singleUserSignUpSummaryCommandResult = await mediator.Send(singleUserSignUpSummaryCommand);
+                // if (singleUserSignUpSummaryCommandResult.IsFailure) return Result.Failure(confirmEmailResult.Errors);
             }
 
             return Result.Success();
         }
+
     }
 }

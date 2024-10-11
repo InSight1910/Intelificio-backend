@@ -2,28 +2,45 @@
   <div class="hero-body">
     <div class="box">
       <div class="has-text-centered">
-        <h2 class="title is-1 mb-6">Confirmación de Correo</h2>
+        <h2 class="title is-2 has-text-weight-bold">Paso 1. Confirma tu Correo</h2>
       </div>
-      <div class="content has-text-centered">
+      <div class="content has-text-centered mt-6">
         <div class="is-flex is-flex-direction-column is-align-items-center">
           @if(status() === 'loading'){
-            <span class="icon is-large">
+            <span class="icon is-large mb-5">
               <i class="fas fa-spinner fa-pulse fa-3x"></i>
             </span>
             <span>
               <p>Confirmando tu correo electrónico...</p>
             </span>
           } @else if (status() === 'success'){
-            <span class="icon is-large has-text-success">
+            <span class="icon is-large has-text-success mb-5">
               <i class="fas fa-check-circle fa-3x"></i>
             </span>
             <p>¡Tu correo electrónico ha sido confirmado con éxito!</p>
+            <p>En el siguiente paso debe crear una clave</p>
           } @else if (status() === 'already-confirmed'){
-            <span class="icon is-large has-text-info">
+            <span class="icon is-large has-text-info mb-5">
               <i class="fas fa-check-circle fa-3x"></i>
             </span>
             <span>
-             <p>¡Tu correo ya se encuentra confirmado!</p>
+             <p>¡Tu correo ya había sido confirmado!</p>
+            </span>
+          }
+          @else if (status() === 'user-not-found'){
+            <span class="icon is-large has-text-danger mb-5">
+              <i class="fas fa-times-circle fa-3x"></i>
+            </span>
+            <span>
+              <p>No se logró confirmar su cuenta, ya que no existe una asociada al correo {{this.correo}}.</p>
+            </span>
+          }
+          @else if (status() === 'invalid-token'){
+            <span class="icon is-large has-text-danger mb-5">
+              <i class="fas fa-times-circle fa-3x"></i>
+            </span>
+            <span>
+              <p>No ha sido posible confirmar su correo, el token asignado ha expirado.</p>
             </span>
           }
           @else if (status() === 'error'){
@@ -39,7 +56,7 @@
       </div>
 
       <div class="has-text-centered">
-        @if (status() === 'success' || 'already-confirmed'){
+        @if (status() === 'already-confirmed'){
           <button class="button is-primary" (click)="handleLogin()" [hidden]="status() === 'loading'">
             Iniciar sesión
           </button>

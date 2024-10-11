@@ -9,7 +9,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { catchError, of, tap } from 'rxjs';
 
@@ -26,10 +26,12 @@ export class ChangePasswordTwoComponent {
   errors: string[] | null = null;
   email!: string;
   token!: string;
+  new: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private router: ActivatedRoute,
+    private route: Router,
     private authService: AuthService
   ) {
     this.form = this.fb.group(
@@ -49,6 +51,7 @@ export class ChangePasswordTwoComponent {
     router.queryParams.subscribe((params) => {
       this.email = params['email'];
       this.token = params['token'];
+      this.new = params['new'];
     });
   }
 
@@ -92,11 +95,18 @@ export class ChangePasswordTwoComponent {
             if (response.ok) {
               this.message = 'Cambio de contraseña exitoso';
               this.errors = null;
+              setTimeout(() => {
+                this.route.navigate(['/login']).then((r) => {});
+              },5000);
             }
           }),
           catchError((error) => {
             this.errors = error.error.errors;
-            this.message = null;
+            if(error)
+            this.message = "No se logró realizar el cambio de clave, intente nuevamente el proceso";
+            setTimeout(() => {
+              this.route.navigate(['/login']).then((r) => {});
+            },5000);
             return of(error);
           })
         )

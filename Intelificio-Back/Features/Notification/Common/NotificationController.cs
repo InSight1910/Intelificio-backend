@@ -31,14 +31,6 @@ namespace Backend.Features.Notification.Common
                 onFailure: BadRequest);
         }
 
-        [HttpPost("confirm")]
-        public async Task<IActionResult> Confirm([FromBody] ConfirmEmailTwoCommand command)
-        {
-            var result = await mediator.Send(command);
-            return result.Match(
-                onSuccess: (_) => Created(),
-                onFailure: BadRequest);
-        }
 
     }
 }
