@@ -20,7 +20,7 @@ import { catchError, of, tap } from 'rxjs';
 })
 export class AddModalComponent {
   @Input() buildingId: string = '0';
-  @Input() unitId!: string;
+  @Input() unit!: string;
   @Output() addGuestEvent = new EventEmitter<boolean>();
   isOpen = false;
   isAdding: boolean = false;
@@ -39,13 +39,13 @@ export class AddModalComponent {
     private fb: FormBuilder
   ) {
     this.guestForm = this.fb.group({
-      firstname: [''],
-      lastname: [''],
+      firstName: [''],
+      lastName: [''],
       rut: [''],
-      entrytime: [new Date()],
+      entrytime: new Date(),
       plate: [''],
       building: [''],
-      unit: ['']
+      unit: [''],
     });
   }
 
@@ -72,6 +72,8 @@ export class AddModalComponent {
     this.unitService.getDeptosByBuilding(buildingId).subscribe((data) => {
       this.isLoading = false;
       this.units = data.data;
+      console.log(this.units);
+      console.log(data.data);
     });
   }
 
@@ -85,10 +87,10 @@ export class AddModalComponent {
   onClickAddGuest() {
     this.isAdding = true;
     const guest: CreateGuest = {
-      firstname: this.guestForm.get('firstname')?.value,
-      lastname: this.guestForm.get('lastname')?.value,
+      firstName: this.guestForm.get('firstName')?.value,
+      lastName: this.guestForm.get('lastName')?.value,
       rut: this.guestForm.get('rut')?.value,
-      entrytime: this.guestForm.get('entrytime')?.value,
+      entryTime: new Date().toISOString().slice(0, 19),
       plate: this.guestForm.get('plate')?.value,
       unitId: this.guestForm.get('unit')?.value,
     };
@@ -99,23 +101,25 @@ export class AddModalComponent {
       tap(() => {
         this.isSuccess = true;
         this.isAdding = false;
-        setTimeout(() => {
-          this.isSuccess = false;
-        }, 2000);
 
         this.guestForm.reset({
-          firstname: '',
-          lastname: '',
+          firstName: '',
+          lastName: '',
           rut: '',
-          entrytime: new Date(),
+          entrytime: '',
           plate: '',
-          building: '',
-          unit: ''
+          unit: '',
         });
 
         this.errors = null; 
 
-        this.addGuestEvent.emit(true);
+        setTimeout(() => {
+          this.isSuccess = false;
+          this.addGuestEvent.emit(true);
+        }, 2000);
+
+        this.isOpen = false;
+        
       }),
       catchError((error) => {
         this.isAdding = false;
@@ -133,13 +137,12 @@ export class AddModalComponent {
     this.isOpen = false;
     this.errors = null;
     this.guestForm.reset({
-      firstname: '',
-      lastname: '',
+      firstName: '',
+      lastName: '',
       rut: '',
       entrytime: new Date(),
       plate: '',
-      building: '',
-      unit: ''
+      unit: '',
     });
   }
 }

@@ -1,60 +1,116 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GuestService } from '../../../services/guest/guest.service';
-import { UpdateGuest } from '../../../../shared/models/guest.model';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommunityService } from '../../../services/community/community.service';
+import { Guest, UpdateGuest } from '../../../../shared/models/guest.model';
+import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../states/intelificio.state';
+import { tap, catchError, of } from 'rxjs';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-modal',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './edit-modal.component.html',
-  styleUrls: ['./edit-modal.component.css']
+  styleUrls: ['./edit-modal.component.css'],
+  providers: [DatePipe]
 })
-export class EditModalComponent implements OnInit {
-  @Input() guestId!: number;
+export class EditModalComponent {
   @Output() editGuestEvent = new EventEmitter<boolean>();
-  isOpen = false;
-  guestForm!: FormGroup;
+  @Input() guestId!: number;
+  guestForm: FormGroup;
+  isOpen: boolean = false;
+  isAdding: boolean = false;
+  isSuccess: boolean = false;
+  errors: { message: string }[] | null = null;
+  guest!: Guest;
 
   constructor(
-    private guestService: GuestService, 
+    private guestService: GuestService,
     private fb: FormBuilder,
-    private communityService: CommunityService,
+    private store: Store<AppState>,
+    private datePipe: DatePipe
   ) {
     this.guestForm = this.fb.group({
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
-      rut: ['', Validators.required],
-      entrytime: [new Date(), Validators.required],
-      plate: ['', Validators.required]
+      firstName: [''],
+      lastName: [''],
+      rut: [''],
+      entryTime: [''],
+      plate: [''],
+      unit: [''],
     });
   }
 
-  ngOnInit(): void {
-    this.guestService.getGuestById(this.guestId).subscribe((guest) => {
-      this.guestForm.patchValue(guest);
+   onClick() {
+     this.isOpen = true;
+     this.store.select('community').subscribe((community) => {
+       if (community && community.id !== undefined) {
+         this.getGuest(this.guestId);
+       }
+     });
+   }
+  
+  getGuest(guestId: number) {
+    this.guestService.getGuestById(guestId).subscribe((response) => {
+      this.guest = response.data;
+      this.guestForm.patchValue({
+        firstName: this.guest.firstName,
+        lastName: this.guest.lastName,
+        rut: this.guest.rut,
+        entryTime: this.formatEntryTime(this.guest.entryTime),
+        plate: this.guest.plate,
+        unit: this.guest.unit,
+      });
     });
   }
 
-  onClickOpenModal() {
-    this.isOpen = true;
+  onClickUpdateGuest() {
+    if (this.guestForm.invalid) return;
+
+    this.isAdding = true;
+    const updatedGuest: UpdateGuest = {
+      id: this.guest.id,
+      firstname: this.guestForm.get('firstName')?.value,
+      lastname: this.guestForm.get('lastName')?.value,
+      rut: this.guestForm.get('rut')?.value,
+      plate: this.guestForm.get('plate')?.value,
+      entryTime: this.guestForm.get('entryTime')?.value,
+      unit: this.guestForm.get('unit')?.value,
+    };
+
+    this.guestService.updateGuest(updatedGuest)
+      .pipe(
+        tap(() => {
+          this.isSuccess = true;
+          this.isAdding = false;
+          this.guestForm.disable();
+          setTimeout(() => {
+            this.closeModal();
+            this.editGuestEvent.emit(true);
+          }, 2000);
+        }),
+        catchError((error) => {
+          this.errors = error.error;
+          this.isAdding = false;
+          return of(error);
+        })
+      )
+      .subscribe();
+  }
+
+  closeModal() {
+    this.isOpen = false;
+    this.errors = null;
+    this.guestForm.reset();
+    this.guestForm.enable();
   }
 
   onClickCloseModal() {
-    this.isOpen = false;
+    this.closeModal();
   }
 
-  onClickUpdateGuest(): void {
-    const updatedGuest: UpdateGuest = {
-      id: this.guestId,
-      ...this.guestForm.value,
-      entrytime: new Date() // Actualiza la fecha si es necesario
-    };
-
-    this.guestService.updateGuest(this.guestId, updatedGuest).subscribe(() => {
-      this.editGuestEvent.emit(true);
-      this.onClickCloseModal();
-    });
-  }
+   formatEntryTime(entryTime: string): string | null {
+     const date = new Date(entryTime); // Convertir string a Date
+     return this.datePipe.transform(date, 'HH:MM:SS'); // Formatear la fecha
+   }
 }

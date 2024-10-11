@@ -3,11 +3,7 @@ import { UnitService } from '../../../services/unit/unit.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, of, tap } from 'rxjs';
-import {
-  UpdateUnit,
-  UnitType,
-  Unit,
-} from '../../../../shared/models/unit.model';
+import { UpdateUnit, UnitType, Unit } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
 import { Store } from '@ngrx/store';
@@ -68,6 +64,26 @@ export class EditModalComponent {
     });
   }
 
+  
+  getUnits(id: number) {
+    console.log(id);
+    this.unitService.getById(id).subscribe((response) => {
+      this.unit = response.data;
+      console.log(this.unit);
+
+      this.editForm.patchValue({
+        id: this.unit.id,
+        floor: this.unit.floor,
+        number: this.unit.number,
+        surface: this.unit.surface,
+        user: this.unit.user,
+        building: this.unit.buildingId,
+        unitType: this.unit.unitTypeId,
+      });
+      this.onChangeBuilding();
+    });
+  }
+
   onClickUpdateUnit() {
     this.isAdding = true;
     const unit: UpdateUnit = {
@@ -120,24 +136,5 @@ export class EditModalComponent {
       { length: building.floors },
       (_, index) => index + 1
     );
-  }
-
-  getUnits(id: number) {
-    console.log(id);
-    this.unitService.getById(id).subscribe((response) => {
-      this.unit = response.data;
-      console.log(this.unit);
-
-      this.editForm.patchValue({
-        id: this.unit.id,
-        floor: this.unit.floor,
-        number: this.unit.number,
-        surface: this.unit.surface,
-        user: this.unit.user,
-        building: this.unit.buildingId,
-        unitType: this.unit.unitTypeId,
-      });
-      this.onChangeBuilding();
-    });
   }
 }

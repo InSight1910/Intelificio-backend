@@ -10,15 +10,15 @@
 
       <form [formGroup]="guestForm">
 
-        <div class="level">
+        <div class="columns">
 
-          <div class="field level-item">
+          <div class="field column">
             <div class="control is-expanded">
               <input class="input" type="text" placeholder="Nombre" formControlName="firstName" />
             </div>
           </div>
 
-          <div class="field level-item">
+          <div class="field column">
             <div class="control">
               <input class="input" type="text" placeholder="Apellido" formControlName="lastName" />
             </div>
@@ -40,7 +40,7 @@
 
         <div class="field has-text-centered">
           <div class="select is-fullwidth">
-            <select formControlName="building" (change)="onChangeBuilding()">
+            <select formControlName="building" aria-label="Seleccione Edificio" (change)="onChangeBuilding()">
               <option value="" disabled selected>Seleccione Edificio</option>
               @for (building of buildings; track $index) {
               <option value="{{ building.id }}">
@@ -53,7 +53,7 @@
 
         <div class="field has-text-centered">
           <div class="select is-fullwidth">
-            <select formControlName="unidad">
+            <select formControlName="unit" aria-label="Seleccione Unidad">
               <option value="" disabled selected>Seleccione Unidad</option>
               @for (unit of units; track $index) {
               <option value="{{ unit.id }}">

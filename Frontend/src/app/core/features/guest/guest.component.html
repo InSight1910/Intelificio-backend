@@ -4,49 +4,45 @@
   <div class="level">
 
     <!-- Titulo y hora-->
-    <div class="level-left">
+    <div class="level-left">    
       <h3 class="title level-item">Visitas</h3>
-      <h6 class="subtitle level-item">{{ CommunityName }}</h6>
-      <p>Fecha actual: {{ currentDateTime }}</p>
+      <p class="subtitle level-item">Fecha actual: {{ currentDateTime }}</p>
     </div>
-
     <!-- Boton agregar -->
     <div class="level-right">
       <app-add-modal (addGuestEvent)="updateGuestList($event)"></app-add-modal>
     </div>
-    
+  
   </div>
 
   <!-- Tabla -->
-  <div class="box">
+  <div class="box is-fullwidth">
     <table class="table is-hoverable is-fullwidth">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>RUT</th>
-          <th>Hora de Entrada</th>
-          <th>Placa</th>
-          <th>Unidad</th>
-          <th>Acciones</th>
+        <tr class="subtitle">
+          <th class="has-text-centered">Nombre</th>
+          <th class="has-text-centered">Apellido</th>
+          <th class="has-text-centered">RUT</th>
+          <th class="has-text-centered">Hora de Entrada</th>
+          <th class="has-text-centered">Patente</th>
+          <th class="has-text-centered">Unidad</th>
+          <th class="has-text-centered"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="has-text-centered">
         @for (guest of guests; track $index){
-          <tr>
-            <td>{{ guest.id }}</td>
-            <td>{{ guest.firstname }}</td>
-            <td>{{ guest.lastname }}</td>
+          <tr class="is-hoverable">
+            <td>{{ guest.firstName }}</td>
+            <td>{{ guest.lastName }}</td>
             <td>{{ guest.rut }}</td>
-            <td>{{ guest.entrytime | date: 'short' }}</td>
+            <td>{{ guest.entryTime | date: 'hh:mm:ss a' }}</td>
             <td>{{ guest.plate }}</td>
             <td>{{ guest.unit }}</td>
             <td>
               <app-edit-modal
-                [guestId]="guest.id"
-                (editGuestEvent)="editGuest($event)"
-              ></app-edit-modal>
+              (editGuestEvent)="editGuest($event)"
+              [guestId]="guest.id"
+              ></app-edit-modal>  
             </td>
           </tr>
         }
@@ -54,5 +50,7 @@
     </table>
   </div>
 </div>
+
+
 
   

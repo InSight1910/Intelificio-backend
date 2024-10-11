@@ -1,17 +1,20 @@
 <div>
-  <div
-    class="button is-warning is-small is-responsive is-fullwidth"
-    (click)="onClick()"
-  >
-    <span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>Editar
+  
+  <div class="button is-warning is-small is-responsive is-fullwidth" (click)="onClick()">
+    <span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>
+    Editar
   </div>
 
   <div class="modal" [ngClass]="{ 'is-active': isOpen }">
+    
     <div class="modal-background" (click)="onClickCloseModal()"></div>
+    
     <div class="modal-content columns is-centered">
+      
       <div class="box py-5 px-6 is-rounded">
+        
         <h4 class="title is-4 has-text-centered">Editar Unidad</h4>
-
+        
         <form [formGroup]="editForm">
           <div class="field has-text-centered">
             <label class="label">Número</label>
@@ -113,7 +116,11 @@
             </div>
           </div>
         </form>
+
       </div>
+
     </div>
+
   </div>
+  
 </div>

@@ -8,7 +8,7 @@ import {
 } from '../../../shared/models/guest.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GuestService {
   constructor(private http: HttpClient) {}
@@ -20,8 +20,8 @@ export class GuestService {
   }
 
   // UPDATE
-  updateGuest(guestId: number, action: UpdateGuest) {
-    return this.http.put(`${this.baseUrl}/guest/Update/${action.unitId}`, action);
+  updateGuest(action: UpdateGuest) {
+    return this.http.put(`${this.baseUrl}/guest/${action.id}`, action);
   }
 
   // DELETE
@@ -31,7 +31,7 @@ export class GuestService {
 
   // BY ID
   getGuestById(id: number) {
-    return this.http.get(`${this.baseUrl}/guest/GetById/${id}`);
+    return this.http.get<{data: Guest}>(`${this.baseUrl}/guest/GetById/${id}`);
   }
 
   // ALL BY UNIT
@@ -43,6 +43,11 @@ export class GuestService {
   // ALL BY ENTRY TIME
   getAllGuestsByEntryTime(entryTime: Date) {
     return this.http.get(`${this.baseUrl}/guest/GetAllByEntryTime/${entryTime}`);
+  }
+
+  // ALL BY COMMUNITY
+  getAllGuestsByCommunity(communityId: number) {
+    return this.http.get<{ data: Guest[] }>(`${this.baseUrl}/guest/GetAllByCommunity/${communityId}`);
   }
 
 }

@@ -1,47 +1,113 @@
-<div class="modal is-active">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Editar Visita</p>
-      <button class="delete" aria-label="close" (click)="onClickCloseModal()"></button>
-    </header>
-    <section class="modal-card-body">
-      <form [formGroup]="guestForm">
-        <div class="field">
-          <label class="label">Nombre</label>
-          <div class="control">
-            <input class="input" formControlName="firstName" />
+<div>
+  <div class="button is-warning is-small is-responsive is-fullwidth" (click)="onClick()">
+    <span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>
+    Editar
+  </div>
+
+  <div class="modal" [ngClass]="{ 'is-active': isOpen }">
+    <div class="modal-background" (click)="onClickCloseModal()"></div>
+
+    <div class="modal-content columns is-centered">
+      <div class="box py-5 px-6 is-rounded">
+        <h4 class="title is-4 has-text-centered">Editar Visita</h4>
+
+        <form [formGroup]="guestForm">
+
+          <div class="field is-fullwidth">
+            <label class="label subtitle">Hora de Entrada</label>
+            <div class="control">
+              <strong><input
+                class="input has-text-centered is-static is-size-5"
+                type="datetime"
+                placeholder="Hora de Entrada"
+                formControlName="entryTime"
+                readonly
+              /></strong>
+            </div>
+          </div>  
+
+          <div class="columns">
+            <div class="field is-fullwidth column">
+              <label class="label">Nombre</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Nombre"
+                  formControlName="firstName"
+                />
+              </div>
+            </div>
+
+            <div class="field is-fullwidth column">
+              <label class="label">Apellido</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Apellido"
+                  formControlName="lastName"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label">Apellido</label>
-          <div class="control">
-            <input class="input" formControlName="lastName" />
+
+          <div class="field is-fullwidth">
+            <label class="label">Rut</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Rut"
+                formControlName="rut"
+              />
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label">RUT</label>
-          <div class="control">
-            <input class="input" formControlName="rut" />
+
+          <div class="field is-fullwidth">
+            <label class="label">Patente</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Patente"
+                formControlName="plate"
+              />
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label">Patente</label>
-          <div class="control">
-            <input class="input" formControlName="plate" />
+
+          <div class="field is-fullwidth">
+            <label class="label">Departamento</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Departamento"
+                formControlName="unit"
+              />
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label">Departamento</label>
-          <div class="control">
-            <input class="input" formControlName="unit" />
+
+          <div class="field mt-6 mb-3 is-fullwidth">
+            <div class="buttons is-centered">
+              <button
+                class="button is-primary"
+                (click)="onClickUpdateGuest()"
+                [ngClass]="{ 'is-loading': isAdding }"
+                [disabled]="guestForm.invalid || isSuccess"
+              >
+                Editar
+              </button>
+              <button
+                class="button is-warning"
+                (click)="onClickCloseModal()"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button is-success" (click)="onClickUpdateGuest()">Guardar</button>
-      <button class="button" (click)="onClickCloseModal()">Cancelar</button>
-    </footer>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

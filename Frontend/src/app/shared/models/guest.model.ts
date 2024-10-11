@@ -1,24 +1,30 @@
 export interface Guest {
     id: number;
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     rut: string;
-    entrytime: Date;
+    entryTime: string;
     plate: string;
     unit: string;
-    unitId: number;
     }
 
-export type CreateGuest = Omit<Guest, 'id' | 'unit'>;
+export interface CreateGuest {
+    firstName: string;
+    lastName: string;
+    rut: string;
+    entryTime: string;
+    plate: string;
+    unitId: number;
+    }
 
 export interface UpdateGuest {
     id: number;
     firstname: string;
     lastname: string;
     rut: string;
-    entrytime: Date;
+    entryTime: Date;
     plate: string;
-    unitId: number;
+    unit: number;
     }
 
 export interface Building {
