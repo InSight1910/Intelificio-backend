@@ -11,14 +11,21 @@ import {
 import { CommonModule } from '@angular/common';
 import { Role } from '../../../../shared/models/role.model';
 import { AuthService } from '../../../services/auth/auth.service';
-import { RouterState } from '@angular/router';
+
 import { SignupDTO } from '../../../../shared/models/signUpCommand.model';
 import { catchError, of, tap } from 'rxjs';
+import { FormatPhoneDirective } from '../../../../shared/directives/format-phone/format-phone.directive';
+import { FormatPhonePipe } from '../../../../shared/pipes/format-phone/format-phone.pipe';
 
 @Component({
   selector: 'app-singup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    FormatPhoneDirective,
+    FormatPhonePipe,
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
@@ -53,8 +60,8 @@ export class SingupComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       phoneNumber: new FormControl('', [
         Validators.required,
-        Validators.maxLength(15),
-        Validators.minLength(12),
+        Validators.maxLength(11),
+        Validators.minLength(9),
         this.phoneValidator(),
       ]),
       password: new FormControl('', [
@@ -108,9 +115,13 @@ export class SingupComponent implements OnInit {
             firstName: this.signupForm.value.firstName ?? '',
             lastName: this.signupForm.value.lastName ?? '',
             email: this.signupForm.value.email ?? '',
-            phoneNumber: this.signupForm.value.phoneNumber?.replace(/\s+/g, '') ?? '',
+            phoneNumber:
+              '+56' +
+              (this.signupForm.value.phoneNumber?.replace(/\s+/g, '') ?? ''),
             password: this.signupForm.value.password ?? '',
-            rut: this.signupForm.value.rut?.replace(/[.\-]/g, '').toUpperCase() ?? '',
+            rut:
+              this.signupForm.value.rut?.replace(/[.\-]/g, '').toUpperCase() ??
+              '',
             role: this.signupForm.value.rol ?? '',
             birthDate: this.signupForm.value.birthDate ?? '',
           },
@@ -232,7 +243,8 @@ export class SingupComponent implements OnInit {
       const valid = validPrefixes.some((prefix) =>
         control.value.startsWith(prefix)
       );
-      return valid ? null : { prohoneprefix: true };
+      // return valid ? null : { prohoneprefix: true };
+      return null;
     };
   }
 
@@ -244,7 +256,8 @@ export class SingupComponent implements OnInit {
         return null;
       }
 
-      const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+      const passwordPattern =
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
       const valid = passwordPattern.test(value);
 

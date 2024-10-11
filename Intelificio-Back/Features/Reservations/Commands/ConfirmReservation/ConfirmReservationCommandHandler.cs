@@ -15,7 +15,8 @@ public class ConfirmReservationCommandHandler(IntelificioDbContext context)
         var reservation = await context.Reservations.FirstOrDefaultAsync(x => x.ID == request.ReservationId);
         if (reservation is null) return Result.Failure(ReservationErrors.ReservationNotFoundOnConfirm);
 
-        if (reservation.ConfirmationToken != request.token) return Result.Failure(null);
+        if (reservation.ConfirmationToken != request.token)
+            return Result.Failure(ReservationErrors.ConfirmationTokenNotCorrect);
         reservation.ConfirmationToken = null;
         reservation.ExpirationDate = DateTime.MinValue;
 

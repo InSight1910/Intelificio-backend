@@ -15,7 +15,7 @@ export class FormatPhoneDirective {
 
     // Format the number if it's 9 digits long
     if (cleaned.length === 9) {
-      input.value = `+56 9 ${cleaned.slice(1, 5)} ${cleaned.slice(5)}`;
+      input.value = `9 ${cleaned.slice(1, 5)} ${cleaned.slice(5)}`;
     }
   }
 }

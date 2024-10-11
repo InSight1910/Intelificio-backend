@@ -57,4 +57,16 @@ public class ReservationErrors
         Code = "Reservation.GetReservationsByUser.ReservationsNotFound",
         Message = "No se encontraron registros a su nombre."
     };
+
+    public static Error ConfirmationTokenNotCorrect = new()
+    {
+        Code = "Confirmation.ConfirmationTokenNotCorrect",
+        Message = "El token no es valido."
+    };
+
+    public static Error ConfirmationTokenExpired = new()
+    {
+        Code = "Confirmation.ConfirmationTokenExpired",
+        Message = "El token se encuentra expirado."
+    };
 }

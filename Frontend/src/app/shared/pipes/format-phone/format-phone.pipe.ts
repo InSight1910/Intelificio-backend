@@ -6,18 +6,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatPhonePipe implements PipeTransform {
   transform(phoneNumber: string): string {
+    console.log(phoneNumber);
     if (!phoneNumber) {
       return '';
     }
 
     // Remove any non-numeric characters
-    let cleaned = phoneNumber.replace(/\D/g, '');
+    let cleaned = phoneNumber.replace(/\D+56/g, '');
 
     // Format the number as +56 9 XXXX XXXX if it's a valid length
     if (cleaned.length === 9) {
       return `+56 9 ${cleaned.slice(1, 5)} ${cleaned.slice(5)}`;
     }
-
     // Return the original if the number doesn't match the expected length
     return phoneNumber;
   }
