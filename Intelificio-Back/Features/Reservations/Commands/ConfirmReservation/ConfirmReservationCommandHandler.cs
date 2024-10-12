@@ -1,4 +1,5 @@
 using Backend.Common.Response;
+using Backend.Features.Notification.Commands.Reservation.SuccessfulReservation;
 using Backend.Features.Reservations.Common;
 using Backend.Models;
 using Backend.Models.Enums;
@@ -8,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace Backend.Features.Reservations.Commands;
 
-public class ConfirmReservationCommandHandler(IntelificioDbContext context)
+public class ConfirmReservationCommandHandler(IntelificioDbContext context, IMediator mediator)
     : IRequestHandler<ConfirmReservationCommand, Result>
 {
     public async Task<Result> Handle(ConfirmReservationCommand request, CancellationToken cancellationToken)
@@ -32,6 +33,10 @@ public class ConfirmReservationCommandHandler(IntelificioDbContext context)
 
         reservation.Status = ReservationStatus.CONFIRMED;
         await context.SaveChangesAsync(cancellationToken);
+
+        var successfulReservationCommand = new SuccessfulReservationCommand { ReservationID = reservation.ID };
+        _ = await mediator.Send(successfulReservationCommand);
+
         return Result.Success();
     }
 
