@@ -70,15 +70,11 @@ export class ConfirmReservationComponent implements OnInit {
       .confirmReservation(this.reservationId, this.token)
       .subscribe({
         next: (response) => {
-          console.log(response)
-          console.log(response.status);
-
           if( response.status === 202){
-            console.log(response);
             this.confirmed = true;
             this.message = "Reserva confirmada con éxito.";
             setTimeout(() => {
-              this.confirmed = true;
+              this.confirmed = false;
               this.message = null;
               this.route.navigate(['/MisReservas']).then((r) => {});
             },3000);
@@ -98,6 +94,22 @@ export class ConfirmReservationComponent implements OnInit {
 
   toReserva(){
     this.route.navigate(['/EspacioComun']).then((r) => {});
+  }
+
+  cancel(){
+    console.log(this.reservationId)
+    this.service.cancelReservation(this.reservationId).subscribe({
+      next: (response) => {
+        if (response.status === 204){
+          this.message = "Reserva Cancelada con éxito.";
+          setTimeout(() => {
+            this.confirmed = false;
+            this.message = null;
+            this.route.navigate(['/MisReservas']).then((r) => {});
+          },3000);
+        }
+      }
+    })
   }
 
   protected readonly ReservationStatus = ReservationStatus;

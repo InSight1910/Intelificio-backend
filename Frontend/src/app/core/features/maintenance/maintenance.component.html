@@ -53,7 +53,9 @@
           </thead>
           <tbody>
             @if (!filteredMaintenances || filteredMaintenances.length === 0){
-              <td colspan="5">No hay mantenciones disponibles</td>
+              <tr>
+                <td colspan="7" class="has-text-centered">No hay mantenciones disponibles</td>
+              </tr>
             } @else {
               @for (mantenimiento of filteredMaintenances; track mantenimiento.id; let idx = $index, e = $even){
                 <tr>

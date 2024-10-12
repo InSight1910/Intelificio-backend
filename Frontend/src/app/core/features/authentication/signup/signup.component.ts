@@ -44,6 +44,7 @@ export class SingupComponent implements OnInit {
   isFileUploaded = false;
   user!: User | null;
   community!: Community | null;
+  errores: string[] = [];
 
   listaRol: Role[] = [
     {
@@ -203,6 +204,7 @@ export class SingupComponent implements OnInit {
     this.IsError = false;
     this.IsSuccess = false;
     this.isFileUploaded = false;
+    this.errores = [];
 
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
@@ -219,6 +221,7 @@ export class SingupComponent implements OnInit {
     this.isFileUploaded = false;
     this.selectedFileName = '';
     this.notificationMessage = "";
+    this.errores = [];
 
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
@@ -233,7 +236,9 @@ export class SingupComponent implements OnInit {
         this.listaRol = response.data;
       },
       (error) => {
-        console.error('Error al obtener edificios', error);
+       if(error.status === 0){
+         console.error('Error al obtener Roles, compruebe que el backEnd responde.', );
+       }
       }
     );
   }
@@ -351,6 +356,7 @@ export class SingupComponent implements OnInit {
       this.isFileUploaded = true;
 
       this.notificationMessage = "";
+      this.errores = [];
       this.notification = false;
       this.IsError = false;
       this.IsSuccess = false;
@@ -382,23 +388,22 @@ export class SingupComponent implements OnInit {
   }
 
   validateExcelData(data: any[]): boolean {
-
+    const errores: string[] = [];
 
     if (!data || data.length <= 1) {
-      this.notificationMessage ='El archivo Excel está vacío';
+      this.notificationMessage = 'El archivo Excel está vacío';
       return false;
     }
+
     const cleanedData = data.filter(row => row.some((cell: any) => cell && String(cell).trim() !== ''));
     const requiredColumns = ['Rut', 'Nombre', 'Apellido', 'Correo', 'Telefono', 'FechaNacimiento', 'Rol'];
     const fileColumns = cleanedData[0];
 
-
     const missingColumns = requiredColumns.filter(col => !fileColumns.includes(col));
     if (missingColumns.length > 0) {
-      this.notificationMessage =`Faltan las columnas: ${missingColumns.join(', ')}`;
+      this.notificationMessage = `Faltan las columnas: ${missingColumns.join(', ')}`;
       return false;
     }
-
 
     const rutIndex = fileColumns.indexOf('Rut');
     const nombreIndex = fileColumns.indexOf('Nombre');
@@ -409,79 +414,91 @@ export class SingupComponent implements OnInit {
     const rolIndex = fileColumns.indexOf('Rol');
 
 
+    const rutSet = new Set();
+    const correoSet = new Set();
+    const telefonoSet = new Set();
+
     for (let i = 1; i < cleanedData.length; i++) {
       const row = cleanedData[i];
 
-      // Validar que el RUT no esté vacío y sea válido
+
       const rut = row[rutIndex];
       if (!rut || String(rut).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: El RUT está vacío`;
-        return false;
+        errores.push(`Fila ${i + 1}: El RUT está vacío.`);
       } else if (!this.isValidRut(String(rut))) {
-        this.notificationMessage = `Fila ${i + 1}: El RUT ${rut} no es válido`;
-        return false;
+        errores.push(`Fila ${i + 1}: El RUT ${rut} no es válido.`);
+      } else if (rutSet.has(rut)) {
+        errores.push(`Fila ${i + 1}: El RUT ${rut} está repetido.`);
       }
+      rutSet.add(rut);
 
-      // Validar que el nombre no esté vacío
+
       const nombre = row[nombreIndex];
       if (!nombre || String(nombre).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: El Nombre está vacío`;
-        return false;
+        errores.push(`Fila ${i + 1}: El Nombre está vacío.`);
       }
 
-      // Validar que el apellido no esté vacío
+
       const apellido = row[apellidoIndex];
       if (!apellido || String(apellido).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: El Apellido está vacío`;
-        return false;
+        errores.push(`Fila ${i + 1}: El Apellido está vacío.`);
       }
 
-      // Validar que el correo no esté vacío y sea válido
+
       const correo = row[correoIndex];
       if (!correo || String(correo).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: El Correo está vacío`;
-        return false;
+        errores.push(`Fila ${i + 1}: El Correo está vacío.`);
+      } else {
+        const correoStr = String(correo).trim();
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailRegex.test(correoStr)) {
+          errores.push(`Fila ${i + 1}: El Correo ${correoStr} no es válido.`);
+        } else if (correoSet.has(correoStr)) {
+          errores.push(`Fila ${i + 1}: El Correo ${correoStr} está repetido.`);
+        }
+        correoSet.add(correoStr);
       }
 
-      // Validar formato del correo
-      const correoStr = String(correo).trim();
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-      if (!emailRegex.test(correoStr)) {
-        this.notificationMessage = `Fila ${i + 1}: El Correo ${correoStr} no es válido`;
-        return false;
-      }
 
-      // Validar que el teléfono no esté vacío
       const telefono = row[telefonoIndex];
       if (!telefono || String(telefono).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: El Teléfono está vacío`;
-        return false;
+        errores.push(`Fila ${i + 1}: El Teléfono está vacío.`);
+      } else if (telefonoSet.has(telefono)) {
+        errores.push(`Fila ${i + 1}: El Teléfono ${telefono} está repetido.`);
       }
+      telefonoSet.add(telefono);
 
-      // Validar que la fecha de nacimiento no esté vacía
+
       const fechaNacimiento = row[fechaNacimientoIndex];
       if (!fechaNacimiento || String(fechaNacimiento).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: La Fecha de Nacimiento está vacía`;
-        return false;
+        errores.push(`Fila ${i + 1}: La Fecha de Nacimiento está vacía`);
       }
 
       const rol = row[rolIndex];
       if (!rol || String(rol).trim() === '') {
-        this.notificationMessage = `Fila ${i + 1}: El Rol está vacío`;
-        return false;
+        errores.push(`Fila ${i + 1}: El Rol está vacío.`);
+      } else {
+        const rolUsuario = String(rol).trim().toLowerCase();
+        const rolValido = this.listaRol.some((r: Role) => r.name.toLowerCase() === rolUsuario);
+        if (!rolValido) {
+          errores.push(`Fila ${i + 1}: El Rol "${rol}" no es válido. Debe ser uno de los siguientes: ${this.listaRol.map(r => r.name).join(', ')}`);
+        }
       }
+    }
 
-      // Verificar si el rol es válido comparándolo con la lista de roles permitidos
-      const rolValido = this.listaRol.some((r: Role) => r.name === String(rol).trim());
-      if (!rolValido) {
-        this.notificationMessage = `Fila ${i + 1}: El Rol "${rol}" no es válido. Debe ser uno de los siguientes: ${this.listaRol.map(r => r.name).join(', ')}`;
-        return false;
+    if (errores.length > 0) {
+      this.errores = errores.slice(0, 5);
+      if (errores.length > 5) {
+        this.errores.push('...existen más filas con errores o falta de datos, por favor revise la planilla e intente nuevamente.');
       }
-
+      return false;
     }
 
     return true;
   }
+
+
+
 
   isValidRut(rut: string): boolean {
     if (!rut) {
@@ -503,30 +520,21 @@ export class SingupComponent implements OnInit {
   }
 
   downloadModel() {
-    // Encabezados de la planilla
     const ws_data = [
       ['Rut', 'Nombre', 'Apellido', 'Correo', 'Telefono', 'FechaNacimiento', 'Rol'], // Encabezados
     ];
-
-    // Crear una hoja de trabajo (worksheet)
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ws_data);
-
-    // Obtener los roles dinámicamente desde this.listaRol
     const roles = this.listaRol.map(role => role.name);
 
-    // Agregar una fila de ejemplo con roles
     roles.forEach(role => {
-      ws_data.push(['', '', '', '', '', '', role]); // Filas con roles en la última columna
+      ws_data.push(['', '', '', '', '', '', role]);
     });
 
-    // Crear un libro de trabajo (workbook)
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'PlantillaUsuarios');
 
-    // Generar el archivo Excel
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
 
-    // Crear el enlace para la descarga
     const blob = new Blob([wbout], { type: 'application/octet-stream' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);

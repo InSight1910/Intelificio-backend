@@ -62,4 +62,9 @@ export class MyReservationsComponent {
     opensModal.set(reservationId, false);
     this.loadReservations();
   }
+
+  cancel(id : number) {
+    this.reservationService.cancelReservation(id).subscribe({});
+    this.loadReservations();
+  }
 }

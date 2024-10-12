@@ -14,16 +14,6 @@
   </div>
 </div>
 
-@if (isLoading) {
-  <div class="container">
-    <div class="skeleton-lines">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
-} @else {
   <div class="container mt-4">
     <!-- Search Box -->
     <div class="box">
@@ -57,7 +47,9 @@
           </thead>
           <tbody>
             @if (!contactos || contactos.length === 0){
-              <td colspan="5">No hay contactos disponibles</td>
+              <tr>
+                <td colspan="6" class="has-text-centered">No hay contactos disponibles</td>
+              </tr>
             } @else { @for (contacto of filteredContacts; track contacto.id; let
                 idx = $index, e = $even){
               <tr>
@@ -81,7 +73,7 @@
       </div>
     </div>
   </div>
-} @if(isModalOpen){
+ @if(isModalOpen){
   <app-add-contact [CommunityID]="this.CommunityID" (close)="onClickCloseAdd()">
   </app-add-contact>
 } @if(isEditModalOpen){

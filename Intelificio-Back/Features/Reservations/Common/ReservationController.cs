@@ -7,6 +7,7 @@ using Backend.Features.Reservations.Query.GetReservationsByUser;
 using Backend.Features.Reservations.Query.GetReservationsById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Backend.Features.Reservations.Commands.CancelReservation;
 
 namespace Backend.Features.Reservations.Common;
 
@@ -53,6 +54,16 @@ public class ReservationController(IMediator mediator) : ControllerBase
             res => Ok(res),
             BadRequest);
     }
+
+    [HttpPut("CancelReservation/{id}")]
+    public async Task<IActionResult> CancelReservation (int id)
+    {
+        var result = await mediator.Send(new CancelReservationCommand { ReservationId = id });
+        return result.Match(
+                onSuccess: (response) => Ok(response),
+                onFailure: BadRequest);
+    }
+
 
     [HttpGet("user/{id}")]
     public async Task<IActionResult> GetByUser(int id)

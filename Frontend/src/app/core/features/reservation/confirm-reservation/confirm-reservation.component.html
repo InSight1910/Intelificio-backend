@@ -54,14 +54,24 @@
       </div>
 
       <div class="has-text-centered">
-        @if (reservation.status == 0){
-          <button class="button is-medium" [disabled]="confirmed" (click)="confirm()">Confirmar Reserva</button>
-        } @else if (reservation.status == 1){
-          <button class="button is-medium" [disabled]="!confirmed">Disfruta tu reserva</button>
-        } @else if (reservation.status == 2){
-          <button class="button is-medium" [disabled]="!confirmed">Reserva Cancelada</button>
+        @if (reservation.status == 0) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" [disabled]="confirmed" (click)="cancel()">Cancelar Reserva</button>
+            <button class="button is-medium is-success" [disabled]="confirmed" (click)="confirm()">Confirmar Reserva</button>
+          </div>
+        } @else if (reservation.status == 1) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" [disabled]="confirmed" (click)="cancel()">Cancelar Reserva</button>
+            <button class="button is-medium" [disabled]="!confirmed">Disfruta tu reserva</button>
+          </div>
+        } @else if (reservation.status == 2) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" [disabled]="!confirmed">Reserva Cancelada</button>
+          </div>
         } @else if (reservation.status == 3) {
-          <button class="button is-medium" (click)="toReserva()">Vuelve a reservar</button>
+          <div class="buttons is-centered">
+            <button class="button is-medium" (click)="toReserva()">Vuelve a reservar</button>
+          </div>
         }
       </div>
 

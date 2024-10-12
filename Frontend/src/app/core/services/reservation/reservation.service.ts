@@ -58,4 +58,10 @@ export class ReservationService {
       `${this.baseUrl}/${reservationId}`
     );
   }
+
+  cancelReservation(reservationId: number): Observable<HttpResponse<any>> {
+    return this.http.put<any>(
+      `${this.baseUrl}/CancelReservation/${reservationId}`,{},{ observe: 'response' }
+    );
+  }
 }

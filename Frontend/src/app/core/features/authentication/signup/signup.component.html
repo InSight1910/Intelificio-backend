@@ -324,6 +324,9 @@
           <div class="notification is-danger">
             <button class="delete" (click)="closeNotification()"></button>
             {{ this.notificationMessage }}
+            @for(error of errores; track $index){
+             <P>{{error}}</P>
+            }
           </div>
         } }
 
