@@ -1,6 +1,7 @@
 ﻿using Backend.Common.Response;
 using Backend.Features.Notification.Commands.ConfirmEmailTwo;
 using Backend.Features.Notification.Commands.Package;
+using Backend.Features.Notification.Commands.Reservation.ReservationConfirmation;
 using Backend.Features.Notification.Commands.SingleMessage;
 
 using MediatR;
@@ -26,6 +27,15 @@ namespace Backend.Features.Notification.Common
         {
             command.PackageID = ID;
             var result = await mediator.Send(command);
+            return result.Match(
+                onSuccess: (_) => Created(),
+                onFailure: BadRequest);
+        }
+
+        [HttpPost("ConfirmReservationEmail/{id}")]
+        public async Task<IActionResult> ConfirmReservationEmail(int id)
+        {
+            var result = await mediator.Send(new ConfirmReservationEmailCommand { ReservationID = id});
             return result.Match(
                 onSuccess: (_) => Created(),
                 onFailure: BadRequest);

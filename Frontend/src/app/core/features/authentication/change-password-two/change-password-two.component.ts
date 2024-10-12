@@ -93,7 +93,11 @@ export class ChangePasswordTwoComponent {
         .pipe(
           tap((response) => {
             if (response.ok) {
-              this.message = 'Cambio de contraseña exitoso';
+              if(this.new){
+                this.message = 'Contraseña creada exitosamente.';
+              } else {
+                this.message = 'Cambio de contraseña exitoso';
+              }
               this.errors = null;
               setTimeout(() => {
                 this.route.navigate(['/login']).then((r) => {});

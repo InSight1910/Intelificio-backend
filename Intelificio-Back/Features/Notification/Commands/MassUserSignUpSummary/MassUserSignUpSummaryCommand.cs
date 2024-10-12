@@ -1,5 +1,4 @@
 ﻿using Backend.Common.Response;
-using Backend.Models;
 using MediatR;
 
 namespace Backend.Features.Notification.Commands.MassUserSignUpSummary

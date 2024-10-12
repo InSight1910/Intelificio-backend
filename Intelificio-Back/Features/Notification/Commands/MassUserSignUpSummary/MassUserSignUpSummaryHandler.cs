@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Common.Helpers;
 using Backend.Common.Response;
-using Backend.Features.Notification.Commands.SingleUserSignUpSummary;
 using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
@@ -55,7 +54,7 @@ namespace Backend.Features.Notification.Commands.MassUserSignUpSummary
                 CommunityName = community.Name,
                 TotalCreados = request.TotalCreados,
                 TotalEnviados = request.TotalEnviados,
-                TotalErrores = request.TotalCreados,
+                TotalErrores = request.TotalErrores,
                 AdminName = creator.ToString(),
                 SenderAddress = $"{community.Address}, {community.Municipality.Name}"
             };

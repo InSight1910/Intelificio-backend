@@ -4,6 +4,7 @@ using Backend.Features.Reservations.Commands.Create;
 using Backend.Features.Reservations.Query;
 using Backend.Features.Reservations.Query.GetReservationsByCommunityAndMonth;
 using Backend.Features.Reservations.Query.GetReservationsByUser;
+using Backend.Features.Reservations.Query.GetReservationsById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,6 +63,19 @@ public class ReservationController(IMediator mediator) : ControllerBase
             err =>
             {
                 if (err.First().Code == ReservationErrors.ReservationsNotFoundOnQuery.Code) return NotFound(err);
+                return BadRequest(err);
+            });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetReservationById(int id)
+    {
+        var result = await mediator.Send(new GetReservationsByIdQuery { ReservationId = id });
+        return result.Match(
+            res => Ok(res),
+            err =>
+            {
+                if (err.First().Code == ReservationErrors.ReservationsNotFoundOnQueryByID.Code) return NotFound(err);
                 return BadRequest(err);
             });
     }

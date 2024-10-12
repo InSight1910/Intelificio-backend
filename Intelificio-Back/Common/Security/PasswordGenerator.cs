@@ -7,7 +7,10 @@ namespace Backend.Common.Security
     {
         public static string GenerateSecurePassword(int length = 8) 
         {
-            const string validChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*?_~-";
+            const string validUperChars = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
+            const string validloweChars = "abcdefghijklmnopqrstuvwxyz";
+            const string validSpecial = "!@#$%^&*?_~-";
+            const string validarNumber = "0123456789";
             StringBuilder password = new StringBuilder();
             byte[] randomBytes = new byte[length];
 
@@ -20,7 +23,10 @@ namespace Backend.Common.Security
 
             foreach (byte b in randomBytes)
             {
-                password.Append(validChars[b % validChars.Length]);
+                password.Append(validUperChars[b % validUperChars.Length]);
+                password.Append(validSpecial[b % validSpecial.Length]);
+                password.Append(validarNumber[b % validarNumber.Length]);
+                password.Append(validloweChars[b % validloweChars.Length]);
             }
 
             return password.ToString();

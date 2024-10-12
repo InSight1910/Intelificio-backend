@@ -21,6 +21,7 @@ import {Community} from "../../../../shared/models/community.model";
 import {selectCommunity} from "../../../../states/community/community.selectors";
 import {FormatRutDirective} from "../../../../shared/directives/format-rut.directive";
 import { FormatRutPipe } from '../../../../shared/pipes/format-rut.pipe';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-singup',
@@ -66,12 +67,6 @@ export class SingupComponent implements OnInit {
         Validators.minLength(12),
         this.phoneValidator(),
       ]),
-      /* password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        this.passwordValidator(),
-      ]),
-      confirmPassword: new FormControl('', Validators.required), */
       rut: new FormControl('', [Validators.required, this.rutValidator()]),
       rol: new FormControl('', Validators.required),
       birthDate: new FormControl('', [
@@ -79,7 +74,6 @@ export class SingupComponent implements OnInit {
         this.birthDateValidator(),
       ]),
     },
-    //{ validators: this.passwordMatchValidator }
   );
 
   ngOnInit(): void {
@@ -95,18 +89,21 @@ export class SingupComponent implements OnInit {
       });
   }
 
+
   onSubmit() {
     if (this.selectedFile) {
       const formData: FormData = new FormData();
       formData.append('file', this.selectedFile!);
-      formData.append('creatorID',`${this.user?.sub!}`);
-      formData.append('communityID',`${this.community?.id!}`);
+      formData.append('creatorID', `${this.user?.sub!}`);
+      formData.append('communityID', `${this.community?.id!}`);
       this.waiting = true;
+
       this.service
         .signupMassive(formData)
         .pipe(
           tap((response) => {
             if (response.status === 202) {
+              this.notificationMessage = "Carga recibida, se informará a su correo el resultado."
               this.IsSuccess = true;
               this.notification = true;
               this.waiting = false;
@@ -114,7 +111,7 @@ export class SingupComponent implements OnInit {
                 this.notification = false;
                 this.IsSuccess = false;
                 this.clean();
-              }, 3000);
+              }, 5000);
             }
           }),
           catchError((error) => {
@@ -123,6 +120,8 @@ export class SingupComponent implements OnInit {
           })
         )
         .subscribe();
+
+
     } else {
       if (this.signupForm.valid) {
         const signupDTO: SignupDTO = {
@@ -190,8 +189,6 @@ export class SingupComponent implements OnInit {
         lastName: '',
         email: '',
         phoneNumber: '',
-        //password: '',
-        //confirmPassword: '',
         rut: '',
         rol: '',
         birthDate: '',
@@ -201,11 +198,33 @@ export class SingupComponent implements OnInit {
     this.signupForm.enable();
     this.selectedFile = null;
     this.selectedFileName = '';
+    this.notificationMessage = "";
+    this.notification = false;
+    this.IsError = false;
+    this.IsSuccess = false;
     this.isFileUploaded = false;
+
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+
   }
 
   closeNotification() {
     this.notification = false;
+    this.IsSuccess = false;
+    this.IsError = true;
+    this.selectedFile = null;
+    this.isFileUploaded = false;
+    this.selectedFileName = '';
+    this.notificationMessage = "";
+
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+
   }
 
   getRoles() {
@@ -258,31 +277,6 @@ export class SingupComponent implements OnInit {
       );
       return valid ? null : { prohoneprefix: true };
     };
-  }
-
-  passwordValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-
-      if (!value) {
-        return null;
-      }
-
-      const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
-
-      const valid = passwordPattern.test(value);
-
-      return valid ? null : { invalidPassword: true };
-    };
-  }
-
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    var password = control.get('password')?.value;
-    if (password.length <= 0) {
-      password = 1;
-    }
-    const confirmPassword = control.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { passwordsDoNotMatch: true };
   }
 
   birthDateValidator(): ValidatorFn {
@@ -352,12 +346,193 @@ export class SingupComponent implements OnInit {
     const input = event.target as HTMLInputElement;
 
     if (input.files?.length) {
-      this.signupForm.disable();
-      this.signupForm.reset();
-
       this.selectedFile = input.files![0];
       this.selectedFileName = input.files![0].name;
       this.isFileUploaded = true;
+
+      this.notificationMessage = "";
+      this.notification = false;
+      this.IsError = false;
+      this.IsSuccess = false;
+      const reader: FileReader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        const isValid = this.validateExcelData(jsonData);
+        if (!isValid) {
+          this.notification = true;
+          this.IsSuccess = false;
+          this.IsError = true;
+          this.selectedFile = null;
+          input.value = '';
+          this.selectedFileName = '';
+          this.isFileUploaded = false;
+          this.signupForm.disable();
+          return;
+        }
+        this.signupForm.disable();
+      };
+      reader.readAsArrayBuffer(this.selectedFile);
+      this.signupForm.disable();
     }
+  }
+
+  validateExcelData(data: any[]): boolean {
+
+
+    if (!data || data.length <= 1) {
+      this.notificationMessage ='El archivo Excel está vacío';
+      return false;
+    }
+    const cleanedData = data.filter(row => row.some((cell: any) => cell && String(cell).trim() !== ''));
+    const requiredColumns = ['Rut', 'Nombre', 'Apellido', 'Correo', 'Telefono', 'FechaNacimiento', 'Rol'];
+    const fileColumns = cleanedData[0];
+
+
+    const missingColumns = requiredColumns.filter(col => !fileColumns.includes(col));
+    if (missingColumns.length > 0) {
+      this.notificationMessage =`Faltan las columnas: ${missingColumns.join(', ')}`;
+      return false;
+    }
+
+
+    const rutIndex = fileColumns.indexOf('Rut');
+    const nombreIndex = fileColumns.indexOf('Nombre');
+    const apellidoIndex = fileColumns.indexOf('Apellido');
+    const correoIndex = fileColumns.indexOf('Correo');
+    const telefonoIndex = fileColumns.indexOf('Telefono');
+    const fechaNacimientoIndex = fileColumns.indexOf('FechaNacimiento');
+    const rolIndex = fileColumns.indexOf('Rol');
+
+
+    for (let i = 1; i < cleanedData.length; i++) {
+      const row = cleanedData[i];
+
+      // Validar que el RUT no esté vacío y sea válido
+      const rut = row[rutIndex];
+      if (!rut || String(rut).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: El RUT está vacío`;
+        return false;
+      } else if (!this.isValidRut(String(rut))) {
+        this.notificationMessage = `Fila ${i + 1}: El RUT ${rut} no es válido`;
+        return false;
+      }
+
+      // Validar que el nombre no esté vacío
+      const nombre = row[nombreIndex];
+      if (!nombre || String(nombre).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: El Nombre está vacío`;
+        return false;
+      }
+
+      // Validar que el apellido no esté vacío
+      const apellido = row[apellidoIndex];
+      if (!apellido || String(apellido).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: El Apellido está vacío`;
+        return false;
+      }
+
+      // Validar que el correo no esté vacío y sea válido
+      const correo = row[correoIndex];
+      if (!correo || String(correo).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: El Correo está vacío`;
+        return false;
+      }
+
+      // Validar formato del correo
+      const correoStr = String(correo).trim();
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!emailRegex.test(correoStr)) {
+        this.notificationMessage = `Fila ${i + 1}: El Correo ${correoStr} no es válido`;
+        return false;
+      }
+
+      // Validar que el teléfono no esté vacío
+      const telefono = row[telefonoIndex];
+      if (!telefono || String(telefono).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: El Teléfono está vacío`;
+        return false;
+      }
+
+      // Validar que la fecha de nacimiento no esté vacía
+      const fechaNacimiento = row[fechaNacimientoIndex];
+      if (!fechaNacimiento || String(fechaNacimiento).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: La Fecha de Nacimiento está vacía`;
+        return false;
+      }
+
+      const rol = row[rolIndex];
+      if (!rol || String(rol).trim() === '') {
+        this.notificationMessage = `Fila ${i + 1}: El Rol está vacío`;
+        return false;
+      }
+
+      // Verificar si el rol es válido comparándolo con la lista de roles permitidos
+      const rolValido = this.listaRol.some((r: Role) => r.name === String(rol).trim());
+      if (!rolValido) {
+        this.notificationMessage = `Fila ${i + 1}: El Rol "${rol}" no es válido. Debe ser uno de los siguientes: ${this.listaRol.map(r => r.name).join(', ')}`;
+        return false;
+      }
+
+    }
+
+    return true;
+  }
+
+  isValidRut(rut: string): boolean {
+    if (!rut) {
+      return false;
+    }
+    const cleanRut = rut.replace(/[.\-]/g, '').toUpperCase();
+    if (!/^[0-9]+[K0-9]$/.test(cleanRut)) {
+      return false;
+    }
+    const body = cleanRut.slice(0, -1);
+    const dv = cleanRut.slice(-1).toUpperCase();
+
+    if (body.length < 7) {
+      return false;
+    }
+
+    const calculatedDV = this.calculateDV(body);
+    return dv === calculatedDV;
+  }
+
+  downloadModel() {
+    // Encabezados de la planilla
+    const ws_data = [
+      ['Rut', 'Nombre', 'Apellido', 'Correo', 'Telefono', 'FechaNacimiento', 'Rol'], // Encabezados
+    ];
+
+    // Crear una hoja de trabajo (worksheet)
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(ws_data);
+
+    // Obtener los roles dinámicamente desde this.listaRol
+    const roles = this.listaRol.map(role => role.name);
+
+    // Agregar una fila de ejemplo con roles
+    roles.forEach(role => {
+      ws_data.push(['', '', '', '', '', '', role]); // Filas con roles en la última columna
+    });
+
+    // Crear un libro de trabajo (workbook)
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'PlantillaUsuarios');
+
+    // Generar el archivo Excel
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+    // Crear el enlace para la descarga
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute('download', 'CreacionMasivaUsuarios.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }

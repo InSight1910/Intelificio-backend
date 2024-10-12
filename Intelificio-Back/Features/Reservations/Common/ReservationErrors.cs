@@ -57,4 +57,21 @@ public class ReservationErrors
         Code = "Reservation.GetReservationsByUser.ReservationsNotFound",
         Message = "No se encontraron registros a su nombre."
     };
+
+    public static Error ReservationsNotFoundOnQueryByID = new()
+    {
+        Code = "Reservation.GetReservationById.ReservationsNotFoundOnQueryByID",
+        Message = "No se encontró reserva consultada."
+    };
+
+    public static Error ExpiredTokenOnConfirmReservation = new()
+    {
+        Code = "Reservation.ConfirmReservation.ExpiredTokenOnConfirmReservation",
+        Message = "Ha expirado el tiempo para confirmar la reserva."
+    };
+    public static Error TokenNotFoundOnReservationOnConfirmReservation = new()
+    {
+        Code = "Reservation.ConfirmReservation.TokenNotFoundOnReservationOnConfirmReservation",
+        Message = "Su reserva ya se encuentra confirmada."
+    };
 }

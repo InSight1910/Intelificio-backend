@@ -285,95 +285,14 @@
               }
             </div>
           </div>
-          <!--
-          <div class="column field is-4">
-            <label class="label">Contraseña</label>
-            <div class="control">
-              <input
-                class="input"
-                type="password"
-                (input)="onInputChange('password')"
-                formControlName="password"
-                autocomplete="new-password"
-                placeholder="Al menos 8 caracteres alfanuméricos, incluyendo una mayúscula y un símbolo."
-                [ngClass]="{
-                'is-danger':
-                  signupForm.get('password')?.invalid &&
-                  signupForm.get('password')?.touched,
-                   'is-success':
-                  signupForm.get('password')?.valid &&
-                  signupForm.get('password')?.touched
-              }"
-              />
-
-              @if (signupForm.get('password')?.invalid &&
-              signupForm.get('password')?.touched){ @if
-              (signupForm.get('password')?.errors?.['minlength']){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  La contraseña debe tener al menos 8 caracteres.
-                </p>
-              } @else if (signupForm.get('password')?.errors?.['invalidPassword'])
-              {
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  La contraseña debe contener al menos 8 caracteres, una letra
-                  mayúscula, un número y un símbolo.
-                </p>
-              } @else {
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Se debe crear una contraseña para el usuario.
-                </p>
-              } } @else if (signupForm.get('password')?.valid &&
-              signupForm.get('password')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Contraseña Valida
-                </p>
-              }
-            </div>
-          </div>
-
-          <div class="column field is-4">
-            <label class="label">Confirmar Contraseña</label>
-            <div class="control">
-              <input
-                class="input"
-                type="password"
-                autocomplete="new-password"
-                (input)="onInputChange('confirmPassword')"
-                formControlName="confirmPassword"
-                placeholder="Ejemplo: Int3lif1ci@"
-                [ngClass]="{
-                'is-danger':
-                  signupForm.hasError('passwordsDoNotMatch') &&
-                  signupForm.get('confirmPassword')?.touched,
-                'is-success':
-                  !signupForm.hasError('passwordsDoNotMatch') &&
-                  signupForm.get('confirmPassword')?.touched
-              }"
-              />
-
-              @if (signupForm.hasError('passwordsDoNotMatch') &&
-              signupForm.get('confirmPassword')?.touched){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Las contraseñas no coinciden
-                </p>
-              } @else if (!signupForm.hasError('passwordsDoNotMatch') &&
-              signupForm.get('confirmPassword')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Las contraseñas coinciden
-                </p>
-              }
-            </div>
-          </div>-->
         </div>
-        <p class="subtitle is-6">
-          O bien, realiza una carga masiva adjuntando un archivo
-        </p>
+        <article class="message is-success mt-4">
+          <div class="message-body">
+            <p class="subtitle is-6">
+              Si lo prefieres, descarga nuestra Planilla Modelo para realizar una creación masiva de usuarios de forma rápida y sencilla. Completa la información requerida en la planilla y luego adjunta el archivo para subirlo al sistema.
+            </p>
+          </div>
+        </article>
         <div class="file" [ngClass]="{ 'has-name': isFileUploaded }">
           <label class="file-label">
             <input
@@ -392,9 +311,11 @@
               <span class="file-name">{{ selectedFileName }}</span>
             }
           </label>
+          <button (click)="downloadModel()" class="button ml-2">Planilla Modelo</button>
         </div>
 
-        @if (notification) { @if (IsSuccess){
+        @if (notification) {
+          @if (IsSuccess){
           <div class="notification is-success">
             <button class="delete" (click)="closeNotification()"></button>
             {{ this.notificationMessage }}

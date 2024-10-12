@@ -157,8 +157,12 @@ namespace Backend.Features.Notification.Common
             Code = "Notification.MassUserConfirmationEmail.CommunityNotfoundOnMassUserConfirmationEmail",
             Message = "No se encontró la comunidad."
         };
+        public static Error CommunityNotfoundOnConfirmReservationEmail = new()
+        {
+            Code = "Notification.ConfirmReservationEmail.CommunityNotfoundOnConfirmReservationEmail",
+            Message = "No se encontró la comunidad."
+        };
 
-     
 
 
         //Errores de MaintenanceCancellation

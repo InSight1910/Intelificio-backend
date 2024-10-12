@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using AutoMapper;
 using Backend.Common.Response;
+using Backend.Features.Notification.Commands.Reservation.ReservationConfirmation;
 using Backend.Features.Reservations.Common;
 using Backend.Models;
 using Backend.Models.Enums;
@@ -10,7 +11,7 @@ using static System.Security.Cryptography.RandomNumberGenerator;
 
 namespace Backend.Features.Reservations.Commands.Create;
 
-public class CreateReservationCommandHandler(IntelificioDbContext context, IMapper _mapper)
+public class CreateReservationCommandHandler(IntelificioDbContext context, IMapper _mapper, IMediator mediator)
     : IRequestHandler<CreateReservationCommand, Result>
 {
     public async Task<Result> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
@@ -47,6 +48,10 @@ public class CreateReservationCommandHandler(IntelificioDbContext context, IMapp
         await context.SaveChangesAsync(cancellationToken);
 
         var response = _mapper.Map<CreateReservationCommandResponse>(reservation);
+
+        var confirmReservationEmailCommand = new ConfirmReservationEmailCommand { ReservationID = response.Id };
+        _ = await mediator.Send(confirmReservationEmailCommand);
+    
 
         return Result.WithResponse(new ResponseData { Data = response });
     }

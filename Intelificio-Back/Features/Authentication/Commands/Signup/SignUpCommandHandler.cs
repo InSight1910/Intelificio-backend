@@ -57,7 +57,6 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             _ = await userManager.AddToRoleAsync(user, roleExist.Name!);
 
-            // Agrega el usuario a la comunidad informada desde el front
             var addUserCommunityCommand = new AddUserCommunityCommand
             {
                 User = new AddUserObject
@@ -72,7 +71,7 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             if (!IsMassive)
             {
-                // Envia el correo al usuario llamando al SingleUserConfirmationEmailCommand
+                
                 var confirmEmailCommand = new SingleUserConfirmationEmailCommand
                 {
                     Users = new List<User> { user },
@@ -80,16 +79,6 @@ namespace Backend.Features.Authentication.Commands.Signup
                 };
                 var confirmEmailResult = await mediator.Send(confirmEmailCommand);
                 if (confirmEmailResult.IsFailure) return Result.Failure(confirmEmailResult.Errors);
-
-                // Envia confirmación cuenta creada al administrador llamando al SingleUserSignUpSummaryCommand 
-                // var singleUserSignUpSummaryCommand = new SingleUserSignUpSummaryCommand
-                //{
-                //CreatorID = creatorID,
-                // user = user,
-                // CommunityID = CommunityID
-                // };
-                //  var singleUserSignUpSummaryCommandResult = await mediator.Send(singleUserSignUpSummaryCommand);
-                // if (singleUserSignUpSummaryCommandResult.IsFailure) return Result.Failure(confirmEmailResult.Errors);
             }
 
             return Result.Success();

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Backend.Common.Helpers;
 using Backend.Common.Response;
-using Backend.Features.Authentication.Common;
-using Backend.Features.Notification.Commands.ConfirmEmail;
 using Backend.Features.Notification.Commands.MassUserConfirmationEmail;
 using Backend.Features.Notification.Common;
 using Backend.Models;
@@ -48,7 +46,9 @@ namespace Backend.Features.Notification.Commands.ConfirmEmailTwo
 
             foreach (var user in request.Users) 
             {
-                // Esto se lo puse para validar y pasa, el usuario no es null
+
+                var userEmail = await _userManager.FindByEmailAsync(user.Email);
+
                 if (user == null || string.IsNullOrWhiteSpace(user.Email))
                 {
                     _logger.LogWarning("User is null or has an invalid email. Skipping user.");
@@ -56,7 +56,7 @@ namespace Backend.Features.Notification.Commands.ConfirmEmailTwo
                 }
 
                 // aquí le agregue el ConfigureAwait(false);
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(userEmail);
 
                 templates.Add(new MassUserConfirmationEmailTemplate
                 {

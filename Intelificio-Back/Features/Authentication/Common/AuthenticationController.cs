@@ -10,7 +10,6 @@ using Backend.Features.Authentication.Commands.UpdateUser;
 using Backend.Features.Authentication.Queries.GetAllRoles;
 using Backend.Features.Authentication.Queries.GetAllUserAdmin;
 using Backend.Features.Authentication.Queries.GetUserByEmail;
-using Backend.Features.Notification.Commands.ConfirmEmailTwo;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
