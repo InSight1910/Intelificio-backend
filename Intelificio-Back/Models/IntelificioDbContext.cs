@@ -65,12 +65,12 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
         _ = builder.ApplySoftDeleteQueryFilter();
 
         _ = builder.Entity<Guest>(entity =>
-           {
+        {
             _ = entity.HasKey(p => p.ID);
             _ = entity.HasOne(p => p.Unit)
-               .WithMany(p => p.Guests)
-               .HasForeignKey(p => p.UnitId);
-           });
+                .WithMany(p => p.Guests)
+                .HasForeignKey(p => p.UnitId);
+        });
 
         _ = builder.Entity<Charge>(entity =>
         {
@@ -85,13 +85,13 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
         _ = builder.Entity<Package>(entity =>
         {
-            _ = entity.HasOne(p => p.Owner)
+            _ = entity.HasOne(p => p.Recipient)
                 .WithMany(p => p.Packages)
-                .HasForeignKey(p => p.OwnerId);
+                .HasForeignKey(p => p.RecipientId);
 
-            _ = entity.HasOne(p => p.Staff)
+            _ = entity.HasOne(p => p.Concierge)
                 .WithMany()
-                .HasForeignKey(p => p.StaffId);
+                .HasForeignKey(p => p.ConciergeId);
         });
 
         _ = builder.Entity<Expense>(entity =>
@@ -181,7 +181,7 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
                 .WithMany(p => p.Units);
 
             _ = entity.HasMany(p => p.Guests)
-                        .WithOne(p => p.Unit);
+                .WithOne(p => p.Unit);
         });
 
         _ = builder.Entity<User>(entity =>
@@ -246,9 +246,8 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasKey(p => p.ID);
 
             _ = entity.HasMany(p => p.Maintenances)
-                       .WithOne(p => p.CommonSpace)
-                    .HasForeignKey(p => p.CommonSpaceID);
-
+                .WithOne(p => p.CommonSpace)
+                .HasForeignKey(p => p.CommonSpaceID);
         });
     }
 }

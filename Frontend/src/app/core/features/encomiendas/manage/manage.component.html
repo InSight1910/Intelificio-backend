@@ -1,1 +1,111 @@
-<p>manage works!</p>
+<div class="box mt-6 is-shadowless">
+  <h3 class="title is-3">Registrar nueva encomienda</h3>
+
+  <div class="mt-6 mb-4">
+    <form>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label for="packageNumber" class="label">Numero de paquete</label>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input type="text" name="packageNumber" class="input" />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="rut">RUT Remitente</label>
+          </div>
+
+          <div class="field has-addons">
+            <p class="control is-expanded">
+              <input
+                class="input"
+                type="text"
+                name="rut"
+                placeholder="12.345.678-9"
+                #rut
+              />
+            </p>
+            <p class="control">
+              <button (click)="onSearch(rut.value)" class="button is-info">
+                <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
+              </button>
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="rut">Conserje</label>
+          </div>
+
+          <div class="field is-expanded">
+            <div class="select is-fullwidth">
+              <select name="" id="">
+                <option value="Conserje 1">Conserje 1</option>
+                <option value="Conserje 2">Conserje 2</option>
+                <option value="Conserje 3">Conserje 3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="column is-align-content-end">
+          <button class="button my-auto is-fullwidth">
+            <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
+            >Recepcionar encomienda
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="box mt-6 is-shadowless">
+  <h3 class="title">Lista de encomiendas</h3>
+  <div class="table-container">
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>Numero de paquete</th>
+          <th>Remitente</th>
+          <th>Conserje</th>
+          <th>Fecha de recepcion</th>
+          <th>Estado</th>
+          <th>Entregado a</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>123456</td>
+          <td></td>
+          <td>Conserje 1</td>
+          <td>12/12/2021</td>
+          <td>En bodega</td>
+          <td>Juan Alberto Hurtado Mendoza</td>
+          <td>
+            <div class="columns">
+              <div class="column">
+                <button class="button">
+                  <span class="icon mr-1"
+                    ><i class="fa-regular fa-bell"></i
+                  ></span>
+                  Notificar
+                </button>
+              </div>
+              <div class="column">
+                <button class="button">
+                  <span class="icon mr-1"
+                    ><i class="fa-regular fa-circle-check"></i
+                  ></span>
+                  Entregado
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
