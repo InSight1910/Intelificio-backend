@@ -4,6 +4,7 @@ using Backend.Common.Response;
 using Backend.Features.Notification.Commands.SingleMessage;
 using Backend.Features.Notification.Common;
 using Backend.Models;
+using Backend.Models.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SendGrid.Helpers.Mail;
@@ -34,7 +35,9 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             .FirstOrDefaultAsync(cancellationToken);
         if (package == null) return Result.Failure(NotificationErrors.PackageNotFound);
 
-        if (package.NotificacionSent < 3)
+        var currentDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+
+        if ((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING || package.NotificacionSent == 0)
         {
             var recipients = new List<EmailAddress>();
             recipients.Add(new EmailAddress(
@@ -71,11 +74,7 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
 
             return Result.Success();
         }
-        else
-        {
-            return Result.Failure(NotificationErrors.LimmitNotificationSentOnPackage); 
-        }
-
+        return Result.Failure(NotificationErrors.LimmitNotificationSentOnPackage);
 
     }
 }
