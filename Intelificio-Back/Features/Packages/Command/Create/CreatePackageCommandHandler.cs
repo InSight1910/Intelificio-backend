@@ -11,16 +11,17 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
 {
     public async Task<Result> Handle(CreatePackageCommand request, CancellationToken cancellationToken)
     {
-        var checkConcierge = await context.Users.AnyAsync(x => x.Id == request.ConciergeId);
-        if (!checkConcierge) return Result.Failure(null);
+        if (!await context.Community.AnyAsync(x => x.ID == request.CommunityId)) return Result.Failure(null);
 
-        var checkRecipient = await context.Users.AnyAsync(x => x.Id == request.RecipientId);
-        if (!checkRecipient) return Result.Failure(null);
+        if (!await context.Users.AnyAsync(x => x.Id == request.ConciergeId)) return Result.Failure(null);
 
-        var checkTrackNumber = await context.Package.AnyAsync(x => x.TrackingNumber == request.TrackingNumber);
-        if (!checkTrackNumber) return Result.Failure(null);
+        if (!await context.Users.AnyAsync(x => x.Id == request.RecipientId)) return Result.Failure(null);
+
+        if (await context.Package.AnyAsync(x => x.TrackingNumber == request.TrackingNumber))
+            return Result.Failure(null);
 
         var package = mapper.Map<Package>(request);
+
 
         var result = await context.Package.AddAsync(package);
         await context.SaveChangesAsync(cancellationToken);

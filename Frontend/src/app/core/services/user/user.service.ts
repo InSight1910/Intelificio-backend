@@ -12,6 +12,12 @@ export class UserService {
   http: HttpClient = inject(HttpClient);
 
   getByRut(rut: string) {
-    return this.http.get<Responses<UserRut>>(`${this.baseUrl}/rut/${rut}`);
+    return this.http.get<Responses<UserRut>>(`${this.baseUrl}/GetByRut/${rut}`);
+  }
+
+  getConcierges(communityId: number) {
+    return this.http.get<Responses<UserRut[]>>(
+      `${this.baseUrl}/concierges/${communityId}`
+    );
   }
 }

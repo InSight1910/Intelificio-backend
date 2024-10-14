@@ -1,39 +1,60 @@
 <div class="box mt-6 is-shadowless">
   <h3 class="title is-3">Registrar nueva encomienda</h3>
-
   <div class="mt-6 mb-4">
-    <form>
+    <form [formGroup]="form" (submit)="onSubmit($event)">
+      <input type="hidden" name="" formControlName="recipientId" />
       <div class="columns">
+        <div class="column">
+          <div class="is-flex is-flex-direction-row">
+            <div>
+              <div class="field">
+                <label class="label" for="rut">RUT Destinatario</label>
+              </div>
+
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  <input
+                    class="input"
+                    type="text"
+                    name="rut"
+                    formControlName="recipientRut"
+                    placeholder="12.345.678-9"
+                    appFormatRut
+                    #rut
+                  />
+                </p>
+                <p class="control">
+                  <button (click)="onSearch(rut.value)" class="button is-info">
+                    <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
+                  </button>
+                </p>
+              </div>
+              <div>
+                @if (errorMessageSearch) {
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  {{ errorMessageSearch }}
+                </p>
+                } @if (recipient) {
+                <p>{{ recipient.name }}</p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="column">
           <div class="field">
             <label for="packageNumber" class="label">Numero de paquete</label>
           </div>
           <div class="field">
             <div class="control">
-              <input type="text" name="packageNumber" class="input" />
-            </div>
-          </div>
-        </div>
-        <div class="column">
-          <div class="field">
-            <label class="label" for="rut">RUT Remitente</label>
-          </div>
-
-          <div class="field has-addons">
-            <p class="control is-expanded">
               <input
-                class="input"
                 type="text"
-                name="rut"
-                placeholder="12.345.678-9"
-                #rut
+                name="packageNumber"
+                class="input"
+                formControlName="trackingNumber"
               />
-            </p>
-            <p class="control">
-              <button (click)="onSearch(rut.value)" class="button is-info">
-                <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
-              </button>
-            </p>
+            </div>
           </div>
         </div>
         <div class="column">
@@ -43,16 +64,23 @@
 
           <div class="field is-expanded">
             <div class="select is-fullwidth">
-              <select name="" id="">
-                <option value="Conserje 1">Conserje 1</option>
-                <option value="Conserje 2">Conserje 2</option>
-                <option value="Conserje 3">Conserje 3</option>
+              <select name="" id="" formControlName="conciergeId">
+                <option value="">Seleccionar conserje</option>
+                <option
+                  *ngFor="let concierge of concierges | async"
+                  [value]="concierge.id"
+                >
+                  {{ concierge.name }}
+                </option>
               </select>
             </div>
           </div>
         </div>
-        <div class="column is-align-content-end">
-          <button class="button my-auto is-fullwidth">
+        <div class="column is-align-content-center mt-5">
+          <button
+            class="button my-auto is-fullwidth"
+            [disabled]="!canCreate || form.invalid"
+          >
             <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
             >Recepcionar encomienda
           </button>
@@ -68,7 +96,7 @@
       <thead>
         <tr>
           <th>Numero de paquete</th>
-          <th>Remitente</th>
+          <th>Destinatario</th>
           <th>Conserje</th>
           <th>Fecha de recepcion</th>
           <th>Estado</th>
@@ -77,13 +105,15 @@
         </tr>
       </thead>
       <tbody>
+        @for(package of packages | async; track $index) {
+
         <tr>
-          <td>123456</td>
-          <td></td>
-          <td>Conserje 1</td>
-          <td>12/12/2021</td>
-          <td>En bodega</td>
-          <td>Juan Alberto Hurtado Mendoza</td>
+          <td>{{ package.trackingNumber }}</td>
+          <td>{{ package.recipientName }}</td>
+          <td>{{ package.conciergeName }}</td>
+          <td>{{ package.receptionDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ packageStatus[package.status] | titlecase }}</td>
+          <td>{{ package.deliveredToName }}</td>
           <td>
             <div class="columns">
               <div class="column">
@@ -95,7 +125,7 @@
                 </button>
               </div>
               <div class="column">
-                <button class="button">
+                <button class="button" (click)="markAsDelivered(package.id)">
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-circle-check"></i
                   ></span>
@@ -105,6 +135,56 @@
             </div>
           </td>
         </tr>
+        @if (openMarkAsDelivered().get(package.id)) {
+        <app-modal-package
+          buttonTitle="Entregar"
+          title="Entregar paquete"
+          [isValid]="canMarkDelivered"
+          (onModalSubmit)="onSubmitMarkDelivered()"
+        >
+          <form
+            (submit)="onSubmitMarkDelivered($event)"
+            [formGroup]="formMarkDelivered"
+          >
+            <div class="field">
+              <label class="label" for="rut">RUT quien retira</label>
+            </div>
+
+            <div class="field has-addons">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  name="rut"
+                  placeholder="12.345.678-9"
+                  appFormatRut
+                  #deliveryRut
+                />
+              </p>
+              <p class="control">
+                <button
+                  (click)="onSearch(deliveryRut.value, true)"
+                  type="button"
+                  class="button is-info"
+                >
+                  <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
+                </button>
+              </p>
+            </div>
+            <div class="field">
+              <label class="label" for="name">Nombre quien retira</label>
+              <div class="control">
+                <input
+                  type="text"
+                  name="name"
+                  class="input"
+                  formControlName="deliveryToName"
+                />
+              </div>
+            </div>
+          </form>
+        </app-modal-package>
+        } }
       </tbody>
     </table>
   </div>
