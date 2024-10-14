@@ -19,6 +19,15 @@ public class UserController(IMediator mediator) : ControllerBase
             error => NotFound(error));
     }
 
+    [HttpGet("[action]/{id}/{rut}")]
+    public async Task<IActionResult> GetByRutCommunity(int id, string rut)
+    {
+        var result = await mediator.Send(new GetByRutQuery { Rut = rut, CommunityId = id });
+        return result.Match(
+            user => Ok(user),
+            error => NotFound(error));
+    }
+
     [HttpGet("concierges/{communityId}")]
     public async Task<IActionResult> GetConciergesByCommunityId(int communityId)
     {

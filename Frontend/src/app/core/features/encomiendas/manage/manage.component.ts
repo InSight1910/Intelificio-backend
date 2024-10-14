@@ -129,18 +129,18 @@ export class ManageEncomiendasComponent {
       const packages: CreatePackage = {
         ...this.form.value,
         communityId: community?.id!,
+        recipientId: this.recipient.id,
       };
       this.packageService.create(packages).subscribe(({ data }) => {
         this.packages.pipe(map((packages) => [...packages, data]));
         if (data != null) {
           this.form.reset();
           this.enableSearch = false;
-          this.recipient = new class implements UserRut {
-            id: number =  0;
-            name: string = "";
-          }
-          this.loadPackages();
+          this.recipient = {} as UserRut;
+            this.packages = this.packages.pipe(map((packages) => packages));
         }
+    
+     
       });
     });
 
@@ -163,20 +163,36 @@ export class ManageEncomiendasComponent {
     });
   }
 
-  markAsDelivered(id: number) {
+  openModalMarkAsDelivered(id: number) {
     var packageSelected = this.openMarkAsDelivered();
     packageSelected.set(id, true);
-    console.log(packageSelected);
+
     this.selectedPackageId = id;
   }
 
+  closeModalMarkAsDelivered(id: number) {
+    var packageSelected = this.openMarkAsDelivered();
+    packageSelected.delete(id);
+
+    this.selectedPackageId = 0;
+  }
+
   onSubmitMarkDelivered(event?: Event | null) {
+    console.log(this.formMarkDelivered.invalid, this.selectedPackageId);
+    console.log(this.formMarkDelivered.value);
+    if (this.formMarkDelivered.invalid || this.selectedPackageId == 0) return;
     this.packageService
       .markAsDelivered(
         this.selectedPackageId,
         this.formMarkDelivered.get('deliveryToId')?.value
       )
-      .subscribe();
+      .subscribe({
+        next: (response) => {
+          this.loadPackages();
+          this.closeModalMarkAsDelivered(this.selectedPackageId);
+          this.formMarkDelivered.reset();
+        },
+      });
   }
 
   SendNotificationManually(id: number) {

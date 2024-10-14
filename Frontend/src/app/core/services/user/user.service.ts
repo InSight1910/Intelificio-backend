@@ -15,6 +15,12 @@ export class UserService {
     return this.http.get<Responses<UserRut>>(`${this.baseUrl}/GetByRut/${rut}`);
   }
 
+  getByRutCommunity(rut: string, communityId: number) {
+    return this.http.get<Responses<UserRut>>(
+      `${this.baseUrl}/GetByRutCommunity/${communityId}/${rut}`
+    );
+  }
+
   getConcierges(communityId: number) {
     return this.http.get<Responses<UserRut[]>>(
       `${this.baseUrl}/concierges/${communityId}`

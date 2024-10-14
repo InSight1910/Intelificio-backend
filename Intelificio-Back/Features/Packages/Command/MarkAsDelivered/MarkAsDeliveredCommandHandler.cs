@@ -13,9 +13,13 @@ public class MarkAsDeliveredCommandHandler(IntelificioDbContext context, IMediat
 {
     public async Task<Result> Handle(MarkAsDeliveredCommand request, CancellationToken cancellationToken)
     {
-        var package = await context.Package.Where(x => x.ID == request.Id).FirstOrDefaultAsync();
+        var package = await context.Package
+            .Include(x => x.Recipient)
+            .Include(x => x.Concierge)
+            .Include(x => x.DeliveredTo)
+            .Where(x => x.ID == request.Id).FirstOrDefaultAsync();
 
-        if (await context.Users.AnyAsync(x => x.Id == request.DeliveredToId)) return Result.Failure(null);
+        if (!await context.Users.AnyAsync(x => x.Id == request.DeliveredToId)) return Result.Failure(null);
 
         if (package is null)
             return Result.Failure(PackageErrors.PackageNotFoundOnMarkAsDelivered);

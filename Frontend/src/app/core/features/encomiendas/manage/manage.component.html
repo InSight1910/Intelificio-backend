@@ -45,7 +45,7 @@
         </div>
         <div class="column">
           <div class="field">
-            <label class="label">Número de paquete</label>
+            <label class="label">N�mero de paquete</label>
           </div>
           <div class="field">
             <div class="control">
@@ -137,7 +137,7 @@
                 </div>
 
               <div class="column">
-                <button class="button" (click)="markAsDelivered(singlePackage.id)">
+                <button class="button" (click)="openModalMarkAsDelivered(singlePackage.id)">
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-circle-check"></i
                   ></span>
@@ -153,6 +153,7 @@
           title="Entregar paquete"
           [isValid]="canMarkDelivered"
           (onModalSubmit)="onSubmitMarkDelivered()"
+          (close)="closeModalMarkAsDelivered(package.id)"
         >
           <form
             (submit)="onSubmitMarkDelivered($event)"
@@ -171,6 +172,7 @@
                   placeholder="12.345.678-9"
                   appFormatRut
                   #deliveryRut
+                  formControlName="deliveryToRut"
                 />
               </p>
               <p class="control">

@@ -14,9 +14,11 @@ public class GetConciergesQueryHandler(IntelificioDbContext context) : IRequestH
         var role = await context.Roles.Where(x => x.NormalizedName == "Conserje".ToUpper()).Select(x => x.Id)
             .FirstAsync();
         var concierges =
-            await context.Users.Where(x =>
+            await context.Users
+                .Include(x => x.Communities)
+                .Where(x =>
                     context.UserRoles.Any(ur => ur.RoleId == role && ur.UserId == x.Id) &&
-                    context.Community.Any(x => x.ID == request.CommunityId))
+                    x.Communities.Any(c => c.ID == request.CommunityId))
                 .Select(x => new GetConciergesQueryResponse
                 {
                     Id = x.Id,

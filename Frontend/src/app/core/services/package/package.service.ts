@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import { CreatePackage, Package } from '../../../shared/models/package.model';
+import {
+  CreatePackage,
+  MyPackages,
+  Package,
+} from '../../../shared/models/package.model';
 import { Responses } from '../../../shared/models/response.model';
 
 @Injectable({
@@ -21,9 +25,15 @@ export class PackageService {
     );
   }
 
+  getMyPackages(communityId: number, userId: number) {
+    return this.http.get<Responses<MyPackages[]>>(
+      `${this.baseUrl}/GetMyPackages/${communityId}/${userId}`
+    );
+  }
+
   markAsDelivered(id: number, deliveredToId: number) {
-    return this.http.put<Responses<Package>>(
-      `${this.baseUrl}/delivered/${id}/${deliveredToId}`,
+    return this.http.put(
+      `${this.baseUrl}/markAsDelivered/${id}/${deliveredToId}`,
       {}
     );
   }

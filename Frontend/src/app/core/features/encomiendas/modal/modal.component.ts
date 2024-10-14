@@ -29,6 +29,7 @@ export class ModalPackageComponent {
   @Input() isDeleting: boolean = false;
 
   onSubmit(event: Event) {
+    console.log(this.isLoading, this.isValid);
     if (!this.isLoading || this.isValid) {
       this.formDirective.onSubmit(event);
       this.onModalSubmit.emit();

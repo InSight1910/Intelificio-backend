@@ -17,6 +17,7 @@ import { ConfirmReservationComponent } from './core/features/reservation/confirm
 import { MyReservationsComponent } from './core/features/reservation/my-reservations/my-reservations.component';
 import { ConfirmEmailComponent } from './core/features/authentication/confirm-email/confirm-email.component';
 import { ManageEncomiendasComponent } from './core/features/encomiendas/manage/manage.component';
+import { MyPackagesComponent } from './core/features/encomiendas/my-packages/my-packages.component';
 
 export const routes: Routes = [
   {
@@ -94,5 +95,9 @@ export const routes: Routes = [
   {
     path: 'RegistroEncomienda',
     component: ManageEncomiendasComponent,
+  },
+  {
+    path: 'MisEncomiendas',
+    component: MyPackagesComponent,
   },
 ];
