@@ -64,7 +64,12 @@ export class MyReservationsComponent {
   }
 
   cancel(id : number) {
-    this.reservationService.cancelReservation(id).subscribe({});
-    this.loadReservations();
+    this.reservationService.cancelReservation(id).subscribe({
+      next: (response) => {
+        if(response.status === 204){
+          this.loadReservations();
+        }
+      }
+    });
   }
 }
