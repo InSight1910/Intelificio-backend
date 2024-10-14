@@ -34,33 +34,48 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             .FirstOrDefaultAsync(cancellationToken);
         if (package == null) return Result.Failure(NotificationErrors.PackageNotFound);
 
-        var recipients = new List<EmailAddress>();
-        recipients.Add(new EmailAddress(
-            package.Recipient.Email ?? "intelificio@duocuc.cl",
-            $"{package.Recipient.FirstName} {package.Recipient.LastName}"
-        ));
-
-        var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "Package")
-            .FirstOrDefaultAsync(cancellationToken);
-        if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnPackage);
-        if (string.IsNullOrWhiteSpace(templateNotification.TemplateId))
-            return Result.Failure(NotificationErrors.TemplateIdIsNullOnPackage);
-
-        var from = new EmailAddress("intelificio@duocuc.cl", package.Community.Name + " a través de Intelificio");
-
-        var template = new PackageTemplate
+        if (package.NotificacionSent < 3)
         {
-            CommunityName = package.Community.Name,
-            Day = package.ReceptionDate.ToString("dd-MM-yyyy"),
-            Hour = package.ReceptionDate.ToString("hh:mm tt", CultureInfo.InvariantCulture),
-            SenderAddress = $"{package.Community.Address}{", "}{package.Community.Municipality.Name}",
-            Name = package.Recipient.FirstName
-        };
+            var recipients = new List<EmailAddress>();
+            recipients.Add(new EmailAddress(
+                package.Recipient.Email ?? "intelificio@duocuc.cl",
+                $"{package.Recipient.FirstName} {package.Recipient.LastName}"
+            ));
 
-        var result =
-            await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template, templateNotification.TemplateId,
-                from, recipients);
-        if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackage);
-        return Result.Success();
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "Package")
+                .FirstOrDefaultAsync(cancellationToken);
+            if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnPackage);
+            if (string.IsNullOrWhiteSpace(templateNotification.TemplateId))
+                return Result.Failure(NotificationErrors.TemplateIdIsNullOnPackage);
+
+            var from = new EmailAddress("intelificio@duocuc.cl", package.Community.Name + " a través de Intelificio");
+
+            var template = new PackageTemplate
+            {
+                CommunityName = package.Community.Name,
+                Day = package.ReceptionDate.ToString("dd-MM-yyyy"),
+                Hour = package.ReceptionDate.ToString("hh:mm tt", CultureInfo.InvariantCulture),
+                SenderAddress = $"{package.Community.Address}{", "}{package.Community.Municipality.Name}",
+                Name = package.Recipient.FirstName,
+                TrackingNumber = package.TrackingNumber
+            };
+
+            var result =
+                await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template, templateNotification.TemplateId,
+                    from, recipients);
+            if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackage);
+
+            package.NotificacionSent += 1;
+            package.NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
+        }
+        else
+        {
+            return Result.Failure(NotificationErrors.LimmitNotificationSentOnPackage); 
+        }
+
+
     }
 }

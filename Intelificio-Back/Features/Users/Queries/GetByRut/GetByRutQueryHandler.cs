@@ -11,7 +11,8 @@ public class GetByRutQueryHandler(IntelificioDbContext context) : IRequestHandle
     public async Task<Result> Handle(GetByRutQuery request, CancellationToken cancellationToken)
     {
         var user = await context.Users
-            .Where(x => x.Rut == request.Rut && x.Communities.Any(c => x.Id == request.CommunityId) || request.CommunityId == null)
+            .Where(x => x.Rut == request.Rut &&
+                        (x.Communities.Any(c => c.ID == request.CommunityId) || request.CommunityId == null))
             .Select(x => new
             {
                 Id = x.Id,

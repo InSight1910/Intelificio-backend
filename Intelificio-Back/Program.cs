@@ -49,6 +49,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<ReservationProfile>();
     cfg.AddProfile<AttendeeProfile>();
     cfg.AddProfile<MaintenanceProfile>();
+    cfg.AddProfile<ConfirmEmailProfile>();
     cfg.AddProfile<PackagesProfile>();
 });
 

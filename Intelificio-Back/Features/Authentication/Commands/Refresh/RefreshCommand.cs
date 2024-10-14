@@ -7,5 +7,6 @@ namespace Backend.Features.Authentication.Commands.Refresh
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }
+
     }
 }

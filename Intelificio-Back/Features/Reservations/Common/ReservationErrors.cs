@@ -58,15 +58,20 @@ public class ReservationErrors
         Message = "No se encontraron registros a su nombre."
     };
 
-    public static Error ConfirmationTokenNotCorrect = new()
+    public static Error ReservationsNotFoundOnQueryByID = new()
     {
-        Code = "Confirmation.ConfirmationTokenNotCorrect",
-        Message = "El token no es valido."
+        Code = "Reservation.GetReservationById.ReservationsNotFoundOnQueryByID",
+        Message = "No se encontró reserva consultada."
     };
 
-    public static Error ConfirmationTokenExpired = new()
+    public static Error ExpiredTokenOnConfirmReservation = new()
     {
-        Code = "Confirmation.ConfirmationTokenExpired",
-        Message = "El token se encuentra expirado."
+        Code = "Reservation.ConfirmReservation.ExpiredTokenOnConfirmReservation",
+        Message = "Ha expirado el tiempo para confirmar la reserva."
+    };
+    public static Error TokenNotFoundOnReservationOnConfirmReservation = new()
+    {
+        Code = "Reservation.ConfirmReservation.TokenNotFoundOnReservationOnConfirmReservation",
+        Message = "Su reserva ya se encuentra confirmada."
     };
 }

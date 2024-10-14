@@ -43,7 +43,7 @@ namespace Backend.Features.Notification.Commands.MaintenanceCancellation
                                                   SenderAddress = $"{c.Address}, {c.Municipality.Name}",
                                                   CommonSpaceName = commonSpace.Name,
                                                   Recipients = c.Users
-                                                      .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))
+                                                      .Select(user => new EmailAddress(user.Email, user.ToString()))
                                                       .ToList()
                                               })
                                               .FirstOrDefaultAsync(cancellationToken: cancellationToken);

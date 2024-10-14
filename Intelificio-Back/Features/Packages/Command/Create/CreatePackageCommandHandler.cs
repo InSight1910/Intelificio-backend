@@ -1,5 +1,6 @@
 using AutoMapper;
 using Backend.Common.Response;
+using Backend.Features.Notification.Commands.Package;
 using Backend.Features.Packages.Common;
 using Backend.Models;
 using Backend.Models.Enums;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Packages.Command.Create;
 
-public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper mapper)
+public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper mapper, IMediator mediator)
     : IRequestHandler<CreatePackageCommand, Result>
 {
     public async Task<Result> Handle(CreatePackageCommand request, CancellationToken cancellationToken)
@@ -35,9 +36,8 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
 
         var package = mapper.Map<Package>(request);
 
-
         var result = await context.Package.AddAsync(package);
-        await context.SaveChangesAsync(cancellationToken);
+        var packageCreated = await context.SaveChangesAsync(cancellationToken);
 
         var response = new CreatePackageCommandResponse
         {
@@ -48,8 +48,12 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
                 .FirstAsync(),
             RecipientName = await context.Users.Where(x => x.Id == result.Entity.RecipientId).Select(x => x.ToString())
                 .FirstAsync(),
-            TrackingNumber = result.Entity.TrackingNumber
+            TrackingNumber = result.Entity.TrackingNumber,
+            NotificacionSent = result.Entity.NotificacionSent
         };
+
+        var packageCommand = new PackageCommand { PackageID = response.Id };
+        _ = await mediator.Send(packageCommand);
 
         return Result.WithResponse(new ResponseData { Data = response });
     }

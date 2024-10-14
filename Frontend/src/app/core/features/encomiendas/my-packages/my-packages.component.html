@@ -13,14 +13,14 @@
         </tr>
       </thead>
       <tbody>
-        @for(package of packages | async; track $index) {
+        @for(singlePackage of packages | async; track $index) {
 
         <tr>
-          <td>{{ package.trackingNumber }}</td>
-          <td>{{ package.conciergeName }}</td>
-          <td>{{ package.receptionDate | date : "dd/MM/yyyy" }}</td>
-          <td>{{ packageStatus[package.status] | titlecase }}</td>
-          <td>{{ package.assignedTo }}</td>
+          <td>{{ singlePackage.trackingNumber }}</td>
+          <td>{{ singlePackage.conciergeName }}</td>
+          <td>{{ singlePackage.receptionDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ packageStatus[singlePackage.status] | titlecase }}</td>
+          <td>{{ singlePackage.assignedTo }}</td>
           <td>
             <button class="button">
               <span class="icon mr-1"><i class="fa-regular fa-user"></i></span>

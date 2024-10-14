@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import {Login, UpdateUser, UserEmail} from '../../../shared/models/auth.model';
+import {ConfirmEmail, Login, UpdateUser, UserEmail} from '../../../shared/models/auth.model';
 import { map, Observable } from 'rxjs';
 import { singUp } from '../../../shared/models/singup.model';
 import { Role } from '../../../shared/models/role.model';
@@ -95,4 +95,11 @@ export class AuthService {
       }
     );
   }
+
+  confirmEmail(confirmEmail: ConfirmEmail): Observable<HttpResponse<any>> {
+    return this.http.post<any>(`${this.apiUrl}/auth/confirm`, confirmEmail, {
+      observe: 'response',
+    });
+  }
+
 }

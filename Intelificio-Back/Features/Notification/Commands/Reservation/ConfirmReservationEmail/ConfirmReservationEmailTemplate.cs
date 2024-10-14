@@ -1,6 +1,7 @@
 ﻿namespace Backend.Features.Notification.Commands.Reservation.ReservationConfirmation
 {
-    public class ReservationConfirmationTemplate
+    public class ConfirmReservationEmailTemplate
+
     {
         public required string CommunityName { get; set; } // Nombre de comunidad | Ejemplo: Las Brisas de San Juan
         public required string CommonSpaceName { get; set; } // Nombre de espacio común | Ejemplo: Sala de estar

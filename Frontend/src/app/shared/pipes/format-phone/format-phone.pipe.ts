@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatPhonePipe implements PipeTransform {
   transform(phoneNumber: string): string {
-    console.log(phoneNumber);
     if (!phoneNumber) {
       return '';
     }

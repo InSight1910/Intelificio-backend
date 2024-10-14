@@ -6,6 +6,7 @@ export interface Package {
   trackingNumber: string;
   status: PackageStatus;
   receptionDate: Date;
+  notificacionSent: number;
 }
 
 export enum PackageStatus {

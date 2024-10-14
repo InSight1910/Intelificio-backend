@@ -17,6 +17,11 @@ namespace Backend.Features.Authentication.Common
             Code = "Authentication.SignUp.AlreadyCreated",
             Message = string.Format("El correo {0} ya se encuentra en nuestro sistema.", email)
         };
+        public static Error AlreadyCreatedRut(string rut) => new Error
+        {
+            Code = "Authentication.SignUp.AlreadyCreatedRut",
+            Message = string.Format("El Rut {0} ya se encuentra en nuestro sistema.", rut)
+        };
         public static Error UserNotFound = new Error
         {
             Code = "Authentication.LogIn.UserNotFound",
@@ -43,11 +48,6 @@ namespace Backend.Features.Authentication.Common
         {
             Code = "Authentication.ConfirmEmail.UserNotFound",
             Message = "El usuario indicado no existe en nuestros registros."
-        };
-        public static Error InvalidToken = new Error
-        {
-            Code = "Authentication.ConfirmEmail.InvalidToken",
-            Message = "El token indicado es invalido."
         };
 
         public static Error RefreshTokenError(IEnumerable<string> errors) => new Error
@@ -79,6 +79,22 @@ namespace Backend.Features.Authentication.Common
         {
             Code = "Authentication.ChangePasswordOne.TemplateIdIsNullOnChangePasswordOne",
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+
+        public static Error USerNotSendOnConfirmEmail = new()
+        {
+            Code = "Authentication.ConfirmEmail.EmailNotSendOnConfirmEmail",
+            Message = "No existe un usuario registrado bajo este correo."
+        };
+        public static Error UserAlreadyConfirmThisEmailOnOnConfirmEmail = new()
+        {
+            Code = "Authentication.ConfirmEmail.UserAlreadyConfirmThisEmailOnOnConfirmEmail",
+            Message = "El usuario ya ha confirmado este correo."
+        };
+        public static Error InvalidToken = new Error
+        {
+            Code = "Authentication.ConfirmEmail.InvalidToken",
+            Message = "El token indicado es invalido."
         };
 
 

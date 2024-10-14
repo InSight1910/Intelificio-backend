@@ -3,8 +3,8 @@ export interface singUp {
     lastName: string;
     email: string;
     phoneNumber: string;
-    password: string;
+    password?: string;
     rut: string;
     role: string;
-    birthDate: string 
+    birthDate: string
 }

@@ -10,9 +10,10 @@ import { FormatRutDirective } from '../../../../shared/directives/format-rut/for
 import { FormatRutPipe } from '../../../../shared/pipes/format-rut/format-rut.pipe';
 import { UserService } from '../../../services/user/user.service';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
+  ReactiveFormsModule, ValidationErrors, ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -27,6 +28,8 @@ import {
 } from '../../../../shared/models/package.model';
 import { PackageService } from '../../../services/package/package.service';
 import { ModalPackageComponent } from '../modal/modal.component';
+import {NotificationService} from "../../../services/notification/notification.service";
+import {Contact} from "../../../../shared/models/contact.model";
 
 @Component({
   selector: 'app-package-manage',
@@ -43,14 +46,17 @@ import { ModalPackageComponent } from '../modal/modal.component';
 })
 export class ManageEncomiendasComponent {
   userService: UserService = inject(UserService);
+  notificationService : NotificationService = inject(NotificationService);
   packageService: PackageService = inject(PackageService);
   fb: FormBuilder = inject(FormBuilder);
   store: Store<AppState> = inject(Store<AppState>);
   recipient!: UserRut;
   errorMessageSearch: string = '';
+  searchTerm: string = '';
   openMarkAsDelivered = signal(new Map<number, boolean>());
   selectedPackageId: number = 0;
   deliveredToId: number = 0;
+  enableSearch:boolean = false;
   @ViewChild('recipientName') recipientName!: ElementRef;
 
   form: FormGroup = this.fb.group(
@@ -72,6 +78,7 @@ export class ManageEncomiendasComponent {
   concierges: Observable<UserRut[]> = new Observable<UserRut[]>();
   packages: Observable<Package[]> = new Observable<Package[]>();
   packageStatus = PackageStatus;
+  filteredpackages: Observable<Package[]> = new Observable<Package[]>();
   canCreate: boolean = false;
   canMarkDelivered: boolean = false;
 
@@ -83,12 +90,9 @@ export class ManageEncomiendasComponent {
   }
 
   onSearch(rut: string, isMarkDelivered: boolean = false) {
-    this.store.select(selectCommunity).subscribe((community) => {
+    if (rut != "" && rut != "-"){
       this.userService
-        .getByRutCommunity(
-          rut.replace(/[.\-]/g, '').toUpperCase(),
-          community?.id!
-        )
+        .getByRut(rut.replace(/[.\-]/g, '').toUpperCase())
         .subscribe({
           next: ({ data }) => {
             if (isMarkDelivered) {
@@ -115,7 +119,7 @@ export class ManageEncomiendasComponent {
             this.form.get('trackingNumber')?.disable();
           },
         });
-    });
+    }
   }
 
   onSubmit(event: Event) {
@@ -128,9 +132,15 @@ export class ManageEncomiendasComponent {
         recipientId: this.recipient.id,
       };
       this.packageService.create(packages).subscribe(({ data }) => {
-        this.packages = this.packages.pipe(map((packages) => packages));
-        this.form.reset();
-        this.recipient = {} as UserRut;
+        this.packages.pipe(map((packages) => [...packages, data]));
+        if (data != null) {
+          this.form.reset();
+          this.enableSearch = false;
+          this.recipient = {} as UserRut;
+            this.packages = this.packages.pipe(map((packages) => packages));
+        }
+
+
       });
     });
 
@@ -163,7 +173,6 @@ export class ManageEncomiendasComponent {
   closeModalMarkAsDelivered(id: number) {
     var packageSelected = this.openMarkAsDelivered();
     packageSelected.delete(id);
-
     this.selectedPackageId = 0;
   }
 
@@ -184,4 +193,20 @@ export class ManageEncomiendasComponent {
         },
       });
   }
+
+  SendNotificationManually(id: number) {
+    this.notificationService.resendNotification(id).subscribe((response) =>{
+      if(response.status === 204){
+        this.loadPackages();
+      }
+    });
+  }
+
+  onInputChange(controlName: string): void {
+    const control = this.form.get(controlName);
+    if (control) {
+      this.enableSearch = true;
+    }
+  }
+
 }

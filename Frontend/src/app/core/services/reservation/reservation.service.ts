@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { environment } from '../../../../environments/environment.development';
 import {
   CountReservation,
@@ -9,6 +9,7 @@ import {
   Reservation,
 } from '../../../shared/models/reservation.model';
 import { Responses } from '../../../shared/models/response.model';
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -42,13 +43,25 @@ export class ReservationService {
     );
   }
 
-  confirmReservation(reservationId: number, token: string) {
-    return this.http.post(`${this.baseUrl}/confirm`, { reservationId, token });
+  confirmReservation(reservationId: number, token: string): Observable<HttpResponse<any>> {
+    return this.http.post<any>(`${this.baseUrl}/confirm`, { reservationId, token },{ observe: 'response' });
   }
 
   getReservationsByUser(userId: number) {
     return this.http.get<Responses<MyReservation[]>>(
       `${this.baseUrl}/user/${userId}`
+    );
+  }
+
+  getReservationsById(reservationId: number): Observable<{ data: MyReservation }> {
+    return this.http.get<{data: MyReservation}>(
+      `${this.baseUrl}/${reservationId}`
+    );
+  }
+
+  cancelReservation(reservationId: number): Observable<HttpResponse<any>> {
+    return this.http.put<any>(
+      `${this.baseUrl}/CancelReservation/${reservationId}`,{},{ observe: 'response' }
     );
   }
 }
