@@ -1,5 +1,6 @@
 using AutoMapper;
 using Backend.Common.Response;
+using Backend.Features.Notification.Commands.Package;
 using Backend.Features.Packages.Common;
 using Backend.Models;
 using Backend.Models.Enums;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Packages.Command.Create;
 
-public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper mapper)
+public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper mapper, IMediator mediator)
     : IRequestHandler<CreatePackageCommand, Result>
 {
     public async Task<Result> Handle(CreatePackageCommand request, CancellationToken cancellationToken)
@@ -31,11 +32,18 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
 
         var package = mapper.Map<Package>(request);
 
+        TimeZoneInfo chileZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
+        package.ReceptionDate = TimeZoneInfo.ConvertTimeFromUtc(package.ReceptionDate, chileZone);
+        package.CreatedAt = TimeZoneInfo.ConvertTimeFromUtc(package.CreatedAt, chileZone);
+
 
         var result = await context.Package.AddAsync(package);
-        await context.SaveChangesAsync(cancellationToken);
+        var packageCreated = await context.SaveChangesAsync(cancellationToken);
 
         var response = mapper.Map<CreatePackageCommandResponse>(result.Entity);
+
+        var packageCommand = new PackageCommand { PackageID = response.Id };
+        _ = await mediator.Send(packageCommand);
 
         return Result.WithResponse(new ResponseData { Data = response });
     }

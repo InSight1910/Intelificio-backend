@@ -123,6 +123,13 @@ export class ManageEncomiendasComponent {
       };
       this.packageService.create(packages).subscribe(({ data }) => {
         this.packages.pipe(map((packages) => [...packages, data]));
+        if (data != null) {
+          this.form.reset();
+          this.recipient = new class implements UserRut {
+            id: number =  0;
+            name: string = "";
+          }
+        }
       });
     });
 

@@ -8,7 +8,7 @@
           <div class="is-flex is-flex-direction-row">
             <div>
               <div class="field">
-                <label class="label" for="rut">RUT Destinatario</label>
+                <label class="label">RUT Destinatario</label>
               </div>
 
               <div class="field has-addons">
@@ -44,7 +44,7 @@
         </div>
         <div class="column">
           <div class="field">
-            <label for="packageNumber" class="label">Numero de paquete</label>
+            <label class="label">Número de paquete</label>
           </div>
           <div class="field">
             <div class="control">
@@ -59,7 +59,7 @@
         </div>
         <div class="column">
           <div class="field">
-            <label class="label" for="rut">Conserje</label>
+            <label class="label" >Conserje</label>
           </div>
 
           <div class="field is-expanded">
@@ -76,14 +76,16 @@
             </div>
           </div>
         </div>
-        <div class="column is-align-content-center mt-5">
-          <button
-            class="button my-auto is-fullwidth"
-            [disabled]="!canCreate || form.invalid"
-          >
+        <div class="column">
+          <div class="column is-align-content-center mt-5">
+            <button
+              class="button my-auto is-fullwidth"
+              [disabled]="!canCreate || form.invalid"
+            >
             <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
             >Recepcionar encomienda
-          </button>
+            </button>
+          </div>
         </div>
       </div>
     </form>
@@ -105,15 +107,15 @@
         </tr>
       </thead>
       <tbody>
-        @for(package of packages | async; track $index) {
+        @for(singlePackage of packages | async; track $index) {
 
         <tr>
-          <td>{{ package.trackingNumber }}</td>
-          <td>{{ package.recipientName }}</td>
-          <td>{{ package.conciergeName }}</td>
-          <td>{{ package.receptionDate | date : "dd/MM/yyyy" }}</td>
-          <td>{{ packageStatus[package.status] | titlecase }}</td>
-          <td>{{ package.deliveredToName }}</td>
+          <td>{{ singlePackage.trackingNumber }}</td>
+          <td>{{ singlePackage.recipientName }}</td>
+          <td>{{ singlePackage.conciergeName }}</td>
+          <td>{{ singlePackage.receptionDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ packageStatus[singlePackage.status] | titlecase }}</td>
+          <td>{{ singlePackage.deliveredToName }}</td>
           <td>
             <div class="columns">
               <div class="column">
@@ -125,7 +127,7 @@
                 </button>
               </div>
               <div class="column">
-                <button class="button" (click)="markAsDelivered(package.id)">
+                <button class="button" (click)="markAsDelivered(singlePackage.id)">
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-circle-check"></i
                   ></span>
@@ -135,7 +137,7 @@
             </div>
           </td>
         </tr>
-        @if (openMarkAsDelivered().get(package.id)) {
+        @if (openMarkAsDelivered().get(singlePackage.id)) {
         <app-modal-package
           buttonTitle="Entregar"
           title="Entregar paquete"
@@ -147,7 +149,7 @@
             [formGroup]="formMarkDelivered"
           >
             <div class="field">
-              <label class="label" for="rut">RUT quien retira</label>
+              <label class="label" >RUT quien retira</label>
             </div>
 
             <div class="field has-addons">
@@ -172,7 +174,7 @@
               </p>
             </div>
             <div class="field">
-              <label class="label" for="name">Nombre quien retira</label>
+              <label class="label" >Nombre quien retira</label>
               <div class="control">
                 <input
                   type="text"

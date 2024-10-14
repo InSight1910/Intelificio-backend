@@ -54,7 +54,8 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             Day = package.ReceptionDate.ToString("dd-MM-yyyy"),
             Hour = package.ReceptionDate.ToString("hh:mm tt", CultureInfo.InvariantCulture),
             SenderAddress = $"{package.Community.Address}{", "}{package.Community.Municipality.Name}",
-            Name = package.Recipient.FirstName
+            Name = package.Recipient.FirstName,
+            TrackingNumber = package.TrackingNumber
         };
 
         var result =
