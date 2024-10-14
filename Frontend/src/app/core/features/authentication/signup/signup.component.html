@@ -14,23 +14,27 @@
                 (input)="onInputChange('firstName')"
                 placeholder="Nombre"
                 [ngClass]="{
-                'is-success': signupForm.get('firstName')?.valid && signupForm.get('firstName')?.touched,
-                 'is-danger': signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched
-              }"
+                  'is-success':
+                    signupForm.get('firstName')?.valid &&
+                    signupForm.get('firstName')?.touched,
+                  'is-danger':
+                    signupForm.get('firstName')?.invalid &&
+                    signupForm.get('firstName')?.touched
+                }"
               />
 
               @if(signupForm.get('firstName')?.invalid &&
               signupForm.get('firstName')?.touched){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Debe ingresar el nombre del usuario.
-                </p>
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                Debe ingresar el nombre del usuario.
+              </p>
               } @else if (signupForm.get('firstName')?.valid &&
               signupForm.get('firstName')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
               }
             </div>
           </div>
@@ -45,27 +49,27 @@
                 formControlName="lastName"
                 placeholder="Apellido"
                 [ngClass]="{
-                'is-danger':
-                  signupForm.get('lastName')?.invalid &&
-                  signupForm.get('lastName')?.touched,
+                  'is-danger':
+                    signupForm.get('lastName')?.invalid &&
+                    signupForm.get('lastName')?.touched,
                   'is-success':
-                  signupForm.get('lastName')?.valid &&
-                  signupForm.get('lastName')?.touched
-              }"
+                    signupForm.get('lastName')?.valid &&
+                    signupForm.get('lastName')?.touched
+                }"
               />
 
               @if(signupForm.get('lastName')?.invalid &&
               signupForm.get('lastName')?.touched){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Debe ingresar el Apellido del usuario.
-                </p>
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                Debe ingresar el Apellido del usuario.
+              </p>
               } @else if (signupForm.get('lastName')?.valid &&
               signupForm.get('lastName')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
               }
             </div>
           </div>
@@ -81,32 +85,33 @@
                 placeholder="rut"
                 appFormatRut
                 [ngClass]="{
-                'is-danger':
-                  signupForm.get('rut')?.invalid &&
-                  signupForm.get('rut')?.touched,
+                  'is-danger':
+                    signupForm.get('rut')?.invalid &&
+                    signupForm.get('rut')?.touched,
                   'is-success':
-                  signupForm.get('rut')?.valid && signupForm.get('rut')?.touched
-              }"
+                    signupForm.get('rut')?.valid &&
+                    signupForm.get('rut')?.touched
+                }"
               />
 
               @if (signupForm.get('rut')?.invalid &&
               signupForm.get('rut')?.touched){ @if
               (signupForm.get('rut')?.errors?.['invalidRut']){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  El RUT ingresado no es válido.
-                </p>
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                El RUT ingresado no es válido.
+              </p>
               } @else {
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Debe ingresar el RUT del usuario.
-                </p>
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                Debe ingresar el RUT del usuario.
+              </p>
               } } @else if (signupForm.get('rut')?.valid &&
               signupForm.get('rut')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
               }
             </div>
           </div>
@@ -122,88 +127,96 @@
                 (input)="onInputChange('birthDate')"
                 formControlName="birthDate"
                 [ngClass]="{
-                'is-danger':
-                  signupForm.get('birthDate')?.invalid &&
-                  signupForm.get('birthDate')?.touched,
-                                  'is-success':
-                  signupForm.get('birthDate')?.valid &&
-                  signupForm.get('birthDate')?.touched
-              }"
+                  'is-danger':
+                    signupForm.get('birthDate')?.invalid &&
+                    signupForm.get('birthDate')?.touched,
+                  'is-success':
+                    signupForm.get('birthDate')?.valid &&
+                    signupForm.get('birthDate')?.touched
+                }"
               />
 
               @if (signupForm.get('birthDate')?.invalid &&
               signupForm.get('birthDate')?.touched) {
-                @if(signupForm.get('birthDate')?.errors?.['tooRecent']){
-                  <p class="help is-danger">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    El usuario debe ser mayor de 2 años
-                  </p>
-                } @else {
-                  <p class="help is-danger">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Debe ingresar el fecha de nacimiento del usuario.
-                  </p>
-                } } @else if (signupForm.get('birthDate')?.valid &&
+              @if(signupForm.get('birthDate')?.errors?.['tooRecent']){
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                El usuario debe ser mayor de 2 años
+              </p>
+              } @else {
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                Debe ingresar el fecha de nacimiento del usuario.
+              </p>
+              } } @else if (signupForm.get('birthDate')?.valid &&
               signupForm.get('birthDate')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
               }
             </div>
           </div>
 
-          <div class="column field is-4">
-            <label class="label">N° teléfono</label>
-            <div class="control">
-              <input
-                class="input"
-                type="tel"
-                formControlName="phoneNumber"
-                placeholder="+56xxxxxxxxx"
-                (input)="onInputChange('phoneNumber')"
-                [ngClass]="{
-                'is-danger':
-                  signupForm.get('phoneNumber')?.invalid &&
-                  signupForm.get('phoneNumber')?.touched,
-                  'is-success':
-                  signupForm.get('phoneNumber')?.valid &&
-                  signupForm.get('phoneNumber')?.touched
-              }"
-              />
-              @if(signupForm.get('phoneNumber')?.invalid &&
-              signupForm.get('phoneNumber')?.touched){ @if
-              (signupForm.get('phoneNumber')?.errors &&
-              signupForm.get('phoneNumber')?.errors?.['minlength'] &&
-              signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
+          <div class="column">
+            <div class="field">
+              <label class="label">N° teléfono</label>
+            </div>
+            <div class="field has-addons">
+              <div class="control">
+                <p class="button is-static">+56</p>
+              </div>
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  type="tel"
+                  formControlName="phoneNumber"
+                  placeholder="9 1234 5678"
+                  appFormatPhone
+                  (input)="onInputChange('phoneNumber')"
+                  [ngClass]="{
+                    'is-danger':
+                      signupForm.get('phoneNumber')?.invalid &&
+                      signupForm.get('phoneNumber')?.touched,
+                    'is-success':
+                      signupForm.get('phoneNumber')?.valid &&
+                      signupForm.get('phoneNumber')?.touched
+                  }"
+                />
+                @if(signupForm.get('phoneNumber')?.invalid &&
+                signupForm.get('phoneNumber')?.touched){ @if
+                (signupForm.get('phoneNumber')?.errors &&
+                signupForm.get('phoneNumber')?.errors?.['minlength'] &&
+                signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
                 <p class="help is-danger">
                   <i class="fas fa-exclamation-triangle"></i>
                   El N° debe ser mayor de 12 dígitos en formato +56xxxxxxxxx
                 </p>
-              } @else if (signupForm.get('phoneNumber')?.errors &&
-              signupForm.get('phoneNumber')?.errors?.['maxlength']) {
+                } @else if (signupForm.get('phoneNumber')?.errors &&
+                signupForm.get('phoneNumber')?.errors?.['maxlength']) {
                 <p class="help is-danger">
                   <i class="fas fa-exclamation-triangle"></i>
                   El N° debe ser menor de 15 dígitos en formato +56xxxxxxxxx
                 </p>
-              } @else if (signupForm.get('phoneNumber')?.errors &&
-              signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
+                } @else if (signupForm.get('phoneNumber')?.errors &&
+                signupForm.get('phoneNumber')?.errors?.['prohoneprefix']){
                 <p class="help is-danger">
                   <i class="fas fa-exclamation-triangle"></i>
                   Formato incorrecto, debe ser +56xxxxxxxxx
                 </p>
-              } @else {
+                } @else {
                 <p class="help is-danger">
                   <i class="fas fa-exclamation-triangle"></i>
                   Debe ingresar un número telefónico.
                 </p>
-              } } @else if (signupForm.get('phoneNumber')?.valid &&
-              signupForm.get('phoneNumber')?.touched) {
+                } } @else if (signupForm.get('phoneNumber')?.valid &&
+                signupForm.get('phoneNumber')?.touched) {
                 <p class="help is-right">
                   <i class="fas fa-check"></i>
                   Validado
                 </p>
-              }
+                }
+              </div>
             </div>
           </div>
 
@@ -213,12 +226,13 @@
               <div
                 class="select"
                 [ngClass]="{
-                'is-danger':
-                  signupForm.get('rol')?.invalid &&
-                  signupForm.get('rol')?.touched,
-                                  'is-success':
-                  signupForm.get('rol')?.valid && signupForm.get('rol')?.touched
-              }"
+                  'is-danger':
+                    signupForm.get('rol')?.invalid &&
+                    signupForm.get('rol')?.touched,
+                  'is-success':
+                    signupForm.get('rol')?.valid &&
+                    signupForm.get('rol')?.touched
+                }"
               >
                 <select formControlName="rol" (input)="onInputChange('rol')">
                   <option value="" selected>Seleccione un rol</option>
@@ -230,19 +244,19 @@
 
                 @if(signupForm.get('rol')?.invalid &&
                 signupForm.get('rol')?.touched){
-                  <p
-                    class="help is-danger"
-                    *ngIf="signupForm.get('rol')?.errors?.['required']"
-                  >
-                    <i class="fas fa-exclamation-triangle"></i>
-                    ¿Qué rol tendrá el usuario?
-                  </p>
+                <p
+                  class="help is-danger"
+                  *ngIf="signupForm.get('rol')?.errors?.['required']"
+                >
+                  <i class="fas fa-exclamation-triangle"></i>
+                  ¿Qué rol tendrá el usuario?
+                </p>
                 } @else if (signupForm.get('rol')?.valid &&
                 signupForm.get('rol')?.touched) {
-                  <p class="help is-right">
-                    <i class="fas fa-check"></i>
-                    Validado
-                  </p>
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
                 }
               </div>
             </div>
@@ -261,27 +275,27 @@
                 placeholder="Correo para iniciar sesión"
                 (input)="onInputChange('email')"
                 [ngClass]="{
-                'is-danger':
-                  signupForm.get('email')?.invalid &&
-                  signupForm.get('email')?.touched,
-                                  'is-success':
-                  signupForm.get('email')?.valid &&
-                  signupForm.get('email')?.touched
-              }"
+                  'is-danger':
+                    signupForm.get('email')?.invalid &&
+                    signupForm.get('email')?.touched,
+                  'is-success':
+                    signupForm.get('email')?.valid &&
+                    signupForm.get('email')?.touched
+                }"
               />
 
               @if (signupForm.get('email')?.invalid &&
               signupForm.get('email')?.touched){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Debe ingresar el correo del usuario.
-                </p>
+              <p class="help is-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                Debe ingresar el correo del usuario.
+              </p>
               } @else if (signupForm.get('email')?.valid &&
               signupForm.get('email')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
+              <p class="help is-right">
+                <i class="fas fa-check"></i>
+                Validado
+              </p>
               }
             </div>
           </div>
@@ -302,13 +316,13 @@
               (change)="onChangeFile($event)"
             />
             <span class="file-cta">
-            <span class="file-icon">
-              <i class="fas fa-upload"></i>
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label"> Elige un archivo </span>
             </span>
-            <span class="file-label"> Elige un archivo </span>
-          </span>
             @if (isFileUploaded) {
-              <span class="file-name">{{ selectedFileName }}</span>
+            <span class="file-name">{{ selectedFileName }}</span>
             }
           </label>
           <button (click)="downloadModel()" class="button ml-2">Planilla Modelo</button>

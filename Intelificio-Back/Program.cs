@@ -50,6 +50,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<AttendeeProfile>();
     cfg.AddProfile<MaintenanceProfile>();
     cfg.AddProfile<ConfirmEmailProfile>();
+    cfg.AddProfile<PackagesProfile>();
 });
 
 builder.Services.AddIdentity<User, Role>(cfg =>

@@ -72,7 +72,7 @@ export class ConfirmReservationComponent implements OnInit {
         next: (response) => {
           if( response.status === 202){
             this.confirmed = true;
-            this.message = "Reserva confirmada con éxito.";
+            this.message = "Reserva confirmada con �xito.";
             setTimeout(() => {
               this.confirmed = false;
               this.message = null;
@@ -101,7 +101,7 @@ export class ConfirmReservationComponent implements OnInit {
     this.service.cancelReservation(this.reservationId).subscribe({
       next: (response) => {
         if (response.status === 204){
-          this.message = "Reserva Cancelada con éxito.";
+          this.message = "Reserva Cancelada con �xito.";
           setTimeout(() => {
             this.confirmed = false;
             this.message = null;

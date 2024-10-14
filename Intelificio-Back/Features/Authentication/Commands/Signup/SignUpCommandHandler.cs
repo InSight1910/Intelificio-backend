@@ -7,6 +7,7 @@ using Backend.Features.Notification.Commands.ConfirmEmail;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Backend.Features.Authentication.Commands.Signup
@@ -41,6 +42,10 @@ namespace Backend.Features.Authentication.Commands.Signup
             var userExist = await userManager.FindByEmailAsync(request.Email);
 
             if (userExist != null) return Result.Failure(AuthenticationErrors.AlreadyCreatedEmail(request.Email));
+
+            var userExistRut = await userManager.Users.AnyAsync(x => x.Rut == request.Rut);
+
+            if (userExistRut) return Result.Failure(AuthenticationErrors.AlreadyCreatedRut(request.Rut));
 
             var user = mapper.Map<User>(request);
 

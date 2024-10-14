@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import {AuthService} from "../../../services/auth/auth.service";
 import {ConfirmEmail} from "../../../../shared/models/auth.model";
 
-
 @Component({
   selector: 'app-confirm-email',
   standalone: true,

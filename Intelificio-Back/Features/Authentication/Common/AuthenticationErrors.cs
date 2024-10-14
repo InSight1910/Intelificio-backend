@@ -17,6 +17,11 @@ namespace Backend.Features.Authentication.Common
             Code = "Authentication.SignUp.AlreadyCreated",
             Message = string.Format("El correo {0} ya se encuentra en nuestro sistema.", email)
         };
+        public static Error AlreadyCreatedRut(string rut) => new Error
+        {
+            Code = "Authentication.SignUp.AlreadyCreatedRut",
+            Message = string.Format("El Rut {0} ya se encuentra en nuestro sistema.", rut)
+        };
         public static Error UserNotFound = new Error
         {
             Code = "Authentication.LogIn.UserNotFound",

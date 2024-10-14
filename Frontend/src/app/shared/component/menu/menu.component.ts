@@ -38,6 +38,7 @@ export class MenuComponent {
         { label: 'Edificios', iconClass: 'fa-regular fa-building', routerLink: 'Edificios' },
         { label: 'Comunicado', iconClass: 'fa-regular fa-paper-plane', routerLink: 'Comunicado' },
         { label: 'Registros de usuarios', iconClass: 'fa-solid fa-user-plus', routerLink: 'RegistroUsuario' },
+        { label: 'Registros de Encomiendas', iconClass: 'fa-solid fa-truck-fast', routerLink: 'RegistroEncomienda' },
         { label: 'Contactos', iconClass: 'fa-solid fa-address-book', routerLink: 'Contactos' },
       ],
     },

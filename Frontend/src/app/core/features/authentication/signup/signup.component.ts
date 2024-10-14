@@ -19,8 +19,8 @@ import {Store} from "@ngrx/store";
 import {AppState} from "../../../../states/intelificio.state";
 import {Community} from "../../../../shared/models/community.model";
 import {selectCommunity} from "../../../../states/community/community.selectors";
-import {FormatRutDirective} from "../../../../shared/directives/format-rut.directive";
-import { FormatRutPipe } from '../../../../shared/pipes/format-rut.pipe';
+import { FormatRutDirective} from "../../../../shared/directives/format-rut/format-rut.directive";
+import { FormatRutPipe} from "../../../../shared/pipes/format-rut/format-rut.pipe";
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -64,8 +64,8 @@ export class SingupComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       phoneNumber: new FormControl('', [
         Validators.required,
-        Validators.maxLength(15),
-        Validators.minLength(12),
+        Validators.maxLength(11),
+        Validators.minLength(9),
         this.phoneValidator(),
       ]),
       rut: new FormControl('', [Validators.required, this.rutValidator()]),
@@ -130,9 +130,10 @@ export class SingupComponent implements OnInit {
             firstName: this.signupForm.value.firstName ?? '',
             lastName: this.signupForm.value.lastName ?? '',
             email: this.signupForm.value.email ?? '',
-            phoneNumber: this.signupForm.value.phoneNumber?.replace(/\s+/g, '') ?? '',
             password: "#3st@cl@v4Sol1S4dS8r@",
             rut: this.signupForm.value.rut?.replace(/[.\-]/g, '').toUpperCase() ?? '',
+            phoneNumber:
+              '+56' + (this.signupForm.value.phoneNumber?.replace(/\s+/g, '') ?? ''),
             role: this.signupForm.value.rol ?? '',
             birthDate: this.signupForm.value.birthDate ?? '',
           },
@@ -161,7 +162,8 @@ export class SingupComponent implements OnInit {
             this.waiting = false;
             if (error.status === 400) {
               const errorData = error.error?.[0];
-              if (errorData?.code === 'Authentication.SignUp.AlreadyCreated') {
+              if (errorData?.code === 'Authentication.SignUp.AlreadyCreated'
+                || errorData?.code === 'Authentication.SignUp.AlreadyCreatedRut') {
                 this.notificationMessage = errorData.message;
                 this.IsError = true;
                 this.notification = true;
@@ -171,7 +173,8 @@ export class SingupComponent implements OnInit {
                   this.signupForm.controls['email'].setValue('');
                   this.signupForm.enable();
                 }, 5000);
-              } else {
+              }
+              else {
                 console.log('Error 400 no controlado:', error);
               }
             } else {
@@ -280,7 +283,8 @@ export class SingupComponent implements OnInit {
       const valid = validPrefixes.some((prefix) =>
         control.value.startsWith(prefix)
       );
-      return valid ? null : { prohoneprefix: true };
+      // return valid ? null : { prohoneprefix: true };
+      return null;
     };
   }
 
@@ -308,7 +312,7 @@ export class SingupComponent implements OnInit {
         return null;
       }
 
-      const cleanRut = rut.replace(/[\.\-]/g, '').toUpperCase();
+      const cleanRut = rut.replace(/[.\-]/g, '').toUpperCase();
 
       if (!/^[0-9]+[K0-9]$/.test(cleanRut)) {
         return { invalidRut: true };

@@ -11,11 +11,12 @@ import { AdminCommunityComponent } from './core/features/community/adminCommunit
 import { HomeSpaceComponent } from './core/features/common-space/home/home.component';
 import { ManageComponent } from './core/features/common-space/manage/manage.component';
 import { NotificationComponent } from './core/features/notification/notification.component';
-import { MaintenanceComponent } from "./core/features/maintenance/maintenance.component";
-import { ContactListComponent } from "./core/features/contact-list/contact-list.component";
+import { MaintenanceComponent } from './core/features/maintenance/maintenance.component';
+import { ContactListComponent } from './core/features/contact-list/contact-list.component';
 import { ConfirmReservationComponent } from './core/features/reservation/confirm-reservation/confirm-reservation.component';
 import { MyReservationsComponent } from './core/features/reservation/my-reservations/my-reservations.component';
-import { ConfirmEmailComponent} from "./core/features/authentication/confirm-email/confirm-email.component";
+import { ConfirmEmailComponent } from './core/features/authentication/confirm-email/confirm-email.component';
+import { ManageEncomiendasComponent } from './core/features/encomiendas/manage/manage.component';
 
 export const routes: Routes = [
   {
@@ -89,5 +90,9 @@ export const routes: Routes = [
   {
     path: 'Contactos',
     component: ContactListComponent,
+  },
+  {
+    path: 'RegistroEncomienda',
+    component: ManageEncomiendasComponent,
   },
 ];

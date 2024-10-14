@@ -32,7 +32,7 @@ public class CommunityController(IMediator mediator) : ControllerBase
         {
             var errors = result
                 .Where(r => r.IsFailure)
-                .SelectMany(r => r.Errors ?? new List<Error>())
+                .Select(r => r.Error )
                 .ToList();
 
             return BadRequest(errors);
