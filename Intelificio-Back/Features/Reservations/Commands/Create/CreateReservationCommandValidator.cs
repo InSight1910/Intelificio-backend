@@ -13,11 +13,11 @@ public class CreateReservationCommandValidator : AbstractValidator<CreateReserva
             .WithMessage("El usuario no es valido.")
             .NotEmpty()
             .WithMessage("El usuario es obligatorio");
-        RuleFor(reservation => reservation.Date)
-            .GreaterThanOrEqualTo(DateTime.Today)
-            .WithMessage("No es posible realizar una reserva con fechas pasadas.")
+        RuleFor(reservation => reservation.Date.Date)
             .NotEmpty()
-            .WithMessage("La fecha de reserva es obligatorio");
+            .WithMessage("La fecha de reserva es obligatorio")
+            .GreaterThanOrEqualTo(DateTime.Today.Date.AddDays(-1))
+            .WithMessage("No es posible realizar una reserva con fechas pasadas.");
         RuleFor(reservation => reservation.StartTime)
             .NotEmpty()
             .WithMessage("La hora de inicio de la reserva es obligatorio")
