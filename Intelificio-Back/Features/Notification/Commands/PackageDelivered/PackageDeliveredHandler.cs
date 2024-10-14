@@ -5,6 +5,8 @@ using Backend.Features.Notification.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SendGrid.Helpers.Mail;
+using System.Globalization;
 
 namespace Backend.Features.Notification.Commands.PackageDelivered
 {
@@ -29,7 +31,51 @@ namespace Backend.Features.Notification.Commands.PackageDelivered
             .ThenInclude(m => m.Municipality)
             .Where(p => p.ID == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
-            if (package == null) return Result.Failure(NotificationErrors.PackageNotFound);
+            if (package == null) return Result.Failure(NotificationErrors.PackageNotFoundOnPackageDelivered);
+
+            var recipients = new List<EmailAddress>();
+            var veliveratedto = "";
+            if (package.RecipientId == request.DeliveredToId)
+            {
+                veliveratedto = package.Recipient.ToString();
+                recipients.Add(new EmailAddress(package.Recipient.Email ?? "intelificio@duocuc.cl",package.Recipient.ToString()));
+            } else
+            {
+                var a = await _context.Users.Where(x => x.Id == request.DeliveredToId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+                if (a is null) return Result.Failure(NotificationErrors.DeliveredUserNotfoundOnPackageDelivered);
+                veliveratedto = a.ToString();
+                recipients.Add(new EmailAddress(a.Email, veliveratedto));
+            }
+
+            recipients.Add(new EmailAddress(
+                package.Recipient.Email ?? "intelificio@duocuc.cl",
+                package.Recipient.ToString()
+            ));
+
+            var templateNotification = await _context.TemplateNotifications.Where(t => t.Name == "PackageDelivered")
+                .FirstOrDefaultAsync(cancellationToken);
+            if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnPackageDelivered);
+            if (string.IsNullOrWhiteSpace(templateNotification.TemplateId))
+                return Result.Failure(NotificationErrors.TemplateIdIsNullOnPackageDelivered);
+
+            var from = new EmailAddress("intelificio@duocuc.cl", package.Community.Name + " a través de Intelificio");
+
+            var templates = new List<PackageDeliveredTemplate>();
+            var template = new PackageDeliveredTemplate
+            {
+                CommunityName = package.Community.Name,
+                Day = package.DeliveredDate?.ToString("dd-MM-yyyy") ?? "Fecha no disponible",
+                Hour = package.DeliveredDate?.ToString("hh:mm tt", CultureInfo.InvariantCulture) ?? "Hora no disponible",
+                SenderAddress = $"{package.Community.Address}{", "}{package.Community.Municipality.Name}",
+                Name = package.Recipient.ToString(),
+                TrackingNumber = package.TrackingNumber,
+                Deliveratedto = veliveratedto,
+            };
+            templates.Add(template);
+
+            var result =
+                await _sendMail.SendPackageDeliveredNotification(from,recipients,templateNotification.TemplateId, templates);
+            if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackageDelivered);
 
             return Result.Success();
         }

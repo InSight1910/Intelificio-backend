@@ -49,6 +49,7 @@ export class MenuComponent {
         { label: 'Comunidad', iconClass: 'fa-regular fa-building', routerLink: 'Comunidad' },
         { label: 'Espacios Comunes', iconClass: 'fa-solid fa-people-roof', routerLink: 'EspacioComun' },
         { label: 'Mis Reservas', iconClass: 'fa-solid fa-bookmark', routerLink: 'MisReservas' },
+        { label: 'Mis Encomiendas', iconClass: 'fa-solid fa-box', routerLink: 'MisEncomiendas' },
         { label: 'Edificios', iconClass: 'fa-solid fa-building', routerLink: 'Edificios' },
         { label: 'Contactos', iconClass: 'fa-solid fa-address-book', routerLink: 'Contactos' },
       ],

@@ -48,7 +48,8 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
                 .FirstAsync(),
             RecipientName = await context.Users.Where(x => x.Id == result.Entity.RecipientId).Select(x => x.ToString())
                 .FirstAsync(),
-            TrackingNumber = result.Entity.TrackingNumber
+            TrackingNumber = result.Entity.TrackingNumber,
+            NotificacionSent = result.Entity.NotificacionSent
         };
 
         var packageCommand = new PackageCommand { PackageID = response.Id };

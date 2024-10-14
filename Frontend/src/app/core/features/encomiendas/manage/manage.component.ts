@@ -139,8 +139,8 @@ export class ManageEncomiendasComponent {
           this.recipient = {} as UserRut;
             this.packages = this.packages.pipe(map((packages) => packages));
         }
-    
-     
+
+
       });
     });
 
@@ -173,7 +173,6 @@ export class ManageEncomiendasComponent {
   closeModalMarkAsDelivered(id: number) {
     var packageSelected = this.openMarkAsDelivered();
     packageSelected.delete(id);
-
     this.selectedPackageId = 0;
   }
 

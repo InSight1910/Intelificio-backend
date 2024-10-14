@@ -37,6 +37,34 @@ namespace Backend.Features.Notification.Common
             Message = "Se ha alcanzado el limite de notificaciones permitidas"
         };
 
+        //Errores de PackageDelivered 
+        public static Error PackageNotFoundOnPackageDelivered = new()
+        {
+            Code = "Notification.PackageDelivered.PackageNotFoundOnPackageDelivered",
+            Message = "No se ha podido encontrar el packete consultado el correo."
+        };
+        public static Error EmailNotSentOnPackageDelivered = new()
+        {
+            Code = "Notification.PackageDelivered.EmailNotSentOnPackageDelivered",
+            Message = "No se ha podido enviar el correo."
+        };
+        public static Error DeliveredUserNotfoundOnPackageDelivered = new()
+        {
+            Code = "Notification.PackageDelivered.DeliveredUserNotfoundOnPackageDelivered",
+            Message = "No se ha podido encontrar el Package consultado."
+        };
+        public static Error TemplateNotFoundOnPackageDelivered = new()
+        {
+            Code = "Notification.PackageDelivered.TemplateNotFoundOnPackageDelivered",
+            Message = "No se ha podido encontrar el Dynamic template."
+        };
+        public static Error TemplateIdIsNullOnPackageDelivered = new()
+        {
+            Code = "Notification.PackageDelivered.TemplateIdIsNullOnPackageDelivered",
+            Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
+        };
+
+
         //Errores de SuccessfulReservation
         public static Error EmailNotSentOnSuccessfulReservation = new()
         {
