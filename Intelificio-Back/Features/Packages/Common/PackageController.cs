@@ -2,6 +2,7 @@ using Backend.Common.Response;
 using Backend.Features.Packages.Command;
 using Backend.Features.Packages.Command.Create;
 using Backend.Features.Packages.Queries.GetByCommunity;
+using Backend.Features.Packages.Queries.GetByUser;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,16 @@ public class PackageController(IMediator mediator) : ControllerBase
             res => Ok(res),
             err => BadRequest(err));
     }
-    
-    
+
+    [HttpGet("[action]/{communityId}/{id}")]
+    public async Task<IActionResult> GetMyPackages(int communityId, int id)
+    {
+        var result = await mediator.Send(new GetByUserQuery
+        {
+            CommunityId = communityId, UserId = id
+        });
+        return result.Match(
+            res => Ok(res),
+            err => BadRequest(err));
+    }
 }

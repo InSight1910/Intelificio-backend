@@ -17,8 +17,12 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
             return Result.Failure(PackageErrors.CommunityNotFoundOnCreate);
 
         var conciergeRoleId = await context.Roles.Where(x => x.Name == "Conserje").Select(x => x.Id).FirstAsync();
-        if (!await context.Users.AnyAsync(x => x.Id == request.ConciergeId) &&
-            await context.UserRoles.AnyAsync(x => x.UserId == request.ConciergeId && x.RoleId == conciergeRoleId))
+        if (await context.Users
+                .Include(x => x.Communities)
+                .Where(x =>
+                    x.Id == request.ConciergeId &&
+                    context.UserRoles.Any(ur => ur.RoleId == conciergeRoleId && ur.UserId == x.Id) &&
+                    x.Communities.Any(c => c.ID == request.CommunityId)).AnyAsync())
             return Result.Failure(PackageErrors.ConciergeNotFoundOnCreate);
 
         if (!await context.Users.AnyAsync(x =>
@@ -35,7 +39,17 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
         var result = await context.Package.AddAsync(package);
         await context.SaveChangesAsync(cancellationToken);
 
-        var response = mapper.Map<CreatePackageCommandResponse>(result.Entity);
+        var response = new CreatePackageCommandResponse
+        {
+            Id = result.Entity.ID,
+            Status = (int)result.Entity.Status,
+            ReceptionDate = result.Entity.ReceptionDate,
+            ConciergeName = await context.Users.Where(x => x.Id == result.Entity.ConciergeId).Select(x => x.ToString())
+                .FirstAsync(),
+            RecipientName = await context.Users.Where(x => x.Id == result.Entity.RecipientId).Select(x => x.ToString())
+                .FirstAsync(),
+            TrackingNumber = result.Entity.TrackingNumber
+        };
 
         return Result.WithResponse(new ResponseData { Data = response });
     }

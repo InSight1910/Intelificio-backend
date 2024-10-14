@@ -10,11 +10,13 @@ public class GetByRutQueryHandler(IntelificioDbContext context) : IRequestHandle
 {
     public async Task<Result> Handle(GetByRutQuery request, CancellationToken cancellationToken)
     {
-        var user = await context.Users.Where(x => x.Rut == request.Rut).Select(x => new
-        {
-            Id = x.Id,
-            Name = x.ToString()
-        }).FirstOrDefaultAsync();
+        var user = await context.Users
+            .Where(x => x.Rut == request.Rut && x.Communities.Any(c => x.Id == request.CommunityId) || request.CommunityId == null)
+            .Select(x => new
+            {
+                Id = x.Id,
+                Name = x.ToString()
+            }).FirstOrDefaultAsync();
 
         if (user is null) return Result.Failure(UsersError.UserNotFoundOnQuery);
 

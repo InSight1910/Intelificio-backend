@@ -25,5 +25,8 @@ export type CreatePackage = Omit<
   communityId: number;
   recipientId: number;
   conciergeId: number;
-  deliveredToId: number;
+};
+
+export type MyPackages = Omit<Package, 'recipientName' | 'deliveredToName'> & {
+  assignedTo: string;
 };

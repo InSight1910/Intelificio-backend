@@ -83,34 +83,39 @@ export class ManageEncomiendasComponent {
   }
 
   onSearch(rut: string, isMarkDelivered: boolean = false) {
-    this.userService
-      .getByRut(rut.replace(/[.\-]/g, '').toUpperCase())
-      .subscribe({
-        next: ({ data }) => {
-          if (isMarkDelivered) {
-            this.formMarkDelivered.patchValue({
-              deliveryToName: data.name,
-              deliveryToId: data.id,
-            });
-            this.canMarkDelivered = true;
-            return;
-          }
-          this.recipient = data;
-          this.form.patchValue({ recipientId: data.id });
-          this.errorMessageSearch = '';
-          this.canCreate = true;
-          this.form.get('conciergeId')?.enable();
-          this.form.get('trackingNumber')?.enable();
-        },
-        error: ({ error }) => {
-          console.log(error);
-          this.errorMessageSearch = error[0].message;
-          this.canCreate = false;
-          this.canMarkDelivered = false;
-          this.form.get('conciergeId')?.disable();
-          this.form.get('trackingNumber')?.disable();
-        },
-      });
+    this.store.select(selectCommunity).subscribe((community) => {
+      this.userService
+        .getByRutCommunity(
+          rut.replace(/[.\-]/g, '').toUpperCase(),
+          community?.id!
+        )
+        .subscribe({
+          next: ({ data }) => {
+            if (isMarkDelivered) {
+              this.formMarkDelivered.patchValue({
+                deliveryToName: data.name,
+                deliveryToId: data.id,
+              });
+              this.canMarkDelivered = true;
+              return;
+            }
+            this.recipient = data;
+            this.form.patchValue({ recipientId: data.id });
+            this.errorMessageSearch = '';
+            this.canCreate = true;
+            this.form.get('conciergeId')?.enable();
+            this.form.get('trackingNumber')?.enable();
+          },
+          error: ({ error }) => {
+            console.log(error);
+            this.errorMessageSearch = error[0].message;
+            this.canCreate = false;
+            this.canMarkDelivered = false;
+            this.form.get('conciergeId')?.disable();
+            this.form.get('trackingNumber')?.disable();
+          },
+        });
+    });
   }
 
   onSubmit(event: Event) {
@@ -120,9 +125,12 @@ export class ManageEncomiendasComponent {
       const packages: CreatePackage = {
         ...this.form.value,
         communityId: community?.id!,
+        recipientId: this.recipient.id,
       };
       this.packageService.create(packages).subscribe(({ data }) => {
-        this.packages.pipe(map((packages) => [...packages, data]));
+        this.packages = this.packages.pipe(map((packages) => packages));
+        this.form.reset();
+        this.recipient = {} as UserRut;
       });
     });
 
@@ -145,19 +153,35 @@ export class ManageEncomiendasComponent {
     });
   }
 
-  markAsDelivered(id: number) {
+  openModalMarkAsDelivered(id: number) {
     var packageSelected = this.openMarkAsDelivered();
     packageSelected.set(id, true);
-    console.log(packageSelected);
+
     this.selectedPackageId = id;
   }
 
+  closeModalMarkAsDelivered(id: number) {
+    var packageSelected = this.openMarkAsDelivered();
+    packageSelected.delete(id);
+
+    this.selectedPackageId = 0;
+  }
+
   onSubmitMarkDelivered(event?: Event | null) {
+    console.log(this.formMarkDelivered.invalid, this.selectedPackageId);
+    console.log(this.formMarkDelivered.value);
+    if (this.formMarkDelivered.invalid || this.selectedPackageId == 0) return;
     this.packageService
       .markAsDelivered(
         this.selectedPackageId,
         this.formMarkDelivered.get('deliveryToId')?.value
       )
-      .subscribe();
+      .subscribe({
+        next: (response) => {
+          this.loadPackages();
+          this.closeModalMarkAsDelivered(this.selectedPackageId);
+          this.formMarkDelivered.reset();
+        },
+      });
   }
 }
