@@ -1,4 +1,4 @@
-namespace Backend.Features.Packages.Create;
+namespace Backend.Features.Packages.Command.Create;
 
 public class CreatePackageCommandResponse
 {

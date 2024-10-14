@@ -1,14 +1,16 @@
 using AutoMapper;
-using Backend.Features.Packages.Create;
+using Backend.Features.Packages.Command.Create;
 using Backend.Models;
+using Backend.Models.Enums;
 
 namespace Backend.Common.Profiles;
 
 public class PackagesProfile : Profile
 {
-    protected PackagesProfile()
+    public PackagesProfile()
     {
-        CreateMap<CreatePackageCommand, Package>();
+        CreateMap<CreatePackageCommand, Package>()
+            .ForMember(opt => opt.Status, opt => opt.MapFrom(src => PackageStatus.PENDING));
         CreateMap<Package, CreatePackageCommandResponse>();
     }
 }

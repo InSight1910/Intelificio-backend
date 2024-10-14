@@ -1,7 +1,7 @@
 using Backend.Common.Response;
 using MediatR;
 
-namespace Backend.Features.Users.GetConcierges;
+namespace Backend.Features.Users.Queries.GetConcierges;
 
 public class GetConciergesQuery : IRequest<Result>
 {

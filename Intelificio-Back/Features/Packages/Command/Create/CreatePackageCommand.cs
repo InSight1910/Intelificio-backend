@@ -1,7 +1,7 @@
 using Backend.Common.Response;
 using MediatR;
 
-namespace Backend.Features.Packages.Create;
+namespace Backend.Features.Packages.Command.Create;
 
 public class CreatePackageCommand : IRequest<Result>
 {

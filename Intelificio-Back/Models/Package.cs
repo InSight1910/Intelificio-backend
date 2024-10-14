@@ -14,4 +14,7 @@ public class Package : BaseEntity
     public User Recipient { get; set; }
     public required int ConciergeId { get; set; }
     public User Concierge { get; set; }
+    public int? DeliveredToId { get; set; }
+    public User? DeliveredTo { get; set; }
+    public DateTime? DeliveredDate { get; set; }
 }

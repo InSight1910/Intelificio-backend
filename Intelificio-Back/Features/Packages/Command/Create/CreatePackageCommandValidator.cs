@@ -1,5 +1,7 @@
-namespace Backend.Features.Packages.Create;
+using FluentValidation;
 
-public class CreatePackageCommandValidator
+namespace Backend.Features.Packages.Command.Create;
+
+public class CreatePackageCommandValidator : AbstractValidator<CreatePackageCommand>
 {
 }

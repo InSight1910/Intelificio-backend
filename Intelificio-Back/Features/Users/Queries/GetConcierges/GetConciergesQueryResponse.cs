@@ -1,4 +1,4 @@
-namespace Backend.Features.Users.GetConcierges;
+namespace Backend.Features.Users.Queries.GetConcierges;
 
 public class GetConciergesQueryResponse
 {

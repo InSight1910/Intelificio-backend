@@ -45,6 +45,7 @@
         <Folder Include="Features\Attendees\Queries\"/>
         <Folder Include="Features\CommonSpaces\Common\"/>
         <Folder Include="Features\Reservations\Commands\ResendConfirmReservation\"/>
+        <Folder Include="Features\Users\Queries\"/>
     </ItemGroup>
 
     <ItemGroup>

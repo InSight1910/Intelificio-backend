@@ -1,9 +1,10 @@
 using Backend.Common.Response;
+using Backend.Features.Users.Queries.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Users.GetByRut;
+namespace Backend.Features.Users.Queries.GetByRut;
 
 public class GetByRutQueryHandler(IntelificioDbContext context) : IRequestHandler<GetByRutQuery, Result>
 {
@@ -15,7 +16,7 @@ public class GetByRutQueryHandler(IntelificioDbContext context) : IRequestHandle
             Name = x.ToString()
         }).FirstOrDefaultAsync();
 
-        if (user is null) return Result.Failure(null);
+        if (user is null) return Result.Failure(UsersError.UserNotFoundOnQuery);
 
         return Result.WithResponse(new ResponseData()
         {

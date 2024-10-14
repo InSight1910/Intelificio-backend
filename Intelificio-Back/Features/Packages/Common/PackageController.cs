@@ -1,12 +1,48 @@
+using Backend.Common.Response;
+using Backend.Features.Packages.Command;
+using Backend.Features.Packages.Command.Create;
+using Backend.Features.Packages.Queries.GetByCommunity;
+using Backend.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Features.Packages.Common;
 
-public class PackageController : Controller
+[ApiController]
+[Route("api/[controller]")]
+public class PackageController(IMediator mediator) : ControllerBase
 {
-    // GET
-    public IActionResult Index()
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] CreatePackageCommand package)
     {
-        return View();
+        var result = await mediator.Send(package);
+        return result.Match(
+            res => StatusCode(StatusCodes.Status201Created, res),
+            err => BadRequest(err)
+        );
     }
+
+    [HttpGet("community/{id}")]
+    public async Task<IActionResult> GetByCommunity(int id)
+    {
+        var result = await mediator.Send(new GetByCommunityQuery
+        {
+            CommunityId = id
+        });
+
+        return result.Match(
+            res => Ok(res),
+            err => BadRequest(err));
+    }
+
+    [HttpPut("markAsDelivered/{id}/{deliveredToId}")]
+    public async Task<IActionResult> MarkAsDelivered(int id, int deliveredToId)
+    {
+        var result = await mediator.Send(new MarkAsDeliveredCommand { Id = id, DeliveredToId = deliveredToId });
+        return result.Match(
+            res => Ok(res),
+            err => BadRequest(err));
+    }
+    
+    
 }

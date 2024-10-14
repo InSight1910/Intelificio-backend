@@ -92,6 +92,11 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasOne(p => p.Concierge)
                 .WithMany()
                 .HasForeignKey(p => p.ConciergeId);
+
+            _ = entity
+                .HasOne(p => p.DeliveredTo)
+                .WithMany()
+                .HasForeignKey(x => x.DeliveredToId);
         });
 
         _ = builder.Entity<Expense>(entity =>
