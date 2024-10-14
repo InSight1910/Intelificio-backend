@@ -32,15 +32,6 @@ namespace Backend.Features.Notification.Common
                 onFailure: BadRequest);
         }
 
-        [HttpPost("ConfirmReservationEmail/{id}")]
-        public async Task<IActionResult> ConfirmReservationEmail(int id)
-        {
-            var result = await mediator.Send(new ConfirmReservationEmailCommand { ReservationID = id});
-            return result.Match(
-                onSuccess: (_) => Created(),
-                onFailure: BadRequest);
-        }
-
 
     }
 }

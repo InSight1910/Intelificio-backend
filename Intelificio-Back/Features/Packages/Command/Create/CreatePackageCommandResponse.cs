@@ -8,4 +8,5 @@ public class CreatePackageCommandResponse
     public required string RecipientName { get; set; }
     public required string ConciergeName { get; set; }
     public required DateTime ArrivalDate { get; set; }
+    public required int NotificacionSent { get; set; }
 }

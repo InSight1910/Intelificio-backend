@@ -31,6 +31,11 @@ namespace Backend.Features.Notification.Common
             Code = "Notification.Package.PackageNotFound",
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
+        public static Error LimmitNotificationSentOnPackage = new()
+        {
+            Code = "Notification.Package.LimmitNotificationSentOnPackage",
+            Message = "Se ha alcanzado el limite de notificaciones permitidas"
+        };
 
         //Errores de SuccessfulReservation
         public static Error EmailNotSentOnSuccessfulReservation = new()

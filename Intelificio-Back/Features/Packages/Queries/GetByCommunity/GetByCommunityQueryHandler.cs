@@ -24,7 +24,8 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
                 ReceptionDate = x.ReceptionDate,
                 Status = x.Status,
                 TrackingNumber = x.TrackingNumber,
-                DeliveredToName = x.DeliveredTo != null ? x.DeliveredTo.ToString() : "-"
+                DeliveredToName = x.DeliveredTo != null ? x.DeliveredTo.ToString() : "-",
+                NotificacionSent = x.NotificacionSent
             })
             .OrderByDescending(x => x.Status).ToListAsync();
 

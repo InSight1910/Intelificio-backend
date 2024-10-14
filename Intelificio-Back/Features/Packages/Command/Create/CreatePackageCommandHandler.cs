@@ -32,11 +32,6 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
 
         var package = mapper.Map<Package>(request);
 
-        TimeZoneInfo chileZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
-        package.ReceptionDate = TimeZoneInfo.ConvertTimeFromUtc(package.ReceptionDate, chileZone);
-        package.CreatedAt = TimeZoneInfo.ConvertTimeFromUtc(package.CreatedAt, chileZone);
-
-
         var result = await context.Package.AddAsync(package);
         var packageCreated = await context.SaveChangesAsync(cancellationToken);
 

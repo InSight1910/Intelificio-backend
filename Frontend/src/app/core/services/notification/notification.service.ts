@@ -21,8 +21,8 @@ export class NotificationService {
     );
   }
 
-  confirmEmail(email: string, token: string ): Observable<HttpResponse<any>>  {
-    return this.http.post<ConfirmEmail>(`${this.apiUrl}/Notification/confirm`, { email, token },{
+  resendNotification(packageId: number ): Observable<HttpResponse<any>>  {
+    return this.http.post<any>(`${this.apiUrl}/Notification/Package/${packageId}`, {},{
       observe: 'response',
     });
   }

@@ -21,10 +21,11 @@
                     placeholder="12.345.678-9"
                     appFormatRut
                     #rut
+                    (input)="onInputChange('recipientRut')"
                   />
                 </p>
                 <p class="control">
-                  <button (click)="onSearch(rut.value)" class="button is-info">
+                  <button (click)="onSearch(rut.value)" [disabled]="!enableSearch" class="button is-info">
                     <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
                   </button>
                 </p>
@@ -118,14 +119,23 @@
           <td>{{ singlePackage.deliveredToName }}</td>
           <td>
             <div class="columns">
-              <div class="column">
-                <button class="button">
+                <div class="column">
+                  <button class="button"
+                          (click)="SendNotificationManually(singlePackage.id)"
+                  [disabled]="singlePackage.notificacionSent >= 3"
+                          [ngClass]="{
+                          'is-success': singlePackage.notificacionSent == 1,
+                          'is-warning': singlePackage.notificacionSent == 2,
+                          'is-danger': singlePackage.notificacionSent == 3,
+                          }"
+                  >
                   <span class="icon mr-1"
-                    ><i class="fa-regular fa-bell"></i
+                  ><i class="fa-regular fa-bell"></i
                   ></span>
-                  Notificar
-                </button>
-              </div>
+                    Notificar
+                  </button>
+                </div>
+
               <div class="column">
                 <button class="button" (click)="markAsDelivered(singlePackage.id)">
                   <span class="icon mr-1"
