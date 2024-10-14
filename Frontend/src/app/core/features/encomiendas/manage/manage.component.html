@@ -122,7 +122,7 @@
                 <div class="column">
                   <button class="button"
                           (click)="SendNotificationManually(singlePackage.id)"
-                  [disabled]="singlePackage.notificacionSent >= 3"
+                  [disabled]="singlePackage.notificacionSent >= 3 || packageStatus[singlePackage.status] == 'ENTREGADO'"
                           [ngClass]="{
                           'is-success': singlePackage.notificacionSent == 1,
                           'is-warning': singlePackage.notificacionSent == 2,
@@ -137,7 +137,8 @@
                 </div>
 
               <div class="column">
-                <button class="button" (click)="openModalMarkAsDelivered(singlePackage.id)">
+                <button class="button" (click)="openModalMarkAsDelivered(singlePackage.id)"
+                        [disabled]="packageStatus[singlePackage.status] == 'ENTREGADO'">
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-circle-check"></i
                   ></span>
