@@ -285,13 +285,13 @@ export class HomeSpaceComponent {
   }
 
   generateCalendar(): void {
-    2;
     const { monthNumber, year } = this.months.at(this.indexMonth)!;
+    let firstDayOfMonth = new Date(year, monthNumber - 1, 0).getDay();
 
-    const firstDayOfMonth = new Date(year, monthNumber, 1).getDay() + (6 % 7);
-    const lastDateOfMonth = new Date(year, monthNumber + 1, 0).getDate();
+    const lastDateOfMonth = new Date(year, monthNumber, 0).getDate();
 
     this.daysInMonth = Array(firstDayOfMonth).fill(null);
+
     for (let day = 1; day <= lastDateOfMonth; day++) {
       this.daysInMonth.push(day);
     }
