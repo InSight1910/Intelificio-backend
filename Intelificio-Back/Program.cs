@@ -32,9 +32,8 @@ builder.Services.AddDbContext<IntelificioDbContext>(
     options =>
     {
         _ = options
-                .UseMySQL(builder.Configuration.GetConnectionString("Default") ?? "")
-                .AddInterceptors(new SoftDeleteInterceptor());
-
+            .UseMySQL(builder.Configuration.GetConnectionString("Default") ?? "")
+            .AddInterceptors(new SoftDeleteInterceptor());
     });
 
 builder.Services.AddAutoMapper(cfg =>
@@ -45,18 +44,23 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<UserProfile>();
     cfg.AddProfile<LocationProfile>();
     cfg.AddProfile<UnitProfile>();
+    cfg.AddProfile<ContactProfile>();
     cfg.AddProfile<CommonSpaceProfile>();
+    cfg.AddProfile<ReservationProfile>();
+    cfg.AddProfile<AttendeeProfile>();
+    cfg.AddProfile<MaintenanceProfile>();
+    cfg.AddProfile<ConfirmEmailProfile>();
+    cfg.AddProfile<PackagesProfile>();
     cfg.AddProfile<GuestProfile>();
 });
 
 builder.Services.AddIdentity<User, Role>(cfg =>
-{
-    cfg.User.RequireUniqueEmail = true;
-    cfg.Password.RequiredLength = 8;
-    cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-    cfg.SignIn.RequireConfirmedEmail = true;
-})
-
+    {
+        cfg.User.RequireUniqueEmail = true;
+        cfg.Password.RequiredLength = 8;
+        cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        cfg.SignIn.RequireConfirmedEmail = true;
+    })
     .AddEntityFrameworkStores<IntelificioDbContext>()
     .AddDefaultTokenProviders();
 
@@ -68,7 +72,8 @@ builder.Services
         cfg.RequireHttpsMetadata = false;
         cfg.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Secret"))),
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Secret"))),
             ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer"),
             ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
             ClockSkew = TimeSpan.Zero
@@ -86,9 +91,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("All", cfg =>
     {
         _ = cfg
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -97,9 +102,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("All", cfg =>
     {
         _ = cfg
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 

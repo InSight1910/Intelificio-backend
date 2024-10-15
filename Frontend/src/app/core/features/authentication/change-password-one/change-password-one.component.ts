@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
 import { catchError, of, tap } from 'rxjs';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-change-password-one',
@@ -23,7 +24,7 @@ export class ChangePasswordOneComponent implements OnInit {
   send = false;
   waiting = false;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private fb: FormBuilder,private route: Router) {
     this.form = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -34,6 +35,15 @@ export class ChangePasswordOneComponent implements OnInit {
 
   ngOnInit(): void {
     this.send = false;
+    this.waiting = false;
+  }
+
+  onInputChange(controlName: string): void {
+    const control = this.form.get(controlName);
+    if (control) {
+      control.markAsUntouched();
+      this.errors = null;
+    }
   }
 
   onSubmit(event: Event) {
@@ -54,9 +64,14 @@ export class ChangePasswordOneComponent implements OnInit {
           }),
           catchError((error) => {
             console.error(error);
-            if (error.status === 0) {
-              this.errors = ['Hubo un error de nuestra parte.'];
-              this.waiting = false;
+            if (error.status === 400) {
+              if(error.error?.[0].code === "Authentication.LogIn.UserNotFound"){
+                this.errors = [error.error?.[0].message];
+                this.waiting = false;
+              } else {
+                this.errors = ['Hubo un error de nuestra parte.'];
+                this.waiting = false;
+              }
             }
             return of(error);
           })
@@ -64,4 +79,9 @@ export class ChangePasswordOneComponent implements OnInit {
         .subscribe();
     }
   }
+
+  toLogin(){
+    this.route.navigate(['/login']).then((r) => {});
+  }
+
 }

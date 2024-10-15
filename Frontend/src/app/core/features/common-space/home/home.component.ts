@@ -1,105 +1,240 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
-import { from, map, Observable, of, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { CommonSpace } from '../../../../shared/models/commonspace.model';
 import { CommonModule } from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AppState } from '../../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectCommunity } from '../../../../states/community/community.selectors';
 import { CommonSpaceService } from '../../../services/commonspace/commonspace.service';
+import {
+  CountReservation,
+  CreateReservation,
+  ListReservation,
+  ReservationStatus,
+} from '../../../../shared/models/reservation.model';
+import { User } from '../../../../shared/models/user.model';
+import { selectUser } from '../../../../states/auth/auth.selectors';
+import { ReservationService } from '../../../services/reservation/reservation.service';
+import { MessageComponent } from '../../../../shared/component/error/message.component';
 
 @Component({
   selector: 'app-home-space',
   standalone: true,
-  imports: [ModalComponent, CommonModule, ReactiveFormsModule],
+  imports: [
+    ModalComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    MessageComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeSpaceComponent {
+  [x: string]: any;
   constructor(
     private fb: FormBuilder,
     private commonSpaceService: CommonSpaceService,
+    private reservationService: ReservationService,
     private store: Store<AppState>
   ) {
     this.form = this.fb.group({
       date: ['', Validators.required],
-      startTime: [''],
-      endTime: [''],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
     });
+    this.store.select(selectUser).subscribe((x) => (this.loguedUser = x));
   }
-
+  ReservationStatus = ReservationStatus;
   form: FormGroup;
+  errors: { message: string }[] = [];
+  onSuccess: string = '';
+  loguedUser: User | null = {} as User;
   selectedSpace: CommonSpace = {} as CommonSpace;
   isCreatingReservation: boolean = false;
   modalTitle: string = 'Create Reservation';
+  buttonTitle!: string;
   isModalOpen: boolean = false;
   canMakeReservation: boolean = false;
-  months: { month: string; monthNumber: number; year: number }[] = [];
+  months: {
+    month: string;
+    monthNumber: number;
+    year: number;
+  }[] = [];
   days: string[] = [
-    'Domingo',
     'Lunes',
     'Martes',
     'Miércoles',
     'Jueves',
     'Viernes',
     'Sábado',
+    'Domingo',
   ];
 
   commonSpaces$!: CommonSpace[];
+  reservationsCounts: CountReservation[] = [];
+  reservations: ListReservation[] = [];
+  isLoadingReservation: boolean = false;
+
+  isModalOpenReservations = signal(new Map<number, boolean>());
 
   ngOnInit() {
     this.getMonths();
     this.generateCalendar();
     this.loadCommonSpace();
+    this.loadCountReservations();
   }
-
+  isLoadingCommonSpace: boolean = false;
   loadCommonSpace() {
+    this.isLoadingCommonSpace = true;
     this.store.select(selectCommunity).subscribe((community) => {
       this.commonSpaceService
         .getCommonSpacesByCommunity(community?.id!)
         .pipe(
-          (
-            tap(({ data }) => {
-             console.log(data)
+          (tap(({ data }) => {
             this.selectedSpace = data[0];
-            console.log(data);
           }),
           map(({ data }) => data))
-        ).subscribe(
-          {
-            next: (data) => {
-              this.selectedSpace = data[0];
-              this.commonSpaces$ = data;
-            }
-          }
-        );
+        )
+        .subscribe({
+          next: (data) => {
+            this.selectedSpace = data[0];
+            this.commonSpaces$ = data;
+            this.isLoadingCommonSpace = false;
+          },
+        });
     });
   }
 
-  onChangeInput() {
-    console.log(this.form.value);
+  loadReservations(day: number) {
+    this.isLoadingReservation = true;
+    this.store.select(selectCommunity).subscribe((community) => {
+      const { year, monthNumber } = this.months.at(this.indexMonth)!;
+      this.reservationService
+        .getReservationsByCommunityAndMonth(
+          community?.id!,
+          new Date(year, monthNumber, day)
+        )
+        .subscribe({
+          next: ({ data }) => {
+            this.reservations = data;
+            this.isLoadingReservation = false;
+          },
+        });
+    });
   }
 
   onClickCloseEdit() {
     this.isModalOpen = false;
   }
 
+  titleDetail: string = 'Reservas del día';
+  onClickShowReservations(day: number) {
+    this.loadReservations(day);
+    this.titleDetail = `Reservas del día ${day}/${
+      this.months.at(this.indexMonth)?.monthNumber
+    }`;
+    const opensModal = this.isModalOpenReservations();
+    opensModal.set(day, true);
+  }
+
+  onClickCloseReservations(day: number) {
+    const opensModal = this.isModalOpenReservations();
+    opensModal.set(day, false);
+    this.reservations = [];
+  }
+
   onClickCreateReservation(id: number) {
     this.isModalOpen = true;
-    console.log(this.form.valid)
-//    this.commonSpaces$.subscribe((commonSpaces) => {
-//      const commonSpace = commonSpaces.find((space) => space.id === id);
-//      this.modalTitle = `Reservar ${commonSpace?.name}`;
-//    });
+    this.buttonTitle = 'Reservar';
+    this.modalTitle = `Reservar ${this.selectedSpace?.name}`;
+  }
+  isCreating: boolean = false;
+  onSubmit(event: Event | void) {
+    if (event) event.preventDefault();
+    if (this.form.invalid) {
+      return;
+    }
+    this.isCreating = true;
+    const reservation: CreateReservation = {
+      userId: this.loguedUser?.sub!,
+      commonSpaceId: this.selectedSpace?.id!,
+      date: this.form.get('date')?.value!,
+      startTime: this.form.get('startTime')?.value,
+      endTime: this.form.get('endTime')?.value,
+    };
+
+    this.reservationService.create(reservation).subscribe({
+      next: ({ data }) => {
+        this.onSuccess = 'Reserva creada con éxito';
+        const dateCreated = new Date(data.date);
+        const count = this.reservationsCounts.filter(
+          (x) => x.day === dateCreated.getDate()
+        )[0];
+        if (count) {
+          const status = count.countReservations.filter(
+            (x) => x.status === data.status
+          )[0];
+
+          status.count += 1;
+        } else {
+          this.reservationsCounts[dateCreated.getDate()] = {
+            day: dateCreated.getDate(),
+            countReservations: [
+              {
+                status: data.status,
+                count: 1,
+              },
+            ],
+          };
+        }
+        this.isCreating = false;
+        setTimeout(() => {
+          this.onSuccess = '';
+        }, 3000);
+        this.form.reset();
+      },
+      error: ({ error }) => {
+        this.errors = error;
+        setTimeout(() => {
+          this.errors = [];
+        }, 3000);
+        this.isCreating = false;
+        this.form.reset();
+      },
+    });
+  }
+
+  loadCountReservations() {
+    this.store.select(selectCommunity).subscribe((community) => {
+      const selectedMonth = this.months.at(this.indexMonth)!;
+
+      this.reservationService
+        .getCountReservationsByCommunityAndMonth(
+          community?.id!,
+          selectedMonth.year,
+          selectedMonth.monthNumber
+        )
+        .subscribe({
+          next: ({ data }) => {
+            this.reservationsCounts = data;
+          },
+        });
+    });
   }
 
   onChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
 
-      this.selectedSpace = this.commonSpaces$.find(
-        (space) => space.id === parseInt(value)
-      )!;
+    this.selectedSpace = this.commonSpaces$.find(
+      (space) => space.id === parseInt(value)
+    )!;
     if (value == '') {
       this.canMakeReservation = false;
       return;
@@ -111,11 +246,11 @@ export class HomeSpaceComponent {
   getMonths() {
     const months = [];
     const today = new Date();
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 0; i < 3; i++) {
       const nextMonth = new Date(today.getFullYear(), today.getMonth() + i, 1);
       const value = {
         month: nextMonth.toLocaleString('es-CL', { month: 'long' }),
-        monthNumber: nextMonth.getMonth(),
+        monthNumber: nextMonth.getMonth() + 1,
         year: nextMonth.getFullYear(),
       };
 
@@ -126,28 +261,37 @@ export class HomeSpaceComponent {
 
   indexMonth: number = 0;
   daysInMonth!: number[];
+
   prevMonth() {
     if (this.indexMonth === 0) {
       return;
     }
     this.indexMonth--;
     this.generateCalendar();
+    this.reservationsCounts = [];
+    this.reservationsCounts = [];
+    this.loadCountReservations();
   }
+
   nextMonth() {
-    if (this.indexMonth === 2) {
+    if (this.indexMonth === 3) {
       return;
     }
     this.indexMonth++;
     this.generateCalendar();
+    this.reservationsCounts = [];
+    this.reservationsCounts = [];
+    this.loadCountReservations();
   }
 
   generateCalendar(): void {
     const { monthNumber, year } = this.months.at(this.indexMonth)!;
+    let firstDayOfMonth = new Date(year, monthNumber - 1, 0).getDay();
 
-    const firstDayOfMonth = new Date(year, monthNumber, 1).getDay(); // Day of the week of the 1st day
-    const lastDateOfMonth = new Date(year, monthNumber + 1, 0).getDate(); // Last date of the month
+    const lastDateOfMonth = new Date(year, monthNumber, 0).getDate();
 
-    this.daysInMonth = Array(firstDayOfMonth).fill(null); // Fill empty slots before 1st day
+    this.daysInMonth = Array(firstDayOfMonth).fill(null);
+
     for (let day = 1; day <= lastDateOfMonth; day++) {
       this.daysInMonth.push(day);
     }

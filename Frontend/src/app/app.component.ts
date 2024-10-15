@@ -21,16 +21,24 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   title = 'Intelificio';
   openNavbar = false;
-  isLogin = false;
-  isSelectCommunity = false;
+  showMenu: boolean = false;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-
     this.router.events.subscribe(() => {
-      this.isLogin = this.router.url === '/login';
-      this.isSelectCommunity = this.router.url === '/select-community';
+      const url = this.router.url.split('?')[0];
+      switch (url) {
+        case '/login':
+        case '/forgot-password':
+        case '/change-password':
+        case '/select-community':
+        case '/ConfirmarCorreo':
+          this.showMenu = false;
+          break;
+        default:
+          this.showMenu = true;
+      }
     });
   }
 }

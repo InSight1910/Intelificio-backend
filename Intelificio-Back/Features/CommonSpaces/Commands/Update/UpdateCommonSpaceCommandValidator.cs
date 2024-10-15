@@ -10,7 +10,7 @@ namespace Backend.Features.CommonSpaces.Commands.Update
             RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
             RuleFor(x => x.Location).NotEmpty().MaximumLength(100);
             RuleFor(x => x.Capacity).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.IsInMaintenance).NotEmpty();
+            
         }
     }
 }

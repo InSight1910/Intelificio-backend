@@ -52,6 +52,7 @@ namespace Backend.Features.Authentication.Commands.UpdateUser
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.Email = request.Email;
+            user.UserName = request.Email;
             user.PhoneNumber = request.PhoneNumber;
 
             // Save updated user info

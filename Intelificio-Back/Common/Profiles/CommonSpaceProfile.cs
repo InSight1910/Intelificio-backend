@@ -3,16 +3,18 @@ using Backend.Features.Buildings.Commands.Create;
 using Backend.Features.Buildings.Commands.Update;
 using Backend.Features.Buildings.Queries.GetById;
 using Backend.Features.CommonSpaces.Commands.Create;
+using Backend.Features.CommonSpaces.Commands.Update;
 using Backend.Models;
 
-namespace Backend.Common.Profiles
+namespace Backend.Common.Profiles;
+
+public class CommonSpaceProfile : Profile
 {
-    public class CommonSpaceProfile : Profile
+    public CommonSpaceProfile()
     {
-        public CommonSpaceProfile()
-        {
-            CreateMap<CreateCommonSpaceCommand, CommonSpace>();
-            CreateMap<CommonSpace, CreateCommonSpaceCommandResponse>();
-        }
+        CreateMap<CreateCommonSpaceCommand, CommonSpace>();
+        CreateMap<CommonSpace, CreateCommonSpaceCommandResponse>();
+        CreateMap<CommonSpace, UpdateCommonSpaceCommandResponse>();
+        CreateMap<UpdateCommonSpaceCommand, CommonSpace>().ForMember(opt => opt.CommunityId, des => des.Ignore());
     }
 }

@@ -13,7 +13,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
-  FormBuilder,
+  FormBuilder, ValidatorFn, AbstractControl, ValidationErrors, FormsModule,
 } from '@angular/forms';
 import { LocationService } from '../../../services/location/location.service';
 import { CommunityActions } from '../../../../states/community/community.actions';
@@ -24,11 +24,14 @@ import {
 } from '../../../../shared/models/location.model';
 import { Observable, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
+import {ProfileComponent} from "../../profile/profile.component";
+import {AddCommunityComponent} from "./add-community/add-community.component";
+import {Contact} from "../../../../shared/models/contact.model";
 
 @Component({
   selector: 'app-admin-community',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProfileComponent, AddCommunityComponent, FormsModule],
   templateUrl: './admin-community.component.html',
   styleUrl: './admin-community.component.css',
 })
@@ -43,6 +46,9 @@ export class AdminCommunityComponent implements OnInit {
   notificacion = false;
   success = false;
   adminUsers!: UserAdmin[];
+  isModalOpen: boolean = false;
+  filteredCommunities: AllCommunity[] = [];
+  searchTerm: string = '';
 
   ActivateModal = false;
   loadingLocation: boolean = false;
@@ -60,13 +66,11 @@ export class AdminCommunityComponent implements OnInit {
       name: [''],
       address: [''],
       adminName: [''],
-      adminId: [0],
+      adminId: new FormControl(0,[Validators.required,Validators.min(1)]),
       creationDate: [''],
-      municipality: [''],
       municipalityId: [0],
-      city: [''],
+      rut:  new FormControl('', [Validators.required, this.rutValidator()]),
       cityId: [0],
-      region: [''],
       regionId: [0],
     });
   }
@@ -80,6 +84,7 @@ export class AdminCommunityComponent implements OnInit {
     this.service.getAllCommunity().subscribe(
       (response: { data: AllCommunity[] }) => {
         this.communities = response.data;
+        this.filteredCommunities = this.communities;
         this.isLoading = false;
       },
       (error) => {
@@ -144,7 +149,7 @@ export class AdminCommunityComponent implements OnInit {
       .pipe(
         tap((cities: { data: City[] }) => {
           this.cities = cities.data;
-          this.communityForm.patchValue({ cityId: '|', municipalityId: '|' });
+          this.communityForm.patchValue({ cityId: '0', municipalityId: '0' });
           this.communityForm.get('municipalityId')?.disable();
         })
       )
@@ -157,11 +162,19 @@ export class AdminCommunityComponent implements OnInit {
       .pipe(
         tap((municipalities: { data: Municipality[] }) => {
           this.municipalities = municipalities.data;
-          this.communityForm.patchValue({ municipalityId: '|' });
+          this.communityForm.patchValue({ municipalityId: '0' });
           this.communityForm.get('municipalityId')?.enable();
         })
       )
       .subscribe();
+  }
+
+  openAddModal() {
+    this.isModalOpen = true;
+  }
+
+  onClickCloseAdd() {
+    this.isModalOpen = false;
   }
 
   closeNotification() {
@@ -173,6 +186,7 @@ export class AdminCommunityComponent implements OnInit {
     const updateCommunity: Community = {
       id: this.communityForm.value.id as number,
       name: this.communityForm.value.name,
+      rut: this.communityForm.value.rut.replace(/[.\-]/g, '').toUpperCase(),
       address: this.communityForm.value.address,
       municipalityId: this.communityForm.value.municipalityId,
       cityId: this.communityForm.value.cityId,
@@ -204,4 +218,67 @@ export class AdminCommunityComponent implements OnInit {
       },
     });
   }
+
+  rutValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const rut = control.value;
+
+      if (!rut) {
+        return null;
+      }
+
+      const cleanRut = rut.replace(/[.\-]/g, '').toUpperCase();
+
+      if (!/^[0-9]+[K0-9]$/.test(cleanRut)) {
+        return { invalidRut: true };
+      }
+
+      const body = cleanRut.slice(0, -1);
+      const dv = cleanRut.slice(-1).toUpperCase();
+
+      if (body.length < 7) {
+        return { invalidRut: true };
+      }
+
+      // Validar el dígito verificador
+      const calculatedDV = this.calculateDV(body);
+      return dv === calculatedDV ? null : { invalidRut: true };
+    };
+  }
+
+  calculateDV(rut: string): string {
+    let sum = 0;
+    let multiplier = 2;
+
+    for (let i = rut.length - 1; i >= 0; i--) {
+      sum += +rut.charAt(i) * multiplier;
+      multiplier = multiplier < 7 ? multiplier + 1 : 2;
+    }
+
+    const remainder = 11 - (sum % 11);
+
+    if (remainder === 11) {
+      return '0';
+    } else if (remainder === 10) {
+      return 'K';
+    } else {
+      return remainder.toString();
+    }
+  }
+
+  filterCommunity() {
+    if (!this.searchTerm) {
+      this.filteredCommunities = this.communities;
+      return;
+    }
+
+    const searchTermLower = this.searchTerm.toLowerCase();
+    this.filteredCommunities = this.communities.filter(AllCommunity =>
+      AllCommunity.name.toLowerCase().includes(searchTermLower) ||
+      AllCommunity.adminName.toLowerCase().includes(searchTermLower) ||
+      AllCommunity.address.includes(this.searchTerm) ||
+      AllCommunity.municipality.toLowerCase().includes(searchTermLower)
+    );
+  }
+
 }

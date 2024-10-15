@@ -26,7 +26,7 @@ namespace Backend.Features.Community.Commands.Create
             if (checkCommunityName) return Result.Failure(CommunityErrors.CommunityNameAlreadyExist);
 
             var checkCommunityRut = await _context.Community.AnyAsync(x => x.Rut == request.RUT);
-            if (checkCommunityRut) return Result.Failure(CommunityErrors.CommunityNameAlreadyExist);
+            if (checkCommunityRut) return Result.Failure(CommunityErrors.CommunityRutAlreadyExist);
 
             var municipality = await _context.Municipality.FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
 
@@ -38,6 +38,7 @@ namespace Backend.Features.Community.Commands.Create
             var result = await _context.Community.AddAsync(community, cancellationToken);
             var id = await _context.SaveChangesAsync();
             var response = _mapper.Map<CreateCommunityCommandResponse>(result.Entity);
+
 
             return Result.WithResponse(new ResponseData { Data = response });
         }

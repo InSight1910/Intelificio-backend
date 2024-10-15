@@ -1,0 +1,94 @@
+<section class="hero is-halfheight is-flex is-align-items-center is-justify-content-center">
+  <div class="hero-body">
+    <div class="box">
+      <div class="has-text-centered">
+        <h2 class="title is-2 has-text-weight-bold">Confirmación de Reserva</h2>
+        <p class="subtitle">Por favor, revisa los detalles de tu reserva</p>
+      </div>
+
+      <div class="content mt-6">
+        @if(loading){
+          <div class="skeleton-lines">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        } @else {
+
+        <div class="is-flex is-flex-direction-column is-align-items-stretch">
+
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="font-semibold has-text-left">Lugar de Reserva:</h3>
+            <p class="has-text-right">{{this.reservation.spaceName}}</p>
+          </div>
+
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="font-semibold has-text-left">Dónde:</h3>
+            <p class="has-text-right">{{ reservation.location }}</p>
+          </div>
+
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="font-semibold has-text-left">Fecha:</h3>
+            <p class="has-text-right">{{ reservation.date | date : "dd/MM/yyyy" }}</p>
+          </div>
+
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="font-semibold has-text-left">Hora de Inicio:</h3>
+            <p class="has-text-right">{{ reservation.startTime }}</p>
+          </div>
+
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="font-semibold has-text-left">Hora de Término:</h3>
+            <p class="has-text-right">{{ reservation.endTime }}</p>
+          </div>
+
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="font-semibold has-text-left">Estado:</h3>
+            <p class="has-text-right">{{ ReservationStatus[reservation.status] | titlecase }}</p>
+          </div>
+
+        </div>
+        }
+      </div>
+
+      <div class="has-text-centered">
+        @if (reservation.status == 0) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" [disabled]="confirmed" (click)="cancel()">Cancelar Reserva</button>
+            <button class="button is-medium is-success" [disabled]="confirmed" (click)="confirm()">Confirmar Reserva</button>
+          </div>
+        } @else if (reservation.status == 1) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" [disabled]="confirmed" (click)="cancel()">Cancelar Reserva</button>
+            <button class="button is-medium" [disabled]="!confirmed">Disfruta tu reserva</button>
+          </div>
+        } @else if (reservation.status == 2) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" [disabled]="!confirmed">Reserva Cancelada</button>
+          </div>
+        } @else if (reservation.status == 3) {
+          <div class="buttons is-centered">
+            <button class="button is-medium" (click)="toReserva()">Vuelve a reservar</button>
+          </div>
+        }
+      </div>
+
+      @if (message) {
+        <article class="message is-success mt-4">
+          <div class="message-body">
+            <p>{{ message }}</p>
+          </div>
+        </article>
+      } @if (error) {
+      <article class="message is-danger mt-4">
+        <div class="message-body">
+          <p>{{ error }}</p>
+        </div>
+      </article>
+    }
+
+    </div>
+  </div>
+</section>

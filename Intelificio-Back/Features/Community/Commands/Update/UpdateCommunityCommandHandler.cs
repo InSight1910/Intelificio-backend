@@ -41,11 +41,23 @@ namespace Backend.Features.Community.Commands.Update
             if (request.AdminId > 0)
             {
                 var admin = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.AdminId);
+
                 if (admin is null) return Result.Failure(CommunityErrors.AdminNotFoundUpdate);
+
                 var isAdmin = await _userManager.IsInRoleAsync(admin, "Administrador");
                 if (!isAdmin) return Result.Failure(CommunityErrors.AdminNotAdminRole);
-                community.Users.Add(admin);
+
+
+                var isAlreadyInCommunity = await _context.Community
+                    .AnyAsync(c => c.ID == community.ID && c.Users.Any(u => u.Id == admin.Id));
+
+                if (!isAlreadyInCommunity)
+                {
+                    
+                    community.Users.Add(admin);
+                }
             }
+
 
             _ = _context.Community.Update(community);
             var result = await _context.SaveChangesAsync();

@@ -15,7 +15,6 @@ import {User} from "../../../shared/models/user.model";
 import {selectUser} from "../../../states/auth/auth.selectors";
 import {AuthService} from "../../services/auth/auth.service";
 import {UpdateUser} from "../../../shared/models/auth.model";
-import {NavbarComponent} from "../../../shared/component/navbar/navbar.component";
 import {AuthActions} from "../../../states/auth/auth.actions";
 
 
@@ -42,7 +41,7 @@ export class ProfileComponent implements OnInit{
   form: FormGroup;
   user!: User | null;
 
-  constructor(private store: Store<AppState>,private fb: FormBuilder, private service : AuthService, private navbar: NavbarComponent) {
+  constructor(private store: Store<AppState>,private fb: FormBuilder, private service : AuthService) {
     this.form = this.fb.group({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),

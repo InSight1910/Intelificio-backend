@@ -4,6 +4,8 @@
     {   
         public required int Id { get; set; }
         public required string Name { get; set; }
+
+        public required string Rut { get; set; }
         public required string Address { get; set; }
 
         public required string AdminName { get; set; }

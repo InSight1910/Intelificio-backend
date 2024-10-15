@@ -1,0 +1,160 @@
+<div class="modal is-active">
+  <div class="modal-background" (click)="onClose()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-shadowless">
+      <p class="modal-card-title">Crear Nueva Comunidad</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="onClose()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form [formGroup]="form" [hidden]="notification">
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Nombre comunidad</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="name"
+                placeholder="Nombre de comunidad"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Rut comunidad</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="rut"
+                placeholder="Rut de comunidad"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <label class="label" for="address">Dirección</label>
+            <div class="control">
+              <input
+                class="input"
+                id="address"
+                type="text"
+                formControlName="address"
+                placeholder="Ingrese Dirección #123"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <div class="field">
+              <label class="label" >Región</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    (change)="onChangeRegion($event)"
+                    formControlName="regionId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="0">Seleccione Región</option>
+                    @for (region of regions; track $index) {
+                      <option value="{{ region.id }}">{{ region.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <div class="field">
+              <label class="label">Ciudad</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    (change)="onChangeCity($event)"
+                    formControlName="cityId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="0">Seleccione Ciudad</option>
+                    @for (city of cities; track $index) {
+                      <option value="{{ city.id }}">{{ city.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-full">
+            <div class="field">
+              <label class="label" >Municipalidad</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    formControlName="municipalityId"
+                    [ngClass]="{ 'is-skeleton': loadingLocation }"
+                  >
+                    <option value="0">Seleccione Comuna</option>
+                    @for (municipality of municipalities; track $index) {
+                      <option value="{{ municipality.id }}">
+                        {{ municipality.name }}
+                      </option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      @if (notification) { @if (IsSuccess){
+        <div class="notification is-success mt-3" >
+          <button class="delete" (click)="closeNotification()"></button>
+          {{ this.notificationMessage }}
+        </div>
+      } @else if (IsError){
+        <div class="notification is-danger mt-3">
+          <button class="delete" (click)="closeNotification()"></button>
+          {{ this.notificationMessage }}
+        </div>
+      } }
+
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          [disabled]="isLoading || !form.valid"
+          [ngClass]="{ 'is-loading': isLoading }"
+          (click)="OnSubmit()"
+
+        >
+          Guardar cambios
+        </button>
+        <button
+          class="button"
+          [disabled]="isLoading"
+          (click)="onClose()"
+        >
+          Salir
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>
+

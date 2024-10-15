@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import '@angular/common';
 import {
   FormBuilder,
@@ -24,7 +24,7 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements  OnInit {
   loginForm: FormGroup;
   loading$!: Observable<boolean>;
   errors$!: Observable<string[] | null>;
@@ -37,6 +37,10 @@ export class LoginComponent {
       },
       Validators.required
     );
+  }
+
+  ngOnInit(){
+    localStorage.clear();
   }
 
   onSubmit() {

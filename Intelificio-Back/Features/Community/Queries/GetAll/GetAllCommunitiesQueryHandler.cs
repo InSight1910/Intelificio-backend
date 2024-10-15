@@ -28,6 +28,7 @@ namespace Backend.Features.Community.Queries.GetAll
                     Address = x.Address,
                     CreationDate = x.FoundationDate,
                     Name = x.Name,
+                    Rut = x.Rut,
                     Municipality = x.Municipality.Name,
                     MunicipalityId = x.Municipality.ID,
                     City = x.Municipality.City.Name,

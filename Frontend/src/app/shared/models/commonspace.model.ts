@@ -5,6 +5,9 @@ export interface CommonSpace {
   location: string;
   isInMaintenance: boolean;
   communityId: number;
+  startDate?: string;
+  endDate?: string;
+  comment?: string;
 }
 export interface CreateCommonSpace {
   name: string;
@@ -18,5 +21,8 @@ export interface UpdateCommonSpace {
   name?: string;
   capacity?: number;
   location?: string;
-  isInMaintenance?: boolean;
+  IsInMaintenance?: boolean;
+  startDate?: string;
+  endDate?: string;
+  comment?: string;
 }

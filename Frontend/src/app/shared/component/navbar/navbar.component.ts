@@ -2,20 +2,15 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { AppState } from '../../../states/intelificio.state';
 import { Store } from '@ngrx/store';
 import { selectTitle } from '../../../states/navbar/navbar.selectors';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
 import { selectUser } from '../../../states/auth/auth.selectors';
-import { Community } from '../../models/community.model';
 import { selectCommunity } from '../../../states/community/community.selectors';
 import { AuthActions } from '../../../states/auth/auth.actions';
 import { ProfileComponent } from '../../../core/features/profile/profile.component';
 import { ModalComponent } from '../../../core/features/common-space/modal/modal.component';
 import {
-  FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -39,7 +34,6 @@ export class NavbarComponent implements OnInit{
   communityName!: string;
   navbarDisplay: boolean = false;
   isModalOpen: boolean = false;
-  currentTheme: string = '';
   isDarkTheme: boolean = false;
 
   ngOnInit() {

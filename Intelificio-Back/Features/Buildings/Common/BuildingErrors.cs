@@ -30,7 +30,6 @@ namespace Backend.Features.Buildings.Common
         // Errores de Query's
         public static Error CommunityNotFoundOnQuery = new("Building.GetAllByCommunity.CommunityNotFoundOnQuery", "Comunidad no fue encontrada.");
         public static Error BuildingNotFoundOnQuery = new("Building.GetbyId.BuildingNotFoundOnQuery", "Edificio no fue encontrado.");
-
         public static Error BuildingNameAlreadyExist = new("Building.Create.BuildingNameAlreadyExist", "El nombre del edificio ya existe.");
     }
 }

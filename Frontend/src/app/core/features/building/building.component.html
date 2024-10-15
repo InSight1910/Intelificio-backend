@@ -18,207 +18,211 @@
   cumque hic doloribus illo rem eius autem magnam vel non, consectetur molestias
 </div>
 } @else {
-<div class="level">
-  <div class="level-left">
-    <h3 class="title level-item">Edificios</h3>
+<div CLASS="container">
+  <div class="level">
+    <div class="level-left">
+      <h3 class="title is-3 level-item">Edificios</h3>
+    </div>
+  </div>
+  <div class="tabs">
+    <ul>
+      @for (building of Edificios; track building.id) {
+      <li
+        [class.is-active]="building.id === selectedBuildingId"
+        (click)="detail(building.id)"
+      >
+        <a>{{ building.name }}</a>
+      </li>
+      }
+    </ul>
   </div>
 </div>
-<div class="tabs">
-  <ul>
-    @for (building of Edificios; track building.id) {
-    <li
-      [class.is-active]="building.id === selectedBuildingId"
-      (click)="detail(building.id)"
-    >
-      <a>{{ building.name }}</a>
-    </li>
-    }
-  </ul>
-</div>
-
-<form class="box" [formGroup]="buildingForm">
-  <div class="columns">
-    <div class="column field is-6">
-      <label class="label" for="nombre">Nombre Edificio</label>
-      <div class="control">
-        <input
-          class="input"
-          id="nombre"
-          type="text"
-          formControlName="nombreEdificio"
-          (input)="onInputChange('nombreEdificio')"
-          [ngClass]="{
-            'is-danger':
-              buildingForm.get('nombreEdificio')?.invalid &&
-              buildingForm.get('nombreEdificio')?.touched
-          }"
-          [ngClass]="{
-            'is-success':
-              buildingForm.get('nombreEdificio')?.valid &&
-              buildingForm.get('nombreEdificio')?.touched
-          }"
-        />
-        @if (buildingForm.get('nombreEdificio')?.invalid &&
-        buildingForm.get('nombreEdificio')?.touched) {
-        <p class="help is-danger">
-          <i class="fas fa-exclamation-triangle"></i>
-          Debe ingresar el nombre del Edificio.
-        </p>
-        } @else if (buildingForm.get('nombreEdificio')?.valid &&
-        buildingForm.get('nombreEdificio')?.touched) {
-        <p class="help is-right">
-          <i class="fas fa-check"></i>
-          Validado
-        </p>
-        }
+  <div CLASS="container">
+    <form class="box" [formGroup]="buildingForm">
+    <div class="columns">
+      <div class="column field is-6">
+        <label class="label" for="nombre">Nombre Edificio</label>
+        <div class="control">
+          <input
+            class="input"
+            id="nombre"
+            type="text"
+            formControlName="nombreEdificio"
+            (input)="onInputChange('nombreEdificio')"
+            [ngClass]="{
+              'is-danger':
+                buildingForm.get('nombreEdificio')?.invalid &&
+                buildingForm.get('nombreEdificio')?.touched
+            }"
+            [ngClass]="{
+              'is-success':
+                buildingForm.get('nombreEdificio')?.valid &&
+                buildingForm.get('nombreEdificio')?.touched
+            }"
+          />
+          @if (buildingForm.get('nombreEdificio')?.invalid &&
+          buildingForm.get('nombreEdificio')?.touched) {
+          <p class="help is-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            Debe ingresar el nombre del Edificio.
+          </p>
+          } @else if (buildingForm.get('nombreEdificio')?.valid &&
+          buildingForm.get('nombreEdificio')?.touched) {
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+          }
+        </div>
       </div>
-    </div>
 
-    @if (!isCreation) {
-    <div class="column field is-6">
-      <label class="label" for="nombrecomunidad">Nombre Comunidad</label>
-      <div class="control">
-        <input
-          class="input"
-          id="nombrecomunidad"
-          type="text"
-          formControlName="ComunidadEdificio"
-        />
+      @if (!isCreation) {
+      <div class="column field is-6">
+        <label class="label" for="nombrecomunidad">Nombre Comunidad</label>
+        <div class="control">
+          <input
+            class="input"
+            id="nombrecomunidad"
+            type="text"
+            formControlName="ComunidadEdificio"
+          />
+        </div>
       </div>
-    </div>
-    }
-  </div>
-
-  <div class="columns">
-    <div class="column field is-6">
-      <label class="label" for="cantidadpisos">N° de Pisos</label>
-      <div class="control">
-        <input
-          class="input"
-          id="cantidadpisos"
-          type="number"
-          formControlName="pisosEdificio"
-          (input)="onInputChange('pisosEdificio')"
-          [ngClass]="{
-            'is-danger':
-              buildingForm.get('pisosEdificio')?.invalid &&
-              buildingForm.get('pisosEdificio')?.touched
-          }"
-          [ngClass]="{
-            'is-success':
-              buildingForm.get('pisosEdificio')?.valid &&
-              buildingForm.get('pisosEdificio')?.touched
-          }"
-        />
-        @if (buildingForm.get('pisosEdificio')?.invalid &&
-        buildingForm.get('pisosEdificio')?.touched) {
-        <p
-          class="help is-danger"
-          *ngIf="buildingForm.get('pisosEdificio')?.invalid"
-        >
-          <i class="fas fa-exclamation-triangle"></i>
-          El edificio debe tener al menos 1 piso.
-        </p>
-        } @else if (buildingForm.get('pisosEdificio')?.valid &&
-        buildingForm.get('pisosEdificio')?.touched) {
-        <p class="help is-right">
-          <i class="fas fa-check"></i>
-          Validado
-        </p>
-        }
-      </div>
-    </div>
-
-    @if (!isCreation) {
-    <div class="column field is-6">
-      <label class="label" for="cantidadunidades">N° de Unidades</label>
-      <div class="control">
-        <input
-          class="input"
-          id="cantidadunidades"
-          type="text"
-          formControlName="CantidadUnidades"
-        />
-      </div>
-    </div>
-    }
-  </div>
-
-  @if (!notification) { } @else {
-  <div class="notification is-danger">
-    <button class="delete" (click)="closeNotification()"></button>
-    No es posible eliminar Edificio,
-    <strong>existen unidades asociadas</strong>.
-  </div>
-  } @if (postUpdateOrCreate && isCreation) {
-  <div class="notification is-success">
-    <button class="delete" (click)="closeNotification()"></button>
-    Edificio creado exitosamente.
-  </div>
-  } @else if (postUpdateOrCreate && isEdited) {
-  <div class="notification is-success">
-    <button class="delete" (click)="closeNotification()"></button>
-    Edificio actualizado exitosamente.
-  </div>
-  } @else if (postUpdateOrCreate && isDeletion) {
-  <div class="notification is-success">
-    <button class="delete" (click)="closeNotification()"></button>
-    Edificio eliminado exitosamente.
-  </div>
-  } @if (errors) {
-  <div class="message is-danger">
-    <div class="message-body">
-      @for(error of errors; track $index){
-      {{ error.message }}
-
       }
     </div>
-  </div>
-  }
 
-  <div class="buttons">
-    @if (isEdited) {
-    <button
-      type="submit"
-      class="button is-primary"
-      (click)="update()"
-      [disabled]="!buildingForm.valid"
-      [ngClass]="{
-        'is-loading': isSubmit
-      }"
-    >
-      Guardar
-    </button>
-    <button class="button is-link" (click)="exitdit()">Cancelar</button>
-    } @else if (isCreation){
-    <button
-      type="submit"
-      class="button is-primary"
-      (click)="saveCreate()"
-      [ngClass]="{ 'is-loading': loading }"
-      [disabled]="buildingForm.invalid || !canSend"
-    >
-      Guardar
-    </button>
-    <button
-      class="button is-link"
-      [disabled]="loading"
-      (click)="exitcreation()"
-    >
-      Cancelar
-    </button>
-    } @else {
-    <button class="button is-primary" (click)="create()"><span class="icon mr-2"><i class="fa-solid fa-building-circle-arrow-right"></i></span>Agregar</button>
-    <button class="button is-warning" (click)="edit()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>Editar</button>
-    <button class="button is-danger" (click)="openmodal()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-trash"></i></span>Eliminar</button>
+    <div class="columns">
+      <div class="column field is-6">
+        <label class="label" for="cantidadpisos">N° de Pisos</label>
+        <div class="control">
+          <input
+            class="input"
+            id="cantidadpisos"
+            type="number"
+            formControlName="pisosEdificio"
+            (input)="onInputChange('pisosEdificio')"
+            [ngClass]="{
+              'is-danger':
+                buildingForm.get('pisosEdificio')?.invalid &&
+                buildingForm.get('pisosEdificio')?.touched
+            }"
+            [ngClass]="{
+              'is-success':
+                buildingForm.get('pisosEdificio')?.valid &&
+                buildingForm.get('pisosEdificio')?.touched
+            }"
+          />
+          @if (buildingForm.get('pisosEdificio')?.invalid &&
+          buildingForm.get('pisosEdificio')?.touched) {
+          <p
+            class="help is-danger"
+            *ngIf="buildingForm.get('pisosEdificio')?.invalid"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            El edificio debe tener al menos 1 piso.
+          </p>
+          } @else if (buildingForm.get('pisosEdificio')?.valid &&
+          buildingForm.get('pisosEdificio')?.touched) {
+          <p class="help is-right">
+            <i class="fas fa-check"></i>
+            Validado
+          </p>
+          }
+        </div>
+      </div>
+
+      @if (!isCreation) {
+      <div class="column field is-6">
+        <label class="label" for="cantidadunidades">N° de Unidades</label>
+        <div class="control">
+          <input
+            class="input"
+            id="cantidadunidades"
+            type="text"
+            formControlName="CantidadUnidades"
+          />
+        </div>
+      </div>
+      }
+    </div>
+
+    @if (!notification) { } @else {
+    <div class="notification is-danger">
+      <button class="delete" (click)="closeNotification()"></button>
+      No es posible eliminar Edificio,
+      <strong>existen unidades asociadas</strong>.
+    </div>
+    } @if (postUpdateOrCreate && isCreation) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()"></button>
+      Edificio creado exitosamente.
+    </div>
+    } @else if (postUpdateOrCreate && isEdited) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()"></button>
+      Edificio actualizado exitosamente.
+    </div>
+    } @else if (postUpdateOrCreate && isDeletion) {
+    <div class="notification is-success">
+      <button class="delete" (click)="closeNotification()"></button>
+      Edificio eliminado exitosamente.
+    </div>
+    } @if (errors) {
+    <div class="message is-danger">
+      <div class="message-body">
+        @for(error of errors; track $index){
+        {{ error.message }}
+
+        }
+      </div>
+    </div>
     }
-  </div>
-</form>
 
-<app-unit
-  buildingId="{{ selectedBuildingId }}"
-  buildingName="{{ Edificio.name }}"
-/>
+    <div class="buttons">
+      @if (isEdited) {
+      <button
+        type="submit"
+        class="button is-primary"
+        (click)="update()"
+        [disabled]="!buildingForm.valid"
+        [ngClass]="{
+          'is-loading': isSubmit
+        }"
+      >
+        Guardar
+      </button>
+      <button class="button is-link" (click)="exitdit()">Cancelar</button>
+      } @else if (isCreation){
+      <button
+        type="submit"
+        class="button is-primary"
+        (click)="saveCreate()"
+        [ngClass]="{ 'is-loading': loading }"
+        [disabled]="buildingForm.invalid || !canSend"
+      >
+        Guardar
+      </button>
+      <button
+        class="button is-link"
+        [disabled]="loading"
+        (click)="exitcreation()"
+      >
+        Cancelar
+      </button>
+      } @else {
+      <button class="button is-primary" (click)="create()"><span class="icon mr-2"><i class="fa-solid fa-building-circle-arrow-right"></i></span>Agregar</button>
+      <button class="button is-warning" (click)="edit()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>Editar</button>
+      <button class="button is-danger" (click)="openmodal()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-trash"></i></span>Eliminar</button>
+      }
+    </div>
+  </form>
+  </div>
+  <div class="container">
+    <app-unit
+      buildingId="{{ selectedBuildingId }}"
+      buildingName="{{ Edificio.name }}"
+    />
+  </div>
 
 <div class="modal" [ngClass]="{ 'is-active': ActivateModal }">
   <div class="modal-background"></div>

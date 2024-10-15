@@ -1,5 +1,11 @@
 ﻿
 using Backend.Features.Notification.Commands.CommonExpenses;
+using Backend.Features.Notification.Commands.ConfirmEmail;
+using Backend.Features.Notification.Commands.Maintenance;
+using Backend.Features.Notification.Commands.MaintenanceCancellation;
+using Backend.Features.Notification.Commands.MassUserConfirmationEmail;
+using Backend.Features.Notification.Commands.PackageDelivered;
+using Backend.Features.Notification.Commands.Reservation.SuccessfulReservation;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -66,6 +72,150 @@ namespace Backend.Common.Helpers
         }
 
         public async Task<SendGrid.Response> SendCommondExpenses(EmailAddress from, List<EmailAddress> recipients, string templateId, List<CommonExpensesTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendMaintenanceNotificationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<MaintenanceTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendSingleEmailConfirmationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<SingleUserConfirmationEmailTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendMassEmailConfirmationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<MassUserConfirmationEmailTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendSuccessfulReservationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<SuccessfulReservationTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendPackageDeliveredNotification(EmailAddress from, List<EmailAddress> recipients, string templateId, List<PackageDeliveredTemplate> templates)
+        {
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+        public async Task<SendGrid.Response> SendMaintenanceCancellationNotificationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<MaintenanceCancellationTemplate> templates)
         {
 
             var msg = new SendGridMessage();

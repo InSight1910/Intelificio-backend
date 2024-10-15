@@ -28,4 +28,9 @@ export interface UpdateUser {
   refreshToken: string;
 }
 
+export interface ConfirmEmail{
+  email: string;
+  token: string;
+}
+
 

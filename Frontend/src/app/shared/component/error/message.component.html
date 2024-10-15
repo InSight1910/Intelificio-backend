@@ -1,0 +1,21 @@
+<div
+  class="message"
+  [ngClass]="{
+    'is-danger': errors.length > 0,
+    'is-success': success != ''
+  }"
+>
+  <div class="message-body">
+    <ul>
+      @for(error of errors; track $index){
+      <li>
+        {{ error.message }}
+      </li>
+      } @if (success != '') {
+      <li>
+        {{ success }}
+      </li>
+      }
+    </ul>
+  </div>
+</div>

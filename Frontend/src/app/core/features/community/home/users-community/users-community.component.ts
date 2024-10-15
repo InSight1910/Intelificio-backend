@@ -11,11 +11,12 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../states/intelificio.state';
 import { selectCommunity } from '../../../../../states/community/community.selectors';
 import { tap } from 'rxjs';
+import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone/format-phone.pipe';
 
 @Component({
   selector: 'app-users-community',
   standalone: true,
-  imports: [CommonModule, AddUserModalComponent],
+  imports: [CommonModule, AddUserModalComponent, FormatPhonePipe],
   templateUrl: './users-community.component.html',
   styleUrl: './users-community.component.css',
 })
@@ -76,7 +77,6 @@ export class UsersCommunityComponent {
   }
 
   openmodal({ email, id, name, role,firstName,lastName,phoneNumber }: UsersCommunity) {
-    console.log('paso');
     this.userToBeDeleted = {
       role,
       given_name: name,
@@ -84,8 +84,7 @@ export class UsersCommunityComponent {
       email,
       firstName: '',
       lastName: '',
-      phoneNumber
-
+      phoneNumber,
     };
     this.activateModal = true;
   }

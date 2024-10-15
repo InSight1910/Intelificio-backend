@@ -4,12 +4,14 @@ namespace Backend.Models
 {
     public class Maintenance : BaseEntity
     {
-        public DateTime PostDate { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public required string Description { get; set; }
+        public required DateTime StartDate { get; set; }
+        public required DateTime EndDate { get; set; }
+        public string Comment { get; set; } = string.Empty;
+        public required int CommonSpaceID { get; set; }
+        public  CommonSpace CommonSpace { get; set;}
         public bool IsActive { get; set; }
-        public required Community Community { get; set; }
-        public required Building Building { get; set; }
+        public required int CommunityID { get; set; }
+        public Community Community { get; set; }
+
     }
 }

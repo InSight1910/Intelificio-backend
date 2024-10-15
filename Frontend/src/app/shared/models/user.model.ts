@@ -8,6 +8,11 @@ export interface User {
   phoneNumber: string;
 }
 
+export interface UserRut {
+  id: number;
+  name: string;
+}
+
 export interface AuthState {
   user: User | null;
   loading: boolean;

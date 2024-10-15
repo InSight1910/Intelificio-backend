@@ -30,7 +30,7 @@
         <td>{{ idx + 1 }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.phoneNumber }}</td>
+        <td>{{ user.phoneNumber | formatPhone }}</td>
         <td>{{ user.unitCount }}</td>
         <td>
           <span

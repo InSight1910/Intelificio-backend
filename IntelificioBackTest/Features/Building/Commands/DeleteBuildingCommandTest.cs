@@ -9,15 +9,15 @@ namespace IntelificioBackTest.Features.Building.Commands
 {
     public class DeleteBuildingCommandTest
     {
-        private readonly DeleteBuildingCommandHandler _handler;
+        private readonly DeleteBuildingHandler _handler;
         private readonly IntelificioDbContext _context;
-        private readonly Mock<ILogger<DeleteBuildingCommandHandler>> _logger;
+        private readonly Mock<ILogger<DeleteBuildingHandler>> _logger;
 
         public DeleteBuildingCommandTest()
         {
-            _logger = new Mock<ILogger<DeleteBuildingCommandHandler>>();
+            _logger = new Mock<ILogger<DeleteBuildingHandler>>();
             _context = DbContextFixture.GetDbContext();
-            _handler = new DeleteBuildingCommandHandler(_context, _logger.Object);
+            _handler = new DeleteBuildingHandler(_context, _logger.Object);
         }
 
 

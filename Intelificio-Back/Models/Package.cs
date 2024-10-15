@@ -1,18 +1,25 @@
 ﻿using Backend.Models.Base;
 using Backend.Models.Enums;
+using System;
 
-namespace Backend.Models
+namespace Backend.Models;
+
+public class Package : BaseEntity
 {
-    public class Package : BaseEntity
-    {
-        public required string Notes { get; set; }
-        public required DateTime ReceptionDate { get; set; }
-        public required PackageStatus Status { get; set; }
-        public required Community Community { get; set; }
-        public required int OwnerId { get; set; }
-        public required User Owner { get; set; }
-        public required int StaffId { get; set; }
-        public required User Staff { get; set; }
-    }
+    public required string TrackingNumber { get; set; }
+    public DateTime ReceptionDate { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+    public required PackageStatus Status { get; set; }
+    public required int CommunityId { get; set; }
+    public Community Community { get; set; }
+    public required int RecipientId { get; set; }
+    public User Recipient { get; set; }
+    public required int ConciergeId { get; set; }
+    public User Concierge { get; set; }
+    public int? DeliveredToId { get; set; }
+    public User? DeliveredTo { get; set; }
+    public DateTime? DeliveredDate { get; set; }
 
+    public DateTime NotificationDate { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+    public int NotificacionSent { get; set; } = 0;
 }
+

@@ -616,6 +616,10 @@ namespace Backend.Models.Extensions
             var santiagoComuna = new Municipality { Name = "Santiago", City = metropolitanaCity };
             var vitacura = new Municipality { Name = "Vitacura", City = metropolitanaCity };
 
+            var puenteAlto = new Municipality { Name = "Puente Alto", City = cordillera };
+            var pirque = new Municipality { Name = "Pirque", City = cordillera };
+            var sanJoseDeMaipo = new Municipality { Name = "San José de Maipo", City = cordillera };
+
             var padreHurtado = new Municipality { Name = "Padre Hurtado", City = talagante };
             var penaflor = new Municipality { Name = "Peñaflor", City = talagante };
             var talaganteComuna = new Municipality { Name = "Talagante", City = talagante };
@@ -891,6 +895,8 @@ namespace Backend.Models.Extensions
                     colchane,
                     huara,
                     pica,
+                    sanJoseDeMaipo,
+                    pirque,
                     pozoAlmonte,
                     antofagastaComuna,
                     mejillones,
@@ -950,6 +956,7 @@ namespace Backend.Models.Extensions
                     sanEsteban,
                     cabildo,
                     laLigua,
+                    puenteAlto,
                     papudo,
                     petorcaComuna,
                     zapallar,

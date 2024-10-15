@@ -94,6 +94,7 @@ namespace Backend.Features.Community.Common
                 onFailure: (result) => BadRequest(result)
                 );
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../states/intelificio.state';
 import {
   selectCommunity,
-  isLoading,
+  isLoadingCommunity,
 } from '../../../states/community/community.selectors';
 import { Community } from '../../../shared/models/community.model';
 import { tap } from 'rxjs';
@@ -47,8 +47,6 @@ export class BuildingComponent implements OnInit {
   loading = false;
   selectedBuildingId: number = 1;
   ActivateModal = false;
-  createdMessage: string = 'Edificio creado.';
-  updatedMessage: string = 'Edificio actualizado.';
   community!: Community | null;
   errors: any;
   canSend: boolean = true;
