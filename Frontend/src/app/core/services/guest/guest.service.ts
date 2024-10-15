@@ -4,7 +4,8 @@ import { environment } from '../../../../environments/environment.development';
 import { 
   CreateGuest, 
   UpdateGuest, 
-  Guest  
+  Guest,  
+  GuestList
 } from '../../../shared/models/guest.model';
 
 @Injectable({
@@ -47,7 +48,7 @@ export class GuestService {
 
   // ALL BY COMMUNITY
   getAllGuestsByCommunity(communityId: number) {
-    return this.http.get<{ data: Guest[] }>(`${this.baseUrl}/guest/GetAllByCommunity/${communityId}`);
+    return this.http.get<{ data: GuestList[] }>(`${this.baseUrl}/guest/GetAllByCommunity/${communityId}`);
   }
 
 }

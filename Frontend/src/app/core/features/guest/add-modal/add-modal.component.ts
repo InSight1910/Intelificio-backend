@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GuestService } from '../../../services/guest/guest.service';
-import { Building, CreateGuest } from '../../../../shared/models/guest.model';
+import { CreateGuest } from '../../../../shared/models/guest.model';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BuildingService } from '../../../services/building/building.service';
@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../states/intelificio.state';
 import { selectCommunity } from '../../../../states/community/community.selectors';
 import { catchError, of, tap } from 'rxjs';
+import { Building } from '../../../../shared/models/building.model';
 
 @Component({
   selector: 'app-add-modal',
@@ -45,7 +46,7 @@ export class AddModalComponent {
       entrytime: new Date(),
       plate: [''],
       building: [''],
-      unit: [''],
+      unitId: [''],
     });
   }
 
@@ -92,7 +93,7 @@ export class AddModalComponent {
       rut: this.guestForm.get('rut')?.value,
       entryTime: new Date().toISOString().slice(0, 19),
       plate: this.guestForm.get('plate')?.value,
-      unitId: this.guestForm.get('unit')?.value,
+      unitId: this.guestForm.get('unitId')?.value,
     };
 
     this.guestService

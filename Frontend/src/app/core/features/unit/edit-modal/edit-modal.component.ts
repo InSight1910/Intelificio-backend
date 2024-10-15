@@ -63,7 +63,6 @@ export class EditModalComponent {
         });
     });
   }
-
   
   getUnits(id: number) {
     console.log(id);

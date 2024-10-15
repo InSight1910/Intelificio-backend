@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GuestService } from '../../services/guest/guest.service';
-import { Guest } from '../../../shared/models/guest.model';
+import { GuestList } from '../../../shared/models/guest.model';
 import { CommonModule } from '@angular/common';
 import { AddModalComponent } from './add-modal/add-modal.component';
 import { EditModalComponent } from './edit-modal/edit-modal.component';
@@ -17,7 +17,7 @@ import { selectCommunity } from '../../../states/community/community.selectors';
 })
 export class GuestComponent {
   @Input() unitId: string = '0';
-  guests: Guest[] = [];
+  guests: GuestList[] = [];
   currentDateTime: string;
   isLoading = false;
   communityId!: number;

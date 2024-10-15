@@ -53,7 +53,7 @@
 
         <div class="field has-text-centered">
           <div class="select is-fullwidth">
-            <select formControlName="unit" aria-label="Seleccione Unidad">
+            <select formControlName="unitId" aria-label="Seleccione Unidad">
               <option value="" disabled selected>Seleccione Unidad</option>
               @for (unit of units; track $index) {
               <option value="{{ unit.id }}">
