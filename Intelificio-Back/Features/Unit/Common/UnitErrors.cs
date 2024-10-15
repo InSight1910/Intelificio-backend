@@ -53,8 +53,8 @@ namespace Backend.Features.Unit.Common
 
         //-----------------------------------------------------------------------------
 
-        public static Error UnitNotFoundGetByID = new Error(
-           "Unit.GetByID.UnitNotFoundGetByID", "La unidad no fue encontrada");
+        public static Error UnitNotFoundGetById = new Error(
+           "Unit.GetById.UnitNotFoundGetById", "La unidad no fue encontrada");
 
         //-----------------------------------------------------------------------------
 

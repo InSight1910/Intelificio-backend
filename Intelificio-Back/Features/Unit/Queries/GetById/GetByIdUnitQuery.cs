@@ -2,9 +2,9 @@
 using MediatR;
 using System.Text.Json.Serialization;
 
-namespace Backend.Features.Unit.Queries.GetByID
+namespace Backend.Features.Unit.Queries.GetById
 {
-    public class GetByIDQuery : IRequest<Result>
+    public class GetByIdUnitQuery : IRequest<Result>
     {
         [JsonIgnore]
         public required int? UnitId { get; set; }

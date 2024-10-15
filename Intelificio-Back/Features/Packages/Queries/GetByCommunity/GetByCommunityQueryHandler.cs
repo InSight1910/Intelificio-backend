@@ -12,7 +12,8 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
     {
         if (!await context.Community.AnyAsync(x => x.ID == request.CommunityId)) return Result.Failure(null);
 
-        var currentDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+        var currentDate =
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
 
         var result = await context.Package
             .Include(x => x.Concierge)
@@ -35,12 +36,8 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
             .OrderByDescending(x => x.Status).ToListAsync();
 
         foreach (var package in result)
-        {
             if ((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING)
-            {
                 package.CanSend = true;
-            }
-        }
 
         return Result.WithResponse(new ResponseData
         {

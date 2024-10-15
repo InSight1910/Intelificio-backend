@@ -24,12 +24,9 @@ namespace Backend.Features.Unit.Commands.Update
         public async Task<Result> Handle(UpdateUnitCommand request, CancellationToken cancellationToken)
         {
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.Id);
-
             if (unit is null) return Result.Failure(UnitErrors.UnitNotFoundUpdate);
 
             unit = _mapper.Map(request, unit);
-
-            // Update unidad
 
             UnitType? unitType = null;
 
@@ -40,8 +37,6 @@ namespace Backend.Features.Unit.Commands.Update
             }
 
             if (unitType is not null) unit.UnitType = unitType;
-
-            // Update edificio
 
             Building? building = null;
 

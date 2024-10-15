@@ -12,25 +12,16 @@
       <h4 class="title is-4 has-text-centered">Agregar Unidad</h4>
 
       <form [formGroup]="unitForm">
+
         <div class="field">
           <div class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              placeholder="Numero"
-              formControlName="number"
-            />
+            <input class="input" type="text" placeholder="Numero" formControlName="number" />
           </div>
         </div>
 
         <div class="field">
           <div class="control is-expanded">
-            <input
-              class="input"
-              type="number"
-              placeholder="Superficie"
-              formControlName="surface"
-            />
+            <input class="input" type="number" placeholder="Superficie" formControlName="surface" />
           </div>
         </div>
 
@@ -82,6 +73,7 @@
             }
           </div>
         </div>
+        
         } @if (isSuccess) {
         <div class="message is-success">
           <div class="message-body">Unidad agregada correctamente</div>
@@ -89,14 +81,10 @@
         }
 
         <input type="hidden" name="id" formControlName="id" />
+
         <div class="field mt-6 mb-3">
           <div class="buttons is-centered">
-            <button
-              class="button is-primary"
-              (click)="onClickAddUnit()"
-              [ngClass]="{ 'is-loading': isAdding }"
-              form
-            >
+            <button class="button is-primary" (click)="onClickAddUnit()" [ngClass]="{ 'is-loading': isAdding }" form>
               Agregar
             </button>
             <button class="button is-warning" (click)="onClickCloseModal()">
@@ -104,6 +92,7 @@
             </button>
           </div>
         </div>
+
       </form>
     </div>
   </div>

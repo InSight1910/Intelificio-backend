@@ -16,7 +16,10 @@ namespace Backend.Features.Unit.Queries.GetAllTypes
 
         public async Task<Result> Handle(GetAllTypesQuery request, CancellationToken cancellationToken)
         {
-            var types = await _context.UnitTypes.Select(x => new GetAllTypesQueryResponse { Id = x.ID, Name = x.Description }).ToListAsync();
+            var types = await _context.UnitTypes
+                .Select(x => new GetAllTypesQueryResponse { Id = x.ID, Name = x.Description })
+                .ToListAsync();
+
             return Result.WithResponse(new ResponseData { Data = types});
         }
     }

@@ -4,25 +4,25 @@ using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Unit.Queries.GetByID
+namespace Backend.Features.Unit.Queries.GetById
 {
-    public class GetByIDQueryHandler : IRequestHandler<GetByIDQuery, Result>
+    public class GetByIdUnitQueryHandler : IRequestHandler<GetByIdUnitQuery, Result>
     {
         private readonly IntelificioDbContext _context;
-        private readonly ILogger<GetByIDQueryHandler> _logger;
+        private readonly ILogger<GetByIdUnitQueryHandler> _logger;
 
-        public GetByIDQueryHandler(IntelificioDbContext context, ILogger<GetByIDQueryHandler> logger)
+        public GetByIdUnitQueryHandler(IntelificioDbContext context, ILogger<GetByIdUnitQueryHandler> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public async Task<Result> Handle(GetByIDQuery request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(GetByIdUnitQuery request, CancellationToken cancellationToken)
         {
             var unit = await _context.Units
                 .Where(x => x.ID == request.UnitId)
                 .Include(x => x.UnitType)
-                .Select(x => new GetByIDQueryResponse
+                .Select(x => new GetByIdUnitQueryResponse
                 {
                     UnitType = x.UnitType.Description,
                     UnitTypeId = x.UnitType.ID,
@@ -33,7 +33,7 @@ namespace Backend.Features.Unit.Queries.GetByID
                     Surface = x.Surface
                 }).FirstOrDefaultAsync();
 
-            if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundGetByID);
+            if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundGetById);
 
             return Result.WithResponse(new ResponseData()
             {

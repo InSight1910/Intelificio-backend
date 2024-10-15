@@ -129,15 +129,7 @@
                 <button
                   class="button"
                   (click)="SendNotificationManually(singlePackage.id)"
-                  [disabled]="
-                    singlePackage.notificacionSent >= 3 ||
-                    packageStatus[singlePackage.status] == 'ENTREGADO'
-                  "
-                  [ngClass]="{
-                          'is-success': singlePackage.notificacionSent == 1,
-                          'is-warning': singlePackage.notificacionSent == 2,
-                          'is-danger': singlePackage.notificacionSent == 3,
-                          }"
+                  [disabled]="!singlePackage.canSend"
                 >
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-bell"></i

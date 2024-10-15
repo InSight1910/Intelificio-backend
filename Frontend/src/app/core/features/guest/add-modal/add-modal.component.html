@@ -1,0 +1,82 @@
+<div class="button is-primary is-normal is-responsive is-fullwidth" (click)="onClickOpenModal()">
+  Agregar Visita
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': isOpen }">
+  <div class="modal-background" (click)="onClickCloseModal()"></div>
+  <div class="modal-content columns is-centered">
+    <div class="box py-5 px-6 is-rounded">
+      <h4 class="title is-4 has-text-centered">Agregar Visita</h4>
+
+      <form [formGroup]="guestForm">
+
+        <div class="columns">
+
+          <div class="field column">
+            <div class="control is-expanded">
+              <input class="input" type="text" placeholder="Nombre" formControlName="firstName" />
+            </div>
+          </div>
+
+          <div class="field column">
+            <div class="control">
+              <input class="input" type="text" placeholder="Apellido" formControlName="lastName" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="field">
+          <div class="control is-expanded">
+            <input class="input" type="text" placeholder="RUT" formControlName="rut" />
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <input class="input" type="text" placeholder="Patente" formControlName="plate" />
+          </div>
+        </div>
+
+        <div class="field has-text-centered">
+          <div class="select is-fullwidth">
+            <select formControlName="building" aria-label="Seleccione Edificio" (change)="onChangeBuilding()">
+              <option value="" disabled selected>Seleccione Edificio</option>
+              @for (building of buildings; track $index) {
+              <option value="{{ building.id }}">
+                {{ building.name }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="field has-text-centered">
+          <div class="select is-fullwidth">
+            <select formControlName="unitId" aria-label="Seleccione Unidad">
+              <option value="" disabled selected>Seleccione Unidad</option>
+              @for (unit of units; track $index) {
+              <option value="{{ unit.id }}">
+                {{ unit.number }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="field mt-6 mb-3">
+          <div class="buttons is-centered">
+            <button class="button is-success" (click)="onClickAddGuest()" [ngClass]="{ 'is-loading': isAdding }" form>
+              Agregar
+            </button>
+            <button class="button" (click)="onClickCloseModal()">
+              Cancelar
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -59,6 +59,16 @@ export class AddModalComponent {
     });
   }
 
+  onChangeBuilding() {
+    const building = this.buildings.find(
+      (x) => x.id == this.unitForm.get('building')?.value
+    )!;
+    this.floors = Array.from(
+      { length: building.floors },
+      (_, index) => index + 1
+    );
+  }
+
   onClickAddUnit() {
     this.isAdding = true;
     const unit: CreateUnit = {
@@ -77,7 +87,6 @@ export class AddModalComponent {
           this.isAdding = false;
           setTimeout(() => {
             this.isSuccess = false;
-            console.log('paso timeout');
           }, 2000);
 
           this.unitForm.reset({
@@ -107,6 +116,7 @@ export class AddModalComponent {
   onClickOpenModal() {
     this.isOpen = true;
   }
+
   onClickCloseModal() {
     this.isOpen = false;
     this.errors = null;
@@ -119,17 +129,5 @@ export class AddModalComponent {
       unitType: '',
       id: '',
     });
-  }
-
-  onChangeBuilding() {
-    console.log(this.unitForm.get('building')?.value);
-    const building = this.buildings.find(
-      (x) => x.id == this.unitForm.get('building')?.value
-    )!;
-    console.log(building);
-    this.floors = Array.from(
-      { length: building.floors },
-      (_, index) => index + 1
-    );
   }
 }
