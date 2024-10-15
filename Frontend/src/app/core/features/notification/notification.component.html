@@ -104,10 +104,13 @@
               id="Message"
               formControlName="Message"
               class="textarea"
+              maxlength="{{this.maxMessageLength}}"
               placeholder="Ingrese el mensaje del correo aquí"
               rows="5"
+              (input)="updateCharacterCount()"
             ></textarea>
           </div>
+          <p class="help is-info has-text-right">Quedan {{ maxMessageLength - messageLength }} caracteres</p>
         </div>
 
         <div class="field">
@@ -134,18 +137,43 @@
           {{ this.notificationMessage }}
         </div>
         } }
-
-        <div class="buttons">
-          <button
-            type="submit"
-            class="button is-primary"
-            [ngClass]="{ 'is-loading': isLoading }"
-            [disabled]="!emailForm.valid || notification"
-          >
-            Enviar correo
-          </button>
-        </div>
       </form>
+      <div class="buttons">
+        <button
+          type="submit"
+          class="button is-primary"
+          (click)="onSubmit()"
+          [ngClass]="{ 'is-loading': isLoading }"
+          [disabled]="!emailForm.valid || notification"
+        >
+          Enviar correo
+        </button>
+        <button (click)="openPrintModal()" class="button is-link" [disabled]="!emailForm.valid || notification">Imprimir Comunicado</button>
+        <button (click)="clean()" class="button" [disabled]="!emailForm.valid">Limpiar</button>
+      </div>
     </div>
+  </div>
+</div>
+
+
+<div class="modal" [ngClass]="{'is-active': showPrintModal}" (click)="closePrintModal()">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Vista Previa del Comunicado</p>
+      <button class="delete" aria-label="close" (click)="closePrintModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Load the PrintNotificationComponent dynamically -->
+      <app-print-notification
+        [notificationData]="notificationData"
+      ></app-print-notification>
+    </section>
+    <footer class="modal-card-foot is-justify-content-center">
+      <div class="buttons">
+        <button class="button is-primary" (click)="printContent()">Imprimir</button>
+        <button class="button" (click)="closePrintModal()">Cancelar</button>
+      </div>
+    </footer>
   </div>
 </div>

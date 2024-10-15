@@ -15,12 +15,14 @@ import { tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { Unit } from '../../../shared/models/unit.model';
+import {Router} from "@angular/router";
+import {PrintNotificationComponent} from "./print-notification/print-notification.component";
 type RecipientLevel = 'community' | 'building' | 'floor';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, PrintNotificationComponent],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
 })
@@ -32,28 +34,34 @@ export class NotificationComponent implements OnInit {
   floors: number[] = [];
   community!: Community | null;
   isLoading = false;
+  showPrintModal = false;
+  notificationData: any = {};
 
   recipientLevel: RecipientLevel = 'community';
   notification = false;
   IsSuccess = false;
   IsError = false;
   notificationMessage = '';
+  maxMessageLength = 1064;
+  messageLength = 0;
 
   constructor(
     private fb: FormBuilder,
     private EmailService: NotificationService,
     private BuildingService: BuildingService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
   ) {
     this.emailForm = this.fb.group({
       Subject: ['', Validators.required],
       Title: ['', Validators.required],
-      Message: ['', Validators.required],
+      Message: ['', [Validators.required,Validators.maxLength(this.maxMessageLength)]],
       SenderName: ['', Validators.required],
       ComunityID: [this.community?.id, Validators.required],
       BuildingID: [0],
       Floor: [0],
     });
+    this.updateCharacterCount();
   }
 
   closeNotification() {
@@ -88,6 +96,13 @@ export class NotificationComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  updateCharacterCount() {
+    const messageControl = this.emailForm.get('Message');
+    if (messageControl) {
+      this.messageLength = messageControl.value ? messageControl.value.length : 0;
+    }
   }
 
   onChangeBuilding() {
@@ -136,6 +151,7 @@ export class NotificationComponent implements OnInit {
               this.notification = false;
               this.IsSuccess = false;
               this.emailForm.reset();
+              this.emailForm.controls['ComunityID'].setValue(this.community?.id);
             }, 5000);
           } else {
             this.isLoading = false;
@@ -146,6 +162,7 @@ export class NotificationComponent implements OnInit {
               this.notification = false;
               this.IsError = false;
               this.emailForm.reset();
+              this.emailForm.controls['ComunityID'].setValue(this.community?.id);
             }, 5000);
           }
         },
@@ -157,11 +174,20 @@ export class NotificationComponent implements OnInit {
             this.notification = false;
             this.IsError = false;
             this.emailForm.reset();
+            this.emailForm.controls['ComunityID'].setValue(this.community?.id);
           }, 5000);
           console.log('Error:', error.error);
         },
       });
     }
+  }
+
+  clean(){
+    this.emailForm.reset();
+    this.emailForm.controls['ComunityID'].setValue(this.community?.id);
+    this.notification = false;
+    this.IsSuccess = false;
+    this.IsError = false;
   }
 
   onRecipientLevelChange(event: Event) {
@@ -181,5 +207,58 @@ export class NotificationComponent implements OnInit {
         Floor: 0,
       });
     }
+  }
+
+  openPrintModal() {
+    this.notificationData = {
+      SenderName: this.emailForm.get('SenderName')?.value,
+      CommunityName: this.community?.name,
+      Title: this.emailForm.get('Title')?.value,
+      Message: this.emailForm.get('Message')?.value,
+    };
+    this.showPrintModal = true;
+  }
+
+  // Close the modal
+  closePrintModal() {
+    this.showPrintModal = false;
+  }
+
+  // Trigger the print functionality
+  printContent() {
+    const printContents = document.querySelector('.print-content')?.innerHTML;
+    const iframe = document.createElement('iframe');
+
+    //iframe.style.position = 'absolute';
+    //iframe.style.width = '0';
+    //iframe.style.height = '0';
+    //iframe.style.border = 'none';
+
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document;
+    if (doc && printContents) {
+      doc.open();
+      doc.write(`
+      <html>
+        <head>
+          <title>Imprimir Comunicado</title>
+          <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+        </head>
+        <body>
+          ${printContents}
+        </body>
+      </html>
+    `);
+      doc.close();
+
+      iframe.contentWindow?.focus();
+      iframe.contentWindow?.print();
+    }
+
+    iframe.onload = () => document.body.removeChild(iframe);
   }
 }
