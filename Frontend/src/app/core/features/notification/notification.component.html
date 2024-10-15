@@ -1,7 +1,13 @@
-<div CLASS="container">
+<div class="container">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-3 mb-5">Comunicado Interno</h2>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
   <div class="card-content">
-    <div class="column is-12">
-      <h1 class="title is-3 mb-5">Comunicado Interno</h1>
       <form class="box" [formGroup]="emailForm" (ngSubmit)="onSubmit()">
         <div class="columns">
           <div class="column field is-4">
@@ -148,10 +154,10 @@
         >
           Enviar correo
         </button>
-        <button (click)="openPrintModal()" class="button is-link" [disabled]="!emailForm.valid || notification">Imprimir Comunicado</button>
+        <button (click)="openPrintModal()" class="button" [disabled]="!emailForm.valid || notification">Imprimir Comunicado</button>
         <button (click)="clean()" class="button" [disabled]="!emailForm.valid">Limpiar</button>
       </div>
-    </div>
+
   </div>
 </div>
 
@@ -171,8 +177,8 @@
     </section>
     <footer class="modal-card-foot is-justify-content-center">
       <div class="buttons">
-        <button class="button is-primary" (click)="printContent()">Imprimir</button>
         <button class="button" (click)="closePrintModal()">Cancelar</button>
+        <button class="button is-primary" (click)="printContent()">Imprimir</button>
       </div>
     </footer>
   </div>

@@ -224,15 +224,15 @@ export class NotificationComponent implements OnInit {
     this.showPrintModal = false;
   }
 
-  // Trigger the print functionality
+
   printContent() {
     const printContents = document.querySelector('.print-content')?.innerHTML;
     const iframe = document.createElement('iframe');
 
-    //iframe.style.position = 'absolute';
-    //iframe.style.width = '0';
-    //iframe.style.height = '0';
-    //iframe.style.border = 'none';
+    iframe.style.position = 'absolute';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = 'none';
 
     document.body.appendChild(iframe);
 
@@ -248,7 +248,7 @@ export class NotificationComponent implements OnInit {
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
     />
         </head>
-        <body>
+        <body class="is-1-desktop">
           ${printContents}
         </body>
       </html>

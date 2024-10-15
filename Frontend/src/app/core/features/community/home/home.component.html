@@ -1,3 +1,16 @@
+<div class="container">
+
+  <div class="level">
+    <div class="level-left">
+      @if(isModifying) {
+        <h2 class="title is-3 mb-5">Modificar comunidad</h2>
+      } @else {
+        <h2 class="title is-3 mb-5">Detalle de la comunidad</h2>
+      }
+    </div>
+  </div>
+
+</div>
 @if (loadingLocation) {
 <div class="skeleton-block">
   Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta laborum
@@ -18,15 +31,8 @@
   cumque hic doloribus illo rem eius autem magnam vel non, consectetur molestias
 </div>
 } @else {
-<div class="container">
+<div class="container mt-4">
 <div class="card">
-  <div class="card-header">
-    @if(isModifying) {
-    <div class="card-header-title">Modificar comunidad</div>
-    } @else {
-    <div class="card-header-title">Detalle de la comunidad</div>
-    }
-  </div>
   <div class="card-content">
     <div class="content">
       <form [formGroup]="form">

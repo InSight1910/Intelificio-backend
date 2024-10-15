@@ -4,11 +4,12 @@ import { Unit } from '../../../shared/models/unit.model';
 import { CommonModule } from '@angular/common';
 import { AddModalComponent } from './add-modal/add-modal.component';
 import { EditModalComponent } from './edit-modal/edit-modal.component';
+import {AddUserModalComponent} from "../community/home/users-community/add-user-modal/add-user-modal.component";
 
 @Component({
   selector: 'app-unit',
   standalone: true,
-  imports: [CommonModule, AddModalComponent, EditModalComponent],
+  imports: [CommonModule, AddModalComponent, EditModalComponent, AddUserModalComponent],
   templateUrl: './unit.component.html',
   styleUrls: ['./unit.component.css'],
 })

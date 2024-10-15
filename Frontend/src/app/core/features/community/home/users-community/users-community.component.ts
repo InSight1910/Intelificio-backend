@@ -12,11 +12,12 @@ import { AppState } from '../../../../../states/intelificio.state';
 import { selectCommunity } from '../../../../../states/community/community.selectors';
 import { tap } from 'rxjs';
 import { FormatPhonePipe } from '../../../../../shared/pipes/format-phone/format-phone.pipe';
+import {AddModalComponent} from "../../../unit/add-modal/add-modal.component";
 
 @Component({
   selector: 'app-users-community',
   standalone: true,
-  imports: [CommonModule, AddUserModalComponent, FormatPhonePipe],
+    imports: [CommonModule, AddUserModalComponent, FormatPhonePipe, AddModalComponent],
   templateUrl: './users-community.component.html',
   styleUrl: './users-community.component.css',
 })

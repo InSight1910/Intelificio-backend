@@ -1,40 +1,27 @@
-@if (isLoading) {
-<div class="is-skeleton">
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, ea ab?
-  Commodi deleniti consequuntur maiores et possimus libero quasi esse itaque!
-  Vitae, recusandae. Ullam ut harum fuga quis! Impedit, facere? At nostrum
-  nesciunt, quaerat ab dolor eos sed perspiciatis cum unde, repellat perferendis
-  voluptate adipisci in tempore fugiat, voluptatibus voluptatum aut. Provident
-  nesciunt velit excepturi eaque eligendi magnam, consectetur voluptas! Earum
-  repellat, sequi, eos quae autem similique sint quasi odit magni exercitationem
-  deserunt blanditiis consectetur atque consequatur facere ab voluptate
-  accusantium ad. Deleniti minima, tempora dignissimos nam repudiandae autem
-  tenetur. Velit ullam molestiae laboriosam dicta modi perferendis. Placeat
-  suscipit, tenetur inventore cumque labore quas aspernatur alias eos laborum!
-  Animi, quidem officia sequi iusto dicta officiis. Id deserunt facere aliquam
-  modi?
-</div>
-} @else {
-<div style="margin-top: 1em">
-  <div class="level">
-    
-    <div class="level-left">
-      <h3 class="title level-item">Unidades</h3>
-      <h6 class="subtitle level-item">{{ buildingName }}</h6>
-    </div>
-    
-    <div class="level-right">
-      <app-add-modal (addUnitEvent)="updateList($event)"></app-add-modal>
-    </div>
-
+<div class="level mt-5">
+  <div class="level-left">
+    <h3 class="title is-3">Unidades</h3>
+    <h6 class="subtitle level-item">{{ buildingName }}</h6>
   </div>
-
+  <div class="level-right">
+    <app-add-modal (addUnitEvent)="updateList($event)"></app-add-modal>
+  </div>
+</div>
+@if (isLoading) {
+  <div class="skeleton-lines">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+} @else {
   <!-- tabla -->
-  <div class="box "> 
-    <table class="table is-hoverable is-fullwidth">
+  <div class="box">
+    <div class="table-container">
+    <table class="table  is-fullwidth">
       <thead>
         <tr>
-          <th>Numero</th>
+          <th>Número</th>
           <th>Tipo</th>
           <th>Edificio</th>
           <th>Piso</th>
@@ -62,6 +49,6 @@
         }
       </tbody>
     </table>
+    </div>
   </div>
-</div>
 }
