@@ -7,6 +7,7 @@ export interface Package {
   status: PackageStatus;
   receptionDate: Date;
   notificacionSent: number;
+  canRetire: string;
 }
 
 export enum PackageStatus {

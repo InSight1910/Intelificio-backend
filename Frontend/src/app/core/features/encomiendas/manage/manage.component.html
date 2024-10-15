@@ -25,7 +25,11 @@
                   />
                 </p>
                 <p class="control">
-                  <button (click)="onSearch(rut.value)" [disabled]="!enableSearch" class="button is-info">
+                  <button
+                    (click)="onSearch(rut.value)"
+                    [disabled]="!enableSearch"
+                    class="button is-info"
+                  >
                     <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
                   </button>
                 </p>
@@ -60,7 +64,7 @@
         </div>
         <div class="column">
           <div class="field">
-            <label class="label" >Conserje</label>
+            <label class="label">Conserje</label>
           </div>
 
           <div class="field is-expanded">
@@ -83,8 +87,8 @@
               class="button my-auto is-fullwidth"
               [disabled]="!canCreate || form.invalid"
             >
-            <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
-            >Recepcionar encomienda
+              <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
+              >Recepcionar encomienda
             </button>
           </div>
         </div>
@@ -104,6 +108,7 @@
           <th>Fecha de recepcion</th>
           <th>Estado</th>
           <th>Entregado a</th>
+          <th>Puede retirar</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -117,28 +122,38 @@
           <td>{{ singlePackage.receptionDate | date : "dd/MM/yyyy" }}</td>
           <td>{{ packageStatus[singlePackage.status] | titlecase }}</td>
           <td>{{ singlePackage.deliveredToName }}</td>
+          <td>{{ singlePackage.canRetire }}</td>
           <td>
             <div class="columns">
-                <div class="column">
-                  <button class="button"
-                          (click)="SendNotificationManually(singlePackage.id)"
-                  [disabled]="singlePackage.notificacionSent >= 3 || packageStatus[singlePackage.status] == 'ENTREGADO'"
-                          [ngClass]="{
+              <div class="column">
+                <button
+                  class="button"
+                  (click)="SendNotificationManually(singlePackage.id)"
+                  [disabled]="
+                    singlePackage.notificacionSent >= 3 ||
+                    packageStatus[singlePackage.status] == 'ENTREGADO'
+                  "
+                  [ngClass]="{
                           'is-success': singlePackage.notificacionSent == 1,
                           'is-warning': singlePackage.notificacionSent == 2,
                           'is-danger': singlePackage.notificacionSent == 3,
                           }"
-                  >
+                >
                   <span class="icon mr-1"
-                  ><i class="fa-regular fa-bell"></i
+                    ><i class="fa-regular fa-bell"></i
                   ></span>
-                    Notificar
-                  </button>
-                </div>
+                  Notificar
+                </button>
+              </div>
 
               <div class="column">
-                <button class="button" (click)="openModalMarkAsDelivered(singlePackage.id)"
-                        [disabled]="packageStatus[singlePackage.status] == 'ENTREGADO'">
+                <button
+                  class="button"
+                  (click)="openModalMarkAsDelivered(singlePackage.id)"
+                  [disabled]="
+                    packageStatus[singlePackage.status] == 'ENTREGADO'
+                  "
+                >
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-circle-check"></i
                   ></span>
@@ -161,7 +176,7 @@
             [formGroup]="formMarkDelivered"
           >
             <div class="field">
-              <label class="label" >RUT quien retira</label>
+              <label class="label">RUT quien retira</label>
             </div>
 
             <div class="field has-addons">
@@ -187,7 +202,7 @@
               </p>
             </div>
             <div class="field">
-              <label class="label" >Nombre quien retira</label>
+              <label class="label">Nombre quien retira</label>
               <div class="control">
                 <input
                   type="text"
@@ -197,6 +212,9 @@
                 />
               </div>
             </div>
+            @if (errors.length > 0) {
+            <app-message [errors]="errors" />
+            }
           </form>
         </app-modal-package>
         } }

@@ -16,6 +16,7 @@ public class GetByUserQueryHandler(IntelificioDbContext context) : IRequestHandl
 
         var packages = await context.Package
             .Include(x => x.Concierge)
+            .Include(x => x.CanRetire)
             .Where(x => x.RecipientId == request.UserId)
             .OrderBy(x => x.Status)
             .Select(x => new GetByUserQueryResponse
@@ -25,7 +26,7 @@ public class GetByUserQueryHandler(IntelificioDbContext context) : IRequestHandl
                 TrackingNumber = x.TrackingNumber,
                 ConciergeName = x.Concierge.ToString(),
                 Status = x.Status,
-                AssignedTo = null
+                AssignedTo = x.CanRetire == null ? null : x.CanRetire.ToString()
             })
             .ToListAsync();
 

@@ -13,7 +13,9 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule, ValidationErrors, ValidatorFn,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -28,8 +30,9 @@ import {
 } from '../../../../shared/models/package.model';
 import { PackageService } from '../../../services/package/package.service';
 import { ModalPackageComponent } from '../modal/modal.component';
-import {NotificationService} from "../../../services/notification/notification.service";
-import {Contact} from "../../../../shared/models/contact.model";
+import { NotificationService } from '../../../services/notification/notification.service';
+import { Contact } from '../../../../shared/models/contact.model';
+import { MessageComponent } from '../../../../shared/component/error/message.component';
 
 @Component({
   selector: 'app-package-manage',
@@ -40,13 +43,14 @@ import {Contact} from "../../../../shared/models/contact.model";
     FormatRutPipe,
     ReactiveFormsModule,
     ModalPackageComponent,
+    MessageComponent,
   ],
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css',
 })
 export class ManageEncomiendasComponent {
   userService: UserService = inject(UserService);
-  notificationService : NotificationService = inject(NotificationService);
+  notificationService: NotificationService = inject(NotificationService);
   packageService: PackageService = inject(PackageService);
   fb: FormBuilder = inject(FormBuilder);
   store: Store<AppState> = inject(Store<AppState>);
@@ -56,7 +60,7 @@ export class ManageEncomiendasComponent {
   openMarkAsDelivered = signal(new Map<number, boolean>());
   selectedPackageId: number = 0;
   deliveredToId: number = 0;
-  enableSearch:boolean = false;
+  enableSearch: boolean = false;
   @ViewChild('recipientName') recipientName!: ElementRef;
 
   form: FormGroup = this.fb.group(
@@ -81,6 +85,7 @@ export class ManageEncomiendasComponent {
   filteredpackages: Observable<Package[]> = new Observable<Package[]>();
   canCreate: boolean = false;
   canMarkDelivered: boolean = false;
+  errors: { message: string }[] = [];
 
   ngOnInit() {
     this.loadConcierges();
@@ -90,35 +95,40 @@ export class ManageEncomiendasComponent {
   }
 
   onSearch(rut: string, isMarkDelivered: boolean = false) {
-    if (rut != "" && rut != "-"){
-      this.userService
-        .getByRut(rut.replace(/[.\-]/g, '').toUpperCase())
-        .subscribe({
-          next: ({ data }) => {
-            if (isMarkDelivered) {
-              this.formMarkDelivered.patchValue({
-                deliveryToName: data.name,
-                deliveryToId: data.id,
-              });
-              this.canMarkDelivered = true;
-              return;
-            }
-            this.recipient = data;
-            this.form.patchValue({ recipientId: data.id });
-            this.errorMessageSearch = '';
-            this.canCreate = true;
-            this.form.get('conciergeId')?.enable();
-            this.form.get('trackingNumber')?.enable();
-          },
-          error: ({ error }) => {
-            console.log(error);
-            this.errorMessageSearch = error[0].message;
-            this.canCreate = false;
-            this.canMarkDelivered = false;
-            this.form.get('conciergeId')?.disable();
-            this.form.get('trackingNumber')?.disable();
-          },
-        });
+    if (rut != '' && rut != '-') {
+      this.store.select(selectCommunity).subscribe((community) => {
+        this.userService
+          .getByRutCommunity(
+            rut.replace(/[.\-]/g, '').toUpperCase(),
+            community?.id!
+          )
+          .subscribe({
+            next: ({ data }) => {
+              if (isMarkDelivered) {
+                this.formMarkDelivered.patchValue({
+                  deliveryToName: data.name,
+                  deliveryToId: data.id,
+                });
+                this.canMarkDelivered = true;
+                return;
+              }
+              this.recipient = data;
+              this.form.patchValue({ recipientId: data.id });
+              this.errorMessageSearch = '';
+              this.canCreate = true;
+              this.form.get('conciergeId')?.enable();
+              this.form.get('trackingNumber')?.enable();
+            },
+            error: ({ error }) => {
+              console.log(error);
+              this.errorMessageSearch = error[0].message;
+              this.canCreate = false;
+              this.canMarkDelivered = false;
+              this.form.get('conciergeId')?.disable();
+              this.form.get('trackingNumber')?.disable();
+            },
+          });
+      });
     }
   }
 
@@ -137,10 +147,8 @@ export class ManageEncomiendasComponent {
           this.form.reset();
           this.enableSearch = false;
           this.recipient = {} as UserRut;
-            this.packages = this.packages.pipe(map((packages) => packages));
+          this.packages = this.packages.pipe(map((packages) => packages));
         }
-
-
       });
     });
 
@@ -177,26 +185,31 @@ export class ManageEncomiendasComponent {
   }
 
   onSubmitMarkDelivered(event?: Event | null) {
-    console.log(this.formMarkDelivered.invalid, this.selectedPackageId);
-    console.log(this.formMarkDelivered.value);
     if (this.formMarkDelivered.invalid || this.selectedPackageId == 0) return;
-    this.packageService
-      .markAsDelivered(
-        this.selectedPackageId,
-        this.formMarkDelivered.get('deliveryToId')?.value
-      )
-      .subscribe({
-        next: (response) => {
-          this.loadPackages();
-          this.closeModalMarkAsDelivered(this.selectedPackageId);
-          this.formMarkDelivered.reset();
-        },
-      });
+    this.store.select(selectCommunity).subscribe((community) => {
+      this.packageService
+        .markAsDelivered(
+          this.selectedPackageId,
+          this.formMarkDelivered.get('deliveryToId')?.value,
+          community?.id!
+        )
+        .subscribe({
+          next: () => {
+            this.loadPackages();
+            this.closeModalMarkAsDelivered(this.selectedPackageId);
+            this.formMarkDelivered.reset();
+          },
+          error: ({ error }) => {
+            this.errors = error;
+            setTimeout(() => (this.errors = []), 3000);
+          },
+        });
+    });
   }
 
   SendNotificationManually(id: number) {
-    this.notificationService.resendNotification(id).subscribe((response) =>{
-      if(response.status === 204){
+    this.notificationService.resendNotification(id).subscribe((response) => {
+      if (response.status === 204) {
         this.loadPackages();
       }
     });
@@ -208,5 +221,4 @@ export class ManageEncomiendasComponent {
       this.enableSearch = true;
     }
   }
-
 }
