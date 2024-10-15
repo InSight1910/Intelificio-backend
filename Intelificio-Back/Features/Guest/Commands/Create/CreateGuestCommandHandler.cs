@@ -24,12 +24,7 @@ namespace Backend.Features.Guest.Commands.Create
             var checkUnit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.UnitId);
             if (checkUnit == null) return Result.Failure(GuestErrors.UnitNotFoundCreateGuest);
 
-            var checkGuestId = await _context.Guest.AnyAsync(x => x.ID == request.Id && x.Unit == checkUnit);
-            if (checkGuestId) return Result.Failure(GuestErrors.GuestAlreadyExists);
-
             var newGuest = _mapper.Map<Models.Guest>(request);
-
-            newGuest.Unit = checkUnit;
 
             _ = await _context.Guest.AddAsync(newGuest);
             _ = await _context.SaveChangesAsync();

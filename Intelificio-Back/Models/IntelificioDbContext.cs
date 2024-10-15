@@ -181,10 +181,16 @@ namespace Backend.Models
                 _ = entity.HasKey(p => p.ID);
 
                 _ = entity.HasOne(p => p.UnitType)
-                      .WithMany(p => p.Units);
-                
+                      .WithMany(p => p.Units)
+                      .HasForeignKey(p => p.UnitTypeId);
+
+                _ = entity.HasOne(p => p.Building)
+                      .WithMany(p => p.Units)
+                      .HasForeignKey(p => p.BuildingId);
+
                 _ = entity.HasMany(p => p.Guests)
                       .WithOne(p => p.Unit);
+
             });
 
             _ = builder.Entity<User>(entity =>

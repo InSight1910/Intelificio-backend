@@ -20,10 +20,18 @@ namespace Backend.Features.Guest.Common
         public static Error GuestNotFoundUpdate = new Error(
         "Guest.Update.GuestNotFoundUpdate", "La visita no fue encontrada");
 
+        public static Error UnitNotFoundUpdate = new Error(
+        "Guest.Update.UnitNotFoundUpdate", "La unidad no fue encontrada");
+
         //-----------------------------------------------------------------------------
 
         public static Error GuestNotFoundGetById = new Error(
         "Guest.GetById.GuestNotFoundGetById", "La visita no fue encontrada");
+
+        //-----------------------------------------------------------------------------
+
+        public static Error CommunityNotFoundGetAllByCommunity = new Error(
+            "Guest.GetAllByCommunityGuest.CommunityNotFoundGetAllByCommunity", "La comunidad no fue encontrada");
     }
 
 }

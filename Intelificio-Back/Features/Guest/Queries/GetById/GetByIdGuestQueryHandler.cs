@@ -23,7 +23,7 @@ namespace Backend.Features.Guest.Queries.GetById
         public async Task<Result> Handle(GetByIdGuestQuery request, CancellationToken cancellationToken)
         {
             var guests = await _context.Guest
-                .Where(x => x.ID == request.GuestId)
+                .Where(x => x.ID == request.Id)
                 .Select(x => new GetByIdGuestQueryResponse
                 {
                     FirstName = x.FirstName,
@@ -31,7 +31,9 @@ namespace Backend.Features.Guest.Queries.GetById
                     Rut = x.Rut,
                     EntryTime = x.EntryTime,
                     Plate = x.Plate,
-                    Unit = x.Unit.Number
+                    BuildingId = x.Unit.BuildingId,
+                    UnitId = x.UnitId
+
                 }).FirstOrDefaultAsync();
 
             if (guests == null) return Result.Failure(GuestErrors.GuestNotFoundGetById);

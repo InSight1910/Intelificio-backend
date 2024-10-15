@@ -7,6 +7,6 @@ namespace Backend.Features.Guest.Queries.GetById
     public class GetByIdGuestQuery : IRequest<Result>
     {
         [JsonIgnore]
-        public required int GuestId { get; set; }
+        public required int Id { get; set; }
     }
 }

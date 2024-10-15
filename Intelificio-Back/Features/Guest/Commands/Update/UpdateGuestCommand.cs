@@ -7,11 +7,10 @@ namespace Backend.Features.Guest.Commands.Update
     public class UpdateGuestCommand : IRequest<Result>
     {
         [JsonIgnore]
-        public int? GuestId { get; set; }
+        public int? Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Rut { get; set; }
-        public DateTime? EntryTime { get; set; }
         public string? Plate { get; set; }
         public int? UnitId { get; set; }
     }

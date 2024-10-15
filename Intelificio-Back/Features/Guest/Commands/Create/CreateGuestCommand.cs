@@ -8,12 +8,11 @@ namespace Backend.Features.Guest.Commands.Create
     {
         [JsonIgnore]
         public int? Id { get; set; }
-        public required string Name { get; set; }
-        public required string FirstName { get; set; }
-        public required string Rut { get; set; }
-        public required DateTime EntryTime { get; set; }
-        public DateTime ExitTime { get; set; }
-        public required string Plate { get; set; }
-        public required int UnitId { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Rut { get; set; }
+        public DateTime? EntryTime { get; set; }
+        public string? Plate { get; set; }
+        public int? UnitId { get; set; }
     }
 }

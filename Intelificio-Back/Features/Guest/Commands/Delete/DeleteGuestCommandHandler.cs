@@ -19,7 +19,7 @@ namespace Backend.Features.Guest.Commands.Delete
 
         public async Task<Result> Handle(DeleteGuestCommand request, CancellationToken cancellationToken)
         {
-            var guest = await _context.Guest.FirstOrDefaultAsync(x => x.ID == request.GuestId);
+            var guest = await _context.Guest.FirstOrDefaultAsync(x => x.ID == request.Id);
             if (guest == null) return Result.Failure(GuestErrors.GuestNotFoundDelete);
 
             _ = _context.Guest.Remove(guest);

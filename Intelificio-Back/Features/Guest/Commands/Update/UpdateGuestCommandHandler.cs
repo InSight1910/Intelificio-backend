@@ -23,21 +23,11 @@ namespace Backend.Features.Guest.Commands.Update
 
         public async Task<Result> Handle(UpdateGuestCommand request, CancellationToken cancellationToken)
         {
-            var guest = await _context.Guest.FirstOrDefaultAsync(x => x.ID == request.GuestId);
+            var guest = await _context.Guest.FirstOrDefaultAsync(x => x.ID == request.Id);
             if (guest is null) return Result.Failure(GuestErrors.GuestNotFoundUpdate);
 
             guest = _mapper.Map(request, guest);
-
-            Models.Unit? unit = null;
-
-            if (request.UnitId > 0)
-            {
-                unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.UnitId);
-                if (unit is null) return Result.Failure(GuestErrors.GuestNotFoundUpdate);
-            }
-
-            if (unit is not null) guest.Unit = unit;
-
+            _ = _context.Guest.Update(guest);
             _ = await _context.SaveChangesAsync();
             return Result.Success();
         }

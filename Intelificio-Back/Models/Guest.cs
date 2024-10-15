@@ -9,7 +9,7 @@ namespace Backend.Models
         public required string Rut { get; set; }
         public required DateTime EntryTime { get; set; }
         public required string Plate { get; set; }
-        public required Unit Unit { get; set; }
+        public Unit Unit { get; set; }
         public required int UnitId { get; set; }
 
     }
