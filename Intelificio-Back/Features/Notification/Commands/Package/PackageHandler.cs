@@ -35,9 +35,11 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             .FirstOrDefaultAsync(cancellationToken);
         if (package == null) return Result.Failure(NotificationErrors.PackageNotFound);
 
-        var currentDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+        var currentDate =
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
 
-        if ((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING || package.NotificacionSent == 0)
+        if (((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING) ||
+            package.NotificacionSent == 0)
         {
             var recipients = new List<EmailAddress>();
             recipients.Add(new EmailAddress(
@@ -64,17 +66,19 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             };
 
             var result =
-                await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template, templateNotification.TemplateId,
+                await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(template,
+                    templateNotification.TemplateId,
                     from, recipients);
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackage);
 
             package.NotificacionSent += 1;
-            package.NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+            package.NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+                TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
         }
-        return Result.Failure(NotificationErrors.LimmitNotificationSentOnPackage);
 
+        return Result.Failure(NotificationErrors.LimmitNotificationSentOnPackage);
     }
 }

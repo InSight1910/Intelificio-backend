@@ -125,11 +125,12 @@
           <td>{{ singlePackage.canRetire }}</td>
           <td>
             <div class="columns">
-                <div class="column">
-                  <button class="button"
-                          (click)="SendNotificationManually(singlePackage.id)"
+              <div class="column">
+                <button
+                  class="button"
+                  (click)="SendNotificationManually(singlePackage.id)"
                   [disabled]="!singlePackage.canSend"
-                  >
+                >
                   <span class="icon mr-1"
                     ><i class="fa-regular fa-bell"></i
                   ></span>

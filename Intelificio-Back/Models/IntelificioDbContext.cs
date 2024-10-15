@@ -79,9 +79,9 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasOne(p => p.Type)
                 .WithMany(p => p.Charges);
 
-                _ = entity.HasMany(p => p.Payments)
-                      .WithOne(p => p.Charge);
-            });
+            _ = entity.HasMany(p => p.Payments)
+                .WithOne(p => p.Charge);
+        });
 
         _ = builder.Entity<Package>(entity =>
         {
@@ -102,7 +102,6 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
                 .WithMany()
                 .HasForeignKey(i => i.CanRetireId)
                 .IsRequired(false);
-            
         });
 
         _ = builder.Entity<Expense>(entity =>
@@ -154,9 +153,6 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasMany(p => p.Fines)
                 .WithOne(p => p.Community);
 
-            _ = entity.HasMany(p => p.Fines)
-                .WithOne(p => p.Community);
-
             _ = entity.HasMany(p => p.Spaces)
                 .WithOne(p => p.Community)
                 .HasForeignKey(p => p.CommunityId);
@@ -189,30 +185,28 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
         {
             _ = entity.HasKey(p => p.ID);
 
-                _ = entity.HasOne(p => p.UnitType)
-                      .WithMany(p => p.Units)
-                      .HasForeignKey(p => p.UnitTypeId);
+            _ = entity.HasOne(p => p.UnitType)
+                .WithMany(p => p.Units)
+                .HasForeignKey(p => p.UnitTypeId);
 
-                _ = entity.HasOne(p => p.Building)
-                      .WithMany(p => p.Units)
-                      .HasForeignKey(p => p.BuildingId);
+            _ = entity.HasOne(p => p.Building)
+                .WithMany(p => p.Units)
+                .HasForeignKey(p => p.BuildingId);
 
-                _ = entity.HasMany(p => p.Guests)
-                      .WithOne(p => p.Unit);
+            _ = entity.HasMany(p => p.Guests)
+                .WithOne(p => p.Unit);
+        });
 
-            });
+        _ = builder.Entity<User>(entity =>
+        {
+            _ = entity.HasMany(p => p.Attendances)
+                .WithOne(p => p.User);
 
-            _ = builder.Entity<User>(entity =>
-            {
+            _ = entity.HasMany(p => p.Reservations)
+                .WithOne(p => p.User);
 
-                _ = entity.HasMany(p => p.Attendances)
-                      .WithOne(p => p.User);
-                
-                _ = entity.HasMany(p => p.Reservations)
-                      .WithOne(p => p.User);
-
-                _ = entity.HasMany(p => p.Units)
-                       .WithMany(p => p.Users);
+            _ = entity.HasMany(p => p.Units)
+                .WithMany(p => p.Users);
 
             _ = entity.HasMany(p => p.Charges)
                 .WithOne(p => p.User);
