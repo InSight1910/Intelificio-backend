@@ -88,7 +88,7 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                         CommunityName = c.Name,
                         SenderAddress = c.Address,
                         Recipients = c.Users
-                            .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))
+                            .Select(user => new EmailAddress(user.Email, user.ToString() ))
                             .ToList()
                     })
                     .FirstOrDefaultAsync();
@@ -98,6 +98,7 @@ namespace Backend.Features.Notification.Commands.SingleMessage
             if (templateNotification == null) return Result.Failure(NotificationErrors.TemplateNotFoundOnSimpleMessage);
             if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnSimpleMessage);
 
+            var templates = new List<SingleMessageTemplate>();
             var template = new SingleMessageTemplate
             {
                 Subject = request.Subject, 
@@ -107,14 +108,11 @@ namespace Backend.Features.Notification.Commands.SingleMessage
                 SenderName = request.SenderName,
                 SenderAddress = communityData.SenderAddress
             };
-            
+            templates.Add(template);
             var from = new EmailAddress("intelificio@duocuc.cl", communityData.CommunityName + " a través de Intelificio");
 
-            var result = await _sendMail.SendSingleDynamicEmailToMultipleRecipientsAsync(
-                                                            template,
-                                                            templateNotification.TemplateId,
-                                                            from,
-                                                            communityData.Recipients
+            var result = await _sendMail.SendMultipleSingleEmailToMultipleRecipients(
+                                                           from, communityData.Recipients, templateNotification.TemplateId, templates
                                                         );
 
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);
