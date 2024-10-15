@@ -97,6 +97,12 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
                 .HasOne(p => p.DeliveredTo)
                 .WithMany()
                 .HasForeignKey(x => x.DeliveredToId);
+            _ = entity
+                .HasOne(p => p.CanRetire)
+                .WithMany()
+                .HasForeignKey(i => i.CanRetireId)
+                .IsRequired(false);
+            
         });
 
         _ = builder.Entity<Expense>(entity =>
@@ -127,7 +133,8 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
                 .WithOne(p => p.Community);
 
             _ = entity.HasMany(p => p.Users)
-                .WithMany(p => p.Communities);
+                    .WithMany(p => p.Communities)
+                ;
 
             _ = entity.HasMany(p => p.AssignedShifts)
                 .WithMany(p => p.Communities);

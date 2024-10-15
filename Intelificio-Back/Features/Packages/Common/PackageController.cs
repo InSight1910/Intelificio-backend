@@ -1,5 +1,6 @@
 using Backend.Common.Response;
 using Backend.Features.Packages.Command;
+using Backend.Features.Packages.Command.AssignCanRetire;
 using Backend.Features.Packages.Command.Create;
 using Backend.Features.Packages.Queries.GetByCommunity;
 using Backend.Features.Packages.Queries.GetByUser;
@@ -36,10 +37,11 @@ public class PackageController(IMediator mediator) : ControllerBase
             err => BadRequest(err));
     }
 
-    [HttpPut("markAsDelivered/{id}/{deliveredToId}")]
-    public async Task<IActionResult> MarkAsDelivered(int id, int deliveredToId)
+    [HttpPut("markAsDelivered/{communityId}/{id}/{deliveredToId}")]
+    public async Task<IActionResult> MarkAsDelivered(int id, int deliveredToId, int communityId)
     {
-        var result = await mediator.Send(new MarkAsDeliveredCommand { Id = id, DeliveredToId = deliveredToId });
+        var result = await mediator.Send(new MarkAsDeliveredCommand
+            { Id = id, DeliveredToId = deliveredToId, CommunityId = communityId });
         return result.Match(
             res => Ok(res),
             err => BadRequest(err));
@@ -51,6 +53,20 @@ public class PackageController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetByUserQuery
         {
             CommunityId = communityId, UserId = id
+        });
+        return result.Match(
+            res => Ok(res),
+            err => BadRequest(err));
+    }
+
+    [HttpPut("[action]/{communityId}/{packageId}/{id}")]
+    public async Task<IActionResult> AssignToRetire(int id, int communityId, int packageId)
+    {
+        var result = await mediator.Send(new AssignCanRetireCommand
+        {
+            CommunityId = communityId,
+            PackageId = packageId,
+            UserId = id
         });
         return result.Match(
             res => Ok(res),

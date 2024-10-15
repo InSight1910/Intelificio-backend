@@ -18,6 +18,7 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
             .Include(x => x.Concierge)
             .Include(x => x.Recipient)
             .Include(x => x.DeliveredTo)
+            .Include(x => x.CanRetire)
             .Where(x => x.CommunityId == request.CommunityId)
             .Select(x => new GetByCommunityQueryResponse
             {
@@ -28,8 +29,8 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
                 Status = x.Status,
                 TrackingNumber = x.TrackingNumber,
                 DeliveredToName = x.DeliveredTo != null ? x.DeliveredTo.ToString() : "-",
-                CanSend  = false,
-                NotificationDate = x.NotificationDate
+                CanRetire = x.CanRetire != null ? x.CanRetire.ToString() : "-",
+                NotificacionSent = x.NotificacionSent
             })
             .OrderByDescending(x => x.Status).ToListAsync();
 

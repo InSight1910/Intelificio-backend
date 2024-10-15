@@ -9,5 +9,5 @@ public class GetByUserQueryResponse
     public DateTime ReceptionDate { get; set; }
     public string ConciergeName { get; set; }
     public PackageStatus Status { get; set; }
-    public string AssignedTo { get; set; } = "-";
+    public string? AssignedTo { get; set; } = "-";
 }

@@ -45,4 +45,16 @@ public class PackageErrors
         Code = "Packages.GetByCommunity.CommunityNotFound",
         Message = "La comunidad no fue encontrada."
     };
+
+    public static Error UserNoBelongToCommunity = new()
+    {
+        Code = "Packages.MarkAsDelivered.UserNoBelongToCommunity",
+        Message = "El usuario no fue encontrado dentro de la comunidad."
+    };
+
+    public static Error UserNotAuthorizedToRetired = new()
+    {
+        Code = "Packages.MarkAsDelivered.UserNotAuthorizedToRetired",
+        Message = "El usuario no es encuentra autorizado para retirar la encomienda."
+    };
 }

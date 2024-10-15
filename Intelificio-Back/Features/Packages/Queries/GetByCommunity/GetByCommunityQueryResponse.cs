@@ -17,4 +17,6 @@ public class GetByCommunityQueryResponse
 
     public required DateTime NotificationDate { get; set; }
 
+    public string CanRetire { get; set; } = string.Empty;
+    public int NotificacionSent { get; set; }
 }

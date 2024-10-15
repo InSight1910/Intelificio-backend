@@ -31,9 +31,16 @@ export class PackageService {
     );
   }
 
-  markAsDelivered(id: number, deliveredToId: number) {
+  markAsDelivered(id: number, deliveredToId: number, communityId: number) {
     return this.http.put(
-      `${this.baseUrl}/markAsDelivered/${id}/${deliveredToId}`,
+      `${this.baseUrl}/markAsDelivered/${communityId}/${id}/${deliveredToId}`,
+      {}
+    );
+  }
+
+  assingUserToRetire(communityId: number, packageId: number, userId: number) {
+    return this.http.put(
+      `${this.baseUrl}/AssignToRetire/${communityId}/${packageId}/${userId}`,
       {}
     );
   }

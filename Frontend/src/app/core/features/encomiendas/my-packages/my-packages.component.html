@@ -22,13 +22,71 @@
           <td>{{ packageStatus[singlePackage.status] | titlecase }}</td>
           <td>{{ singlePackage.assignedTo }}</td>
           <td>
-            <button class="button">
+            <button
+              class="button"
+              [disabled]="singlePackage.status === packageStatus.ENTREGADO"
+              (click)="onOpenAssignToRetire(singlePackage.id)"
+            >
               <span class="icon mr-1"><i class="fa-regular fa-user"></i></span>
               Asignar a
             </button>
           </td>
         </tr>
-        }
+        @if (isOpenModal().get(singlePackage.id)) {
+        <app-modal-package
+          buttonTitle="Entregar"
+          title="Entregar paquete"
+          [isValid]="canMarkDelivered && form.valid"
+          (onModalSubmit)="onSubmit()"
+          (close)="onCloseAssignToRetire(singlePackage.id)"
+        >
+          <form (submit)="onSubmit($event)" [formGroup]="form">
+            <div class="field">
+              <label class="label">RUT quien retira</label>
+            </div>
+
+            <div class="field has-addons">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  name="rut"
+                  placeholder="12.345.678-9"
+                  appFormatRut
+                  #deliveryRut
+                />
+              </p>
+              <p class="control">
+                <button
+                  (click)="onSearch(deliveryRut.value)"
+                  type="button"
+                  class="button is-info"
+                >
+                  <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
+                </button>
+              </p>
+            </div>
+            @if (errorMessageSearch) {
+            <p class="help is-danger">
+              <i class="fas fa-exclamation-triangle"></i>
+              {{ errorMessageSearch }}
+            </p>
+            } @if (this.form.get('userName')?.value) {
+            <div class="field">
+              <label class="label">Nombre quien retira</label>
+              <div class="control">
+                <input
+                  type="text"
+                  name="name"
+                  class="input"
+                  formControlName="userName"
+                />
+              </div>
+            </div>
+            }
+          </form>
+        </app-modal-package>
+        } }
       </tbody>
     </table>
   </div>
