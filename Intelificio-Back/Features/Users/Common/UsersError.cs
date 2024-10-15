@@ -7,6 +7,6 @@ public class UsersError
     public static Error UserNotFoundOnQuery = new()
     {
         Code = "Users.GetByRut.NotFound",
-        Message = "No existen usuarios asociados con ese RUT."
+        Message = "No existen usuarios asociados con ese RUT dentro de la comunidad."
     };
 }

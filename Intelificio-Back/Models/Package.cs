@@ -18,8 +18,12 @@ public class Package : BaseEntity
     public int? DeliveredToId { get; set; }
     public User? DeliveredTo { get; set; }
     public DateTime? DeliveredDate { get; set; }
+    public int? CanRetireId { get; set; }
+    public User CanRetire { get; set; }
+
+    public DateTime NotificationDate { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+        TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
 
     public DateTime NotificationDate { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
     public int NotificacionSent { get; set; } = 0;
 }
-

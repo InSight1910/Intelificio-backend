@@ -17,18 +17,27 @@ public class MarkAsDeliveredCommandHandler(IntelificioDbContext context, IMediat
             .Include(x => x.Recipient)
             .Include(x => x.Concierge)
             .Include(x => x.DeliveredTo)
+            .Include(x => x.CanRetire)
             .Where(x => x.ID == request.Id).FirstOrDefaultAsync();
 
-        if (!await context.Users.AnyAsync(x => x.Id == request.DeliveredToId)) return Result.Failure(null);
-
+        if (!await context.Users.Where(x => x.Id == request.DeliveredToId)
+                .AnyAsync(x => x.Communities.Any(c => c.ID == request.CommunityId)))
+            return Result.Failure(PackageErrors.UserNoBelongToCommunity);
         if (package is null)
             return Result.Failure(PackageErrors.PackageNotFoundOnMarkAsDelivered);
 
         if (package.Status == PackageStatus.DELIVERED) return Result.Failure(PackageErrors.PackageAlreadyDelivered);
+        if (package.CanRetire is not null || package.RecipientId == request.DeliveredToId)
 
+            if (package.CanRetireId != request.DeliveredToId && package.RecipientId != request.DeliveredToId)
+                return Result.Failure(PackageErrors.UserNotAuthorizedToRetired);
+        if (package.RecipientId != request.DeliveredToId)
+            return Result.Failure(PackageErrors.UserNotAuthorizedToRetired);
         package.Status = PackageStatus.DELIVERED;
         package.DeliveredToId = request.DeliveredToId;
-        package.DeliveredDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+        package.DeliveredDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+            TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+
         await context.SaveChangesAsync();
 
         var packageDelivered = new PackageDeliveredCommand { DeliveredToId = request.DeliveredToId, Id = request.Id };

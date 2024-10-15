@@ -18,6 +18,7 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
             .Include(x => x.Concierge)
             .Include(x => x.Recipient)
             .Include(x => x.DeliveredTo)
+            .Include(x => x.CanRetire)
             .Where(x => x.CommunityId == request.CommunityId)
             .Select(x => new GetByCommunityQueryResponse
             {
