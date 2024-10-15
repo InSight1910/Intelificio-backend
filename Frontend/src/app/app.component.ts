@@ -34,6 +34,7 @@ export class AppComponent {
         case '/change-password':
         case '/select-community':
         case '/ConfirmarCorreo':
+        case '/print-notification':
           this.showMenu = false;
           break;
         default:
