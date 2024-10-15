@@ -18,13 +18,18 @@ public class CreatePackageCommandHandler(IntelificioDbContext context, IMapper m
             return Result.Failure(PackageErrors.CommunityNotFoundOnCreate);
 
         var conciergeRoleId = await context.Roles.Where(x => x.Name == "Conserje").Select(x => x.Id).FirstAsync();
-        if (await context.Users
-                .Include(x => x.Communities)
-                .Where(x =>
-                    x.Id == request.ConciergeId &&
-                    context.UserRoles.Any(ur => ur.RoleId == conciergeRoleId && ur.UserId == x.Id) &&
-                    x.Communities.Any(c => c.ID == request.CommunityId)).AnyAsync())
+        var isConcierge = await context.Users
+                            .Include(x => x.Communities)
+                            .Where(x => x.Id == request.ConciergeId) 
+                            .Where(x => x.Communities.Any(c => c.ID == request.CommunityId)) 
+                            .Join(context.UserRoles, u => u.Id, ur => ur.UserId, (u, ur) => new { u, ur }) 
+                            .Where(joined => joined.ur.RoleId == conciergeRoleId) 
+                            .AnyAsync();
+        if (!isConcierge)
+        {
             return Result.Failure(PackageErrors.ConciergeNotFoundOnCreate);
+        }
+
 
         if (!await context.Users.AnyAsync(x =>
                 x.Id == request.RecipientId && x.Communities.Any(x => x.ID == request.CommunityId)))

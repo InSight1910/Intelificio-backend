@@ -1,0 +1,137 @@
+<div>
+  <div
+    class="button is-warning is-small is-responsive is-fullwidth"
+    (click)="onClick()"
+  >
+    <span class="icon mr-2"
+      ><i class="mr-2 fa-solid fa-pen-to-square"></i
+    ></span>
+    Editar
+  </div>
+
+  <div class="modal" [ngClass]="{ 'is-active': isOpen }">
+    <div class="modal-background" (click)="onClickCloseModal()"></div>
+
+    <div class="modal-content columns is-centered">
+      <div class="box py-5 px-6 is-rounded">
+        <h4 class="title is-4 has-text-centered">Editar Visita</h4>
+
+        <form [formGroup]="guestForm">
+          <div class="columns">
+            <div class="field is-fullwidth column">
+              <h1>Hora de Entrada</h1>
+            </div>
+
+            <div class="field is-fullwidth column">
+              <div class="control">
+                <strong
+                  ><input
+                    class="input has-text-centered is-static is-size-5"
+                    type="datetime"
+                    placeholder="Hora de Entrada"
+                    formControlName="entryTime"
+                    readonly
+                /></strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="field is-fullwidth column">
+              <label class="label">Nombre</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Nombre"
+                  formControlName="firstName"
+                />
+              </div>
+            </div>
+
+            <div class="field is-fullwidth column">
+              <label class="label">Apellido</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Apellido"
+                  formControlName="lastName"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-fullwidth">
+            <label class="label">Rut</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Rut"
+                formControlName="rut"
+              />
+            </div>
+          </div>
+
+          <div class="field is-fullwidth">
+            <label class="label">Patente</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="Patente"
+                formControlName="plate"
+              />
+            </div>
+          </div>
+
+          <div class="field is-expanded">
+            <label class="label">Edificio</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="" id="" formControlName="buildingId">
+                  <option value="">Seleccionar Edificio</option>
+                  <option
+                    *ngFor="let building of buildings | async"
+                    [value]="building.id"
+                  >
+                    {{ building.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-expanded">
+            <label class="label">Departamento</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="" id="" formControlName="unitId">
+                  <option value="">Seleccionar Departamento</option>
+                  <option *ngFor="let unit of units | async" [value]="unit.id">
+                    {{ unit.number }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="buttons is-centered">
+            <button
+              class="button is-primary"
+              (click)="onClickUpdateGuest()"
+              [ngClass]="{ 'is-loading': isAdding }"
+              [disabled]="guestForm.invalid"
+            >
+              Editar
+            </button>
+            <button class="button is-warning" (click)="onClickCloseModal()">
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

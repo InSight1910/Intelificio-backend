@@ -1,5 +1,4 @@
 ﻿using Backend.Common.Response;
-using Backend.Features.Unit.Commands.Create;
 using Backend.Features.Unit.Common;
 using Backend.Models;
 using MediatR;
@@ -22,8 +21,10 @@ namespace Backend.Features.Unit.Commands.Delete
         {
             var unit = await _context.Units.FirstOrDefaultAsync(x => x.ID == request.Id);
             if (unit == null) return Result.Failure(UnitErrors.UnitNotFoundDelete);
+
             _ = _context.Units.Remove(unit);
             _ = await _context.SaveChangesAsync();
+
             return Result.Success();
         }
     }

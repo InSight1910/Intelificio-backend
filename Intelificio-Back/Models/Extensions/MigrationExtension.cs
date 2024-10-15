@@ -170,32 +170,32 @@ namespace Backend.Models.Extensions
                     {
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault().ID!,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F
@@ -203,32 +203,32 @@ namespace Backend.Models.Extensions
 
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
+                            UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
+                            UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers1.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!,
+                            BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F
@@ -240,32 +240,32 @@ namespace Backend.Models.Extensions
 
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 1")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID,
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F
@@ -273,32 +273,32 @@ namespace Backend.Models.Extensions
 
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
                         new Unit
                         {
-                            Building = towers2.FirstOrDefault(x => x.Name == "Torre 2")!,
-                            UnitType = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !,
+                            BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID,
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F

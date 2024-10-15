@@ -6,7 +6,7 @@ export interface Package {
   trackingNumber: string;
   status: PackageStatus;
   receptionDate: Date;
-  notificacionSent: number;
+  canSend: boolean;
   canRetire: string;
 }
 

@@ -13,8 +13,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UnitService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient){}
   baseUrl = environment.apiUrl;
+
+  createUnit(unit: CreateUnit) {
+    return this.http.post(`${this.baseUrl}/unit`, unit);
+  }
+
+  updateUnit(action: UpdateUnit) {
+    return this.http.put(`${this.baseUrl}/unit/${action.id}`, action);
+  }
+
+  getById(id: number): Observable<{ data: Unit }> {
+    return this.http.get<{ data: Unit }>(`${this.baseUrl}/unit/GetByID/${id}`);
+  }
 
   getUnitsByBuilding(buildingId: number) {
     return this.http.get<{ data: Unit[] }>(
@@ -26,15 +38,7 @@ export class UnitService {
     return this.http.get<{ data: UnitType[] }>(`${this.baseUrl}/unit/Types`);
   }
 
-  updateUnit(action: UpdateUnit) {
-    return this.http.put(`${this.baseUrl}/unit/${action.id}`, action);
-  }
-
-  createUnit(unit: CreateUnit) {
-    return this.http.post(`${this.baseUrl}/unit`, unit);
-  }
-
-  getById(id: number): Observable<{ data: Unit }> {
-    return this.http.get<{ data: Unit }>(`${this.baseUrl}/unit/GetByID/${id}`);
+  getDeptosByBuilding(id: number) {
+    return this.http.get<{ data: Unit[] }>(`${this.baseUrl}/unit/GetDeptosByBuilding/${id}`);
   }
 }

@@ -4,10 +4,10 @@ using Backend.Features.Unit.Commands.Delete;
 using Backend.Features.Unit.Commands.Update;
 using Backend.Features.Unit.Queries.GetAllByBuilding;
 using Backend.Features.Unit.Queries.GetAllTypes;
-using Backend.Features.Unit.Queries.GetByID;
+using Backend.Features.Unit.Queries.GetById;
 using Backend.Features.Unit.Queries.GetByUser;
+using Backend.Features.Unit.Queries.GetDeptosByBuilding;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Features.Unit.Common
@@ -48,7 +48,7 @@ namespace Backend.Features.Unit.Common
         [HttpGet("GetByID/{id}")]
         public async Task<IActionResult> GetByID(int id)
         {
-            var result = await mediator.Send(new GetByIDQuery { UnitId = id });
+            var result = await mediator.Send(new GetByIdUnitQuery { UnitId = id });
             return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
 
@@ -72,5 +72,13 @@ namespace Backend.Features.Unit.Common
             var result = await mediator.Send(new GetAllTypesQuery());
             return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
         }
+
+        [HttpGet("GetDeptosByBuilding/{id}")]
+        public async Task<IActionResult> GetDeptosByBuilding(int id)
+        {
+            var result = await mediator.Send(new GetDeptosByBuildingQuery { BuildingId = id });
+            return result.Match(resultado => Ok(resultado), resultado => NotFound(resultado));
+        }
+
     }
 }

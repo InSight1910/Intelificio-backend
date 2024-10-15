@@ -18,6 +18,7 @@ import { MyReservationsComponent } from './core/features/reservation/my-reservat
 import { ConfirmEmailComponent } from './core/features/authentication/confirm-email/confirm-email.component';
 import { ManageEncomiendasComponent } from './core/features/encomiendas/manage/manage.component';
 import { MyPackagesComponent } from './core/features/encomiendas/my-packages/my-packages.component';
+import { GuestComponent } from './core/features/guest/guest.component';
 
 export const routes: Routes = [
   {
@@ -99,5 +100,9 @@ export const routes: Routes = [
   {
     path: 'MisEncomiendas',
     component: MyPackagesComponent,
+  },
+  {
+    path: 'guest',
+    component: GuestComponent,
   },
 ];

@@ -13,6 +13,8 @@ public class GetByCommunityQueryResponse
     public DateTime ReceptionDate { get; set; }
     public required PackageStatus Status { get; set; }
     public required string DeliveredToName { get; set; }
-    public string CanRetire { get; set; } = string.Empty;
-    public int NotificacionSent { get; set; }
+    public required bool CanSend { get; set; } 
+
+    public required DateTime NotificationDate { get; set; }
+
 }
