@@ -33,6 +33,7 @@ export class MenuComponent {
       isOpen: true,
       items: [
         { label: 'Comunidades', iconClass: 'fa-solid fa-tree-city', routerLink: 'AdminComunidades' },
+        { label: 'Comunidad', iconClass: 'fa-regular fa-building', routerLink: 'Comunidad' },
         { label: 'Administrar Espacios Comunes', iconClass: 'fa-solid fa-people-roof', routerLink: 'AdminEspaciosComunes' },
         { label: 'Mantenciones', iconClass: 'fa-solid fa-toolbox', routerLink: 'Mantenciones' },
         { label: 'Edificios', iconClass: 'fa-regular fa-building', routerLink: 'Edificios' },
@@ -40,6 +41,7 @@ export class MenuComponent {
         { label: 'Registros de usuarios', iconClass: 'fa-solid fa-user-plus', routerLink: 'RegistroUsuario' },
         { label: 'Registros de Encomiendas', iconClass: 'fa-solid fa-truck-fast', routerLink: 'RegistroEncomienda' },
         { label: 'Contactos', iconClass: 'fa-solid fa-address-book', routerLink: 'Contactos' },
+        { label: 'Visitas', iconClass: 'fa-solid fa-person-walking', routerLink: 'Visitas' },
       ],
     },
     {

@@ -7,11 +7,13 @@ import { EditModalComponent } from './edit-modal/edit-modal.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../states/intelificio.state';
 import { selectCommunity } from '../../../states/community/community.selectors';
+import {FormatRutDirective} from "../../../shared/directives/format-rut/format-rut.directive";
+import {FormatRutPipe} from "../../../shared/pipes/format-rut/format-rut.pipe";
 
 @Component({
   selector: 'app-guest',
   standalone: true,
-  imports: [CommonModule, AddModalComponent, EditModalComponent],
+  imports: [CommonModule, AddModalComponent, EditModalComponent,FormatRutDirective,FormatRutPipe],
   templateUrl: './guest.component.html',
   styleUrls: ['./guest.component.css']
 })
@@ -22,7 +24,7 @@ export class GuestComponent {
   isLoading = false;
   communityId!: number;
   communityName!: string;
-  
+
   constructor(
     private guestService: GuestService,
     private store: Store<AppState>
@@ -48,7 +50,7 @@ export class GuestComponent {
   loadGuest(communityId: number) {
     this.isLoading = true;
     this.guestService.getAllGuestsByCommunity(communityId).subscribe((data) => {
-      this.isLoading = false;     
+      this.isLoading = false;
       this.guests = data.data;
     });
   }
