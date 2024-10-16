@@ -36,7 +36,7 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
         if (package == null) return Result.Failure(NotificationErrors.PackageNotFound);
 
         var currentDate =
-            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
 
         if (((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING) ||
             package.NotificacionSent == 0)
@@ -73,7 +73,7 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
 
             package.NotificacionSent += 1;
             package.NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
-                TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+                TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

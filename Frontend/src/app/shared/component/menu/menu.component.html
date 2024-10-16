@@ -1,4 +1,4 @@
-<aside class="menu mt-6 ml-6" [ngClass]="{ 'is-hidden-mobile': !openNavbar }">
+<aside class="menu mt-6 ml-3" [ngClass]="{ 'is-hidden-mobile': !openNavbar }">
   <div *ngFor="let section of menuSections" class="mt-3">
     <p class="menu-label" (click)="toggleDropdown(section)">
       {{ section.label }}
@@ -8,7 +8,8 @@
     </p>
     <ul class="menu-list" *ngIf="section.isOpen">
       <li *ngFor="let item of section.items">
-        <a [routerLink]="[item.routerLink]">
+        <a [routerLink]="[item.routerLink]" [routerLinkActive]="['is-active']" [routerLinkActiveOptions]="{exact:
+true}">
           <span class="icon mr-2">
             <i [ngClass]="item.iconClass"></i>
           </span>

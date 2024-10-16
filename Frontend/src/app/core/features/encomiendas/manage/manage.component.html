@@ -1,102 +1,105 @@
-<div class="box mt-6 is-shadowless">
-  <h3 class="title is-3">Registrar nueva encomienda</h3>
-  <div class="mt-6 mb-4">
-    <form [formGroup]="form" (submit)="onSubmit($event)">
-      <input type="hidden" name="" formControlName="recipientId" />
-      <div class="columns">
-        <div class="column">
-          <div class="is-flex is-flex-direction-row">
-            <div>
-              <div class="field">
-                <label class="label">RUT Destinatario</label>
-              </div>
-
-              <div class="field has-addons">
-                <p class="control is-expanded">
-                  <input
-                    class="input"
-                    type="text"
-                    name="rut"
-                    formControlName="recipientRut"
-                    placeholder="12.345.678-9"
-                    appFormatRut
-                    #rut
-                    (input)="onInputChange('recipientRut')"
-                  />
-                </p>
-                <p class="control">
-                  <button
-                    (click)="onSearch(rut.value)"
-                    [disabled]="!enableSearch"
-                    class="button is-info"
-                  >
-                    <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
-                  </button>
-                </p>
-              </div>
+<div class="container">
+  <div class="box mt-6 is-shadowless">
+    <h3 class="title is-3">Registrar nueva encomienda</h3>
+    <div class="mt-6 mb-4">
+      <form [formGroup]="form" (submit)="onSubmit($event)">
+        <input type="hidden" name="" formControlName="recipientId" />
+        <div class="columns">
+          <div class="column">
+            <div class="is-flex is-flex-direction-row">
               <div>
-                @if (errorMessageSearch) {
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  {{ errorMessageSearch }}
-                </p>
-                } @if (recipient) {
-                <p>{{ recipient.name }}</p>
+                <div class="field">
+                  <label class="label">RUT Destinatario</label>
+                </div>
+
+                <div class="field has-addons">
+                  <p class="control is-expanded">
+                    <input
+                      class="input"
+                      type="text"
+                      name="rut"
+                      formControlName="recipientRut"
+                      placeholder="12.345.678-9"
+                      appFormatRut
+                      #rut
+                      (input)="onInputChange('recipientRut')"
+                    />
+                  </p>
+                  <p class="control">
+                    <button
+                      (click)="onSearch(rut.value)"
+                      [disabled]="!enableSearch"
+                      class="button is-info"
+                    >
+                      <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
+                    </button>
+                  </p>
+                </div>
+                <div>
+                  @if (errorMessageSearch) {
+                    <p class="help is-danger">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      {{ errorMessageSearch }}
+                    </p>
+                  } @if (recipient) {
+                  <p>{{ recipient.name }}</p>
                 }
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="column">
-          <div class="field">
-            <label class="label">Número de paquete</label>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input
-                type="text"
-                name="packageNumber"
-                class="input"
-                formControlName="trackingNumber"
-              />
+          <div class="column">
+            <div class="field">
+              <label class="label">Número de paquete</label>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input
+                  type="text"
+                  name="packageNumber"
+                  class="input"
+                  formControlName="trackingNumber"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="column">
-          <div class="field">
-            <label class="label">Conserje</label>
-          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Conserje</label>
+            </div>
 
-          <div class="field is-expanded">
-            <div class="select is-fullwidth">
-              <select name="" id="" formControlName="conciergeId">
-                <option value="">Seleccionar conserje</option>
-                <option
-                  *ngFor="let concierge of concierges | async"
-                  [value]="concierge.id"
-                >
-                  {{ concierge.name }}
-                </option>
-              </select>
+            <div class="field is-expanded">
+              <div class="select is-fullwidth">
+                <select name="" id="" formControlName="conciergeId">
+                  <option value="">Seleccionar conserje</option>
+                  <option
+                    *ngFor="let concierge of concierges | async"
+                    [value]="concierge.id"
+                  >
+                    {{ concierge.name }}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="column">
-          <div class="column is-align-content-center mt-5">
-            <button
-              class="button my-auto is-fullwidth"
-              [disabled]="!canCreate || form.invalid"
-            >
+          <div class="column">
+            <div class="column is-align-content-center mt-5">
+              <button
+                class="button my-auto is-fullwidth"
+                [disabled]="!canCreate || form.invalid"
+              >
               <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
               >Recepcionar encomienda
-            </button>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
-<div class="box mt-6 is-shadowless">
+<div class="container">
+  <div class="box mt-4 is-shadowless">
   <h3 class="title">Lista de encomiendas</h3>
   <div class="table-container">
     <table class="table is-fullwidth">
@@ -213,4 +216,5 @@
       </tbody>
     </table>
   </div>
+</div>
 </div>

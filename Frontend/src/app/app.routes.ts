@@ -31,6 +31,10 @@ export const routes: Routes = [
     component: BuildingComponent,
   },
   {
+    path: 'EdificiosComunidad',
+    component: BuildingComponent,
+  },
+  {
     path: 'RegistroUsuario',
     component: SingupComponent,
   },
@@ -52,6 +56,10 @@ export const routes: Routes = [
   },
   {
     path: 'Comunidad',
+    component: HomeCommunityComponent,
+  },
+  {
+    path: 'MiComunidad',
     component: HomeCommunityComponent,
   },
   {
@@ -92,6 +100,10 @@ export const routes: Routes = [
   },
   {
     path: 'Contactos',
+    component: ContactListComponent,
+  },
+  {
+    path: 'ContactosComunidad',
     component: ContactListComponent,
   },
   {

@@ -243,6 +243,11 @@ namespace Backend.Features.Notification.Common
             Code = "Notification.SimpleMessage.TemplateIdIsNullOnSimpleMessage",
             Message = "El TempleID es nulo y se necesita para crear un Dynamic Email."
         };
+        public static Error RecipientsIsNullOnSimpleMessage = new()
+        {
+            Code = "Notification.SimpleMessage.RecipientsIsNullOnSimpleMessage",
+            Message = "No se encontraron destinatarios"
+        };
 
         //Errores de SingleUserSignUpSummary
         public static Error EmailNotSentOnSingleUserSignUpSummary = new()

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 
 interface MenuSection {
   label: string;
@@ -17,7 +17,7 @@ interface MenuItem {
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
 })
@@ -29,27 +29,33 @@ export class MenuComponent {
 
   menuSections: MenuSection[] = [
     {
+      label: 'Super-Admin',
+      isOpen: false,
+      items: [
+        { label: 'Comunidades', iconClass: 'fa-solid fa-tree-city', routerLink: 'AdminComunidades' },
+      ],
+    },
+    {
       label: 'Administración',
       isOpen: true,
       items: [
-        { label: 'Comunidades', iconClass: 'fa-solid fa-tree-city', routerLink: 'AdminComunidades' },
-        { label: 'Comunidad', iconClass: 'fa-solid fa-building', routerLink: 'Comunidad' },
-        { label: 'Edificios', iconClass: 'fa-solid fa-building', routerLink: 'Edificios' },
+        { label: 'Comunidad', iconClass: 'fa-solid fa-tree-city', routerLink: 'Comunidad' },
+        { label: 'Edificios', iconClass: 'fa-solid fa-building', routerLink: 'EdificiosComunidad' },
         { label: 'Administrar Espacios Comunes', iconClass: 'fa-solid fa-people-roof', routerLink: 'AdminEspaciosComunes' },
         { label: 'Mantenciones', iconClass: 'fa-solid fa-toolbox', routerLink: 'Mantenciones' },
         { label: 'Comunicado', iconClass: 'fa-solid fa-paper-plane', routerLink: 'Comunicado' },
         { label: 'Registro de usuarios', iconClass: 'fa-solid fa-user-plus', routerLink: 'RegistroUsuario' },
         { label: 'Registro de Encomiendas', iconClass: 'fa-solid fa-truck-fast', routerLink: 'RegistroEncomienda' },
-        { label: 'Contactos', iconClass: 'fa-solid fa-address-book', routerLink: 'Contactos' },
+        { label: 'Contactos de la Comunidad', iconClass: 'fa-solid fa-address-book', routerLink: 'ContactosComunidad' },
         { label: 'Visitas', iconClass: 'fa-solid fa-person-walking', routerLink: 'Visitas' },
       ],
     },
     {
       label: 'Residentes',
-      isOpen: true,
+      isOpen: false,
       items: [
-        { label: 'Comunidad', iconClass: 'fa-solid fa-building', routerLink: 'Comunidad' },
-        { label: 'Edificios', iconClass: 'fa-solid fa-building', routerLink: 'Edificios' },
+        { label: 'Mi Comunidad', iconClass: 'fa-solid fa-tree-city', routerLink: 'MiComunidad' },
+        { label: 'Edificios', iconClass: 'fa-solid fa-city', routerLink: 'Edificios' },
         { label: 'Espacios Comunes', iconClass: 'fa-solid fa-people-roof', routerLink: 'EspacioComun' },
         { label: 'Mis Reservas', iconClass: 'fa-solid fa-bookmark', routerLink: 'MisReservas' },
         { label: 'Mis Encomiendas', iconClass: 'fa-solid fa-box', routerLink: 'MisEncomiendas' },

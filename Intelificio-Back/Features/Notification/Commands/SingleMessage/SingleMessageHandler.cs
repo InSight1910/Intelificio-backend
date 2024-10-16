@@ -99,25 +99,35 @@ namespace Backend.Features.Notification.Commands.SingleMessage
             if (string.IsNullOrWhiteSpace(templateNotification.TemplateId)) return Result.Failure(NotificationErrors.TemplateIdIsNullOnSimpleMessage);
 
             var templates = new List<SingleMessageTemplate>();
-            var template = new SingleMessageTemplate
+
+            if (communityData.Recipients is not null)
             {
-                Subject = request.Subject, 
-                Title = request.Title,
-                CommunityName = communityData.CommunityName ?? " ",
-                Message = request.Message,
-                SenderName = request.SenderName,
-                SenderAddress = communityData.SenderAddress
-            };
-            templates.Add(template);
-            var from = new EmailAddress("intelificio@duocuc.cl", communityData.CommunityName + " a través de Intelificio");
+                foreach (var resident in communityData.Recipients)
+                {
+                    var template = new SingleMessageTemplate
+                    {
+                        Subject = request.Subject,
+                        Title = request.Title,
+                        CommunityName = communityData.CommunityName ?? " ",
+                        Message = request.Message,
+                        SenderName = request.SenderName,
+                        SenderAddress = communityData.SenderAddress
+                    };
+                    templates.Add(template);
+                }
+                var from = new EmailAddress("intelificio@duocuc.cl", communityData.CommunityName + " a través de Intelificio");
 
-            var result = await _sendMail.SendMultipleSingleEmailToMultipleRecipients(
-                                                           from, communityData.Recipients, templateNotification.TemplateId, templates
-                                                        );
+                var result = await _sendMail.SendMultipleSingleEmailToMultipleRecipients(
+                                                               from, communityData.Recipients, templateNotification.TemplateId, templates
+                                                            );
 
-            if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);
-            return Result.Success();
-
+                if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSent);
+                return Result.Success();
+            } else
+            {
+                return Result.Failure(NotificationErrors.RecipientsIsNullOnSimpleMessage);
+            }
+           
         }
 
     }

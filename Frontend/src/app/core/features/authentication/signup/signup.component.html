@@ -1,7 +1,14 @@
 <div class="container">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-3 mb-5">Crear Usuario</h2>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
   <div class="card-content">
-    <div class="column is-12">
-      <h1 class="title is-3 mb-5">Crear Usuario</h1>
+
       <form class="box" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div class="columns">
           <div class="column field is-4">
@@ -358,7 +365,6 @@
           </button>
         </div>
       </form>
-    </div>
   </div>
 </div>
 

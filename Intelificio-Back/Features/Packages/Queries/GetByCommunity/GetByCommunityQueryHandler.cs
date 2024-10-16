@@ -13,7 +13,7 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
         if (!await context.Community.AnyAsync(x => x.ID == request.CommunityId)) return Result.Failure(null);
 
         var currentDate =
-            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
 
         var result = await context.Package
             .Include(x => x.Concierge)
