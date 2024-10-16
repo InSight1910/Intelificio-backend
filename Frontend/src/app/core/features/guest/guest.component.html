@@ -1,8 +1,6 @@
 <div style="margin-top: 1em">
-
   <!-- Header -->
   <div class="level">
-
     <!-- Titulo y hora-->
     <div class="level-left">
       <h3 class="title level-item">Visitas</h3>
@@ -12,7 +10,6 @@
     <div class="level-right">
       <app-add-modal (addGuestEvent)="updateGuestList($event)"></app-add-modal>
     </div>
-
   </div>
 
   <!-- Tabla -->
@@ -31,25 +28,22 @@
       </thead>
       <tbody class="has-text-centered">
         @for (guest of guests; track $index){
-          <tr class="is-hoverable">
-            <td>{{ guest.firstName }}</td>
-            <td>{{ guest.lastName }}</td>
-            <td>{{ guest.rut | formatRut}}</td>
-            <td>{{ guest.entryTime | date: 'hh:mm:ss a' }}</td>
-            <td>{{ guest.plate }}</td>
-            <td>{{ guest.unit }}</td>
-            <td>
-              <app-edit-modal
+        <tr class="is-hoverable">
+          <td>{{ guest.firstName }}</td>
+          <td>{{ guest.lastName }}</td>
+          <td>{{ guest.rut | formatRut }}</td>
+          <td>{{ guest.entryTime | date : "hh:mm:ss a" }}</td>
+          <td>{{ guest.plate == "" ? "-" : guest.plate }}</td>
+          <td>{{ guest.unit }}</td>
+          <td>
+            <app-edit-modal
               (editGuestEvent)="editGuest($event)"
               [guestId]="guest.id"
-              ></app-edit-modal>
-            </td>
-          </tr>
+            ></app-edit-modal>
+          </td>
+        </tr>
         }
       </tbody>
     </table>
   </div>
 </div>
-
-
-
