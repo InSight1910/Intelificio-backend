@@ -1,7 +1,9 @@
 using Backend.Common.Response;
+using Backend.Features.Packages.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TimeZoneConverter;
 
 namespace Backend.Features.Packages.Queries.GetByUser;
 
@@ -9,10 +11,11 @@ public class GetByUserQueryHandler(IntelificioDbContext context) : IRequestHandl
 {
     public async Task<Result> Handle(GetByUserQuery request, CancellationToken cancellationToken)
     {
-        if (!await context.Community.AnyAsync(x => x.ID == request.CommunityId)) return Result.Failure(null);
+        var community = await context.Community.Where(x => x.ID == request.CommunityId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        if (community is null) return Result.Failure(PackageErrors.CommunityNotFoundOnGetByUserQuery);
         if (!await context.Users.AnyAsync(x =>
                 x.Id == request.UserId && context.Community.Any(c => c.Users.Any(u => u.Id == request.UserId))))
-            return Result.Failure(null);
+            return Result.Failure(PackageErrors.UserNotExistOnGetByUserQuery);
 
         var packages = await context.Package
             .Include(x => x.Concierge)
@@ -22,14 +25,14 @@ public class GetByUserQueryHandler(IntelificioDbContext context) : IRequestHandl
             .Select(x => new GetByUserQueryResponse
             {
                 Id = x.ID,
-                ReceptionDate = x.ReceptionDate,
+                ReceptionDate = TimeZoneInfo.ConvertTimeFromUtc(x.ReceptionDate, TZConvert.GetTimeZoneInfo(community.TimeZone)),
                 TrackingNumber = x.TrackingNumber,
                 ConciergeName = x.Concierge.ToString(),
                 Status = x.Status,
                 AssignedTo = x.CanRetire == null ? null : x.CanRetire.ToString()
             })
             .ToListAsync();
-
+        
         return Result.WithResponse(new ResponseData
         {
             Data = packages

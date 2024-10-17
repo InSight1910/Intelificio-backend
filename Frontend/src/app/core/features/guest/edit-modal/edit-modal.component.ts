@@ -49,7 +49,7 @@ export class EditModalComponent {
       lastName: ['', Validators.required],
       rut: ['', Validators.required],
       entryTime: ['', Validators.required],
-      plate: ['', Validators.required],
+      plate: [''],
       buildingId: ['', Validators.required],
       unitId: ['', Validators.required],
     });
@@ -71,7 +71,7 @@ export class EditModalComponent {
         firstName: this.guest.firstName,
         lastName: this.guest.lastName,
         rut: this.guest.rut,
-        entryTime: this.formatEntryTime(this.guest.entryTime),
+        entryTime: this.guest.entryTime.substring(11, 19),
         plate: this.guest.plate,
         buildingId: this.guest.buildingId,
         unitId: this.guest.unitId,
@@ -142,7 +142,7 @@ export class EditModalComponent {
   }
 
   formatEntryTime(entryTime: string): string | null {
-    const date = new Date(entryTime); // Convertir string a Date
+    const date = new Date(entryTime);
     return this.datePipe.transform(date, 'HH:MM:SS'); // Formatear la fecha
   }
 }

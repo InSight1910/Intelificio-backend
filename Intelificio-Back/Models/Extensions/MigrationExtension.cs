@@ -84,14 +84,16 @@ namespace Backend.Models.Extensions
                             Address = "Calle 123",
                             Municipality = municipality,
                             Name = "Comunidad 1",
-                            Rut = "123123"
+                            Rut = "123123",
+                            TimeZone = "America/Santiago",
                         },
                         new Community
                         {
                             Address = "Calle 123",
                             Municipality = municipality,
                             Name = "Comunidad 2",
-                            Rut = "123123"
+                            Rut = "123123",
+                            TimeZone = "America/Santiago",
                         }
                 };
 
@@ -158,6 +160,94 @@ namespace Backend.Models.Extensions
                     context.UnitTypes.AddRange(unitTypes);
                     _ = await context.SaveChangesAsync();
 
+                }
+
+                if (!await context.TemplateNotifications.AnyAsync())
+                {
+                    var templatesNotifications = new List<TemplateNotification>
+                    {
+                        new TemplateNotification
+                        {
+                            Name = "Maintenance",
+                            TemplateId = "d-6293ba8c05364ab3a29067841b94b367",
+                            DynamicTemplateName = "Maintenance"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "ChangePassword",
+                            TemplateId = "d-54a6a75cd8a94646ab8f31279545a0a4",
+                            DynamicTemplateName = "ChangePassword"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "Package",
+                            TemplateId = "d-ecd8ab6f1403499ab428f14d2ce8360c",
+                            DynamicTemplateName = "Package"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "SuccessfulReservation",
+                            TemplateId = "d-35b83e46e8e24cfb9f3b3e95c3fb5e59",
+                            DynamicTemplateName = "SuccessfulReservation"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "ReservationCancellation",
+                            TemplateId = "d-b4cd5e7c506c4e498fa2f67e93c097e9",
+                            DynamicTemplateName = "ReservationCancellation"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "GGCC",
+                            TemplateId = "d-78b43c77205546ea808eb34bb8a97cac",
+                            DynamicTemplateName = "GGCC"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "ComposeEmail",
+                            TemplateId = "d-91a77bfbec4840b39c665af9e8f2b184",
+                            DynamicTemplateName = "SingleInformation"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "ReservationConfirmation",
+                            TemplateId = "d-4066f3a87f644bc69996ace28bd3d8ea",
+                            DynamicTemplateName = "ReservationConfirmation"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "MaintenanceCancellation",
+                            TemplateId = "d-26119e7d8959403db4e2c393f3c57a88",
+                            DynamicTemplateName = "MaintenanceCancellation"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "ConfirmEmail",
+                            TemplateId = "d-9a83e8bc892c42f69785a09aa6b67b69",
+                            DynamicTemplateName = "ConfirmEmail"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "SingleUserSignUpSummary",
+                            TemplateId = "d-5d7d97b2a91340b1997d26a0dc0f74e9",
+                            DynamicTemplateName = "SingleUserSignUpSummary"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "MassUserSignUpSummary",
+                            TemplateId = "d-b8082d24fbd44854a3581bfb7b6364ad",
+                            DynamicTemplateName = "MassUserSignUpSummary"
+                        },
+                        new TemplateNotification
+                        {
+                            Name = "PackageDelivered",
+                            TemplateId = "d-b7ba49be78e74fb0855333bc8461b2fb",
+                            DynamicTemplateName = "PackageDelivered"
+                        }
+                    };
+
+                    context.TemplateNotifications.AddRange(templatesNotifications);
+                    await context.SaveChangesAsync();
                 }
 
                 if (!await context.Units.AnyAsync())

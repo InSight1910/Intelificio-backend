@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SendGrid.Helpers.Mail;
 using System.Globalization;
+using TimeZoneConverter;
 
 namespace Backend.Features.Notification.Commands.Package;
 
@@ -35,10 +36,10 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             .FirstOrDefaultAsync(cancellationToken);
         if (package == null) return Result.Failure(NotificationErrors.PackageNotFound);
 
-        var currentDate =
-            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+        var currentDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZConvert.GetTimeZoneInfo(package.Community.TimeZone));
 
-        if (((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING) ||
+        if (((currentDate -  TimeZoneInfo.ConvertTimeFromUtc(package.NotificationDate, TZConvert.GetTimeZoneInfo(TimeZoneInfo.Local.Id))
+                ).TotalHours >= 24 && package.Status == PackageStatus.PENDING) ||
             package.NotificacionSent == 0)
         {
             var recipients = new List<EmailAddress>();
@@ -55,12 +56,14 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
 
             var from = new EmailAddress("intelificio@duocuc.cl", package.Community.Name + " a través de Intelificio");
 
+            var convertedDate = TimeZoneInfo.ConvertTimeFromUtc(package.ReceptionDate, TZConvert.GetTimeZoneInfo(package.Community.TimeZone));
+
             var template = new PackageTemplate
             {
                 CommunityName = package.Community.Name,
-                Day = package.ReceptionDate.ToString("dd-MM-yyyy"),
-                Hour = package.ReceptionDate.ToString("hh:mm tt", CultureInfo.InvariantCulture),
-                SenderAddress = $"{package.Community.Address}{", "}{package.Community.Municipality.Name}",
+                Day = convertedDate.ToString("dd-MM-yyyy"),
+                Hour = convertedDate.ToString("hh:mm tt", CultureInfo.InvariantCulture),
+                SenderAddress = $"{package.Community.Address}, {package.Community.Municipality.Name}",
                 Name = package.Recipient.FirstName,
                 TrackingNumber = package.TrackingNumber
             };
@@ -72,8 +75,7 @@ public class PackageHandler : IRequestHandler<PackageCommand, Result>
             if (!result.IsSuccessStatusCode) return Result.Failure(NotificationErrors.EmailNotSentOnPackage);
 
             package.NotificacionSent += 1;
-            package.NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
-                TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+            package.NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZConvert.GetTimeZoneInfo(package.Community.TimeZone));
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

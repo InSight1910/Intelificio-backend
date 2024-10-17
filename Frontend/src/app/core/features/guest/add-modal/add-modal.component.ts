@@ -36,7 +36,7 @@ export class AddModalComponent {
     private store: Store<AppState>,
     private buildingService: BuildingService,
     private unitService: UnitService,
-    private guestService: GuestService, 
+    private guestService: GuestService,
     private fb: FormBuilder
   ) {
     this.guestForm = this.fb.group({
@@ -51,15 +51,17 @@ export class AddModalComponent {
   }
 
   ngOnInit() {
-    this.store.select(selectCommunity).subscribe((community) => {
-      if (community && community.id !== undefined) {
-        this.buildingService
-        .getbyCommunityId(community.id)
-        .subscribe((buildings) => {
-          this.buildings = buildings.data;
-        });
-      }
-    });
+
+      this.store.select(selectCommunity).subscribe((community) => {
+        if (community && community.id !== undefined) {
+          this.buildingService
+            .getbyCommunityId(community.id)
+            .subscribe((buildings) => {
+              this.buildings = buildings.data;
+            });
+        }
+      });
+
   }
 
   ngOnChanges(): void {
@@ -94,6 +96,7 @@ export class AddModalComponent {
       entryTime: new Date().toISOString().slice(0, 19),
       plate: this.guestForm.get('plate')?.value,
       unitId: this.guestForm.get('unitId')?.value,
+      communityID: this.buildings[0].communityId,
     };
 
     this.guestService
@@ -112,7 +115,7 @@ export class AddModalComponent {
           unit: '',
         });
 
-        this.errors = null; 
+        this.errors = null;
 
         setTimeout(() => {
           this.isSuccess = false;
@@ -120,7 +123,7 @@ export class AddModalComponent {
         }, 2000);
 
         this.isOpen = false;
-        
+
       }),
       catchError((error) => {
         this.isAdding = false;
