@@ -265,5 +265,10 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
                 .WithOne(p => p.CommonSpace)
                 .HasForeignKey(p => p.CommonSpaceID);
         });
+
+        _ = builder.Entity<Fine>(entity =>
+        {
+            _ = entity.HasKey(p => p.ID);
+        });
     }
 }

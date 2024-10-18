@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-3 mb-5">Crear Multa</h2>
+    </div>
+  </div>
+</div>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-content">
+      <form (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label class="label" for="usuario">Usuario</label>
+          <div class="control">
+            <div class="select">
+              <select id="usuario" [(ngModel)]="usuario" name="usuario" required>
+                <option value="" disabled selected>Seleccione un usuario</option>
+                <option *ngFor="let user of usuarios" [value]="user">{{ user }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-3">
+            <div class="field">
+              <label class="label" for="denomination">Denominación</label>
+              <div class="control">
+                <div class="select">
+                  <select id="denomination" [(ngModel)]="denominacion" name="denominacion" required>
+                    <option value="" disabled selected>Seleccione denominación</option>
+                    <option value="UTM">UTM</option>
+                    <option value="UF">UF</option>
+                    <option value="CLP">CLP</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column is-9">
+            <div class="field">
+              <label class="label" for="monto">Monto</label>
+              <div class="control">
+                <input id="monto" class="input" type="number" [(ngModel)]="monto" name="monto" placeholder="Ingrese el monto" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="nombreMulta">Nombre de la multa</label>
+          <div class="control">
+            <input id="nombreMulta" class="input" type="text" [(ngModel)]="motivo" name="motivo" placeholder="Describa el motivo de la multa" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="motivo">Motivo de la multa</label>
+          <div class="control">
+            <textarea id="motivo" class="textarea" [(ngModel)]="motivo" name="motivo" placeholder="Describa el motivo de la multa" required></textarea>
+          </div>
+        </div>
+
+        <div class="control">
+          <button type="submit" class="button is-primary">Crear Multa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

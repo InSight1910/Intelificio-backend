@@ -37,18 +37,21 @@
 </div>
 } @else {
   <div CLASS="container mt-4">
-    <div class="tabs">
-      <ul>
-        @for (building of Edificios; track building.id) {
-          <li
-            [class.is-active]="building.id === selectedBuildingId"
-            (click)="detail(building.id)"
-          >
-            <a>{{ building.name }}</a>
-          </li>
-        }
-      </ul>
-    </div>
+
+    <header class="card-header">
+      <div class="tabs">
+        <ul>
+          @for (building of Edificios; track building.id) {
+            <li
+              [class.is-active]="building.id === selectedBuildingId"
+              (click)="detail(building.id)"
+            >
+              <a>{{ building.name }}</a>
+            </li>
+          }
+        </ul>
+      </div>
+    </header>
   </div>
 
   <div CLASS="container">
