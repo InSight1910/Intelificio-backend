@@ -11,51 +11,28 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
     }
 
     public DbSet<AssignedShift> AssignedShifts { get; set; }
-
     public DbSet<Attendance> Attendances { get; set; }
-
     public DbSet<UnitType> UnitTypes { get; set; }
-
     public DbSet<Unit> Units { get; set; }
-
     public DbSet<ShiftType> ShiftTypes { get; set; }
-
     public DbSet<Shift> Shifts { get; set; }
-
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Attendee> Attendees { get; set; }
     public DbSet<Region> Regions { get; set; }
-
     public DbSet<City> City { get; set; }
-
     public DbSet<Pet> Pets { get; set; }
-
     public DbSet<Building> Buildings { get; set; }
-
     public DbSet<Charge> Charges { get; set; }
-
     public DbSet<ChargeType> ChargeTypes { get; set; }
-
     public DbSet<CommonSpace> CommonSpaces { get; set; }
-
     public DbSet<Community> Community { get; set; }
-
     public DbSet<Contact> Contacts { get; set; }
-
     public DbSet<Expense> Expense { get; set; }
-
-    public DbSet<ExpenseType> ExpenseTypes { get; set; }
-
     public DbSet<Fine> Fine { get; set; }
-
     public DbSet<Guest> Guest { get; set; }
-
     public DbSet<Municipality> Municipality { get; set; }
-
     public DbSet<Package> Package { get; set; }
-
     public DbSet<Payment> Payment { get; set; }
-
     public DbSet<Maintenance> Maintenances { get; set; }
     public DbSet<TemplateNotification> TemplateNotifications { get; set; }
 
@@ -107,9 +84,9 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
         _ = builder.Entity<Expense>(entity =>
         {
             _ = entity.HasKey(p => p.ID);
-
-            _ = entity.HasOne(p => p.Type)
-                .WithMany(p => p.Expenses);
+            _ = entity.HasOne(x => x.Community)
+                .WithMany(x => x.Expenses)
+                .HasForeignKey(x => x.CommunityId);
         });
 
         _ = builder.Entity<Community>(entity =>
