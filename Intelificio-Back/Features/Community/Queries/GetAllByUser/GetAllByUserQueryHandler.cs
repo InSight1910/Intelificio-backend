@@ -40,6 +40,7 @@ public class GetAllByUserQueryHandler : IRequestHandler<GetAllByUserQuery, Resul
                 .ThenInclude(x => x.Buildings)
                 .ThenInclude(x => x.Units)
                 .SelectMany(x => x.Communities)
+                .Include(x => x.Users)
                 .Select(x => new GetAllByUserResponse
                 {
                     Id = x.ID,

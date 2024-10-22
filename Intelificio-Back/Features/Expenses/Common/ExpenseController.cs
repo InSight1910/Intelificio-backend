@@ -1,5 +1,6 @@
 using Backend.Common.Response;
 using Backend.Features.Expenses.Create;
+using Backend.Features.Expenses.Query.GetExpensesByMonthAndCommunity;
 using Backend.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,17 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateExpense([FromBody] CreateExpenseCommand command)
     {
         var result = await mediator.Send(command);
+        return result.Match(
+            res => Created(),
+            err => BadRequest(err));
+    }
+
+    [HttpGet("{communityId}")]
+    public async Task<IActionResult> GetExpensesByMonth([FromRoute] int communityId, [FromQuery] int month,
+        [FromQuery] int year)
+    {
+        var result = await mediator.Send(new GetExpensesByMonthAndCommunityQuery
+            { Community = communityId, Month = month, Year = year });
         return result.Match(
             res => Created(),
             err => BadRequest(err));
