@@ -28,8 +28,8 @@ public class GetAllByUserQueryHandler : IRequestHandler<GetAllByUserQuery, Resul
         var checkUser = await _context.Users.AnyAsync(x => x.Id == request.UserId);
 
         if (!checkUser) return Result.Failure(CommunityErrors.UserNotFound);
-        try
-        {
+        
+        
             var adminRoleId = await _context.Roles
                 .Where(r => r.Name == "Administrador")
                 .Select(r => r.Id)
@@ -58,11 +58,6 @@ public class GetAllByUserQueryHandler : IRequestHandler<GetAllByUserQuery, Resul
             {
                 Data = communities
             });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error al obtener las comunidades del usuario");
-            return Result.Failure(null);
-        }
+
     }
 }

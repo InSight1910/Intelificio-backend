@@ -262,7 +262,6 @@ namespace Backend.Models.Extensions
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
-                            UserId = 1,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -271,7 +270,6 @@ namespace Backend.Models.Extensions
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault().ID!,
-                            UserId = 2,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -280,7 +278,6 @@ namespace Backend.Models.Extensions
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
-                            UserId = 3,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -288,8 +285,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,
-                            UserId = 4,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,       
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F
@@ -298,8 +294,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
-                            UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,
-                            UserId = 5,
+                            UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,           
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -307,8 +302,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
-                            UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,
-                            UserId = 6,
+                            UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,              
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -316,8 +310,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
-                            UserId = 7,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,         
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -325,8 +318,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,
-                            UserId = 8,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,        
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F
@@ -339,8 +331,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
-                            UserId = 9,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,             
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -348,8 +339,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
-                            UserId = 10,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,       
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -357,8 +347,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
-                            UserId = 11,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,      
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -366,8 +355,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID,
-                            UserId = 12,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID, 
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F
@@ -376,8 +364,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
-                            UserId = 13,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,                           
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
@@ -385,8 +372,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
-                            UserId = 14,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,                           
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
@@ -394,8 +380,7 @@ namespace Backend.Models.Extensions
                         new Unit
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
-                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
-                            UserId = 15,
+                            UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,                            
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
@@ -404,7 +389,6 @@ namespace Backend.Models.Extensions
                         {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID,
-                            UserId = 16,
                             Number = "01",
                             Floor = 1,
                             Surface = 50.1F

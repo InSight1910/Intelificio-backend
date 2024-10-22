@@ -195,14 +195,6 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
             _ = entity.HasMany(p => p.Guests)
                 .WithOne(p => p.Unit);
-
-            _ = entity.HasMany(p => p.Users)
-                .WithMany(p => p.Units);  // Relación muchos a muchos
-
-            _ = entity.HasOne(p => p.User)
-                .WithMany()
-                .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.Restrict);  // Relación uno a muchos para el usuario principal
         });
 
         _ = builder.Entity<User>(entity =>
