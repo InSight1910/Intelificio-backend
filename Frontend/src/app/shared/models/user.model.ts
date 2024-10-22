@@ -11,6 +11,7 @@ export interface User {
 export interface UserRut {
   id: number;
   name: string;
+  role: string;
 }
 
 export interface AuthState {
@@ -18,3 +19,7 @@ export interface AuthState {
   loading: boolean;
   error: string[] | null;
 }
+
+// export type UserAssign = Pick<User, 'given_name' | 'role'> & { rut: string;};
+
+

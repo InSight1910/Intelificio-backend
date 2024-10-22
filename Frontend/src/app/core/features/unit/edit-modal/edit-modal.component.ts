@@ -2,13 +2,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UnitService } from '../../../services/unit/unit.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { UpdateUnit, UnitType, Unit } from '../../../../shared/models/unit.model';
 import { BuildingService } from '../../../services/building/building.service';
 import { Building } from '../../../../shared/models/building.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../states/intelificio.state';
 import { selectCommunity } from '../../../../states/community/community.selectors';
+import { User } from '../../../../shared/models/user.model';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-edit-modal',
@@ -20,6 +22,7 @@ import { selectCommunity } from '../../../../states/community/community.selector
 export class EditModalComponent {
   @Output() editUnitEvent = new EventEmitter<boolean>();
   @Input() unitId!: string;
+  @Input() userId!: string;
   editForm: FormGroup;
   isOpen: boolean = false;
   errors!: { message: string }[] | null;
@@ -30,12 +33,15 @@ export class EditModalComponent {
   buildings: Building[] = [];
   floors: number[] = [];
   unit!: Unit;
+  users: Observable<User> = new Observable<User>();
+
 
   constructor(
     private unitService: UnitService,
     private fb: FormBuilder,
     private buildingService: BuildingService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private usersService: UserService
   ) {
     this.editForm = this.fb.group({
       id: [''],
@@ -45,6 +51,7 @@ export class EditModalComponent {
       user: [''],
       building: [''],
       unitType: [''],
+      userId: [''],
     });
   }
 
@@ -78,8 +85,10 @@ export class EditModalComponent {
         user: this.unit.user,
         building: this.unit.buildingId,
         unitType: this.unit.unitTypeId,
+        userId: this.unit.userId,
       });
       this.onChangeBuilding();
+      // this.getUsersByCommunity();
     });
   }
 
@@ -92,6 +101,7 @@ export class EditModalComponent {
       surface: this.editForm.get('surface')?.value,
       buildingId: this.editForm.get('building')?.value,
       unitTypeId: this.editForm.get('unitTypeId')?.value,
+      userId: this.editForm.get('userId')?.value,
     };
     this.unitService
       .updateUnit(unit)
@@ -136,4 +146,12 @@ export class EditModalComponent {
       (_, index) => index + 1
     );
   }
+
+  // getUsersByCommunity() {
+  //   const userId = this.editForm.get('userId')?.value;
+  //   this.users = this.usersService
+  //     .getAllByCommunity(userId)
+  //     .pipe(map((response) => response.data));
+  //     console.log(this.userId);
+  // }
 }

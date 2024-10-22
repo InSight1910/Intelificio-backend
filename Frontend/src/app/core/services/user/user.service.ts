@@ -12,8 +12,17 @@ export class UserService {
   http: HttpClient = inject(HttpClient);
 
   getByRut(rut: string) {
-    return this.http.get<Responses<UserRut>>(`${this.baseUrl}/GetByRut/${rut}`);
+    return this.http.get<Responses<UserRut>>(
+      `${this.baseUrl}/GetByRut/${rut}`
+    );
   }
+
+  // getUserByEmail(email: string) {
+  //   return this.http.post<{ data: UserEmail }>(
+  //     `${this.apiUrl}/auth/user/byEmail`,
+  //     { email }
+  //   );
+  // }
 
   getByRutCommunity(rut: string, communityId: number) {
     return this.http.get<Responses<UserRut>>(
@@ -26,4 +35,12 @@ export class UserService {
       `${this.baseUrl}/concierges/${communityId}`
     );
   }
+
+  // getAllByCommunity(rut: number) {
+  //   return this.http.get<{ data: UserAssign }>(
+  //     `${this.baseUrl}/GetAllByCommunity/${rut}`
+  //   );
+  // }
+
+
 }

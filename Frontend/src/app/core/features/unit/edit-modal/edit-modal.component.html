@@ -1,6 +1,6 @@
 <div>
   
-  <div class="button is-warning is-small is-responsive is-fullwidth" (click)="onClick()">
+  <div class="button is-small is-responsive is-fullwidth" (click)="onClick()">
     <span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>
     Editar
   </div>
@@ -82,6 +82,23 @@
               </select>
             </div>
           </div>
+
+          <!-- <div class="field is-expanded">
+            <label class="label">Usuario</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="" id="" formControlName="userId">
+                  <option value="">Seleccionar Usuario</option>
+                  <option
+                    *ngFor="let user of users | async"
+                    [value]="user.id"
+                  >
+                    {{ user.given_name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div> -->
 
           @if (errors) {
           <div class="message is-danger">

@@ -38,6 +38,9 @@ export class UnitComponent {
     this.unitService.getUnitsByBuilding(buildingId).subscribe((data) => {
       this.isLoading = false;
       this.units = data.data;
+      this.units.forEach(unit => {
+        console.log(`Unit ID: ${unit.id}, User ID: ${unit.user}`);
+      });
     });
   }
 
@@ -45,6 +48,12 @@ export class UnitComponent {
     if (updated) {
       this.loadUnit(+this.buildingId);
     }
+  }
+
+  deleteUnit(unitId: number): void {
+    this.unitService.deleteUnit(unitId).subscribe((data) => {
+      this.loadUnit(+this.buildingId);
+    });
   }
 
   updateList(updated: boolean): void {

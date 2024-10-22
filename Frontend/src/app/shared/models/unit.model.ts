@@ -8,6 +8,7 @@ export interface Unit {
   unitType: string;
   buildingId?: number;
   unitTypeId?: number;
+  userId?: number;
 }
 
 export interface CreateUnit {
@@ -16,6 +17,7 @@ export interface CreateUnit {
   surface: number;
   buildingId: number;
   unitTypeId: number;
+  userId: number; 
 }
 
 export interface UpdateUnit {
@@ -25,6 +27,7 @@ export interface UpdateUnit {
   surface: number;
   buildingId: number;
   unitTypeId: number;
+  userId?: number;
 }
 
 export interface UnitType {

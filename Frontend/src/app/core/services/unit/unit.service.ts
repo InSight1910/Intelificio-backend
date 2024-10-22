@@ -24,6 +24,10 @@ export class UnitService {
     return this.http.put(`${this.baseUrl}/unit/${action.id}`, action);
   }
 
+  deleteUnit(unitId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/unit/${unitId}`);
+  }
+
   getById(id: number): Observable<{ data: Unit }> {
     return this.http.get<{ data: Unit }>(`${this.baseUrl}/unit/GetByID/${id}`);
   }
