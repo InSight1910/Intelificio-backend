@@ -1,7 +1,9 @@
-﻿namespace Backend.Features.AssignedFines.Commands.Delete
+﻿using Backend.Common.Response;
+using MediatR;
+
+namespace Backend.Features.AssignedFines.Commands.Delete;
+
+public class DeleteAssignedFinesCommand : IRequest<Result>
 {
-    public class DeleteAssignedFinesCommand
-    {
-        public int AssignedfineId { get; }
-    }
+    public int AssignedfineId { get; }
 }

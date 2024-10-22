@@ -1,7 +1,7 @@
 using Backend.Common.Response;
 using MediatR;
 
-namespace Backend.Features.Expense.Query.GetExpensesByMonthAndCommunity;
+namespace Backend.Features.Expenses.Query.GetExpensesByMonthAndCommunity;
 
 public class GetExpensesByMonthAndCommunityQuery : IRequest<Result>
 {

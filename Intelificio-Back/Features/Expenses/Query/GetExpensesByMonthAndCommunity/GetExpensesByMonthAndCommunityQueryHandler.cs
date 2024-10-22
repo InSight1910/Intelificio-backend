@@ -3,7 +3,7 @@ using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Features.Expense.Query.GetExpensesByMonthAndCommunity;
+namespace Backend.Features.Expenses.Query.GetExpensesByMonthAndCommunity;
 
 public class GetExpensesByMonthAndCommunityQueryHandler(IntelificioDbContext context)
     : IRequestHandler<GetExpensesByMonthAndCommunityQuery, Result>

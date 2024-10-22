@@ -1,6 +1,6 @@
 using Backend.Models.Enums;
 
-namespace Backend.Features.Expense.Query.GetExpensesByMonthAndCommunity;
+namespace Backend.Features.Expenses.Query.GetExpensesByMonthAndCommunity;
 
 public class GetExpensesByMonthAndCommunityResponse
 {
