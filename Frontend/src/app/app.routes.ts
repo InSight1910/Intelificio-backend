@@ -21,6 +21,7 @@ import { MyPackagesComponent } from './core/features/encomiendas/my-packages/my-
 import { PrintNotificationComponent} from "./core/features/notification/print-notification/print-notification.component";
 import { GuestComponent } from './core/features/guest/guest.component';
 import {FineComponent} from "./core/features/fine/fine.component";
+import { ManageEgressComponent } from './core/features/expense/manage-egress/manage-egress.component';
 
 export const routes: Routes = [
   {
@@ -127,4 +128,8 @@ export const routes: Routes = [
     path: 'Multas',
     component: FineComponent,
   },
+  {
+    path: 'Egresos',
+    component: ManageEgressComponent
+  }
 ];

@@ -1,0 +1,124 @@
+<div class="container">
+  <h3 class="title">Gastos de la comunidad</h3>
+  <div class="box">
+    <form [formGroup]="form" (submit)="onSubmit($event)">
+      <h4 class="title is-4">Ingresar nuevos gastos</h4>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label for="name" class="label">Nombre</label>
+            <div class="control">
+              <input type="text" class="input" formControlName="name" />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label for="amount" class="label">Monto</label>
+            <div class="control">
+              <input
+                type="number"
+                id="amount"
+                class="input"
+                formControlName="amount"
+              />
+            </div>
+          </div>
+          <div
+            *ngIf="
+              form.get('amount')?.invalid &&
+              (form.get('amount')?.touched || form.get('amount')?.dirty)
+            "
+          >
+            <p
+              *ngIf="form.get('amount')?.errors?.['required']"
+              class="help is-danger"
+            >
+              El monto es requerido
+            </p>
+            <p
+              *ngIf="form.get('amount')?.errors?.['required']"
+              class="help is-danger"
+            >
+              El monto debe ser mayor a 0
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label for="date" class="label">Fecha</label>
+            <div class="control">
+              <input
+                type="date"
+                id="date"
+                class="input"
+                formControlName="date"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="field is-expanded">
+            <label for="expenseType" class="label">Gasto</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="" id="expenseType" formControlName="expenseType">
+                  <option value="">Selecciona un gasto</option>
+                  @for (type of expenseTypes; track $index) {
+                  <option [value]="$index">{{ type }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label for="provider" class="label">Rut Proveedor</label>
+            <div class="control">
+              <input
+                type="text"
+                class="input"
+                formControlName="provider"
+                appFormatRut
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="field">
+            <label for="invoice" class="label">Factura</label>
+            <div class="control">
+              <input type="text" class="input" formControlName="invoice" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label for="purcharseOrder" class="label">Orden de compra</label>
+            <div class="control">
+              <input
+                type="text"
+                class="input"
+                formControlName="pucharseOrder"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      @if (errors.length > 0) {
+      <app-message [errors]="errors" />
+      }
+      <div class="field is-align-items-end">
+        <div class="control">
+          <button class="button" type="submit">Guardar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

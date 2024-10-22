@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="box mt-6 is-shadowless">
+  <div class="box mt-6">
     <h3 class="title is-3">Registrar nueva encomienda</h3>
     <div class="mt-6 mb-4">
       <form [formGroup]="form" (submit)="onSubmit($event)">
@@ -37,13 +37,13 @@
                 </div>
                 <div>
                   @if (errorMessageSearch) {
-                    <p class="help is-danger">
-                      <i class="fas fa-exclamation-triangle"></i>
-                      {{ errorMessageSearch }}
-                    </p>
+                  <p class="help is-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ errorMessageSearch }}
+                  </p>
                   } @if (recipient) {
                   <p>{{ recipient.name }}</p>
-                }
+                  }
                 </div>
               </div>
             </div>
@@ -88,8 +88,8 @@
                 class="button my-auto is-fullwidth"
                 [disabled]="!canCreate || form.invalid"
               >
-              <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
-              >Recepcionar encomienda
+                <span class="icon mr-2"><i class="fa-regular fa-plus"></i></span
+                >Recepcionar encomienda
               </button>
             </div>
           </div>
@@ -100,121 +100,121 @@
 </div>
 <div class="container">
   <div class="box mt-4 is-shadowless">
-  <h3 class="title">Lista de encomiendas</h3>
-  <div class="table-container">
-    <table class="table is-fullwidth">
-      <thead>
-        <tr>
-          <th>Número de paquete</th>
-          <th>Destinatario</th>
-          <th>Conserje</th>
-          <th>Recibido el día</th>
-          <th>Estado</th>
-          <th>Entregado a</th>
-          <th>Puede retirar</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for(singlePackage of packages | async; track $index) {
+    <h3 class="title">Lista de encomiendas</h3>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th>Número de paquete</th>
+            <th>Destinatario</th>
+            <th>Conserje</th>
+            <th>Recibido el día</th>
+            <th>Estado</th>
+            <th>Entregado a</th>
+            <th>Puede retirar</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(singlePackage of packages | async; track $index) {
 
-        <tr>
-          <td>{{ singlePackage.trackingNumber }}</td>
-          <td>{{ singlePackage.recipientName }}</td>
-          <td>{{ singlePackage.conciergeName }}</td>
-          <td>{{ singlePackage.receptionDate | date : "dd/MM/yyyy" }}</td>
-          <td>{{ packageStatus[singlePackage.status] | titlecase }}</td>
-          <td>{{ singlePackage.deliveredToName }}</td>
-          <td>{{ singlePackage.canRetire }}</td>
-          <td>
-            <div class="columns">
-              <div class="column">
-                <button
-                  class="button"
-                  (click)="SendNotificationManually(singlePackage.id)"
-                  [disabled]="!singlePackage.canSend"
-                >
-                  <span class="icon mr-1"
-                    ><i class="fa-regular fa-bell"></i
-                  ></span>
-                  Notificar
-                </button>
-              </div>
+          <tr>
+            <td>{{ singlePackage.trackingNumber }}</td>
+            <td>{{ singlePackage.recipientName }}</td>
+            <td>{{ singlePackage.conciergeName }}</td>
+            <td>{{ singlePackage.receptionDate | date : "dd/MM/yyyy" }}</td>
+            <td>{{ packageStatus[singlePackage.status] | titlecase }}</td>
+            <td>{{ singlePackage.deliveredToName }}</td>
+            <td>{{ singlePackage.canRetire }}</td>
+            <td>
+              <div class="columns">
+                <div class="column">
+                  <button
+                    class="button"
+                    (click)="SendNotificationManually(singlePackage.id)"
+                    [disabled]="!singlePackage.canSend"
+                  >
+                    <span class="icon mr-1"
+                      ><i class="fa-regular fa-bell"></i
+                    ></span>
+                    Notificar
+                  </button>
+                </div>
 
-              <div class="column">
-                <button
-                  class="button"
-                  (click)="openModalMarkAsDelivered(singlePackage.id)"
-                  [disabled]="
-                    packageStatus[singlePackage.status] == 'ENTREGADO'
-                  "
-                >
-                  <span class="icon mr-1"
-                    ><i class="fa-regular fa-circle-check"></i
-                  ></span>
-                  Entregado
-                </button>
+                <div class="column">
+                  <button
+                    class="button"
+                    (click)="openModalMarkAsDelivered(singlePackage.id)"
+                    [disabled]="
+                      packageStatus[singlePackage.status] == 'ENTREGADO'
+                    "
+                  >
+                    <span class="icon mr-1"
+                      ><i class="fa-regular fa-circle-check"></i
+                    ></span>
+                    Entregado
+                  </button>
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-        @if (openMarkAsDelivered().get(singlePackage.id)) {
-        <app-modal-package
-          buttonTitle="Entregar"
-          title="Entregar paquete"
-          [isValid]="canMarkDelivered"
-          (onModalSubmit)="onSubmitMarkDelivered()"
-          (close)="closeModalMarkAsDelivered(singlePackage.id)"
-        >
-          <form
-            (submit)="onSubmitMarkDelivered($event)"
-            [formGroup]="formMarkDelivered"
+            </td>
+          </tr>
+          @if (openMarkAsDelivered().get(singlePackage.id)) {
+          <app-modal-package
+            buttonTitle="Entregar"
+            title="Entregar paquete"
+            [isValid]="canMarkDelivered"
+            (onModalSubmit)="onSubmitMarkDelivered()"
+            (close)="closeModalMarkAsDelivered(singlePackage.id)"
           >
-            <div class="field">
-              <label class="label">RUT quien retira</label>
-            </div>
-
-            <div class="field has-addons">
-              <p class="control is-expanded">
-                <input
-                  class="input"
-                  type="text"
-                  name="rut"
-                  placeholder="12.345.678-9"
-                  appFormatRut
-                  #deliveryRut
-                  formControlName="deliveryToRut"
-                />
-              </p>
-              <p class="control">
-                <button
-                  (click)="onSearch(deliveryRut.value, true)"
-                  type="button"
-                  class="button is-info"
-                >
-                  <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
-                </button>
-              </p>
-            </div>
-            <div class="field">
-              <label class="label">Nombre quien retira</label>
-              <div class="control">
-                <input
-                  type="text"
-                  name="name"
-                  class="input"
-                  formControlName="deliveryToName"
-                />
+            <form
+              (submit)="onSubmitMarkDelivered($event)"
+              [formGroup]="formMarkDelivered"
+            >
+              <div class="field">
+                <label class="label">RUT quien retira</label>
               </div>
-            </div>
-            @if (errors.length > 0) {
-            <app-message [errors]="errors" />
-            }
-          </form>
-        </app-modal-package>
-        } }
-      </tbody>
-    </table>
+
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  <input
+                    class="input"
+                    type="text"
+                    name="rut"
+                    placeholder="12.345.678-9"
+                    appFormatRut
+                    #deliveryRut
+                    formControlName="deliveryToRut"
+                  />
+                </p>
+                <p class="control">
+                  <button
+                    (click)="onSearch(deliveryRut.value, true)"
+                    type="button"
+                    class="button is-info"
+                  >
+                    <i class="fa-solid fa-magnifying-glass mr-1"></i>Buscar
+                  </button>
+                </p>
+              </div>
+              <div class="field">
+                <label class="label">Nombre quien retira</label>
+                <div class="control">
+                  <input
+                    type="text"
+                    name="name"
+                    class="input"
+                    formControlName="deliveryToName"
+                  />
+                </div>
+              </div>
+              @if (errors.length > 0) {
+              <app-message [errors]="errors" />
+              }
+            </form>
+          </app-modal-package>
+          } }
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 </div>

@@ -21,7 +21,10 @@ export class FormatRutDirective {
         formattedBody = `.${formattedBody}`;
       }
     }
-
-    input.value = `${formattedBody}-${dv}`;
+    if (input.value.length > 0) {
+      input.value = `${formattedBody}-${dv}`;
+    } else {
+      input.value = '';
+    }
   }
 }
