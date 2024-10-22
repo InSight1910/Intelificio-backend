@@ -32,6 +32,7 @@ export class HomeCommunityComponent {
   regions: Region[] = [];
   municipalities: Municipality[] = [];
   isModifying: boolean = false;
+  community!: Community;
 
   loadingLocation: boolean = false;
 
@@ -63,6 +64,7 @@ export class HomeCommunityComponent {
       .pipe(
         tap((community) => {
           this.form.patchValue(community!);
+          this.community = community!;
           this.form.disable();
           this.loadLocation();
         })
@@ -144,6 +146,7 @@ export class HomeCommunityComponent {
 
   onClickCancel() {
     this.isModifying = false;
+    this.form.patchValue(this.community);
     this.form.disable();
   }
 }

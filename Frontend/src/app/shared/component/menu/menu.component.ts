@@ -48,6 +48,7 @@ export class MenuComponent {
         { label: 'Registro de Encomiendas', iconClass: 'fa-solid fa-truck-fast', routerLink: 'RegistroEncomienda' },
         { label: 'Contactos de la Comunidad', iconClass: 'fa-solid fa-address-book', routerLink: 'ContactosComunidad' },
         { label: 'Visitas', iconClass: 'fa-solid fa-person-walking', routerLink: 'Visitas' },
+        { label: 'Multas', iconClass: 'fa-solid fa-file-invoice', routerLink: 'Multas' },
       ],
     },
     {

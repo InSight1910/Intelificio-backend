@@ -16,7 +16,7 @@ public class User : IdentityUser<int>
 
     public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
-        public ICollection<AssignedShift> AssignedShifts { get; set; } = new List<AssignedShift>();
+    public ICollection<AssignedShift> AssignedShifts { get; set; } = new List<AssignedShift>();
 
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
@@ -27,6 +27,8 @@ public class User : IdentityUser<int>
     public ICollection<Charge> Charges { get; set; } = new List<Charge>();
 
     public ICollection<Pet> Pets { get; set; } = new List<Pet>();
+
+    public ICollection<Fine> Fines { get; set; } = new List<Fine>();
 
     public override string ToString()
     {

@@ -10,6 +10,7 @@ namespace Backend.Models
         public required decimal Amount { get; set; }
         public required FineDenomination Status { get; set; }
         public required Community Community { get; set; }
+        public  int CommunityId { get; set; }
 
     }
 }
