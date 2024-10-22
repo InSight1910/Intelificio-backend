@@ -30,8 +30,14 @@ namespace Backend.Features.Guest.Common
 
         //-----------------------------------------------------------------------------
 
-        public static Error CommunityNotFoundGetAllByCommunity = new Error(
+        public static Error CommunityNotFoundGetAllByCommunity = new(
             "Guest.GetAllByCommunityGuest.CommunityNotFoundGetAllByCommunity", "La comunidad no fue encontrada");
-    }
+
+        public static Error CommunityNotFoundOnCreateGuest = new()
+        {
+            Code = "Guest.CreateGuest.CommunityNotFoundOnCreateGuest",
+            Message = "No existe comunidad consultada."
+        };
+}
 
 }

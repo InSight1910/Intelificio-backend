@@ -26,21 +26,21 @@ namespace Backend.Features.Community.Commands.Update
         public async Task<Result> Handle(UpdateCommunityCommand request, CancellationToken cancellationToken)
         {
             Municipality? municipality = null;
-            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.Id);
+            var community = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.Id, cancellationToken);
             if (community == null) return Result.Failure(CommunityErrors.CommunityNotFoundUpdate);
 
             community = _mapper.Map(request, community);
 
             if (request.MunicipalityId != null)
             {
-                municipality = await _context.Municipality.Include(x => x.City).ThenInclude(x => x.Region).FirstOrDefaultAsync(x => x.ID == request.MunicipalityId);
+                municipality = await _context.Municipality.Include(x => x.City).ThenInclude(x => x.Region).FirstOrDefaultAsync(x => x.ID == request.MunicipalityId, cancellationToken);
                 if (municipality is null) return Result.Failure(CommunityErrors.MunicipalityNotFoundUpdate);
                 community.Municipality = municipality;
             }
 
             if (request.AdminId > 0)
             {
-                var admin = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.AdminId);
+                var admin = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.AdminId, cancellationToken);
 
                 if (admin is null) return Result.Failure(CommunityErrors.AdminNotFoundUpdate);
 
@@ -49,7 +49,7 @@ namespace Backend.Features.Community.Commands.Update
 
 
                 var isAlreadyInCommunity = await _context.Community
-                    .AnyAsync(c => c.ID == community.ID && c.Users.Any(u => u.Id == admin.Id));
+                    .AnyAsync(c => c.ID == community.ID && c.Users.Any(u => u.Id == admin.Id), cancellationToken);
 
                 if (!isAlreadyInCommunity)
                 {
@@ -60,7 +60,7 @@ namespace Backend.Features.Community.Commands.Update
 
 
             _ = _context.Community.Update(community);
-            var result = await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync(cancellationToken);
             var response = _mapper.Map<UpdateCommunityCommandResponse>(community);
             if (municipality is not null)
             {

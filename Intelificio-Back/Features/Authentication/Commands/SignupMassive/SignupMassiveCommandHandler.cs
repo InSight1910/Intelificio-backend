@@ -11,16 +11,10 @@ using OfficeOpenXml;
 
 namespace Backend.Features.Authentication.Commands.SignupMassive
 {
-    public class SignupMassiveCommandHandler : IRequestHandler<SignupMassiveCommand, Result>
+    public class SignupMassiveCommandHandler(IMediator mediator, IMapper mapper) : IRequestHandler<SignupMassiveCommand, Result>
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public SignupMassiveCommandHandler(IMediator mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
+        private readonly IMediator _mediator = mediator;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<Result> Handle(SignupMassiveCommand request, CancellationToken cancellationToken)
         {
@@ -39,7 +33,6 @@ namespace Backend.Features.Authentication.Commands.SignupMassive
                 tasks.Add(_mediator.Send(new SignUpCommand
                 {
                     Users = usersToCreate,
-                    CreatorID = request.CreatorID,
                     CommunityID = request.CommunityID,
                     IsMassive = true
                 }, cancellationToken)); 
@@ -106,7 +99,7 @@ namespace Backend.Features.Authentication.Commands.SignupMassive
             return Result.Success();
         }
 
-        private async Task<List<UserObject>> GetUsersCommands(MemoryStream stream)
+        private  Task<List<UserObject>> GetUsersCommands(MemoryStream stream)
         {
             var usersCommand = new List<UserObject>();
 
@@ -133,7 +126,7 @@ namespace Backend.Features.Authentication.Commands.SignupMassive
                     usersCommand.Add(user);
                 }
             }
-            return usersCommand;
+            return Task.FromResult(usersCommand); 
         }
 
     }

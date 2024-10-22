@@ -1,8 +1,10 @@
 using Backend.Common.Response;
+using Backend.Features.Packages.Common;
 using Backend.Models;
 using Backend.Models.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TimeZoneConverter;
 
 namespace Backend.Features.Packages.Queries.GetByCommunity;
 
@@ -10,8 +12,9 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
 {
     public async Task<Result> Handle(GetByCommunityQuery request, CancellationToken cancellationToken)
     {
-        if (!await context.Community.AnyAsync(x => x.ID == request.CommunityId)) return Result.Failure(null);
-
+        var community = await context.Community.Where(x => x.ID == request.CommunityId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        if (community is null) return Result.Failure(PackageErrors.CommunityNotFoundOnGetByCommunityQuery);
+        
         var currentDate =
             TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
 
@@ -26,19 +29,19 @@ public class GetByCommunityQueryHandler(IntelificioDbContext context) : IRequest
                 Id = x.ID,
                 ConciergeName = x.Concierge.ToString(),
                 RecipientName = x.Recipient.ToString(),
-                ReceptionDate = x.ReceptionDate,
+                ReceptionDate = TimeZoneInfo.ConvertTimeFromUtc(x.ReceptionDate, TZConvert.GetTimeZoneInfo(x.Community.TimeZone)),
                 Status = x.Status,
                 TrackingNumber = x.TrackingNumber,
                 DeliveredToName = x.DeliveredTo != null ? x.DeliveredTo.ToString() : "-",
                 CanRetire = x.CanRetire != null ? x.CanRetire.ToString() : "-",
                 NotificacionSent = x.NotificacionSent,
-                NotificationDate = x.NotificationDate,
+                NotificationDate = TimeZoneInfo.ConvertTimeFromUtc(x.NotificationDate, TZConvert.GetTimeZoneInfo(x.Community.TimeZone)),
                 CanSend = false,
             })
             .OrderByDescending(x => x.Status).ToListAsync();
 
         foreach (var package in result)
-            if ((currentDate - package.NotificationDate).TotalHours >= 24 && package.Status == PackageStatus.PENDING)
+            if ((currentDate - TimeZoneInfo.ConvertTimeFromUtc(package.NotificationDate, TZConvert.GetTimeZoneInfo(community.TimeZone))).TotalHours >= 24 && package.Status == PackageStatus.PENDING)
                 package.CanSend = true;
 
         return Result.WithResponse(new ResponseData

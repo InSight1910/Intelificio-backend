@@ -1,4 +1,4 @@
-﻿using Backend.Models.Base;
+using Backend.Models.Base;
 using Backend.Models.Enums;
 
 namespace Backend.Models;

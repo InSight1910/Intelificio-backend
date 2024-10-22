@@ -11,6 +11,6 @@ public class UpdateGuestCommand : IRequest<Result>
     public string? LastName { get; set; }
     public string? Rut { get; set; }
     public string? Plate { get; set; }
-    public DateTime? EntryTime { get; set; }
+    //public DateTime? EntryTime { get; set; }
     public int? UnitId { get; set; }
 }

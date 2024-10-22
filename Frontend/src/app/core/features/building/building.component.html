@@ -1,10 +1,19 @@
-<div CLASS="container">
+<div class="container">
   <div class="level">
     <div class="level-left">
-      <h3 class="title is-3 level-item">Edificios</h3>
+      <h2 class="title is-3 mb-5">Edificios</h2>
+    </div>
+    <div class="level-right">
+      <button class="button" (click)="create()">
+        <span class="icon mr-1">
+          <i class="fa-solid fa-plus"></i>
+        </span>
+        Agregar Edificio
+      </button>
     </div>
   </div>
 </div>
+
 @if (isLoading) {
 <div CLASS="container mt-4">
   <div class="skeleton-block">
@@ -28,18 +37,21 @@
 </div>
 } @else {
   <div CLASS="container mt-4">
-    <div class="tabs">
-      <ul>
-        @for (building of Edificios; track building.id) {
-          <li
-            [class.is-active]="building.id === selectedBuildingId"
-            (click)="detail(building.id)"
-          >
-            <a>{{ building.name }}</a>
-          </li>
-        }
-      </ul>
-    </div>
+
+    <header class="card-header">
+      <div class="tabs">
+        <ul>
+          @for (building of Edificios; track building.id) {
+            <li
+              [class.is-active]="building.id === selectedBuildingId"
+              (click)="detail(building.id)"
+            >
+              <a>{{ building.name }}</a>
+            </li>
+          }
+        </ul>
+      </div>
+    </header>
   </div>
 
   <div CLASS="container">
@@ -57,10 +69,8 @@
             [ngClass]="{
               'is-danger':
                 buildingForm.get('nombreEdificio')?.invalid &&
-                buildingForm.get('nombreEdificio')?.touched
-            }"
-            [ngClass]="{
-              'is-success':
+                buildingForm.get('nombreEdificio')?.touched,
+                'is-success':
                 buildingForm.get('nombreEdificio')?.valid &&
                 buildingForm.get('nombreEdificio')?.touched
             }"
@@ -109,13 +119,12 @@
             [ngClass]="{
               'is-danger':
                 buildingForm.get('pisosEdificio')?.invalid &&
-                buildingForm.get('pisosEdificio')?.touched
-            }"
-            [ngClass]="{
-              'is-success':
+                buildingForm.get('pisosEdificio')?.touched,
+                'is-success':
                 buildingForm.get('pisosEdificio')?.valid &&
                 buildingForm.get('pisosEdificio')?.touched
             }"
+
           />
           @if (buildingForm.get('pisosEdificio')?.invalid &&
           buildingForm.get('pisosEdificio')?.touched) {
@@ -215,7 +224,6 @@
         Cancelar
       </button>
       } @else {
-      <button class="button" (click)="create()"><span class="icon mr-2"><i class="fa-solid fa-building-circle-arrow-right"></i></span>Agregar</button>
       <button class="button" (click)="edit()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-pen-to-square"></i></span>Editar</button>
       <button class="button" (click)="openmodal()"><span class="icon mr-2"><i class="mr-2 fa-solid fa-trash"></i></span>Eliminar</button>
       }

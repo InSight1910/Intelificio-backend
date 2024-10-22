@@ -4,6 +4,7 @@ using Backend.Features.Guest.Queries.GetAllByCommunity;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TimeZoneConverter;
 
 namespace Backend.Features.Guest.Queries.GetAllByCommunityGuest
 {
@@ -20,9 +21,8 @@ namespace Backend.Features.Guest.Queries.GetAllByCommunityGuest
 
         public async Task<Result> Handle(GetAllByCommunityGuestQuery request, CancellationToken cancellationToken)
         {
-            var checkCommunity = await _context.Community.AnyAsync(x => x.ID == request.CommunityId);
-
-            if (!checkCommunity) return Result.Failure(GuestErrors.CommunityNotFoundGetAllByCommunity);
+            var community = await _context.Community.Where(x => x.ID == request.CommunityId).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            if (community is null) return Result.Failure(GuestErrors.CommunityNotFoundGetAllByCommunity);
           
             var guests = await _context.Guest
                 .Where(x => x.Unit.Building.Community.ID == request.CommunityId)

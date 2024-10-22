@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import '@angular/common';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
+  ReactiveFormsModule, ValidationErrors, ValidatorFn,
   Validators,
   ValueChangeEvent,
 } from '@angular/forms';
@@ -32,7 +33,7 @@ export class LoginComponent implements  OnInit {
   constructor(private fb: FormBuilder, private store: Store) {
     this.loginForm = this.fb.group(
       {
-        email: ['', [Validators.required, Validators.email]],
+        email: ['', [Validators.required,this.emailValidator()]],
         password: ['', [Validators.required, Validators.minLength(8)]],
       },
       Validators.required
@@ -62,4 +63,19 @@ export class LoginComponent implements  OnInit {
       control.markAsUntouched();
     }
   }
+
+  emailValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+      if (!email || email.trim() === '') {
+        return { required: true }; // El correo está vacío
+      }
+
+      // Valida el formato del correo
+      return emailRegex.test(email) ? null : { invalidEmail: true };
+    };
+  }
+
 }

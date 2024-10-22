@@ -9,6 +9,11 @@ public class PackageErrors
         Code = "Packages.MarkAsDelivered.PackageNotFound",
         Message = "El fue posible encontrar el paquete."
     };
+    public static Error CommunityNotFoundOnMarkAsDelivered = new()
+    {
+        Code = "Packages.MarkAsDelivered.CommunityNotFoundOnMarkAsDelivered",
+        Message = "No existe comunidad consultada."
+    };
 
     public static Error PackageAlreadyDelivered = new()
     {
@@ -57,4 +62,23 @@ public class PackageErrors
         Code = "Packages.MarkAsDelivered.UserNotAuthorizedToRetired",
         Message = "El usuario no es encuentra autorizado para retirar la encomienda."
     };
+
+    public static Error CommunityNotFoundOnGetByUserQuery = new()
+    {
+        Code = "Packages.GetByUserQuery.CommunityNotFoundOnGetByUserQuery",
+        Message = "No existe comunidad consultada."
+    };
+
+    public static Error UserNotExistOnGetByUserQuery = new()
+    {
+        Code = "Packages.GetByUserQuery.UserNotExistOnGetByUserQuery",
+        Message = "No existe Usuario en la comunidad consultada."
+    };
+
+    public static Error CommunityNotFoundOnGetByCommunityQuery = new()
+    {
+        Code = "Packages.CommunityNotFoundOnGetByCommunity.CommunityNotFoundOnGetByCommunityQuery",
+        Message = "No existe comunidad consultada."
+    };
+
 }

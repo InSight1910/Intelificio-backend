@@ -20,6 +20,7 @@ import { ManageEncomiendasComponent } from './core/features/encomiendas/manage/m
 import { MyPackagesComponent } from './core/features/encomiendas/my-packages/my-packages.component';
 import { PrintNotificationComponent} from "./core/features/notification/print-notification/print-notification.component";
 import { GuestComponent } from './core/features/guest/guest.component';
+import {FineComponent} from "./core/features/fine/fine.component";
 import { ManageEgressComponent } from './core/features/expense/manage-egress/manage-egress.component';
 
 export const routes: Routes = [
@@ -122,6 +123,10 @@ export const routes: Routes = [
   {
     path: 'Visitas',
     component: GuestComponent,
+  },
+  {
+    path: 'Multas',
+    component: FineComponent,
   },
   {
     path: 'Egresos',

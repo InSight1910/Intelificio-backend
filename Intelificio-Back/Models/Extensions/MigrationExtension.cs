@@ -79,19 +79,19 @@ namespace Backend.Models.Extensions
                     var municipality = (await context.Municipality.FirstOrDefaultAsync(x => x.Name == "La Florida"))!;
                     var community = new List<Community>
                     {
-                        new Community
-                        {
+                        new() {
                             Address = "Calle 123",
                             Municipality = municipality,
                             Name = "Comunidad 1",
-                            Rut = "123123"
+                            Rut = "123123",
+                            TimeZone = "America/Santiago",
                         },
-                        new Community
-                        {
+                        new() {
                             Address = "Calle 123",
                             Municipality = municipality,
                             Name = "Comunidad 2",
-                            Rut = "123123"
+                            Rut = "123123",
+                            TimeZone = "America/Santiago",
                         }
                 };
 
@@ -106,25 +106,23 @@ namespace Backend.Models.Extensions
                     var community2 = (await context.Community.FirstOrDefaultAsync(x => x.Name == "Comunidad 2"))!;
                     var buildings = new List<Building>
                     {
-                        new Building
-                        {
+                        new() {
                             Community = community1,
                             Name = "Torre 1",
                             Floors = 10
                         },
-                        new Building
-                        {
+                        new() {
                             Community = community1,
                             Name = "Torre 2",
                             Floors = 10
                         },
-                        new Building
+                        new()
                         {
                             Community = community2,
                             Name = "Torre 1",
                             Floors = 10
                         },
-                        new Building
+                        new()
                         {
                             Community = community2,
                             Name = "Torre 2",
@@ -141,15 +139,15 @@ namespace Backend.Models.Extensions
                 {
                     var unitTypes = new List<UnitType>
                     {
-                        new UnitType
+                        new()
                         {
                             Description = "Departamento",
                         },
-                        new UnitType
+                        new()
                         {
                             Description = "Estacionamiento",
                         },
-                        new UnitType
+                        new()
                         {
                             Description = "Bodega",
                         },
@@ -160,6 +158,100 @@ namespace Backend.Models.Extensions
 
                 }
 
+                if (!await context.TemplateNotifications.AnyAsync())
+                {
+                    var templatesNotifications = new List<TemplateNotification>
+                    {
+                        new()
+                        {
+                            Name = "Maintenance",
+                            TemplateId = "d-6293ba8c05364ab3a29067841b94b367",
+                            DynamicTemplateName = "Maintenance"
+                        },
+                        new()
+                        {
+                            Name = "ChangePassword",
+                            TemplateId = "d-54a6a75cd8a94646ab8f31279545a0a4",
+                            DynamicTemplateName = "ChangePassword"
+                        },
+                        new()
+                        {
+                            Name = "Package",
+                            TemplateId = "d-ecd8ab6f1403499ab428f14d2ce8360c",
+                            DynamicTemplateName = "Package"
+                        },
+                        new()
+                        {
+                            Name = "SuccessfulReservation",
+                            TemplateId = "d-35b83e46e8e24cfb9f3b3e95c3fb5e59",
+                            DynamicTemplateName = "SuccessfulReservation"
+                        },
+                        new()
+                        {
+                            Name = "ReservationCancellation",
+                            TemplateId = "d-b4cd5e7c506c4e498fa2f67e93c097e9",
+                            DynamicTemplateName = "ReservationCancellation"
+                        },
+                        new()
+                        {
+                            Name = "GGCC",
+                            TemplateId = "d-78b43c77205546ea808eb34bb8a97cac",
+                            DynamicTemplateName = "GGCC"
+                        },
+                        new()
+                        {
+                            Name = "ComposeEmail",
+                            TemplateId = "d-91a77bfbec4840b39c665af9e8f2b184",
+                            DynamicTemplateName = "SingleInformation"
+                        },
+                        new()
+                        {
+                            Name = "ReservationConfirmation",
+                            TemplateId = "d-4066f3a87f644bc69996ace28bd3d8ea",
+                            DynamicTemplateName = "ReservationConfirmation"
+                        },
+                        new()
+                        {
+                            Name = "MaintenanceCancellation",
+                            TemplateId = "d-26119e7d8959403db4e2c393f3c57a88",
+                            DynamicTemplateName = "MaintenanceCancellation"
+                        },
+                        new()
+                        {
+                            Name = "ConfirmEmail",
+                            TemplateId = "d-9a83e8bc892c42f69785a09aa6b67b69",
+                            DynamicTemplateName = "ConfirmEmail"
+                        },
+                        new()
+                        {
+                            Name = "SingleUserSignUpSummary",
+                            TemplateId = "d-5d7d97b2a91340b1997d26a0dc0f74e9",
+                            DynamicTemplateName = "SingleUserSignUpSummary"
+                        },
+                        new()
+                        {
+                            Name = "MassUserSignUpSummary",
+                            TemplateId = "d-b8082d24fbd44854a3581bfb7b6364ad",
+                            DynamicTemplateName = "MassUserSignUpSummary"
+                        },
+                        new()
+                        {
+                            Name = "PackageDelivered",
+                            TemplateId = "d-b7ba49be78e74fb0855333bc8461b2fb",
+                            DynamicTemplateName = "PackageDelivered"
+                        },
+                        new()
+                        {
+                            Name = "FineNotification",
+                            TemplateId = "d-531cbd0ce2674bb5b9c637e334714708",
+                            DynamicTemplateName = "FineNotification"
+                        }
+                    };
+
+                    context.TemplateNotifications.AddRange(templatesNotifications);
+                    await context.SaveChangesAsync();
+                }
+
                 if (!await context.Units.AnyAsync())
                 {
                     var towers1 = context.Buildings.Where(x => x.Community.Name == "Comunidad 1").ToList();
@@ -168,32 +260,28 @@ namespace Backend.Models.Extensions
 
                     var unidades = new List<Unit>
                     {
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault().ID!,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 1")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,
                             Number = "01",
@@ -201,32 +289,28 @@ namespace Backend.Models.Extensions
                             Surface = 50.1F
                         },
 
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
                             UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
                             UnitTypeId = (await context.UnitTypes.FirstOrDefaultAsync(x => x.Description == "Departamento"))!.ID,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2")!.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault()!.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers1.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault()!.ID,
                             Number = "01",
@@ -238,32 +322,28 @@ namespace Backend.Models.Extensions
 
 
 
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 1") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID,
                             Number = "01",
@@ -271,32 +351,28 @@ namespace Backend.Models.Extensions
                             Surface = 50.1F
                         },
 
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "101",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "102",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Departamento").FirstOrDefault() !.ID,
                             Number = "103",
                             Floor = 1,
                             Surface = 50.1F
                         },
-                        new Unit
-                        {
+                        new() {
                             BuildingId = towers2.FirstOrDefault(x => x.Name == "Torre 2") !.ID,
                             UnitTypeId = unitTypes.Where(x => x.Description == "Estacionamiento").FirstOrDefault() !.ID,
                             Number = "01",

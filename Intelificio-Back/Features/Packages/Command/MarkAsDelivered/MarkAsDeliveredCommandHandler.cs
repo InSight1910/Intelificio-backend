@@ -5,6 +5,7 @@ using Backend.Models;
 using Backend.Models.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TimeZoneConverter;
 
 namespace Backend.Features.Packages.Command;
 
@@ -19,6 +20,8 @@ public class MarkAsDeliveredCommandHandler(IntelificioDbContext context, IMediat
             .Include(x => x.DeliveredTo)
             .Include(x => x.CanRetire)
             .Where(x => x.ID == request.Id).FirstOrDefaultAsync();
+        var community = await context.Community.Where(x => x.ID == request.Id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        if (community is null) return Result.Failure(PackageErrors.CommunityNotFoundOnMarkAsDelivered);
 
         if (!await context.Users.Where(x => x.Id == request.DeliveredToId)
                 .AnyAsync(x => x.Communities.Any(c => c.ID == request.CommunityId)))
@@ -35,8 +38,8 @@ public class MarkAsDeliveredCommandHandler(IntelificioDbContext context, IMediat
             return Result.Failure(PackageErrors.UserNotAuthorizedToRetired);
         package.Status = PackageStatus.DELIVERED;
         package.DeliveredToId = request.DeliveredToId;
-        package.DeliveredDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
-            TimeZoneInfo.FindSystemTimeZoneById("America/Santiago"));
+        package.DeliveredDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZConvert.GetTimeZoneInfo(community.TimeZone));
+
 
         await context.SaveChangesAsync();
 

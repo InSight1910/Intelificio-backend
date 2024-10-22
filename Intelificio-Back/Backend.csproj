@@ -13,50 +13,51 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Migrations\**"/>
-        <Content Remove="Migrations\**"/>
-        <EmbeddedResource Remove="Migrations\**"/>
-        <None Remove="Migrations\**"/>
+        <Compile Remove="Migrations\**" />
+        <Content Remove="Migrations\**" />
+        <EmbeddedResource Remove="Migrations\**" />
+        <None Remove="Migrations\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="13.0.1"/>
-        <PackageReference Include="EPPlus" Version="7.4.0"/>
-        <PackageReference Include="FluentValidation" Version="11.10.0"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0"/>
-        <PackageReference Include="MediatR" Version="12.4.1"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8"/>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="EPPlus" Version="7.4.0" />
+        <PackageReference Include="FluentValidation" Version="11.10.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+        <PackageReference Include="MediatR" Version="12.4.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"
+            Version="8.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0"/>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6"/>
-        <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.5"/>
-        <PackageReference Include="Quartz.AspNetCore" Version="3.13.0"/>
-        <PackageReference Include="SendGrid" Version="9.29.3"/>
-        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets"
+            Version="1.21.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.5" />
+        <PackageReference Include="Quartz.AspNetCore" Version="3.13.0" />
+        <PackageReference Include="SendGrid" Version="9.29.3" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+        <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-
-        <Folder Include="Features\Expense\Command\"/>
-
-        <Folder Include="Features\Reservations\Commands\ResendConfirmReservation\"/>
-        <Folder Include="Features\Attendees\Queries\"/>
-        <Folder Include="Features\CommonSpaces\Common\"/>
-
-        <Folder Include="Features\Users\Queries\"/>
+        <Folder Include="Features\AssignedFines\Queries\GetAssignedFinesByUserId\" />
+        <Folder Include="Features\Expense\Command\" />
+        <Folder Include="Features\Reservations\Commands\ResendConfirmReservation\" />
+        <Folder Include="Features\Attendees\Queries\" />
+        <Folder Include="Features\CommonSpaces\Common\" />
+        <Folder Include="Features\Users\Queries\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -65,7 +66,7 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Features\CommonSpaces\Common\"/>
+        <Folder Include="Features\CommonSpaces\Common\" />
     </ItemGroup>
 
 </Project>

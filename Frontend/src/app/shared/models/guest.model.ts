@@ -18,6 +18,7 @@ export interface CreateGuest {
     entryTime: string;
     plate: string;
     unitId: number;
+    communityID?: number;
     }
 
 export interface UpdateGuest {
@@ -28,5 +29,5 @@ export interface UpdateGuest {
     entryTime: Date;
     plate: string;
     unitId: number;
-    } 
+    }
 
