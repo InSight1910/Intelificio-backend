@@ -13,6 +13,6 @@ namespace Backend.Features.Unit.Commands.Create
         public float Surface { get; set; }
         public int UnitTypeId { get; set; }
         public int? BuildingId { get; set; }
-
+        public int? UserId { get; set; }
     }
 }

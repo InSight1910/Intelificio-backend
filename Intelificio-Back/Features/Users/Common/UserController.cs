@@ -1,4 +1,5 @@
 using Backend.Common.Response;
+using Backend.Features.Users.Queries.GetAllByCommunity;
 using Backend.Features.Users.Queries.GetByRut;
 using Backend.Features.Users.Queries.GetConcierges;
 using MediatR;
@@ -35,5 +36,15 @@ public class UserController(IMediator mediator) : ControllerBase
         return result.Match(
             user => Ok(user),
             error => BadRequest(error));
+    }
+
+    [HttpGet("GetAllByCommunity/{communityId}")]
+    public async Task<IActionResult> GetAllByCommunity(int communityId)
+    {
+        var query = new GetAllByCommunityUsersQuery { CommunityId = communityId };
+        var buildings = await mediator.Send(query);
+        return buildings.Match(
+            onSuccess: (response) => Ok(response),
+            onFailure: BadRequest);
     }
 }

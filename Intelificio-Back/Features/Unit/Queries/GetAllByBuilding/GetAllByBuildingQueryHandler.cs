@@ -21,6 +21,8 @@ public class GetAllByBuildingQueryHandler : IRequestHandler<GetAllByBuildingQuer
     {
         var units = await _context.Units
             .Include(x => x.Building)
+            .Include(x => x.Users)
+            //.Include(x => x.User)  // Incluye el usuario principal
             .Where(x => x.Building.ID == request.BuildingId)
             .Select(x => new GetAllByBuildingQueryResponse
             {
@@ -29,7 +31,10 @@ public class GetAllByBuildingQueryHandler : IRequestHandler<GetAllByBuildingQuer
                 UnitType = x.UnitType.Description,
                 Building = x.Building.Name,
                 Floor = x.Floor,
-                Surface = x.Surface
+                Surface = x.Surface,
+                User = x.Users
+                        .Select(user => $"{user.FirstName} {user.LastName}")
+                        .FirstOrDefault() ?? "Sin Asignar"
             })
             .ToListAsync();
 

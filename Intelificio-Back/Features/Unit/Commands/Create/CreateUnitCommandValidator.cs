@@ -23,6 +23,10 @@ namespace Backend.Features.Unit.Commands.Create
                 .GreaterThanOrEqualTo(1)
                 .NotNull()
                 .NotEmpty();
+            _ = RuleFor(x => x.UserId)
+                .GreaterThanOrEqualTo(1)
+                .NotNull()
+                .NotEmpty();
         }
     }
 }

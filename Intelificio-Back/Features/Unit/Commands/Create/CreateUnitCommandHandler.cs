@@ -39,8 +39,17 @@ namespace Backend.Features.Unit.Commands.Create
             var newUnit = _mapper.Map<Models.Unit>(request);
 
             newUnit.Building = checkBuilding;
-
             newUnit.UnitType = checkUnitType;
+
+            if (request.UserId.HasValue)
+            {
+                var user = await _context.Users.FindAsync(request.UserId.Value);
+                if (user == null)
+                {
+                    return Result.Failure("Usuario no encontrado");
+                }
+                newUnit.Users.Add(user);  // Asigna el usuario principal
+            }
 
             _ = await _context.Units.AddAsync(newUnit);
             _ = await _context.SaveChangesAsync();
