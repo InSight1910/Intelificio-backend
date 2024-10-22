@@ -51,5 +51,9 @@ namespace Backend.Features.AssignedFines.Common
         public static readonly Error AssignedFineNotFoundOnGetAssignedFinesByUnitIdQuery = new(
             "AssignedFines.GetAssignedFinesByUnitIdQuery.AssignedFineNotFoundOnGetAssignedFinesByUnitIdQuery",
             "La multa asignada consultada no existe en sistema.");
+
+        public static readonly Error CommunityNotFoundOnGetAllAssignedFinesByCommunity = new(
+            "AssignedFines.GetAllAssignedFinesByCommunity.CommunityNotFoundOnGetAllAssignedFinesByCommunity",
+            "La comunidad no existe en sistema.");
     }
 }
