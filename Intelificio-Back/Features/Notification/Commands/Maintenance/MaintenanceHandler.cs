@@ -32,7 +32,7 @@ namespace Backend.Features.Notification.Commands.Maintenance
                 .Where(c => c.ID == request.CommunityID)
                 .Select(c => new
                 {
-                    CommunityName = c.Name,
+                    CommunityName = c.Name ?? "",
                     SenderAddress = $"{c.Address}, {c.Municipality.Name}",
                     CommonSpaceName = commonSpace.Name,
                     Recipients = c.Users
@@ -40,6 +40,7 @@ namespace Backend.Features.Notification.Commands.Maintenance
                         .ToList()
                 })
                 .FirstOrDefaultAsync(cancellationToken);
+            if (communityData is null) return Result.Failure(NotificationErrors.CommunityDataIsNull);
 
             var existeMaintenance = await _context.Maintenances.Where(x => x.CommonSpaceID == commonSpace.ID && x.IsActive).FirstOrDefaultAsync(cancellationToken);
 

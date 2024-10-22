@@ -17,7 +17,7 @@ namespace Backend.Features.AssignedFines.Commands.Delete
             if (assignedFine is null) return Result.Failure(AssignedFinesErrors.AssignedFineNotFoundOnDeleteAssignedFines);
 
             _ = _context.AssignedFines.Remove(assignedFine);
-            _ = await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             return Result.Success();
 
         }

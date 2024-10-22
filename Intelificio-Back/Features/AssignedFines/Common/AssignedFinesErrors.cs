@@ -39,5 +39,17 @@ namespace Backend.Features.AssignedFines.Common
         public static readonly Error AssignedFineNotFoundOnDeleteAssignedFines = new(
             "AssignedFines.DeleteAssignedFines.AssignedFineNotFoundOnDeleteAssignedFines",
             "La multa asignada consultada no existe en sistema.");
+
+        public static readonly Error AssignedFineNotFoundOnGetAssignedfinesByIdQuery = new(
+            "AssignedFines.GetAssignedfinesByIdQuery.AssignedFineNotFoundOnGetAssignedfinesByIdQuery",
+            "La multa asignada consultada no existe en sistema.");
+
+        public static readonly Error AssignedFineNotFoundOnGetAssignedFinesByUserIdQuery = new(
+            "AssignedFines.GetAssignedFinesByUserIdQuery.AssignedFineNotFoundOnGetAssignedFinesByUserIdQuery",
+            "La multa asignada consultada no existe en sistema.");
+
+        public static readonly Error AssignedFineNotFoundOnGetAssignedFinesByUnitIdQuery = new(
+            "AssignedFines.GetAssignedFinesByUnitIdQuery.AssignedFineNotFoundOnGetAssignedFinesByUnitIdQuery",
+            "La multa asignada consultada no existe en sistema.");
     }
 }

@@ -9,19 +9,11 @@ using System.Collections.Generic;
 
 namespace Backend.Features.Notification.Commands.CommonExpenses
 {
-    public class CommonExpenseHandler : IRequestHandler<CommonExpenseCommand ,Result>
+    public class CommonExpenseHandler(IntelificioDbContext context, ILogger<CommonExpenseHandler> logger, SendMail sendMail) : IRequestHandler<CommonExpenseCommand ,Result>
     {
-        private readonly SendMail _sendMail;
-        private readonly IntelificioDbContext _context;
-        private readonly ILogger<CommonExpenseHandler> _logger;
-
-
-        public CommonExpenseHandler(IntelificioDbContext context, ILogger<CommonExpenseHandler> logger, SendMail sendMail)
-        {
-            _sendMail = sendMail;
-            _context = context;
-            _logger = logger;
-        }
+        private readonly SendMail _sendMail = sendMail;
+        private readonly IntelificioDbContext _context = context;
+        private readonly ILogger<CommonExpenseHandler> _logger = logger;
 
         public async Task<Result> Handle(CommonExpenseCommand request, CancellationToken cancellationToken)
         {

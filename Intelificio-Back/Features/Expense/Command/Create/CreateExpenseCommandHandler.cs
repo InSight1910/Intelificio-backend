@@ -22,7 +22,7 @@ public class CreateExpenseCommandHandler(IntelificioDbContext context, IMapper m
         if (!await context.Expense.AnyAsync(x =>
                 string.Equals(x.Invoice, request.Invoice, StringComparison.OrdinalIgnoreCase)))
             return Result.Failure(ExpenseErrors.InvoiceAlreadyExistOnCreate());
-        var expense = mapper.Map<Expense>(request);
+        var expense = mapper.Map<Models.Expense>(request);
         await context.Expense.AddAsync(expense, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 

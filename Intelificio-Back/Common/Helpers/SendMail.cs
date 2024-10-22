@@ -1,6 +1,7 @@
 ﻿
 using Backend.Features.Notification.Commands.CommonExpenses;
 using Backend.Features.Notification.Commands.ConfirmEmail;
+using Backend.Features.Notification.Commands.FineNotification;
 using Backend.Features.Notification.Commands.Maintenance;
 using Backend.Features.Notification.Commands.MaintenanceCancellation;
 using Backend.Features.Notification.Commands.MassUserConfirmationEmail;
@@ -258,6 +259,20 @@ namespace Backend.Common.Helpers
                     msg.SetTemplateData(templates[i], i);
                 }
             }
+
+            var response = await _client.SendEmailAsync(msg);
+            return response;
+
+        }
+
+
+        public async Task<SendGrid.Response> SendFineNotificationToMultipleRecipients(EmailAddress from, EmailAddress to, string templateID,object template)
+        {
+            var msg = new SendGridMessage();
+            msg.SetFrom(from);
+            msg.AddTo(to);
+            msg.SetTemplateId(templateID);
+            msg.SetTemplateData(template);
 
             var response = await _client.SendEmailAsync(msg);
             return response;

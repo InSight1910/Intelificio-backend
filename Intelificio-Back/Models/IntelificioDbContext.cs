@@ -106,8 +106,7 @@ public class IntelificioDbContext(DbContextOptions options) : IdentityDbContext<
                 .WithOne(p => p.Community);
 
             _ = entity.HasMany(p => p.Users)
-                    .WithMany(p => p.Communities)
-                ;
+                    .WithMany(p => p.Communities);
 
             _ = entity.HasMany(p => p.AssignedShifts)
                 .WithMany(p => p.Communities);

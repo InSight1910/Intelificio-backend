@@ -51,7 +51,7 @@ public class GetAllByUserQueryHandler : IRequestHandler<GetAllByUserQuery, Resul
                         .Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == adminRoleId))
                         .Select(u => u.ToString())
                         .FirstOrDefault() ?? "Sin Administrador"
-                }).ToListAsync();
+                }).ToListAsync(cancellationToken);
 
 
             return Result.WithResponse(new ResponseData()
@@ -62,7 +62,7 @@ public class GetAllByUserQueryHandler : IRequestHandler<GetAllByUserQuery, Resul
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error al obtener las comunidades del usuario");
-            return Result.Failure(null);
+            return Result.Failure("Problemas");
         }
     }
 }
