@@ -50,6 +50,10 @@
 
     <ItemGroup>
 
+        <Folder Include="Features\AssignedFines\Queries\GetAssignedFinesByUserId\" />
+
+        <Folder Include="Features\AssignedFines\Queries\GetAssignedFinesByUnitId\" />
+
         <Folder Include="Features\Reservations\Commands\ResendConfirmReservation\" />
         <Folder Include="Features\Attendees\Queries\" />
         <Folder Include="Features\CommonSpaces\Common\" />

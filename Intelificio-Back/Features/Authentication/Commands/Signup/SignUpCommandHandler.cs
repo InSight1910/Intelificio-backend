@@ -21,14 +21,14 @@ namespace Backend.Features.Authentication.Commands.Signup
 
             if (request.User != null)
             {
-                var result = await DoSignUp(request.User, request.CreatorID, request.CommunityID, request.IsMassive);
+                var result = await DoSignUp(request.User, request.CommunityID, request.IsMassive);
                 results.Add(result);
             }
             else if (request.Users != null)
             {
                 foreach (var user in request.Users)
                 {
-                    var result = await DoSignUp(user, request.CreatorID, request.CommunityID, request.IsMassive);
+                    var result = await DoSignUp(user, request.CommunityID, request.IsMassive);
                     results.Add(result);
                 }
             }
@@ -37,7 +37,7 @@ namespace Backend.Features.Authentication.Commands.Signup
         }
     
 
-        private async Task<Result> DoSignUp(UserObject request,int creatorID, int CommunityID, Boolean IsMassive)
+        private async Task<Result> DoSignUp(UserObject request, int CommunityID, Boolean IsMassive)
         {
             var userExist = await userManager.FindByEmailAsync(request.Email);
 

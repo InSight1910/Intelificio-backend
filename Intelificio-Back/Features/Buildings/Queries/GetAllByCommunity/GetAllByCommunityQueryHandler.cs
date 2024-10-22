@@ -7,20 +7,14 @@ using System.Diagnostics.Metrics;
 
 namespace Backend.Features.Buildings.Queries.GetAllByCommunity
 {
-    public class GetAllByCommunityQueryHandler : IRequestHandler<GetAllByCommunityQuery, Result>
+    public class GetAllByCommunityQueryHandler(IntelificioDbContext context, ILogger<GetAllByCommunityQueryHandler> logger) : IRequestHandler<GetAllByCommunityQuery, Result>
     {
-        private readonly IntelificioDbContext _context;
-        private readonly ILogger<GetAllByCommunityQueryHandler> _logger;
-
-        public GetAllByCommunityQueryHandler(IntelificioDbContext context, ILogger<GetAllByCommunityQueryHandler> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly IntelificioDbContext _context = context;
+        private readonly ILogger<GetAllByCommunityQueryHandler> _logger = logger;
 
         public async Task<Result> Handle(GetAllByCommunityQuery request, CancellationToken cancellationToken)
         {
-            var checkCommunity = await _context.Community.AnyAsync(x => x.ID == request.CommunityId);
+            var checkCommunity = await _context.Community.AnyAsync(x => x.ID == request.CommunityId, cancellationToken);
 
             if (!checkCommunity) return Result.Failure(BuildingErrors.CommunityNotFoundOnQuery);
             var buildings = await _context.Buildings

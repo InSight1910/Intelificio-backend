@@ -11,6 +11,8 @@ namespace Backend.Models
         public required FineDenomination Status { get; set; }
         public required Community Community { get; set; }
         public  int CommunityId { get; set; }
+        public ICollection<AssignedFine> AssignedFines { get; set; } = [];
+
 
     }
 }

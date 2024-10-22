@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Models;
 
-public class IntelificioDbContext : IdentityDbContext<User, Role, int>
+public class IntelificioDbContext(DbContextOptions options) : IdentityDbContext<User, Role, int>(options)
 {
-    public IntelificioDbContext(DbContextOptions options) : base(options)
-    {
-    }
-
+    public DbSet<AssignedFine> AssignedFines { get; set; }
     public DbSet<AssignedShift> AssignedShifts { get; set; }
 
     public DbSet<Attendance> Attendances { get; set; }
@@ -195,6 +192,9 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
 
             _ = entity.HasMany(p => p.Guests)
                 .WithOne(p => p.Unit);
+
+            _ = entity.HasMany(p => p.AssignedFines)
+                    .WithOne(p => p.Unit);
         });
 
         _ = builder.Entity<User>(entity =>
@@ -215,6 +215,16 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
                 .WithOne(p => p.User);
         });
 
+        _ = builder.Entity<AssignedFine>(entity =>
+        {
+            _ = entity.HasKey(p => p.ID);
+
+            _ = entity.HasOne(p => p.Fine)
+                .WithMany(p => p.AssignedFines);
+            _ = entity.HasOne(p => p.Unit)
+                .WithMany(p => p.AssignedFines);
+        });
+
 
         _ = builder.Entity<AssignedShift>(entity =>
         {
@@ -225,6 +235,7 @@ public class IntelificioDbContext : IdentityDbContext<User, Role, int>
             _ = entity.HasMany(p => p.Users)
                 .WithMany(p => p.AssignedShifts);
         });
+
 
         _ = builder.Entity<Shift>(entity =>
         {

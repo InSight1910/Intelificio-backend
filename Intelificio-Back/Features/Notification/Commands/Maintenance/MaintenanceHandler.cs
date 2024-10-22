@@ -10,31 +10,21 @@ using SendGrid.Helpers.Mail;
 
 namespace Backend.Features.Notification.Commands.Maintenance
 {
-    public class MaintenanceHandler : IRequestHandler<MaintenanceCommand, Result>
+    public class MaintenanceHandler(IntelificioDbContext context, ILogger<MaintenanceHandler> logger, IMapper mapper, SendMail sendMail) : IRequestHandler<MaintenanceCommand, Result>
     {
-        private readonly SendMail _sendMail;
-        private readonly IntelificioDbContext _context;
-        private readonly ILogger<MaintenanceHandler> _logger;
-        private readonly IMapper _mapper;
-
-        public MaintenanceHandler(IntelificioDbContext context, ILogger<MaintenanceHandler> logger, IMapper mapper, SendMail sendMail)
-        {
-            _sendMail = sendMail;
-            _context = context;
-            _logger = logger;
-            _mapper = mapper;
-        }
+        private readonly SendMail _sendMail = sendMail;
+        private readonly IntelificioDbContext _context = context;
+        private readonly ILogger<MaintenanceHandler> _logger = logger;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<Result> Handle(MaintenanceCommand request, CancellationToken cancellationToken)
         {
-
-
 
             DateTime startDate = DateTime.ParseExact(request.StartDate, "yyyy-MM-dd", null);
             DateTime endDate = DateTime.ParseExact(request.EndDate, "yyyy-MM-dd", null);
 
 
-            var commonSpace = await _context.CommonSpaces.Where(c => c.CommunityId == request.CommunityID).FirstOrDefaultAsync(c => c.ID == request.CommonSpaceID);
+            var commonSpace = await _context.CommonSpaces.Where(c => c.CommunityId == request.CommunityID).FirstOrDefaultAsync(c => c.ID == request.CommonSpaceID, cancellationToken);
             if (commonSpace == null) return Result.Failure(NotificationErrors.CommonSpaceNotFound);
 
             var communityData = await _context.Community
@@ -49,9 +39,9 @@ namespace Backend.Features.Notification.Commands.Maintenance
                         .Select(user => new EmailAddress(user.Email, $"{user.FirstName} {user.LastName}"))
                         .ToList()
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
-            var existeMaintenance = await _context.Maintenances.Where(x => x.CommonSpaceID == commonSpace.ID && x.IsActive).FirstOrDefaultAsync();
+            var existeMaintenance = await _context.Maintenances.Where(x => x.CommonSpaceID == commonSpace.ID && x.IsActive).FirstOrDefaultAsync(cancellationToken);
 
             if (request.IsInMaintenance && existeMaintenance != null && 
                 existeMaintenance.StartDate == startDate && 
@@ -76,7 +66,7 @@ namespace Backend.Features.Notification.Commands.Maintenance
                     IsActive = true,
                     CommunityID = request.CommunityID,
                 };
-                _ = await _context.Maintenances.AddAsync(newMaintenance);
+                _ = await _context.Maintenances.AddAsync(newMaintenance, cancellationToken);
             }
 
             await _context.SaveChangesAsync(cancellationToken);
@@ -90,8 +80,8 @@ namespace Backend.Features.Notification.Commands.Maintenance
 
             var templates = new List<MaintenanceTemplate>();
 
-            string[] diasSemana = { "domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado" };
-            string[] meses = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre" };
+            string[] diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+            string[] meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
             string dayOfWeekSpanish = diasSemana[(int)startDate.DayOfWeek];
             string monthSpanish = meses[startDate.Month - 1];
