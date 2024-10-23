@@ -53,6 +53,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<PackagesProfile>();
     cfg.AddProfile<GuestProfile>();
     cfg.AddProfile<FineProfile>();
+    cfg.AddProfile<AssignedFinesProfile>();
 });
 
 builder.Services.AddIdentity<User, Role>(cfg =>

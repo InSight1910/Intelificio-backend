@@ -369,5 +369,17 @@ namespace Backend.Features.Notification.Common
             "Notification.FineNotification.EmailNotsendOnFineNotification",
             "No se logró enviar la notificacíón de Multa");
 
+        public static readonly Error NoOwnersFoundOnFineNotification = new(
+            "Notification.FineNotification.NoOwnersFoundOnFineNotification",
+            "No encontraron Propietarios a los que notificar.");
+
+        public static readonly Error TemplatesIsNullOrEmptyOnFineNotification = new(
+            "Notification.FineNotification.TemplatesIsNullOrEmptyOnFineNotification",
+            "No se puede enviar con templates vacios.");
+
+        public static readonly Error RecipientsIsNullOrEmptyOnFineNotification = new(
+            "Notification.FineNotification.RecipientsIsNullOrEmptyOnFineNotification",
+            "No existen destinatarios para enviar la notificación.");
+
     }
 }

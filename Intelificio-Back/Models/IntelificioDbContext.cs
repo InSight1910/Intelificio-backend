@@ -196,9 +196,11 @@ public class IntelificioDbContext(DbContextOptions options) : IdentityDbContext<
             _ = entity.HasKey(p => p.ID);
 
             _ = entity.HasOne(p => p.Fine)
-                .WithMany(p => p.AssignedFines);
+                .WithMany(p => p.AssignedFines)
+                .HasForeignKey(p => p.FineId);
             _ = entity.HasOne(p => p.Unit)
-                .WithMany(p => p.AssignedFines);
+                .WithMany(p => p.AssignedFines)
+                .HasForeignKey(p => p.UnitId);
         });
 
 

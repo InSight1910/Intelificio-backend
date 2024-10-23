@@ -2,6 +2,7 @@
 using Backend.Common.Response;
 using Backend.Features.Fine.Common;
 using Backend.Models;
+using Backend.Models.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,16 +29,34 @@ namespace Backend.Features.Fine.Commands.Update
                 fine.CommunityId = updateCommunity.ID;
                 _ = _context.Fine.Update(fine);
                 _ = await _context.SaveChangesAsync(cancellationToken);
-                var responseCommunityUpdated = _mapper.Map<UpdateFineResponse>(fine);
+                var responseCommunityUpdated = new UpdateFineResponse
+                {
+                    FineId = fine.ID,
+                    Name = fine.Name,
+                    Amount = fine.Amount,
+                    Status = fine.Status,
+                    CommunityId = fine.CommunityId
+                };
 
                 return Result.WithResponse(
                 new ResponseData { Data = responseCommunityUpdated });
             }
 
+            if (!Enum.IsDefined(typeof(FineDenomination), request.Status))
+            {
+                return Result.Failure(FineErrors.InvalidFineDenominationOnUpdateFine);
+            }
+
             fine = _mapper.Map(request, fine);
             _ = _context.Fine.Update(fine);
             _ = await _context.SaveChangesAsync(cancellationToken);
-            var response = _mapper.Map<UpdateFineResponse>(fine);
+            var response = new UpdateFineResponse{
+                FineId = fine.ID,
+                Name = fine.Name,
+                Amount = fine.Amount,
+                Status = fine.Status,
+                CommunityId = fine.CommunityId
+                };
 
             return Result.WithResponse(
             new ResponseData { Data = response });

@@ -265,14 +265,24 @@ namespace Backend.Common.Helpers
 
         }
 
-
-        public async Task<SendGrid.Response> SendFineNotificationToMultipleRecipients(EmailAddress from, EmailAddress to, string templateID,object template)
+        public async Task<SendGrid.Response> SendFineNotificationToMultipleRecipients(EmailAddress from, List<EmailAddress> recipients, string templateId, List<FineNotificationTemplate> templates)
         {
+
             var msg = new SendGridMessage();
             msg.SetFrom(from);
-            msg.AddTo(to);
-            msg.SetTemplateId(templateID);
-            msg.SetTemplateData(template);
+            msg.TemplateId = templateId;
+
+            var setDynamicTemplateDataValues = templates != null;
+
+            for (var i = 0; i < recipients.Count; i++)
+            {
+                msg.AddTo(recipients[i], i);
+
+                if (setDynamicTemplateDataValues && templates != null && i < templates.Count)
+                {
+                    msg.SetTemplateData(templates[i], i);
+                }
+            }
 
             var response = await _client.SendEmailAsync(msg);
             return response;

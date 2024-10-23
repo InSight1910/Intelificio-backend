@@ -24,6 +24,10 @@ namespace Backend.Features.AssignedFines.Common
             "AssignedFines.CreateAssignedFines.EmailAssignedFineNotSend",
             "No se logró enviar la notificación de multa.");
 
+        public static readonly Error NoOwnersFoundOnCreateAssignedFines = new(
+            "Notification.CreateAssignedFines.NoOwnersFoundOnCreateAssignedFines",
+            "No fue posible asignar la multa, no encontraron Propietarios a los que se pueda notificar.");
+
         public static readonly Error AssignedFineNotFoundOnUpdateAssignedFines = new(
             "AssignedFines.UpdateAssignedFines.AssignedFineNotFoundOnUpdateAssignedFines",
             "La multa asignada consultada no existe en sistema.");
@@ -48,12 +52,22 @@ namespace Backend.Features.AssignedFines.Common
             "AssignedFines.GetAssignedFinesByUserIdQuery.AssignedFineNotFoundOnGetAssignedFinesByUserIdQuery",
             "La multa asignada consultada no existe en sistema.");
 
+        public static readonly Error UserNotFoundOnGetAssignedFinesByUserId = new(
+            "AssignedFines.GetAssignedFinesByUserId.UserNotFoundOnGetAssignedFinesByUserId",
+            "No existe usuario consultado, no fue posible obtener las multas.");
+
         public static readonly Error AssignedFineNotFoundOnGetAssignedFinesByUnitIdQuery = new(
             "AssignedFines.GetAssignedFinesByUnitIdQuery.AssignedFineNotFoundOnGetAssignedFinesByUnitIdQuery",
             "La multa asignada consultada no existe en sistema.");
 
+        public static readonly Error UnitNotFoundOnGetAssignedfinesByUnitId = new(
+            "AssignedFines.GetAssignedfinesByUnitId.UnitNotFoundOnGetAssignedfinesByUnitId",
+            "La unidad no existe, no fue posible obtener las multas.");
+
         public static readonly Error CommunityNotFoundOnGetAllAssignedFinesByCommunity = new(
             "AssignedFines.GetAllAssignedFinesByCommunity.CommunityNotFoundOnGetAllAssignedFinesByCommunity",
             "La comunidad no existe en sistema.");
+
+      
     }
 }

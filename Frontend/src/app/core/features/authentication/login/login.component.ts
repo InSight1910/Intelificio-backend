@@ -70,10 +70,8 @@ export class LoginComponent implements  OnInit {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
       if (!email || email.trim() === '') {
-        return { required: true }; // El correo está vacío
+        return { required: true };
       }
-
-      // Valida el formato del correo
       return emailRegex.test(email) ? null : { invalidEmail: true };
     };
   }

@@ -5,6 +5,7 @@ using Backend.Features.AssignedFines.Queries.GetAllAssignedFinesByCommunity;
 using Backend.Features.AssignedFines.Queries.GetAssignedFinesById;
 using Backend.Features.AssignedFines.Queries.GetAssignedFinesByUnitId;
 using Backend.Features.AssignedFines.Queries.GetAssignedFinesByUserId;
+using Backend.Features.Community.Commands.Create;
 using Backend.Models;
 
 namespace Backend.Common.Profiles
@@ -19,6 +20,9 @@ namespace Backend.Common.Profiles
             _ = CreateMap<AssignedFine, GetAssignedFinesByUnitIdQuery>();
             _ = CreateMap<AssignedFine, GetAssignedFinesByUserIdQuery>();
             _ = CreateMap<AssignedFine, GetAllAssignedFinesByCommunityIdQuery>();
+            _ = CreateMap<GetAssignedFinesByIdQueryResponse, AssignedFine>();
+            _ = CreateMap<AssignedFine, UpdateAssignedFinesResponse>();
+
         }
     }
 }

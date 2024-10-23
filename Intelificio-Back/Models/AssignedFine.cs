@@ -4,13 +4,13 @@ namespace Backend.Models
 {
     public class AssignedFine : BaseEntity
     {
-        public int FineId { get; set; }
+        public required int FineId { get; set; }
 
-        public required Fine Fine { get; set; }
+        public  Fine Fine { get; set; }
 
-        public int UnitId { get; set; }
+        public required int UnitId { get; set; }
 
-        public required Unit Unit { get; set; }
+        public  Unit Unit { get; set; }
 
         public DateTime EventDate { get; set; }
 

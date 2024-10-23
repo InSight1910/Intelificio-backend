@@ -25,7 +25,7 @@ namespace Backend.Features.Notification.Commands.Reservation.SuccessfulReservati
 
         public async Task<Result> Handle(SuccessfulReservationCommand request, CancellationToken cancellationToken)
         {
-            var reservation = await _context.Reservations.AnyAsync(x => x.ID == request.ReservationID);
+            var reservation = await _context.Reservations.AnyAsync(x => x.ID == request.ReservationID, cancellationToken);
             if (!reservation) return Result.Failure(NotificationErrors.ReservationNotFound);
 
             var reservationData = await _context.Reservations

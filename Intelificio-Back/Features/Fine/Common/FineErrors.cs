@@ -28,6 +28,10 @@ namespace Backend.Features.Fine.Common
             "Fine.UpdateFine.CommunityNotFoundOnUpdateFine",
             "La comunidad consultada no existe en sistema.");
 
+        public static readonly Error InvalidFineDenominationOnUpdateFine = new(
+            "Fine.UpdateFine.InvalidFineDenominationOnUpdateFine",
+            "La denominación indicada no existe.");
+
         public static readonly Error CommunityNotFoundOnGetAllFinesByCommunityQuery = new(
             "Fine.GetAllFinesByCommunityQuery.CommunityNotFoundOnGetAllFinesByCommunityQuery",
             "La comunidad consultada no existe en sistema.");

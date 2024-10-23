@@ -4,7 +4,9 @@ using Backend.Features.AssignedFines.Common;
 using Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Text.Json.Serialization;
+using TimeZoneConverter;
 
 namespace Backend.Features.AssignedFines.Queries.GetAllAssignedFinesByCommunity
 {
@@ -21,17 +23,29 @@ namespace Backend.Features.AssignedFines.Queries.GetAllAssignedFinesByCommunity
             if (!checkCommunity) return Result.Failure(AssignedFinesErrors.CommunityNotFoundOnGetAllAssignedFinesByCommunity);
 
             var AssignedFines = await _context.AssignedFines
-            .Include(x => x.Unit)
-            .ThenInclude(x => x.Building)
-            .ThenInclude(x => x.Community)
-            .Where(x => x.Unit.Building.Community.ID == request.CommunityId)
-            .ToListAsync(cancellationToken);
-
-            var response = _mapper.Map<GetAllAssignedFinesByCommunityIdQueryResponse>(AssignedFines);
+                .Include(x => x.Unit)
+                .ThenInclude(x => x.Building)
+                .Include(x => x.Fine)
+                .ThenInclude(x => x.Community)
+                .Where(x => x.Unit.Building.Community.ID == request.CommunityId)
+                .Select(x => new GetAllAssignedFinesByCommunityIdQueryResponse
+                {
+                    AssignedFineID = x.ID,
+                    FineId = x.FineId,
+                    UnitId = x.UnitId,
+                    UnitNumber = x.Unit.Number,
+                    UnitFloor = x.Unit.Floor,
+                    UnitBuildingName = x.Unit.Building.Name,
+                    EventDate = TimeZoneInfo.ConvertTimeFromUtc(x.EventDate, TZConvert.GetTimeZoneInfo(x.Fine.Community.TimeZone)).ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture),
+                    Comment = x.Comment,
+                    Fineamount = x.Fine.Amount,
+                    FineName = x.Fine.Name,
+                    FineStatus = x.Fine.Status,
+                }).ToListAsync(cancellationToken);
 
             return Result.WithResponse(new ResponseData()
             {
-                Data = response
+                Data = AssignedFines
             });
         }
 

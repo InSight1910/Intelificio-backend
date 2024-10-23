@@ -13,6 +13,8 @@ namespace Backend.Common.Profiles
         {
             _ = CreateMap<CreateFineCommand, Fine>();
             _ = CreateMap<UpdateFineCommand, Fine>();
+            _ = CreateMap<UpdateFineResponse, Fine>();
+            _ = CreateMap<Fine, GetFineByIdQueryResponse>();
             _ = CreateMap<Fine, GetAllFinesByCommunityQuery>();
             _ = CreateMap<Fine, GetFineByIdQuery>();
         }

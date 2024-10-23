@@ -55,7 +55,6 @@ namespace Backend.Features.Notification.Commands.ConfirmEmailTwo
                     continue;
                 }
 
-                // aquí le agregue el ConfigureAwait(false);
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(userEmail);
 
                 templates.Add(new MassUserConfirmationEmailTemplate

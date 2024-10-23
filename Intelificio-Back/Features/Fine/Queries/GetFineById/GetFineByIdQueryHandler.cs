@@ -19,6 +19,7 @@ namespace Backend.Features.Fine.Queries.GetFineById
             if (fine is null) return Result.Failure(FineErrors.FineNotFoundOnGetFineById);
 
             var response = _mapper.Map<GetFineByIdQueryResponse>(fine);
+            response.FineId = request.FineId;
 
             return Result.WithResponse(new ResponseData()
             {
