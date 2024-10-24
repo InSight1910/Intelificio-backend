@@ -63,7 +63,7 @@
                 <span class="icon mr-1">
                   <i class="fas fa-pencil-alt"></i>
                 </span>
-                    Editar
+                    Modificar
                   </button>
                 </td>
               </tr>
@@ -76,7 +76,7 @@
  @if(isModalOpen){
   <app-add-contact [CommunityID]="this.CommunityID" (close)="onClickCloseAdd()">
   </app-add-contact>
-} @if(isEditModalOpen){
+} @else if(isEditModalOpen){
   <app-edit-contact
     [ContactEdited]="this.contactToEdit"
     (close)="onClickCloseEdit()"

@@ -31,7 +31,7 @@ namespace Backend.Features.AssignedFines.Queries.GetAssignedFinesById
                     UnitBuildingName = x.Unit.Building.Name,
                     EventDate = TimeZoneInfo.ConvertTimeFromUtc(x.EventDate, TZConvert.GetTimeZoneInfo(x.Fine.Community.TimeZone)).ToString("dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture),
                     Comment = x.Comment,
-                    Fineamount = x.Fine.Amount,
+                    FineAmount = x.Fine.Amount,
                     FineName = x.Fine.Name,
                     FineStatus = x.Fine.Status,
                 }).FirstOrDefaultAsync(cancellationToken);

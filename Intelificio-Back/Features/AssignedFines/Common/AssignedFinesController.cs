@@ -43,7 +43,7 @@ namespace Backend.Features.AssignedFines.Common
                 onFailure: BadRequest);
         }
 
-        [HttpGet("GetById/{Id}")]
+        [HttpGet("{Id}")]
         public async Task<IActionResult> GetAssignedFinesById(int Id)
         {
             var assignedFine = await mediator.Send(new GetAssignedFinesByIdQuery { AssignedFineId = Id });
@@ -52,7 +52,7 @@ namespace Backend.Features.AssignedFines.Common
                 onFailure: NotFound);
         }
 
-        [HttpGet("GetByUnitId/{Id}")]
+        [HttpGet("GetByUnit/{Id}")]
         public async Task<IActionResult> GetAssignedFinesByUnitId(int Id)
         {
             var assignedFine = await mediator.Send(new GetAssignedFinesByUnitIdQuery { UnitId = Id });
@@ -61,7 +61,7 @@ namespace Backend.Features.AssignedFines.Common
                 onFailure: NotFound);
         }
 
-        [HttpGet("GetByUserId/{Id}")]
+        [HttpGet("GetByUser/{Id}")]
         public async Task<IActionResult> GetAssignedFinesByUserId(int Id)
         {
             var assignedFine = await mediator.Send(new GetAssignedFinesByUserIdQuery { UserId = Id });
@@ -70,7 +70,7 @@ namespace Backend.Features.AssignedFines.Common
                 onFailure: NotFound);
         }
 
-        [HttpGet("GetByCommunityId/{Id}")]
+        [HttpGet("GetByCommunity/{Id}")]
         public async Task<IActionResult> GetAllAssignedFinesByCommunityId(int Id)
         {
             var assignedFines = await mediator.Send(new GetAllAssignedFinesByCommunityIdQuery { CommunityId = Id });

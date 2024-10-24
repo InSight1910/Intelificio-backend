@@ -7,7 +7,7 @@ namespace Backend.Features.AssignedFines.Queries.GetAllAssignedFinesByCommunity
         public required int AssignedFineID { get; set; }
         public required int FineId { get; set; }
         public required string FineName { get; set; }
-        public required decimal Fineamount { get; set; }
+        public required decimal FineAmount { get; set; }
         public FineDenomination FineStatus { get; set; }
         public required int UnitId { get; set; }
 

@@ -1,70 +1,177 @@
 <div class="container">
   <div class="level">
     <div class="level-left">
-      <h2 class="title is-3 mb-5">Crear Multa</h2>
+      <h2 class="title is-3 mb-5">Gestión de Multas</h2>
+    </div>
+    <div class="level-right">
+      @if(selectedTab === 'existing'){
+        <button class="button" (click)="openAddFineModal()">
+        <span class="icon mr-1">
+          <i class="fa-solid fa-plus"></i>
+        </span>
+          Agregar Multa
+        </button>
+      } @else if (selectedTab === 'assigned'){
+        <button class="button" (click)="openAddAssignedFineModal()">
+        <span class="icon mr-1">
+          <i class="fa-solid fa-plus"></i>
+        </span>
+          Cursar Multa
+        </button>
+      }
     </div>
   </div>
 </div>
+
+
 <div class="container mt-4">
-  <div class="card">
-    <div class="card-content">
-      <form (ngSubmit)="onSubmit()">
-        <div class="field">
-          <label class="label" for="usuario">Usuario</label>
-          <div class="control">
-            <div class="select">
-              <select id="usuario" [(ngModel)]="usuario" name="usuario" required>
-                <option value="" disabled selected>Seleccione un usuario</option>
-                <option *ngFor="let user of usuarios" [value]="user">{{ user }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
+  <!-- Tabs -->
+  <div class="tabs">
+    <ul>
+      <li [class.is-active]="selectedTab === 'existing'" (click)="selectTab('existing')">
+        <a>Multas Existentes</a>
+      </li>
+      <li [class.is-active]="selectedTab === 'assigned'" (click)="selectTab('assigned')">
+        <a>Multas Cursadas</a>
+      </li>
+    </ul>
+  </div>
 
-        <div class="columns">
-          <div class="column is-3">
-            <div class="field">
-              <label class="label" for="denomination">Denominación</label>
-              <div class="control">
-                <div class="select">
-                  <select id="denomination" [(ngModel)]="denominacion" name="denominacion" required>
-                    <option value="" disabled selected>Seleccione denominación</option>
-                    <option value="UTM">UTM</option>
-                    <option value="UF">UF</option>
-                    <option value="CLP">CLP</option>
-                  </select>
+
+  @if (selectedTab === 'existing'){
+
+    <table class="table is-fullwidth">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Causa</th>
+        <th>Monto</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+        @if (!fines || fines.length === 0){
+          <tr>
+            <td colspan="5" class="has-text-centered">
+              @if (loading){
+                Consultando multas...
+              } @else {
+                No hay multas creadas
+              }
+            </td>
+          </tr>
+        } @else {
+          @for (fine of fines; track fine.fineId;let idx = $index, e = $even){
+            <tr>
+              <td>{{ idx + 1 }}</td>
+              <td>{{ fine.name }}</td>
+              <td>{{ fine.amount +" "+ finesDenomination[fine.status] }}</td>
+              <td>
+                <div class="buttons">
+                  <button class="button is-small is-primary" (click)="opendEditFineModal(fine)">
+                    Modificar</button>
+                  <button class="button is-small" (click)="delete(fine.fineId)">Eliminar</button>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="column is-9">
-            <div class="field">
-              <label class="label" for="monto">Monto</label>
-              <div class="control">
-                <input id="monto" class="input" type="number" [(ngModel)]="monto" name="monto" placeholder="Ingrese el monto" required>
-              </div>
-            </div>
-          </div>
-        </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
 
-        <div class="field">
-          <label class="label" for="nombreMulta">Nombre de la multa</label>
-          <div class="control">
-            <input id="nombreMulta" class="input" type="text" [(ngModel)]="motivo" name="motivo" placeholder="Describa el motivo de la multa" required>
-          </div>
-        </div>
+  } @else if (selectedTab == 'assigned'){
 
-        <div class="field">
-          <label class="label" for="motivo">Motivo de la multa</label>
-          <div class="control">
-            <textarea id="motivo" class="textarea" [(ngModel)]="motivo" name="motivo" placeholder="Describa el motivo de la multa" required></textarea>
-          </div>
-        </div>
+    <table class="table is-fullwidth">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Causa de Multa</th>
+        <th>Monto</th>
+        <th>Destinatario</th>
+        <th>Fecha del Evento</th>
+        <th>Comentario</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+        @if (!assignedFines || assignedFines.length === 0){
+          <tr>
+            <td colspan="5" class="has-text-centered">
+              @if (loading){
+                Consultando multas asignadas en la comunidad...
+              } @else {
+                No hay multas asignadas en la comunidad.
+              }
+            </td>
+          </tr>
+        } @else {
+          @for (assignedFine of assignedFines; track assignedFine.assignedFineID;let idx = $index, e = $even){
+            <tr>
+              <td>{{ idx + 1 }}</td>
+              <td>{{ assignedFine.fineName }}</td>
+              <td>{{ assignedFine.fineAmount +" "+ finesDenomination[assignedFine.fineStatus] }}</td>
+              <td>{{ "Unidad " + assignedFine.unitNumber + ", piso "+ assignedFine.unitFloor +", "+ assignedFine.unitBuildingName}}</td>
+              <td>{{ assignedFine.eventDate }}</td>
+              <td>{{ assignedFine.comment }}</td>
+              <td>
+                <div class="buttons">
+                  <button class="button is-small" (click)="openEditAssignedFineModal()">
+                    Modificar</button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  }
+</div>
 
-        <div class="control">
-          <button type="submit" class="button is-primary">Crear Multa</button>
+@if(isOpenModalAddFine){
+  <app-add-fine [CommunityID]="this.CommunityID" (close)="closeAddFineModal()">
+  </app-add-fine>
+} @else if (isOpenModalEditFine){
+  <app-edit-fine [fine]="this.fine" (close)="closeEditFineModal()"></app-edit-fine>
+} @else if (isOpenModalEditAssigmentFine){
+  <app-edit-assigned-fine (close)="closeEditAssignedFineModal()"></app-edit-assigned-fine>
+} @else if (isOpenModalAddAssigmentFine){
+  <app-add-assigned-fine [CommunityId]="this.CommunityID" [fines]="fines" (close)="closeAddAssignedFineModal()"></app-add-assigned-fine>
+}
+
+
+<div class="modal" [ngClass]="{ 'is-active': isOpenModalDeleteFine }">
+  <div class="modal-background" (click)="closeDeleteFineModal()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-shadowless">
+      <p class="modal-card-title is-3">Eliminar Multa</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="closeDeleteFineModal()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+
+      @if (notification) { @if (IsSuccess){
+        <div class="notification is-success mt-3" >
+          {{ this.notificationMessage }}
         </div>
-      </form>
-    </div>
+      } @else if (IsError){
+        <div class="notification is-danger mt-3">
+          {{ this.notificationMessage }}
+        </div>
+      } }
+
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button class="button" (click)="closeDeleteFineModal()">Salir</button>
+      </div>
+    </footer>
   </div>
 </div>
+
+
+
+
+

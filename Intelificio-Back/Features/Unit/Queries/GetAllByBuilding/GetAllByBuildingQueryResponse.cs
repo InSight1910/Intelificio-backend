@@ -8,5 +8,6 @@
         public required string Building { get; set; }
         public required int Floor { get; set; }
         public required float Surface { get; set; }
+        public required string User { get; set; }
     }
 }

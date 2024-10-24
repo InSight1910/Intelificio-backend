@@ -18,7 +18,11 @@ namespace Backend.Features.Fine.Common
 
         public static readonly Error FineIsAssociatedToOneOrMoreAsignedFinesOnDeleteFine = new(
             "Fine.DeleteFine.FineIsAssociatedToOneOrMoreAsignedFinesOnDeleteFine",
-            "No existe la Multa consultada.");
+            "No es posible eliminar esta multa, ya está cursada.");
+
+        public static readonly Error FineIsAssociatedToOneOrMoreAsignedFinesOnUpdateFine = new(
+            "Fine.UpdateFine.FineIsAssociatedToOneOrMoreAsignedFinesOnDeleteFine",
+            "No es posible modificar esta multa, ya está cursada.");
 
         public static readonly Error FineNotFoundOnUpdateFine = new(
             "Fine.UpdateFine.FineNotFoundOnUpdateFine",

@@ -42,7 +42,7 @@ namespace Backend.Features.Fine.Common
                 onFailure: BadRequest);
         }
 
-        [HttpGet("GetByCommunity/{Id}")]
+        [HttpGet("GetAllByCommunity/{Id}")]
         public async Task<IActionResult> GetAllFineByCommunityId(int Id)
         {
             var fines = await mediator.Send(new GetAllFinesByCommunityQuery { CommunityId = Id });

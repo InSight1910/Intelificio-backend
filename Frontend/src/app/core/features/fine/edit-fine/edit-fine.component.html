@@ -1,0 +1,162 @@
+<div class="modal is-active">
+  <div class="modal-background" (click)="onClose()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-shadowless">
+      <p class="modal-card-title is-3">Editar Multa</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="onClose()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form [formGroup]="form" [hidden]="notification">
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Nombre</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="name"
+                placeholder="Nombre de la multa"
+                (input)="onInputChange('name')"
+                [ngClass]="{
+                  'is-danger': form.get('name')?.invalid && form.get('name')?.touched,
+                  'is-success': form.get('name')?.valid && form.get('name')?.touched
+                }"
+              />
+              @if(form.get('name')?.invalid &&
+              form.get('name')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe ingresar nombre de multa.
+                </p>
+              } @else if (form.get('name')?.valid &&
+              form.get('name')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Monto</label>
+            <div class="control">
+              <input
+                class="input"
+                type="number"
+                formControlName="amount"
+                placeholder="Monto de la multa"
+                (input)="onInputChange('amount')"
+                [ngClass]="{
+                'is-danger':
+                  form.get('amount')?.invalid &&
+                  form.get('amount')?.touched,
+                                  'is-success':
+                  form.get('amount')?.valid &&
+                  form.get('amount')?.touched
+              }"
+              />
+
+              @if (form.get('amount')?.invalid &&
+              form.get('amount')?.touched){
+                <p class="help is-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Debe asignar un monto a la multa.
+                </p>
+              } @else if (form.get('amount')?.valid &&
+              form.get('amount')?.touched) {
+                <p class="help is-right">
+                  <i class="fas fa-check"></i>
+                  Validado
+                </p>
+              }
+            </div>
+          </div>
+
+          <div class="column field">
+            <label class="label">Denominación</label>
+            <div class="control">
+              <div
+                class="select"
+                [ngClass]="{
+                  'is-danger':
+                    form.get('status')?.invalid &&
+                    form.get('status')?.touched,
+                  'is-success':
+                    form.get('status')?.valid &&
+                    form.get('status')?.touched
+                }"
+              >
+                <select  name="status" formControlName="status" (input)="onInputChange('status')">
+                  <option value="" selected>Seleccione una denominación</option>
+                  <option *ngFor="let denomination of denominations" [ngValue]="denomination.key">
+                    {{ denomination.value }}
+                  </option>
+                </select>
+
+                @if(form.get('status')?.invalid &&
+                form.get('status')?.touched){
+                  <p
+                    class="help is-danger"
+                    *ngIf="form.get('status')?.errors?.['required']"
+                  >
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ¿Qué denominación tendrá la multa?
+                  </p>
+                } @else if (form.get('status')?.valid &&
+                form.get('status')?.touched) {
+                  <p class="help is-right">
+                    <i class="fas fa-check"></i>
+                    Validado
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+
+      @if (notification) { @if (IsSuccess){
+        <div class="notification is-success mt-3" >
+          {{ this.notificationMessage }}
+        </div>
+      } @else if (IsError){
+        <div class="notification is-danger mt-3">
+          {{ this.notificationMessage }}
+        </div>
+      } }
+
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button is-success"
+          [disabled]="IsSuccess || IsError || !form.valid"
+          [ngClass]="{ 'is-loading': IsLoading }"
+          (click)="OnSubmit()"
+
+        >
+          Guardar
+        </button>
+        <button
+          class="button"
+          [disabled]="IsLoading"
+          (click)="onClose()"
+        >
+          Salir
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+
+

@@ -10,15 +10,9 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../states/intelificio.state';
-import { CommunityService } from '../../../services/community/community.service';
-import { LocationService } from '../../../services/location/location.service';
-import { AdminCommunityComponent } from '../../community/adminCommunity/admin-community.component';
 import { NgClass } from '@angular/common';
-import { Contact } from '../../../../shared/models/contact.model';
 import { ContactService } from '../../../services/contact/contact.service';
-import { AuthActions } from '../../../../states/auth/auth.actions';
+
 
 @Component({
   selector: 'app-add-contact',

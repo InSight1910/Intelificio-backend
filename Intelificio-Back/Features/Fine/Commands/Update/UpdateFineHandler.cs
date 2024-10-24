@@ -19,6 +19,9 @@ namespace Backend.Features.Fine.Commands.Update
             var fine = await _context.Fine.FirstOrDefaultAsync(x => x.ID == request.FineId, cancellationToken);
             if (fine is null) return Result.Failure(FineErrors.FineNotFoundOnUpdateFine);
 
+            var assignedfine = await _context.AssignedFines.FirstOrDefaultAsync(x => x.Fine.ID == fine.ID, cancellationToken);
+            if (assignedfine is not null) return Result.Failure(FineErrors.FineIsAssociatedToOneOrMoreAsignedFinesOnUpdateFine);
+
             if (fine.CommunityId != request.CommunityId)
             {
                 var updateCommunity = await _context.Community.FirstOrDefaultAsync(x => x.ID == request.CommunityId, cancellationToken);

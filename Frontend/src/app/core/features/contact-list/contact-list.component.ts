@@ -108,13 +108,4 @@ export class ContactListComponent implements OnInit {
       .subscribe();
   }
 
-  // @HostListener('document:click', ['$event'])
-  // handleClickOutside(event: MouseEvent) {
-  //   const target = event.target as HTMLElement;
-  //   if (!target.closest('.dropdown')) {
-  //     Object.keys(this.isDropdownOpen).forEach((id) => {
-  //       this.isDropdownOpen[+id] = false;
-  //     });
-  //   }
-  // }
 }
