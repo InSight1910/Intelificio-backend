@@ -58,7 +58,7 @@ export class AddAssignedFineComponent implements OnInit {
               private unitService: UnitService,) {
     this.form = this.fb.group({
       EventDate: new FormControl('',[Validators.required,this.eventDateValidator()]),
-      UserName: new FormControl(''),
+      UserName: new FormControl('',Validators.required),
       CommunityID: new FormControl(0,Validators.required),
       BuildingID: new FormControl(0,Validators.required),
       UnitID: new FormControl(0,Validators.required),
@@ -125,6 +125,7 @@ export class AddAssignedFineComponent implements OnInit {
     };
   }
 
+
   updateCharacterCount() {
     const messageControl = this.form.get('Comment');
     if (messageControl) {
@@ -153,10 +154,10 @@ export class AddAssignedFineComponent implements OnInit {
       const createAssignedFine : CreateAssignedFine = {
         fineId : this.fine.fineId,
         unitId : this.form.get('UnitID')?.value,
-        eventDate : this.form.get('EventDate')?.value,
+        eventDate : new Date(this.form.get('EventDate')?.value).toISOString(),
         comment: this.form.get('Comment')?.value,
       };
-      console.log(createAssignedFine);
+      this.form.disable();
       this.service.createAssignedFine(createAssignedFine).subscribe({
         next: (response) => {
           if (response.status === 204) {
@@ -165,6 +166,7 @@ export class AddAssignedFineComponent implements OnInit {
             this.IsSuccess = true;
             this.notification = true;
             setTimeout(() => {
+              this.form.enable();
               this.notification = false;
               this.IsSuccess = false;
               this.IsLoading = false;
@@ -183,6 +185,8 @@ export class AddAssignedFineComponent implements OnInit {
               this.notification = false;
               this.notificationMessage = '';
               this.IsError = false;
+              this.form.enable();
+              this.close.emit();
             }, 5000);
           } else {
             this.notificationMessage = 'No fue posible asignar la multa.';
@@ -192,10 +196,13 @@ export class AddAssignedFineComponent implements OnInit {
               this.notification = false;
               this.notificationMessage = '';
               this.IsError = false;
+              this.form.enable();
+              this.close.emit();
             }, 5000);
           }
         },
       });
+
     }
   }
 

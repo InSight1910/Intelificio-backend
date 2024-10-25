@@ -48,7 +48,8 @@ namespace Backend.Features.AssignedFines.Commands.Create
             
 
 
-            var assignedFine = _mapper.Map<AssignedFine>(request); 
+            var assignedFine = _mapper.Map<AssignedFine>(request);
+            
 
             var NewAssignedFine = await _context.AssignedFines.AddAsync(assignedFine, cancellationToken);
             _ = await _context.SaveChangesAsync(cancellationToken);

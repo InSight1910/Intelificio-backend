@@ -189,7 +189,7 @@
       <div class="buttons">
         <button
           class="button is-success"
-          [disabled]="IsSuccess || !form.valid"
+          [disabled]="IsSuccess || !form.valid || this.form.get('UserName')?.value === 'Sin Asignar'"
           [ngClass]="{ 'is-loading': IsLoading }"
           (click)="OnSubmit()"
 

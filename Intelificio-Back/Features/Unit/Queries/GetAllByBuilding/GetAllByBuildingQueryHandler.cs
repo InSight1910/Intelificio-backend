@@ -31,7 +31,7 @@ public class GetAllByBuildingQueryHandler(IntelificioDbContext context, ILogger<
                 Floor = x.Floor,
                 Surface = x.Surface,
                 User = x.Users
-                .Where(user => ownerIds.Contains(user.Id))  // Filtrar propietarios en la base de datos
+                .Where(user => ownerIds.Contains(user.Id))  
                 .Select(user => user.ToString())
                 .FirstOrDefault() ?? "Sin Asignar"
             })

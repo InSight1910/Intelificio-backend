@@ -1,0 +1,162 @@
+<div class="container">
+  <div class="level">
+    <div class="level-left">
+      <h2 class="title is-3 mb-5">Mis multas</h2>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="box">
+      <div class="table-container">
+        <table class="table is-fullwidth">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Causa de Multa</th>
+            <th>Valor Multa</th>
+            <th>Unidad</th>
+            <th>Fecha del Evento</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+            @if (!assignedFines || assignedFines.length === 0){
+              <tr>
+                <td colspan="6" class="has-text-centered">
+                  @if (loading){
+                    Consultando sus multas cursadas...
+                  } @else {
+                    No tiene multas cursadas.
+                  }
+                </td>
+              </tr>
+            } @else {
+              @for (assignedFine of assignedFines; track assignedFine.assignedFineID;let idx = $index, e = $even){
+                <tr>
+                  <td>{{ idx + 1 }}</td>
+                  <td>{{ assignedFine.fineName }}</td>
+                  <td>{{ assignedFine.fineAmount +" "+ finesDenomination[assignedFine.fineStatus] }}</td>
+                  <td>{{ assignedFine.unitType + " "+ assignedFine.unitNumber}}</td>
+                  <td>{{ assignedFine.eventDate }}</td>
+                  <td>
+                    <div class="buttons">
+                      <button class="button is-small is-primary" (click)="OpenDetail(assignedFine)">
+                        Detalles</button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': isDetailModal }">
+  <div class="modal-background" (click)="closeDetail()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-shadowless">
+      <p class="modal-card-title is-3">Detalle de Multa</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="closeDetail()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <form [formGroup]="form">
+        <div class="columns">
+          <div class="column field">
+            <label class="label">Causa</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="fineName"
+                placeholder="Nombre de Multa"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+
+            <div class="column field">
+              <label class="label">Unidad</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  formControlName="UnitName"
+                  placeholder="Nombre de Unidad"
+                />
+              </div>
+            </div>
+        </div>
+
+        <div class="columns">
+
+          <div class="column field">
+            <label class="label">Fecha del Evento</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="EventDate"
+                placeholder="Fecha del Evento"
+              />
+            </div>
+          </div>
+
+          <div class="column field">
+            <label class="label">Nombre Propietario</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                formControlName="UserName"
+                placeholder="Nombre Propietario"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column field">
+            <label class="label" for="comment">Comentario</label>
+            <div class="control">
+              <textarea
+                id="comment"
+                formControlName="Comment"
+                class="textarea"
+                placeholder="Comentario o motivo de multa"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button
+          class="button"
+          (click)="closeDetail()"
+        >
+          Salir
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+
+
+
+
+
+
+

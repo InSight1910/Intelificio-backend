@@ -15,7 +15,7 @@
 </div>
 
 @if (isLoading) {
-<div CLASS="container mt-4">
+<div class="container mt-4">
   <div class="skeleton-block">
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta laborum
     mollitia perferendis, id molestias dolor eaque architecto maxime. Repudiandae
@@ -36,9 +36,7 @@
   </div>
 </div>
 } @else {
-  <div CLASS="container mt-4">
-
-    <header class="card-header">
+  <div class="container mt-4">
       <div class="tabs">
         <ul>
           @for (building of Edificios; track building.id) {
@@ -51,10 +49,8 @@
           }
         </ul>
       </div>
-    </header>
-  </div>
 
-  <div CLASS="container">
+
     <form class="box" [formGroup]="buildingForm">
     <div class="columns">
       <div class="column field is-6">

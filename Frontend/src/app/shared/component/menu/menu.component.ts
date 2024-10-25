@@ -23,14 +23,15 @@ interface MenuItem {
 })
 export class MenuComponent {
   @Input() openNavbar: boolean = false;
-  isDropdownOpen: boolean = true;
+
   constructor(private router:Router) {}
+
 
 
   menuSections: MenuSection[] = [
     {
       label: 'Super-Admin',
-      isOpen: false,
+      isOpen: true,
       items: [
         { label: 'Comunidades', iconClass: 'fa-solid fa-tree-city', routerLink: 'AdminComunidades' },
       ],
@@ -53,19 +54,20 @@ export class MenuComponent {
     },
     {
       label: 'Residentes',
-      isOpen: false,
+      isOpen: true,
       items: [
         { label: 'Mi Comunidad', iconClass: 'fa-solid fa-tree-city', routerLink: 'MiComunidad' },
         { label: 'Edificios', iconClass: 'fa-solid fa-city', routerLink: 'Edificios' },
         { label: 'Espacios Comunes', iconClass: 'fa-solid fa-people-roof', routerLink: 'EspacioComun' },
         { label: 'Mis Reservas', iconClass: 'fa-solid fa-bookmark', routerLink: 'MisReservas' },
         { label: 'Mis Encomiendas', iconClass: 'fa-solid fa-box', routerLink: 'MisEncomiendas' },
+        { label: 'Mis Multas', iconClass: 'fa-solid fa-file-invoice', routerLink: 'MisMultas' },
         { label: 'Contactos', iconClass: 'fa-solid fa-address-book', routerLink: 'Contactos' },
       ],
     },
     {
       label: 'Otros',
-      isOpen: false,
+      isOpen: true,
       items: [
         { label: 'Reportes', iconClass: 'fa-solid fa-chart-bar', routerLink: 'Reportes' },
         { label: 'Configuración', iconClass: 'fa-solid fa-cogs', routerLink: 'Configuracion' },
@@ -77,4 +79,5 @@ export class MenuComponent {
   toggleDropdown(section: MenuSection) {
     section.isOpen = !section.isOpen;
   }
+
 }

@@ -30,18 +30,21 @@ export interface AssignedFine {
 }
 
 export type CreateAssignedFine = Omit<AssignedFine, 'assignedFineId' | 'fineName' | 'amount' | 'status'>;
-export type UpdateAssignedFine = Omit<AssignedFine, 'comment' | 'amount' | 'status'>;
+export type UpdateAssignedFine = Omit<AssignedFine, 'fineName' | 'amount' | 'status'>;
 
 export interface AssignFineData{
   assignedFineID: number;
   fineId: number;
   unitId: number;
   unitNumber: string;
+  unitType: string;
   unitFloor: number;
   unitBuildingName: string;
+  unitBuildingId : number;
   eventDate: string;
   comment: string;
   fineName: string;
   fineAmount: number;
   fineStatus: FineDenomination;
+  user: string;
 }

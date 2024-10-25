@@ -7,7 +7,7 @@ import {
   AssignFineData,
   CreateAssignedFine,
   CreateFine,
-  Fine,
+  Fine, UpdateAssignedFine,
   UpdateFine
 } from "../../../shared/models/fine.model";
 
@@ -49,20 +49,20 @@ export class FineService {
     return this.http.delete<any>(`${this.apiUrl}/AssignedFines/${assignedFineId}`,{ observe: 'response' })
   }
 
-  updateAssignedFine(assignedFineId: number,assignedFine: AssignedFine): Observable<HttpResponse<any>>{
-    return this.http.put<any>(`${this.apiUrl}/AssignedFines/${assignedFineId}`,assignedFine,{ observe: 'response' })
+  updateAssignedFine(assignedFineId: number,updateAssignedFine: UpdateAssignedFine): Observable<HttpResponse<any>>{
+    return this.http.put<any>(`${this.apiUrl}/AssignedFines/${assignedFineId}`,updateAssignedFine,{ observe: 'response' })
   }
 
   getAssignedFineById(assignedFineId: number): Observable<AssignFineData>{
     return this.http.get<AssignFineData>(`${this.apiUrl}/AssignedFines/${assignedFineId}`)
   }
 
-  getAssignedFinesByUnitId(unitId: number): Observable<AssignFineData[]>{
-    return this.http.get<AssignFineData[]>(`${this.apiUrl}/AssignedFines/GetByUnit/${unitId}`)
+  getAssignedFinesByUnitId(unitId: number): Observable<{data: AssignFineData[]}>{
+    return this.http.get<{data: AssignFineData[]}>(`${this.apiUrl}/AssignedFines/GetByUnit/${unitId}`)
   }
 
-  getAssignedFinesByUserId(userId: number): Observable<AssignFineData[]>{
-    return this.http.get<AssignFineData[]>(`${this.apiUrl}/AssignedFines/GetByUser/${userId}`)
+  getAssignedFinesByUserId(userId: number): Observable<{data: AssignFineData[]}>{
+    return this.http.get<{data: AssignFineData[]}>(`${this.apiUrl}/AssignedFines/GetByUser/${userId}`)
   }
 
   getAllAssignedFinesbyCommunityId(communityId: number): Observable<{data: AssignFineData[]}>{

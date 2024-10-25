@@ -8,8 +8,7 @@
     </p>
     <ul class="menu-list" *ngIf="section.isOpen">
       <li *ngFor="let item of section.items">
-        <a [routerLink]="[item.routerLink]" [routerLinkActive]="['is-active']" [routerLinkActiveOptions]="{exact:
-true}">
+        <a [routerLink]="[item.routerLink]" [routerLinkActive]="['is-active']" [routerLinkActiveOptions]="{exact:true}">
           <span class="icon mr-2">
             <i [ngClass]="item.iconClass"></i>
           </span>

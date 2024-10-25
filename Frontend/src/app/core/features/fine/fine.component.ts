@@ -40,18 +40,20 @@ export class FineComponent implements OnInit{
   isOpenModalEditAssigmentFine: boolean = false;
   isOpenModalAddAssigmentFine: boolean = false;
   isOpenModalDeleteFine: boolean = false;
+  isConfirmCancelModal: boolean = false;
   notification: boolean = false;
   IsSuccess: boolean = false;
   IsError: boolean = false;
   notificationMessage: string = '';
   CommunityID: number = 0;
   fine!: Fine;
-  fineId: number = 0;
   finesDenomination = FineDenomination;
   fines: Fine[] = [];
   assignedFines: AssignFineData[] = [];
+  assignedFine!: AssignFineData;
   selectedTab: string = 'existing';
   loading = false;
+  edit: boolean = false;
 
 
   constructor(
@@ -67,9 +69,13 @@ export class FineComponent implements OnInit{
         tap((c) => {
           this.CommunityID = c?.id ?? 0;
           if(this.CommunityID > 0){
-            this.getFines();
+            this.service.getAllFinesbyCommunityId(this.CommunityID).subscribe(
+              (response: {data : Fine[]}) =>{
+                this.fines = response.data;
+                this.loading = false;
+              }
+            )
             this.getAssignedFines();
-            this.loading = false;
           }
         })
       ).subscribe();
@@ -90,7 +96,9 @@ export class FineComponent implements OnInit{
     this.isOpenModalEditFine = false;
     this.getFines();
   }
-  openEditAssignedFineModal() {
+  openEditAssignedFineModal(edit: boolean, assignedFine: AssignFineData) {
+    this.edit = edit;
+    this.assignedFine = assignedFine;
     this.isOpenModalEditAssigmentFine = true;
   }
   closeEditAssignedFineModal() {
@@ -108,7 +116,14 @@ export class FineComponent implements OnInit{
 
   closeDeleteFineModal(){
     this.isOpenModalDeleteFine = false;
+    this.notification = false;
+    this.notificationMessage = "";
     this.getFines();
+  }
+
+  closeCancelModal(){
+    this.isConfirmCancelModal = false;
+    this.getAssignedFines();
   }
 
   selectTab(tab: string): void {
@@ -121,7 +136,6 @@ export class FineComponent implements OnInit{
     this.service.getAllFinesbyCommunityId(this.CommunityID).subscribe(
       (response: {data : Fine[]}) =>{
         this.fines = response.data;
-        this.loading = false;
       }
     )
   }
@@ -172,6 +186,56 @@ export class FineComponent implements OnInit{
             this.notificationMessage = '';
             this.IsError = false;
             this.isOpenModalDeleteFine = false;
+          }, 4000);
+        }
+      },
+    })
+  }
+
+  openCancel(assignedFine: AssignFineData) {
+    this.isConfirmCancelModal = true;
+    this.assignedFine = assignedFine;
+  }
+
+  cancel(id: number){
+    this.loading = true;
+    this.service.deleteAssignedFine(id).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          this.notificationMessage = 'Multa condonada satisfactoriamente.';
+          this.IsSuccess = true;
+          this.notification = true;
+          this.loading = false;
+          setTimeout(() => {
+            this.notification = false;
+            this.IsSuccess = false;
+            this.closeCancelModal();
+          }, 2000);
+        }
+      },
+      error: (error) => {
+        if (error.status === 400) {
+          const errorData = error.error?.[0];
+          this.notificationMessage = errorData.message;
+          this.IsError = true;
+          this.notification = true;
+          this.loading = false;
+          setTimeout(() => {
+            this.notification = false;
+            this.notificationMessage = '';
+            this.IsError = false;
+            this.closeCancelModal();
+          }, 5000);
+        } else {
+          this.notificationMessage = 'No fue posible condonar esta multa';
+          this.IsError = true;
+          this.notification = true;
+          this.loading = false;
+          setTimeout(() => {
+            this.notification = false;
+            this.notificationMessage = '';
+            this.IsError = false;
+            this.closeCancelModal();
           }, 4000);
         }
       },

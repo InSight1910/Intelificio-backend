@@ -22,6 +22,7 @@ import { PrintNotificationComponent} from "./core/features/notification/print-no
 import { GuestComponent } from './core/features/guest/guest.component';
 import {FineComponent} from "./core/features/fine/fine.component";
 import { ManageEgressComponent } from './core/features/expense/manage-egress/manage-egress.component';
+import {MyFinesComponent} from "./core/features/fine/my-fines/my-fines.component";
 
 export const routes: Routes = [
   {
@@ -127,6 +128,10 @@ export const routes: Routes = [
   {
     path: 'Multas',
     component: FineComponent,
+  },
+  {
+    path: 'MisMultas',
+    component: MyFinesComponent,
   },
   {
     path: 'Egresos',

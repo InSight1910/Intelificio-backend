@@ -22,7 +22,6 @@
         </thead>
         <tbody>
           @for(singlePackage of packages | async; track $index) {
-
             <tr>
               <td>{{ singlePackage.trackingNumber }}</td>
               <td>{{ singlePackage.conciergeName }}</td>

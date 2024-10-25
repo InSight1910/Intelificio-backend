@@ -1,170 +1,334 @@
-<div class="modal is-active">
-  <div class="modal-background" (click)="onClose()"></div>
-  <div class="modal-card">
-    <header class="modal-card-head is-shadowless">
-      <p class="modal-card-title is-3">Editar Multa</p>
-      <button
-        class="delete"
-        aria-label="close"
-        (click)="onClose()"
-      ></button>
-    </header>
-    <section class="modal-card-body">
-      <form [formGroup]="form" [hidden]="notification">
-        <div class="columns">
-          <div class="column field">
-            <label class="label">Nombre</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                formControlName="name"
-                placeholder="Nombre de la multa"
-                (input)="onInputChange('name')"
-                [ngClass]="{
-                  'is-danger': form.get('name')?.invalid && form.get('name')?.touched,
-                  'is-success': form.get('name')?.valid && form.get('name')?.touched
-                }"
-              />
-              @if(form.get('name')?.invalid &&
-              form.get('name')?.touched){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Debe ingresar nombre de multa.
-                </p>
-              } @else if (form.get('name')?.valid &&
-              form.get('name')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
-              }
-            </div>
-          </div>
-        </div>
+@if (edit){
+  <div class="modal is-active">
+    <div class="modal-background" (click)="onClose()"></div>
+    <div class="modal-card">
+      <header class="modal-card-head is-shadowless">
+        <p class="modal-card-title is-3">Editar Multa</p>
+        <button
+          class="delete"
+          aria-label="close"
+          (click)="onClose()"
+        ></button>
+      </header>
+      <section class="modal-card-body">
+        <form [formGroup]="form" [hidden]="notification">
 
-        <div class="columns">
-          <div class="column field">
-            <label class="label">Monto</label>
-            <div class="control">
-              <input
-                class="input"
-                type="number"
-                formControlName="amount"
-                placeholder="Monto de la multa"
-                (input)="onInputChange('amount')"
-                [ngClass]="{
-                'is-danger':
-                  form.get('amount')?.invalid &&
-                  form.get('amount')?.touched,
-                                  'is-success':
-                  form.get('amount')?.valid &&
-                  form.get('amount')?.touched
-              }"
-              />
-
-              @if (form.get('amount')?.invalid &&
-              form.get('amount')?.touched){
-                <p class="help is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  Debe asignar un monto a la multa.
-                </p>
-              } @else if (form.get('amount')?.valid &&
-              form.get('amount')?.touched) {
-                <p class="help is-right">
-                  <i class="fas fa-check"></i>
-                  Validado
-                </p>
-              }
-            </div>
-          </div>
-
-          <div class="column field">
-            <label class="label">Denominación</label>
-            <div class="control">
-              <div
-                class="select"
-                [ngClass]="{
-                  'is-danger':
-                    form.get('status')?.invalid &&
-                    form.get('status')?.touched,
-                  'is-success':
-                    form.get('status')?.valid &&
-                    form.get('status')?.touched
-                }"
-              >
-                <select  name="status" formControlName="status" (input)="onInputChange('status')">
-                  <option value="" selected>Seleccione una denominación</option>
-                  <option *ngFor="let denomination of denominations" [ngValue]="denomination.key">
-                    {{ denomination.value }}
-                  </option>
-                </select>
-
-                @if(form.get('status')?.invalid &&
-                form.get('status')?.touched){
-                  <p
-                    class="help is-danger"
-                    *ngIf="form.get('status')?.errors?.['required']"
+          <div class="columns">
+            <div class="column field">
+              <label class="label" for="fines">Multa</label>
+              <div class="control">
+                <div class="select">
+                  <select
+                    id="fines"
+                    formControlName="FineId"
+                    (change)="onChangefine()"
                   >
-                    <i class="fas fa-exclamation-triangle"></i>
-                    ¿Qué denominación tendrá la multa?
-                  </p>
-                } @else if (form.get('status')?.valid &&
-                form.get('status')?.touched) {
-                  <p class="help is-right">
-                    <i class="fas fa-check"></i>
-                    Validado
-                  </p>
-                }
+                    <option value="0">Selecciona una multa</option>
+                    <ng-container *ngIf="fines.length > 0; else noFines">
+                      <option
+                        *ngFor="let fine of fines"
+                        [value]="fine.fineId"
+                      >
+                        {{ fine.name + " - " + fine.amount +" "+ FineDenomination[fine.status] }}
+                      </option>
+                    </ng-container>
+                    <ng-template #noFines>
+                      <option value="0">Multas no disponibles</option>
+                    </ng-template>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
+
+
+          <div class="columns">
+            <div class="column field">
+              <label class="label" for="BuildingIDEdit">Edificio</label>
+              <div class="control">
+                <div class="select">
+                  <select
+                    id="BuildingIDEdit"
+                    formControlName="BuildingID"
+                    (change)="onChangeBuilding()"
+                  >
+                    <option value="0">Selecciona un Edificio</option>
+                    <ng-container *ngIf="buildings.length > 0; else noBuildings">
+                      <option
+                        *ngFor="let building of buildings"
+                        [value]="building.id"
+                      >
+                        {{ building.name }}
+                      </option>
+                    </ng-container>
+                    <ng-template #noBuildings>
+                      <option value="">Edificio no disponibles</option>
+                    </ng-template>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="column field">
+              <label class="label" for="UnitIDEdit">Unidad</label>
+              <div class="control">
+                <div class="select">
+                  <select
+                    id="UnitIDEdit"
+                    formControlName="UnitID"
+                    (change)="onChangeUnit()"
+                  >
+                    <option value="0">Selecciona una unidad</option>
+                    <ng-container *ngIf="units.length >= 0; else noBuildings">
+                      <option
+                        *ngFor="let unit of units"
+                        [value]="unit.id"
+                      >
+                        {{unit.unitType +" "+ unit.number }}
+                      </option>
+                    </ng-container>
+                    <ng-template #noBuildings>
+                      <option value="">Selecciona un edificio primero</option>
+                    </ng-template>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="columns">
+
+            <div class="column field">
+              <label class="label">Fecha del Evento</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  formControlName="EventDate"
+                  placeholder="Fecha del Evento"
+                />
+              </div>
+            </div>
+
+            <div class="column field">
+              <label class="label">Nombre Propietario</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  formControlName="UserName"
+                  placeholder="Nombre Propietario"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column field">
+              <label class="label" for="commentEdit">Comentario</label>
+              <div class="control">
+              <textarea
+                id="commentEdit"
+                formControlName="Comment"
+                class="textarea"
+                maxlength="{{this.maxMessageLength}}"
+                placeholder="Ingrese un comentario o motivo de multa, será visible por el propietario"
+                rows="2"
+                (input)="updateCharacterCount()"
+              ></textarea>
+              </div>
+              <p class="help is-info has-text-right">Quedan {{ maxMessageLength - messageLength }} caracteres</p>
+            </div>
+
+          </div>
+
+
+        </form>
+
+        @if (notification) { @if (IsSuccess){
+          <div class="notification is-success mt-3" >
+            {{ this.notificationMessage }}
+          </div>
+        } @else if (IsError){
+          <div class="notification is-danger mt-3">
+            {{ this.notificationMessage }}
+          </div>
+        } }
+
+      </section>
+      <footer class="modal-card-foot">
+        <div class="buttons">
+          <button
+            class="button is-success"
+            [disabled]="IsSuccess || IsError || !form.valid"
+            [ngClass]="{ 'is-loading': IsLoading }"
+            (click)="OnSubmit()"
+
+          >
+            Guardar
+          </button>
+          <button
+            class="button"
+            [disabled]="IsLoading"
+            (click)="onClose()"
+          >
+            Salir
+          </button>
         </div>
-
-
-      </form>
-
-      @if (notification) { @if (IsSuccess){
-        <div class="notification is-success mt-3" >
-          {{ this.notificationMessage }}
-        </div>
-      } @else if (IsError){
-        <div class="notification is-danger mt-3">
-          {{ this.notificationMessage }}
-        </div>
-      } }
-
-    </section>
-    <footer class="modal-card-foot">
-      <div class="buttons">
-        <button
-          class="button is-success"
-          [disabled]="IsSuccess || IsError || !form.valid"
-          [ngClass]="{ 'is-loading': IsLoading }"
-          (click)="OnSubmit()"
-
-        >
-          Guardar
-        </button>
-        <button
-          class="button"
-          [disabled]="IsSuccess || IsError || IsLoading"
-          (click)="delete()"
-        >
-          Eliminar
-        </button>
-        <button
-          class="button"
-          [disabled]="IsLoading"
-          (click)="onClose()"
-        >
-          Salir
-        </button>
-      </div>
-    </footer>
+      </footer>
+    </div>
   </div>
-</div>
+} @else {
+  <div class="modal is-active">
+    <div class="modal-background" (click)="onClose()"></div>
+    <div class="modal-card">
+      <header class="modal-card-head is-shadowless">
+        <p class="modal-card-title is-3">Detalle de Multa</p>
+        <button
+          class="delete"
+          aria-label="close"
+          (click)="onClose()"
+        ></button>
+      </header>
+      <section class="modal-card-body">
+        <form [formGroup]="form" [hidden]="notification">
+          <div class="columns">
+            <div class="column field">
+              <label class="label">Causa</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  formControlName="FineName"
+                  placeholder="Nombre de Multa"
+                />
+              </div>
+            </div>
+          </div>
 
+          <div class="columns">
+            <div class="column field">
+              <label class="label" for="BuildingID">Edificio</label>
+              <div class="control">
+                <div class="select">
+                  <select
+                    id="BuildingID"
+                    formControlName="BuildingID"
+                    (change)="onChangeBuilding()"
+                  >
+                    <option value="0">Selecciona un Edificio</option>
+                    <ng-container *ngIf="buildings.length > 0; else noBuildings">
+                      <option
+                        *ngFor="let building of buildings"
+                        [value]="building.id"
+                      >
+                        {{ building.name }}
+                      </option>
+                    </ng-container>
+                    <ng-template #noBuildings>
+                      <option value="">Edificio no disponibles</option>
+                    </ng-template>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="column field">
+              <label class="label" for="UnitID">Unidad</label>
+              <div class="control">
+                <div class="select">
+                  <select
+                    id="UnitID"
+                    formControlName="UnitID"
+                    (change)="onChangeUnit()"
+                  >
+                    <option value="0">Selecciona una unidad</option>
+                    <ng-container *ngIf="units.length >= 0; else noBuildings">
+                      <option
+                        *ngFor="let unit of units"
+                        [value]="unit.id"
+                      >
+                        {{unit.unitType +" "+ unit.number }}
+                      </option>
+                    </ng-container>
+                    <ng-template #noBuildings>
+                      <option value="">Selecciona un edificio primero</option>
+                    </ng-template>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="columns">
+
+            <div class="column field">
+              <label class="label">Fecha del Evento</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  formControlName="EventDate"
+                  placeholder="Fecha del Evento"
+                />
+              </div>
+            </div>
+
+            <div class="column field">
+              <label class="label">Nombre Propietario</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  formControlName="UserName"
+                  placeholder="Nombre Propietario"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column field">
+              <label class="label" for="comment">Comentario</label>
+              <div class="control">
+              <textarea
+                id="comment"
+                formControlName="Comment"
+                class="textarea"
+                maxlength="{{this.maxMessageLength}}"
+                placeholder="Comentario o motivo de multa"
+                rows="2"
+              ></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </section>
+      <footer class="modal-card-foot">
+        <div class="buttons">
+          <button
+            class="button is-success"
+            [ngClass]="{ 'is-loading': IsLoading }"
+            (click)="editMode()"
+
+          >
+            Modificar
+          </button>
+          <button
+            class="button"
+            [disabled]="IsLoading"
+            (click)="onClose()"
+          >
+            Salir
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+}
 
 
 
